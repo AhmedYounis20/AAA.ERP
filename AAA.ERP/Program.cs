@@ -1,6 +1,16 @@
-using AAA.ERP;
+using AAA.ERP.DBConfiguration.DbContext;
+using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Data.Currencies;
+using AAA.ERP.Models.Data.Identity;
+using AAA.ERP.Utility;
+using AAA.ERP.Validators.BussinessValidator;
+using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using AAA.ERP.Validators.InputValidators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +27,39 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"));
-
 });
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddServices();
+builder.Services.AddScoped<AccountGuideValidator>();
+builder.Services.AddScoped<CurrencyValidator>();
+
+
+builder.Services.AddLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(
+    opt =>
+    {
+        var supportedResources = new List<CultureInfo>
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("ar-EG")
+        };
+
+        opt.DefaultRequestCulture = new RequestCulture("en-US");
+        opt.SupportedCultures = supportedResources;
+        opt.SupportedUICultures = supportedResources;
+    }
+    );
+
+
+builder.Services.AddScoped(typeof(IBaseBussinessValidator<>), typeof(BaseBussinessValidator<>));
+builder.Services.AddScoped(typeof(IBaseSettingBussinessValidator<>), typeof(BaseSettingBussinessValidator<>));
+builder.Services.AddScoped<ICurrencyBussinessValidator, CurrencyBussinessValidator>();
+builder.Services.AddScoped<IBaseSettingBussinessValidator<Currency>, CurrencyBussinessValidator>();
+builder.Services.AddScoped<IBaseSettingBussinessValidator<AccountGuide>, AccountGuideBussinessValidator>();
+builder.Services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -69,7 +107,6 @@ builder.Services.AddAuthentication(u =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
         ValidateIssuer = false,
         ValidateAudience = false,
-
     };
 });
 
@@ -91,6 +128,10 @@ else
     });
 }
 app.UseHttpsRedirection();
+
+var localizeOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+if (localizeOptions != null)
+    app.UseRequestLocalization(localizeOptions.Value);
 
 app.UseCors(e => e.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();

@@ -4,6 +4,7 @@ using AAA.ERP.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223193001_addCurrencies")]
+    partial class addCurrencies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,53 +23,6 @@ namespace AAA.ERP.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("AAA.ERP.Models.Data.AccountGuide.AccountGuide", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasColumnOrder(3);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.ToTable("AccountGuides", (string)null);
-                });
 
             modelBuilder.Entity("AAA.ERP.Models.Data.Currencies.Currency", b =>
                 {
@@ -136,7 +91,7 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("Symbol")
                         .IsUnique();
 
-                    b.ToTable("Currencies", (string)null);
+                    b.ToTable("Currency");
                 });
 
             modelBuilder.Entity("AAA.ERP.Models.Data.Identity.ApplicationUser", b =>
@@ -236,8 +191,8 @@ namespace AAA.ERP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aacdf2b5-0f9a-4977-a086-ffee465c238f",
-                            ConcurrencyStamp = "59b9e8f1-8461-4808-aa03-19d75f1bbcbb",
+                            Id = "a1cc9213-3267-44b3-b475-c23dde69a7d7",
+                            ConcurrencyStamp = "244424ed-d6ea-41ca-83ae-d2b468cdfdc0",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });

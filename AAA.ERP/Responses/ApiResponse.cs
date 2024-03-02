@@ -1,4 +1,4 @@
-﻿namespace AAA.ERP;
+﻿namespace AAA.ERP.Responses;
 
 public class ApiResponse
 {

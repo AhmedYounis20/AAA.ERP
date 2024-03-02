@@ -1,4 +1,8 @@
-﻿namespace AAA.ERP;
+﻿using AAA.ERP.DBConfiguration.DbContext;
+using AAA.ERP.Models.Data.Identity;
+using AAA.ERP.Responses;
+
+namespace AAA.ERP.Controllers.Identity;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -21,17 +25,17 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    [ProducesResponseType(typeof(ApiResponse),(int) HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ApiResponse),(int) HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse),(int) HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequestDTO)
     {
         ApplicationUser? userFromDb = await _db.ApplicationUsers.FirstOrDefaultAsync(e => e.UserName.ToLower() == loginRequestDTO.UserName.ToLower());
-        
+
         if (userFromDb == null)
         {
             _response.IsSuccess = false;
-            _response.StatusCode = System.Net.HttpStatusCode.NotFound;
+            _response.StatusCode = HttpStatusCode.NotFound;
             _response.ErrorMessages = new();
             _response.ErrorMessages?.Add("User Not Found");
             return NotFound(_response);
@@ -39,7 +43,7 @@ public class AuthController : ControllerBase
         bool isValid = await _userManager.CheckPasswordAsync(userFromDb, loginRequestDTO.Password);
         if (!isValid)
         {
-            _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+            _response.StatusCode = HttpStatusCode.BadRequest;
             _response.IsSuccess = false;
             _response.ErrorMessages = new();
             _response.ErrorMessages?.Add("Username or Password is incorrect");
@@ -51,8 +55,9 @@ public class AuthController : ControllerBase
         byte[] key = Encoding.ASCII.GetBytes(secretKey);
         var roles = await _userManager.GetRolesAsync(userFromDb);
 
-        SecurityTokenDescriptor tokenDescriptor = new() {
-            Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
+        SecurityTokenDescriptor tokenDescriptor = new()
+        {
+            Subject = new ClaimsIdentity(new Claim[] {
                 new Claim("fullName", userFromDb.Name),
                 new Claim("id", userFromDb.Id.ToString()),
                 new Claim(ClaimTypes.Email, userFromDb.UserName.ToString()),
@@ -71,16 +76,16 @@ public class AuthController : ControllerBase
             Email = userFromDb.Email,
             Token = tokenHandler.WriteToken(securityToken),
         };
-        if (string.IsNullOrEmpty(response.Email)|| string.IsNullOrEmpty(response.Token))
+        if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Token))
         {
-            _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+            _response.StatusCode = HttpStatusCode.BadRequest;
             _response.IsSuccess = false;
             _response.ErrorMessages?.Add("Username or Password is incorrect");
 
             return BadRequest(_response);
         }
 
-        _response.StatusCode = System.Net.HttpStatusCode.Created;
+        _response.StatusCode = HttpStatusCode.Created;
         _response.IsSuccess = true;
         _response.Result = response;
 
@@ -97,7 +102,7 @@ public class AuthController : ControllerBase
 
         if (userFromDb != null)
         {
-            _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+            _response.StatusCode = HttpStatusCode.BadRequest;
             _response.IsSuccess = false;
             _response.ErrorMessages?.Add("Username already exists");
 
@@ -126,11 +131,11 @@ public class AuthController : ControllerBase
                 await _userManager.AddToRoleAsync(newUser, SD.Role_Customer);
 
             _response.IsSuccess = true;
-            _response.StatusCode = System.Net.HttpStatusCode.Created;
+            _response.StatusCode = HttpStatusCode.Created;
             return Ok(_response);
         }
 
-        _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+        _response.StatusCode = HttpStatusCode.BadRequest;
         _response.IsSuccess = false;
         _response.ErrorMessages?.Add("Error while registeration");
 
