@@ -1,4 +1,4 @@
-﻿using AAA.ERP.Models.Data.Currencies;
+﻿using AAA.ERP.Models.Entities.Currencies;
 
 namespace AAA.ERP.Validators.BussinessValidator.Interfaces;
 

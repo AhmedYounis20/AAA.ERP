@@ -1,7 +1,7 @@
 using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Data.AccountGuide;
-using AAA.ERP.Models.Data.Currencies;
-using AAA.ERP.Models.Data.Identity;
+using AAA.ERP.Models.Entities.AccountGuide;
+using AAA.ERP.Models.Entities.Currencies;
+using AAA.ERP.Models.Entities.Identity;
 using AAA.ERP.Utility;
 using AAA.ERP.Validators.BussinessValidator;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +30,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"));
 });
 
+
 builder.Services.AddControllers();
+//.AddJsonOptions(options =>
+//        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddServices();
 builder.Services.AddScoped<AccountGuideValidator>();
 builder.Services.AddScoped<CurrencyValidator>();
-
+builder.Services.AddScoped<GLSettingValidator>();
 
 builder.Services.AddLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(
@@ -51,7 +55,6 @@ builder.Services.Configure<RequestLocalizationOptions>(
     }
     );
 
-
 builder.Services.AddScoped(typeof(IBaseBussinessValidator<>), typeof(BaseBussinessValidator<>));
 builder.Services.AddScoped(typeof(IBaseSettingBussinessValidator<>), typeof(BaseSettingBussinessValidator<>));
 builder.Services.AddScoped<ICurrencyBussinessValidator, CurrencyBussinessValidator>();
@@ -62,6 +65,7 @@ builder.Services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussines
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -72,6 +76,7 @@ builder.Services.AddSwaggerGen(options =>
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Scheme = JwtBearerDefaults.AuthenticationScheme
     });
+
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
     {
         {

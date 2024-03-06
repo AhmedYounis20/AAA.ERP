@@ -1,4 +1,4 @@
-﻿using AAA.ERP.Models.Data.Currencies;
+﻿using AAA.ERP.Models.Entities.Currencies;
 using AAA.ERP.Services.BaseServices.impelemtation;
 using AAA.ERP.Repositories.Interfaces;
 using AAA.ERP.Services.Interfaces;

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240223193001_addCurrencies")]
-    partial class addCurrencies
+    [Migration("20240302175936_AddGLSettings")]
+    partial class AddGLSettings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,53 @@ namespace AAA.ERP.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("AAA.ERP.Models.Entities.AccountGuide.AccountGuide", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnOrder(3);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.ToTable("AccountGuides", (string)null);
+                });
 
             modelBuilder.Entity("AAA.ERP.Models.Entities.Currencies.Currency", b =>
                 {
@@ -91,7 +138,74 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("Symbol")
                         .IsUnique();
 
-                    b.ToTable("Currency");
+                    b.ToTable("Currencies", (string)null);
+                });
+
+            modelBuilder.Entity("AAA.ERP.Models.Entities.GLSettings.GLSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("DecimalDigitsNumber")
+                        .HasColumnType("tinyint")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("DepreciationApplication")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(5);
+
+                    b.Property<bool>("IsAllowingDeleteVoucher")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(2);
+
+                    b.Property<bool>("IsAllowingEditVoucher")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(1);
+
+                    b.Property<bool>("IsAllowingNegativeBalances")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("MonthDays")
+                        .HasColumnType("tinyint")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnOrder(7);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GLSettings", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2e6ab5eb-3ffd-4835-909e-6adf3e783909"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DecimalDigitsNumber = (byte)0,
+                            DepreciationApplication = "WithYearClosed",
+                            IsAllowingDeleteVoucher = false,
+                            IsAllowingEditVoucher = false,
+                            IsAllowingNegativeBalances = false,
+                            MonthDays = (byte)0
+                        });
                 });
 
             modelBuilder.Entity("AAA.ERP.Models.Entities.Identity.ApplicationUser", b =>
@@ -191,8 +305,8 @@ namespace AAA.ERP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a1cc9213-3267-44b3-b475-c23dde69a7d7",
-                            ConcurrencyStamp = "244424ed-d6ea-41ca-83ae-d2b468cdfdc0",
+                            Id = "d296e9a8-5a17-4b28-bdfb-825391908970",
+                            ConcurrencyStamp = "95394177-9cbf-4d23-bd6a-365478add137",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });

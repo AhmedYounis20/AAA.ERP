@@ -1,6 +1,6 @@
 ﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Data.AccountGuide;
-using AAA.ERP.Models.Data.Currencies;
+using AAA.ERP.Models.Entities.AccountGuide;
+using AAA.ERP.Models.Entities.Currencies;
 using AAA.ERP.OutputDtos;
 using AutoMapper;
 

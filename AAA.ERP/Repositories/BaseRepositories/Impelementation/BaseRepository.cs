@@ -38,10 +38,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public IQueryable<TEntity> GetQuery()
      => dbSet;
 
-    public virtual async Task Update(TEntity entity)
+    public virtual async Task<TEntity?> Update(TEntity entity)
     {
-        await Task.Run(() => { dbSet.Update(entity); });
+
+        var result = dbSet.Update(entity);
         await SaveChangesAsync();
+
+        return result.Entity;
     }
     public virtual async Task Update(IEnumerable<TEntity> entities)
     {

@@ -24,7 +24,7 @@ namespace AAA.ERP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.AccountGuide.AccountGuide", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.AccountGuide.AccountGuide", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AccountGuides", (string)null);
                 });
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.Currencies.Currency", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.Currencies.Currency", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,7 +141,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Currencies", (string)null);
                 });
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -362,7 +362,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -371,7 +371,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -386,7 +386,7 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -395,7 +395,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

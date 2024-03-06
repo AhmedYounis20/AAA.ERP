@@ -2,7 +2,7 @@
 
 namespace AAA.ERP.Services.Impelementation;
 
-using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Entities.AccountGuide;
 using AAA.ERP.Repositories.Interfaces;
 using AAA.ERP.Services.Interfaces;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;

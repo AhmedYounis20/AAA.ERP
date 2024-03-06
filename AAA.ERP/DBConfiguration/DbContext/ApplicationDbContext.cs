@@ -1,7 +1,7 @@
 ﻿using AAA.ERP.DBConfiguration.Config.Currencies;
 using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Data.Currencies;
-using AAA.ERP.Models.Data.Identity;
+using AAA.ERP.Models.Entities.Currencies;
+using AAA.ERP.Models.Entities.Identity;
 using AAA.ERP.Utility;
 
 namespace AAA.ERP.DBConfiguration.DbContext;
@@ -14,7 +14,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new AccountGuideDbConfig())
-               .ApplyConfiguration(new CurrencyDbConfig());
+               .ApplyConfiguration(new CurrencyDbConfig())
+               .ApplyConfiguration(new GLSettingDbConfig());
         builder.Entity<IdentityRole>().HasData(
             new IdentityRole
             {

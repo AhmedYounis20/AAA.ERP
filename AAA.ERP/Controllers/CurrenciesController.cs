@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Data.Currencies;
+using AAA.ERP.Models.Entities.Currencies;
 using AAA.ERP.Resources;
 using AAA.ERP.Services.BaseServices.interfaces;
 using AAA.ERP.Validators.InputValidators;

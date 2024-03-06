@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.DBConfiguration.Config.BaseConfig;
-using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Entities.AccountGuide;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AAA.ERP.DBConfiguration.Config.Currencies

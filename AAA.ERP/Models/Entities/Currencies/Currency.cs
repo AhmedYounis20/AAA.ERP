@@ -1,6 +1,6 @@
 ﻿using AAA.ERP.Models.BaseEntities;
 
-namespace AAA.ERP.Models.Data.Currencies;
+namespace AAA.ERP.Models.Entities.Currencies;
 
 public class Currency : BaseSettingEntity {
 

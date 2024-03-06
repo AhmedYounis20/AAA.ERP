@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Data.Identity;
+using AAA.ERP.Models.Entities.Identity;
 using AAA.ERP.Responses;
 
 namespace AAA.ERP.Controllers.Identity;

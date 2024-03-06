@@ -1,4 +1,4 @@
-﻿namespace AAA.ERP.Models.Data.Identity;
+﻿namespace AAA.ERP.Models.Entities.Identity;
 
 public class ApplicationUser : IdentityUser
 {

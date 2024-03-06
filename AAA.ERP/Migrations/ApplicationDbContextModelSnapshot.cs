@@ -22,7 +22,7 @@ namespace AAA.ERP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.AccountGuide.AccountGuide", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.AccountGuide.AccountGuide", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AccountGuides", (string)null);
                 });
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.Currencies.Currency", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.Currencies.Currency", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,7 +139,74 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Currencies", (string)null);
                 });
 
-            modelBuilder.Entity("AAA.ERP.Models.Data.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("AAA.ERP.Models.Entities.GLSettings.GLSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("DecimalDigitsNumber")
+                        .HasColumnType("tinyint")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("DepreciationApplication")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(5);
+
+                    b.Property<bool>("IsAllowingDeleteVoucher")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(2);
+
+                    b.Property<bool>("IsAllowingEditVoucher")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(1);
+
+                    b.Property<bool>("IsAllowingNegativeBalances")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("MonthDays")
+                        .HasColumnType("tinyint")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnOrder(7);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GLSettings", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2e6ab5eb-3ffd-4835-909e-6adf3e783909"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DecimalDigitsNumber = (byte)0,
+                            DepreciationApplication = "WithYearClosed",
+                            IsAllowingDeleteVoucher = false,
+                            IsAllowingEditVoucher = false,
+                            IsAllowingNegativeBalances = false,
+                            MonthDays = (byte)0
+                        });
+                });
+
+            modelBuilder.Entity("AAA.ERP.Models.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -236,8 +303,8 @@ namespace AAA.ERP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aacdf2b5-0f9a-4977-a086-ffee465c238f",
-                            ConcurrencyStamp = "59b9e8f1-8461-4808-aa03-19d75f1bbcbb",
+                            Id = "d296e9a8-5a17-4b28-bdfb-825391908970",
+                            ConcurrencyStamp = "95394177-9cbf-4d23-bd6a-365478add137",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });
@@ -360,7 +427,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,7 +436,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,7 +451,7 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,7 +460,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Data.Identity.ApplicationUser", null)
+                    b.HasOne("AAA.ERP.Models.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

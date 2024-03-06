@@ -1,4 +1,4 @@
-﻿using AAA.ERP.Models.Data.AccountGuide;
+﻿using AAA.ERP.Models.Entities.AccountGuide;
 
 namespace AAA.ERP.Validators.BussinessValidator.Interfaces;
 

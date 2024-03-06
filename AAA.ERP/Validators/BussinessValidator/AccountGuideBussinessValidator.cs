@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Entities.AccountGuide;
 using AAA.ERP.Repositories.Interfaces;
 using AAA.ERP.Resources;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;

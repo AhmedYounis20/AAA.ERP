@@ -14,7 +14,7 @@ namespace AAA.ERP.Repositories.BaseRepositories.Interfaces
         public IQueryable<TEntity> GetQuery();
         public Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate);
 
-        public Task Update(TEntity entity);
+        public Task<TEntity?> Update(TEntity entity);
         public Task Update(IEnumerable<TEntity> entities);
 
         public Task Delete(Guid entityId);

@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Entities.AccountGuide;
 using AAA.ERP.Repositories.BaseRepositories.Impelementation;
 using AAA.ERP.Repositories.Interfaces;
 

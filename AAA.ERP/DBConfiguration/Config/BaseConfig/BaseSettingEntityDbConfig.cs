@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Data.AccountGuide;
+using AAA.ERP.Models.Entities.AccountGuide;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
