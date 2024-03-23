@@ -1,17 +1,20 @@
 using AAA.ERP.DBConfiguration.DbContext;
 using AAA.ERP.Models.Entities.AccountGuide;
 using AAA.ERP.Models.Entities.Currencies;
+using AAA.ERP.Models.Entities.FinancialPeriods;
 using AAA.ERP.Models.Entities.Identity;
 using AAA.ERP.Utility;
-using AAA.ERP.Validators.BussinessValidator;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+using AAA.ERP.Validators.BussinessValidator.Impelementation;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;
 using AAA.ERP.Validators.InputValidators;
+using AAA.ERP.Validators.InputValidators.FinancialPeriods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 
@@ -38,6 +42,8 @@ builder.Services.AddServices();
 builder.Services.AddScoped<AccountGuideValidator>();
 builder.Services.AddScoped<CurrencyValidator>();
 builder.Services.AddScoped<GLSettingValidator>();
+builder.Services.AddScoped<FinancialPeriodInputValidator>();
+builder.Services.AddScoped<FinancialPeriodUpdateValidator>();
 
 builder.Services.AddLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(
@@ -60,7 +66,11 @@ builder.Services.AddScoped(typeof(IBaseSettingBussinessValidator<>), typeof(Base
 builder.Services.AddScoped<ICurrencyBussinessValidator, CurrencyBussinessValidator>();
 builder.Services.AddScoped<IBaseSettingBussinessValidator<Currency>, CurrencyBussinessValidator>();
 builder.Services.AddScoped<IBaseSettingBussinessValidator<AccountGuide>, AccountGuideBussinessValidator>();
+
+builder.Services.AddScoped<IBaseBussinessValidator<FinancialPeriod>, FinancialPeriodBussinessValidator>();
+
 builder.Services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
+builder.Services.AddScoped<IFinancialPeriodBussinessValidator, FinancialPeriodBussinessValidator>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();

@@ -21,10 +21,12 @@ public static class WebBuilderExtensions
         services.AddScoped<IAccountGuideRepository, AccountGuideRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();
+        services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
 
         services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<IGLSettingService, GLSettingService>();
+        services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
 
     }
 }

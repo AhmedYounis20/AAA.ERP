@@ -3,7 +3,7 @@ using AAA.ERP.Models.BaseEntities;
 using AAA.ERP.DBConfiguration.DbContext;
 using AAA.ERP.Services.BaseServices.interfaces;
 using AAA.ERP.Repositories.BaseRepositories.Interfaces;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 
 namespace AAA.ERP.Services.BaseServices.impelemtation;
 
@@ -17,21 +17,23 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         _bussinessValidator = bussinessValidator;
     }
 
-    public virtual async Task<ApiResponse> Create(TEntity entity)
+    public virtual async Task<ApiResponse> Create(TEntity entity, bool isValidate = true)
     {
         try
         {
-            var bussinessValidationResult = await _bussinessValidator.ValidateCreateBussiness(entity);
-            if (!bussinessValidationResult.IsValid)
+            if (isValidate)
             {
-                return new ApiResponse
+                var bussinessValidationResult = await _bussinessValidator.ValidateCreateBussiness(entity);
+                if (!bussinessValidationResult.IsValid)
                 {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = bussinessValidationResult.ListOfErrors
-                };
+                    return new ApiResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = bussinessValidationResult.ListOfErrors
+                    };
+                }
             }
-
             await _repository.Add(entity);
             return new ApiResponse
             {
@@ -51,7 +53,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Create(List<TEntity> entities)
+    public virtual async Task<ApiResponse> Create(List<TEntity> entities, bool isValidate = true)
     {
         try
         {
@@ -74,7 +76,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Delete(TEntity entity)
+    public virtual async Task<ApiResponse> Delete(TEntity entity, bool isValidate = true)
     {
         try
         {
@@ -97,7 +99,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Delete(List<TEntity> entities)
+    public virtual async Task<ApiResponse> Delete(List<TEntity> entities, bool isValidate = true)
     {
         try
         {
@@ -120,7 +122,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Delete(Guid id)
+    public virtual async Task<ApiResponse> Delete(Guid id, bool isValidate = true)
     {
         try
         {
@@ -190,19 +192,22 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Update(TEntity entity)
+    public virtual async Task<ApiResponse> Update(TEntity entity, bool isValidate = true)
     {
         try
         {
-            var bussinessValidationResult = await _bussinessValidator.ValidateUpdateBussiness(entity);
-            if (!bussinessValidationResult.IsValid)
+            if (isValidate)
             {
-                return new ApiResponse
+                var bussinessValidationResult = await _bussinessValidator.ValidateUpdateBussiness(entity);
+                if (!bussinessValidationResult.IsValid)
                 {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = bussinessValidationResult.ListOfErrors
-                };
+                    return new ApiResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = bussinessValidationResult.ListOfErrors
+                    };
+                }
             }
 
             await _repository.Update(entity);
@@ -224,7 +229,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         }
     }
 
-    public virtual async Task<ApiResponse> Update(List<TEntity> entities)
+    public virtual async Task<ApiResponse> Update(List<TEntity> entities, bool isValidate = true)
     {
         try
         {

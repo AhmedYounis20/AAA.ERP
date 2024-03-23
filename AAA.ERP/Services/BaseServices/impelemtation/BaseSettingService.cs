@@ -2,7 +2,7 @@
 using AAA.ERP.Models.BaseEntities;
 using AAA.ERP.Services.BaseServices.interfaces;
 using AAA.ERP.Repositories.BaseRepositories.Interfaces;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 
 namespace AAA.ERP.Services.BaseServices.impelemtation;
 

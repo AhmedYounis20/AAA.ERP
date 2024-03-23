@@ -27,8 +27,7 @@ namespace AAA.ERP.Controllers
             _localizer = localizer;
         }
 
-        [HttpPost]
-        public virtual async Task<IActionResult> Create([FromBody] TInput input)
+        protected virtual async Task<IActionResult> CreateRecord(TInput input)
         {
             var validationResult = _validator.Validate(input);
             if (validationResult.IsValid)
@@ -51,22 +50,17 @@ namespace AAA.ERP.Controllers
                    });
             }
         }
-
-        [HttpGet]
-        public virtual async Task<IActionResult> Get()
+        protected virtual async Task<IActionResult> GetAllRecords()
         {
             var result = await _service.ReadAll();
             return StatusCode((int)result.StatusCode, result);
         }
-        [HttpGet("{id}")]
-        public virtual async Task<IActionResult> Get(Guid id)
+        protected virtual async Task<IActionResult> GetRecord(Guid id)
         {
             var result = await _service.ReadById(id);
             return StatusCode((int)result.StatusCode, result);
         }
-
-        [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(Guid id, [FromBody] TInput input)
+        protected virtual async Task<IActionResult> UpdateRecord(Guid id, TInput input)
         {
             var validationResult = _validator.Validate(input);
             if (validationResult.IsValid)
@@ -89,9 +83,7 @@ namespace AAA.ERP.Controllers
                    });
             }
         }
-
-        [HttpDelete("{id}")]
-        public virtual async Task<IActionResult> DeleteAsync(Guid id)
+        protected virtual async Task<IActionResult> DeleteRecord(Guid id)
         {
             var result = await _service.Delete(id);
             return StatusCode((int)result.StatusCode, result);

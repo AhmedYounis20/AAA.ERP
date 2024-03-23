@@ -13,13 +13,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfiguration(new AccountGuideDbConfig())
+        builder.ApplyConfiguration(new FinancialPeriodDbConfig())
                .ApplyConfiguration(new CurrencyDbConfig())
+               .ApplyConfiguration(new AccountGuideDbConfig())
                .ApplyConfiguration(new GLSettingDbConfig());
         builder.Entity<IdentityRole>().HasData(
             new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "8b23a5fb-a2ed-4860-9863-8cb5f3322996",
                 Name = SD.Role_Admin,
                 NormalizedName = SD.Role_Admin.ToUpper(),
             }

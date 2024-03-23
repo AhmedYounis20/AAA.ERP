@@ -12,11 +12,4 @@ public class CurrencyService : BaseSettingService<Currency>, ICurrencyService
     public CurrencyService(ICurrencyRepository repository,
                            ICurrencyBussinessValidator bussinessValidator) : base(repository, bussinessValidator)
     { }
-
-    public override Task<ApiResponse> Create(Currency entity)
-    {
-        Console.Write(entity.Name);
-        return base.Create(entity); 
-    }
-
 }
