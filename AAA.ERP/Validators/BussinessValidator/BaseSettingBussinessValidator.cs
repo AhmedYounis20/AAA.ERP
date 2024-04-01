@@ -2,7 +2,7 @@
 using AAA.ERP.Models.BaseEntities;
 using AAA.ERP.Repositories.BaseRepositories.Interfaces;
 using AAA.ERP.Resources;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Microsoft.Extensions.Localization;
 using System.Xml.Linq;
 

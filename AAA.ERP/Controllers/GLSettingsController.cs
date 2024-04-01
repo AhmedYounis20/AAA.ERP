@@ -18,11 +18,11 @@ namespace AAA.ERP.Controllers;
 [Authorize]
 public class GLSettingsController : ControllerBase
 {
-    GLSettingValidator _validator;
+    GLSettingInputValidator _validator;
     IMapper _mapper;
     IStringLocalizer<Resource> _localizer;
     IGLSettingService _service;
-    public GLSettingsController(IGLSettingService service, GLSettingValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper)
+    public GLSettingsController(IGLSettingService service, GLSettingInputValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper)
     {
         _validator = validator;
         _mapper = mapper;

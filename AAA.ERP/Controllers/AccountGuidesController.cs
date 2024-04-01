@@ -13,7 +13,7 @@ namespace AAA.ERP.Controllers;
 public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideInputModel>
 {
     public AccountGuidesController(IAccountGuideService service,
-        AccountGuideValidator validator,
+        AccountGuideInputValidator validator,
         IStringLocalizer<Resource> localizer,
         IMapper mapper) : base(service, validator, localizer, mapper)
     { }

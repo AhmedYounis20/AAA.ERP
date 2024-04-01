@@ -5,9 +5,9 @@ using FluentValidation;
 
 namespace AAA.ERP.Validators.InputValidators;
 
-public class GLSettingValidator : BaseInputValidator<GLSettingInputModel>
+public class GLSettingInputValidator : BaseInputValidator<GLSettingInputModel>
 {
-    public GLSettingValidator()
+    public GLSettingInputValidator()
     {
         _ = RuleFor(e => e.DecimalDigitsNumber).GreaterThanOrEqualTo((byte)0).WithMessage("DecimalDigitsMINValue").LessThanOrEqualTo((byte)10).WithMessage("DecimalDigitsMAXValue");
         _ = RuleFor(e => e.MonthDays).InclusiveBetween((byte)1, (byte)31).When(e => e.DepreciationApplication.Equals(DepreciationApplication.Monthly)).WithMessage("MonthDaysMINValue");

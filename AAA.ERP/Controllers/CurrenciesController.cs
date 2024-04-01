@@ -12,7 +12,7 @@ namespace AAA.ERP.Controllers;
 [ApiController]
 public class CurrenciesController : BaseSettingController<Currency, CurrencyInputModel>
 {
-    public CurrenciesController(IBaseSettingService<Currency> service, CurrencyValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper) : base(service, validator, localizer, mapper)
+    public CurrenciesController(IBaseSettingService<Currency> service, CurrencyInputValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper) : base(service, validator, localizer, mapper)
     { }
 
     [HttpPost]

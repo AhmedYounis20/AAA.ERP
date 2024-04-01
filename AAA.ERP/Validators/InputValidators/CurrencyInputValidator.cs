@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace AAA.ERP.Validators.InputValidators;
 
-public class CurrencyValidator : BaseSettingInputValidator<CurrencyInputModel>
+public class CurrencyInputValidator : BaseSettingInputValidator<CurrencyInputModel>
 {
-    public CurrencyValidator() {
+    public CurrencyInputValidator() {
 
         _ = RuleFor(e => e.ExchangeRate).GreaterThan(0).WithMessage("ExchangeRateIsRequired");
         _ = RuleFor(e => e.ExchangeRate).Equal(1).When(e=>e.IsDefault).WithMessage("ExchageRateOnDefaultCurrency");
