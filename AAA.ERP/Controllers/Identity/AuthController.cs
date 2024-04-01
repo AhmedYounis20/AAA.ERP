@@ -123,6 +123,7 @@ public class AuthController : ControllerBase
             if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole { Name = SD.Role_Admin, NormalizedName = SD.Role_Admin.ToUpper() });
+                await _roleManager.CreateAsync(new IdentityRole { Name = SD.Role_Customer, NormalizedName = SD.Role_Customer.ToUpper() });
             }
 
             if (registerRequestDTO.Role?.ToUpper() == SD.Role_Admin)

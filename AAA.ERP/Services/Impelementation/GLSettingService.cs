@@ -29,7 +29,6 @@ public class GLSettingService : IGLSettingService
             dbGLSetting.IsAllowingDeleteVoucher = glsetting.IsAllowingDeleteVoucher;
             dbGLSetting.IsAllowingEditVoucher = glsetting.IsAllowingEditVoucher;
             dbGLSetting.IsAllowingNegativeBalances = glsetting.IsAllowingNegativeBalances;
-            dbGLSetting.Notes = glsetting.Notes;
             dbGLSetting.DecimalDigitsNumber = glsetting.DecimalDigitsNumber;
             dbGLSetting.MonthDays = glsetting.MonthDays;
             dbGLSetting.DepreciationApplication = glsetting.DepreciationApplication;

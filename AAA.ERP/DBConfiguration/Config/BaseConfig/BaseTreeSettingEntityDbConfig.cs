@@ -1,11 +1,9 @@
 ﻿using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Entities.AccountGuide;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace AAA.ERP.DBConfiguration.Config.BaseConfig;
 
-public class BaseSettingEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity> where TEntity : BaseSettingEntity
+public class BaseTreeSettingEntityDbConfig<TEntity> : BaseTreeEntityDbConfig<TEntity> where TEntity : BaseTreeSettingEntity
 {
     protected override EntityTypeBuilder<TEntity> ApplyConfiguration(EntityTypeBuilder<TEntity> builder)
     {

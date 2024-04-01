@@ -12,7 +12,6 @@ public class BaseEntityDbConfig<TEntity> : IEntityTypeConfiguration<TEntity> whe
         builder.HasKey(e => e.Id);
         _ = builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().HasColumnOrder(columnNumber++);
         _ = ApplyConfiguration(builder);
-        _ = builder.Property(e => e.Notes).HasMaxLength(300).HasColumnOrder(columnNumber++);
     }
 
     virtual protected EntityTypeBuilder<TEntity> ApplyConfiguration(EntityTypeBuilder<TEntity> builder)

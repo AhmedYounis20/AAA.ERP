@@ -7,5 +7,4 @@ public class BaseEntity
     public Guid? ModifiedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? ModifiedAt { get; set; }
-    public string? Notes { get; set; }
 }
