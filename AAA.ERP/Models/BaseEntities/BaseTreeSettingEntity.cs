@@ -1,7 +1,10 @@
-﻿namespace AAA.ERP.Models.BaseEntities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public class BaseTreeSettingEntity : BaseTreeEntity
+namespace AAA.ERP.Models.BaseEntities;
+
+public class BaseTreeSettingEntity<TEntity> : BaseSettingEntity where TEntity : BaseSettingEntity
 {
-    public string? Name { get; set; }
-    public string? NameSecondLanguage { get; set; }
+    public Guid? ParentId { get; set; }
+    [NotMapped]
+    public List<TEntity>? Children { get; set; }
 }

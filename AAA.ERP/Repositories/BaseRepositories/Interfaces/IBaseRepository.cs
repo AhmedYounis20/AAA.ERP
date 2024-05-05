@@ -1,5 +1,4 @@
 ﻿using AAA.ERP.Models.BaseEntities;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
 namespace AAA.ERP.Repositories.BaseRepositories.Interfaces
@@ -20,5 +19,8 @@ namespace AAA.ERP.Repositories.BaseRepositories.Interfaces
         public Task Delete(Guid entityId);
         public Task Delete(TEntity entity);
         public Task Delete(IEnumerable<TEntity> entities);
+
+        public Task<bool> CheckIfInDatabase(Guid entityId);
+        public Task<List<TEntity>> CheckIfInDatabase(IEnumerable<TEntity> entities);
     }
 }

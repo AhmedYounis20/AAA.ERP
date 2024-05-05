@@ -2,9 +2,8 @@
 
 namespace AAA.ERP.Repositories.BaseRepositories.Interfaces;
 
-public interface IBaseTreeSettingRepository<TEntity> : IBaseTreeRepository<TEntity>, IDisposable where TEntity : BaseTreeSettingEntity
+public interface IBaseTreeSettingRepository<TEntity> : IBaseSettingRepository<TEntity>, IDisposable where TEntity : BaseTreeSettingEntity<TEntity>
 {
-    Task<IEnumerable<TEntity>> Search(string name);
-    Task<bool> AnyByNames(string? name,string? nameSecondLanguage);
-    Task<TEntity?> GetByNames(string? name, string? nameSecondLanguage);
+    Task<List<TEntity>> GetLevel(int level = 0);
+    Task<List<TEntity>> GetChildren(Guid id, int level = 0);
 }

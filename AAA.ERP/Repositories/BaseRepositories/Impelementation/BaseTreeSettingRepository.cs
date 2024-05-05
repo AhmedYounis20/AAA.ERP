@@ -4,64 +4,39 @@ using AAA.ERP.Repositories.BaseRepositories.Interfaces;
 
 namespace AAA.ERP.Repositories.BaseRepositories.Impelementation;
 
-public class BaseTreeSettingRepository<TEntity> : BaseTreeRepository<TEntity>, IBaseTreeSettingRepository<TEntity> where TEntity : BaseTreeSettingEntity
+public class BaseTreeSettingRepository<TEntity> : BaseSettingRepository<TEntity>, IBaseTreeSettingRepository<TEntity> where TEntity : BaseTreeSettingEntity<TEntity>
 {
-    private ApplicationDbContext _context;
-
     public BaseTreeSettingRepository(ApplicationDbContext context) : base(context)
+    => _dbSet = context.Set<TEntity>();
+    
+    public async Task<List<TEntity>> GetLevel(int level = 0)
     {
-        _context = context;
-        dbSet = context.Set<TEntity>();
+        List<TEntity> entities = new List<TEntity>();
+        entities = await _dbSet.Where(e => e.ParentId == null).ToListAsync();
+        if (level == 0)
+            return entities;
+        else
+            return await GetChildren(entities, level - 1);
     }
 
-    public async Task<bool> AnyByNames(string? name, string? nameSecondLanguage)
+    public async Task<List<TEntity>> GetChildren(List<TEntity> parents, int level = 0)
     {
-        string normalizedName = name?.Trim().ToUpper();
-        string normalizedSecondLanguageName = nameSecondLanguage?.Trim().ToUpper();
 
-        // Check if both strings are non-null and then perform the query
-        if (!string.IsNullOrEmpty(normalizedName) && !string.IsNullOrEmpty(normalizedSecondLanguageName))
-        {
-            // Use AnyAsync with a case-insensitive comparison
-            bool exists = await dbSet.AnyAsync(e =>
-                e.Name.ToUpper() == normalizedName ||
-                e.NameSecondLanguage.ToUpper() == normalizedSecondLanguageName
-            );
+        foreach (TEntity parent in parents)
+            parent.Children = await GetChildren(parent.Id, level);
 
-            // Use the exists boolean for further operations
-            return exists;
-        }
-        return false;
+        return parents;
     }
 
-    public async Task<TEntity?> GetByNames(string? name, string? nameSecondLanguage)
+    public async Task<List<TEntity>> GetChildren(Guid id, int level = 1)
     {
-        string normalizedName = name?.Trim().ToUpper();
-        string normalizedSecondLanguageName = nameSecondLanguage?.Trim().ToUpper();
-        TEntity? entity = null;
-        // Check if both strings are non-null and then perform the query
-        if (!string.IsNullOrEmpty(normalizedName) && !string.IsNullOrEmpty(normalizedSecondLanguageName))
-        {
-            // Use AnyAsync with a case-insensitive comparison
-            var exists = await dbSet.Where(e =>
-                e.Name.ToUpper() == normalizedName ||
-                e.NameSecondLanguage.ToUpper() == normalizedSecondLanguageName
-            ).FirstOrDefaultAsync();
+        List<TEntity> children = new List<TEntity>();
 
-            // Use the exists boolean for further operations
-            return exists;
-        }
-        return entity;
-    }
+        children = await _dbSet.Where(e => e.ParentId.Equals(id)).ToListAsync();
+        if (level == 0)
+            return children;
 
-    public async Task<IEnumerable<TEntity>> Search(string name)
-    {
-        name = name.ToUpper();
-        var result = await dbSet.Where(x =>
-        (!string.IsNullOrEmpty(x.Name) && x.Name.ToUpper().Contains(name))
-        || (!string.IsNullOrEmpty(x.NameSecondLanguage) && x.NameSecondLanguage.ToUpper().Contains(name))
-        ).ToListAsync();
-
-        return result;
+        else
+            return await GetChildren(children, level - 1);
     }
 }

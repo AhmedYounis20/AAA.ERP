@@ -11,7 +11,7 @@ public class BaseSettingRepository<TEntity> : BaseRepository<TEntity>, IBaseSett
     public BaseSettingRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
-        dbSet = context.Set<TEntity>();
+        _dbSet = context.Set<TEntity>();
     }
 
     public async Task<bool> AnyByNames(string? name, string? nameSecondLanguage)
@@ -23,7 +23,7 @@ public class BaseSettingRepository<TEntity> : BaseRepository<TEntity>, IBaseSett
         if (!string.IsNullOrEmpty(normalizedName) && !string.IsNullOrEmpty(normalizedSecondLanguageName))
         {
             // Use AnyAsync with a case-insensitive comparison
-            bool exists = await dbSet.AnyAsync(e =>
+            bool exists = await _dbSet.AnyAsync(e =>
                 e.Name.ToUpper() == normalizedName ||
                 e.NameSecondLanguage.ToUpper() == normalizedSecondLanguageName
             );
@@ -43,7 +43,7 @@ public class BaseSettingRepository<TEntity> : BaseRepository<TEntity>, IBaseSett
         if (!string.IsNullOrEmpty(normalizedName) && !string.IsNullOrEmpty(normalizedSecondLanguageName))
         {
             // Use AnyAsync with a case-insensitive comparison
-            var exists = await dbSet.Where(e =>
+            var exists = await _dbSet.Where(e =>
                 e.Name.ToUpper() == normalizedName ||
                 e.NameSecondLanguage.ToUpper() == normalizedSecondLanguageName
             ).FirstOrDefaultAsync();
@@ -57,7 +57,7 @@ public class BaseSettingRepository<TEntity> : BaseRepository<TEntity>, IBaseSett
     public async Task<IEnumerable<TEntity>> Search(string name)
     {
         name = name.ToUpper();
-        var result = await dbSet.Where(x =>
+        var result = await _dbSet.Where(x =>
         (!string.IsNullOrEmpty(x.Name) && x.Name.ToUpper().Contains(name))
         || (!string.IsNullOrEmpty(x.NameSecondLanguage) && x.NameSecondLanguage.ToUpper().Contains(name))
         ).ToListAsync();

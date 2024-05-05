@@ -9,63 +9,63 @@ namespace AAA.ERP.Repositories.BaseRepositories.Impelementation;
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
     private ApplicationDbContext context;
-    protected DbSet<TEntity> dbSet;
+    protected DbSet<TEntity> _dbSet;
 
     public BaseRepository(ApplicationDbContext _context)
     {
         context = _context;
-        dbSet = context.Set<TEntity>();
+        _dbSet = context.Set<TEntity>();
     }
 
     public virtual async Task<TEntity> Add(TEntity entity)
     {
-        var entityEntry = await dbSet.AddAsync(entity);
+        var entityEntry = await _dbSet.AddAsync(entity);
         await SaveChangesAsync();
         return entityEntry.Entity;
     }
     public virtual async Task Add(IEnumerable<TEntity> entities)
     {
-        await dbSet.AddRangeAsync(entities);
+        await _dbSet.AddRangeAsync(entities);
         await SaveChangesAsync();
     }
     
     public virtual async Task<TEntity?> Get(Guid id) 
-    => await dbSet.FirstOrDefaultAsync(e => e.Id == id);
+    => await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
     public virtual async Task<IEnumerable<TEntity>> Get()
-    => await dbSet.ToListAsync(); // handle in future add pagination
+    => await _dbSet.ToListAsync(); // handle in future add pagination
     public virtual async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate)
-    => await dbSet.Where(predicate).ToListAsync();
+    => await _dbSet.Where(predicate).ToListAsync();
     public IQueryable<TEntity> GetQuery()
-     => dbSet;
+     => _dbSet;
 
     public virtual async Task<TEntity?> Update(TEntity entity)
     {
 
-        var result = dbSet.Update(entity);
+        var result = _dbSet.Update(entity);
         await SaveChangesAsync();
 
         return result.Entity;
     }
     public virtual async Task Update(IEnumerable<TEntity> entities)
     {
-        await Task.Run(() => { dbSet.UpdateRange(entities); });
+        await Task.Run(() => { _dbSet.UpdateRange(entities); });
         await SaveChangesAsync();
     }
    
     public virtual async Task Delete(Guid entityId)
     {
-        TEntity? entity = await CheckIfInDatabase(entityId);
-        await Task.Run(() => { dbSet.Remove(entity); });
+        TEntity? entity = await Get(entityId);
+        await Task.Run(() => { _dbSet.Remove(entity); });
         await SaveChangesAsync();
     }
     public virtual async Task Delete(TEntity entity)
     {
-        dbSet.Remove(entity);
+        _dbSet.Remove(entity);
         await SaveChangesAsync();
     }
     public virtual async Task Delete(IEnumerable<TEntity> entities)
     {
-        dbSet.RemoveRange(entities);
+        _dbSet.RemoveRange(entities);
         await SaveChangesAsync();
     }
 
@@ -74,39 +74,11 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public void Dispose() => context.Dispose();
 
     // Exceptions
-    private void CheckNullParameter(TEntity entity)
-    {
-        if (entity == null)
-            throw new ArgumentNullException($"{nameof(entity)} is not provided");
-    }
-    private void CheckNullParameter(IEnumerable<TEntity> entities)
-    {
-        if (entities == null || !entities.Any())
-            throw new ArgumentNullException($"{nameof(TEntity)} was not provided");
-    }
-    private async Task<TEntity> CheckIfInDatabase(Guid entityId)
-    {
-        TEntity? entity = await Get(entityId);
-        if (entity == null)
-            throw new ArgumentNullException($"{nameof(TEntity)} is not found in DB.");
+    public  async Task<bool> CheckIfInDatabase(Guid entityId)
+       => await _dbSet.AnyAsync(e=>e.Id.Equals(entityId));
 
-        return entity;
-    }
-    private async Task<TEntity> CheckIfInDatabase(TEntity ent)
-    {
-        TEntity? entity = await Get(ent.Id);
-        if (entity == null)
-            throw new ArgumentNullException($"{nameof(TEntity)} is not found in DB.");
-
-        return entity;
-    }
-    private async Task CheckIfInDatabase(IEnumerable<TEntity> entities)
-    {
-        foreach (TEntity entity in entities)
-        {
-            await CheckIfInDatabase(entity);
-        }
-    }
+    public async Task<List<TEntity>> CheckIfInDatabase(IEnumerable<TEntity> entities)
+    => await _dbSet.Where(x => entities.Select(e => e.Id).Contains(x.Id)).ToListAsync();
 
     //public virtual async Task<TEntity> UpdateWithAllIncludes(TEntity entity, int levels = 0)
     //{
