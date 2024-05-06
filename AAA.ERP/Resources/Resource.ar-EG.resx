@@ -120,6 +120,24 @@
   <data name="AccountGuide" xml:space="preserve">
     <value>دليل محاسبي</value>
   </data>
+  <data name="CannotDeleteParent" xml:space="preserve">
+    <value>لا يمكن حذف الاب من فضلك قم بحذف الابناء اولاً</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideRequired" xml:space="preserve">
+    <value>الدليل المحاسبي مطلوب</value>
+  </data>
+  <data name="ChartOfAccountCodeMaxLengthValidation" xml:space="preserve">
+    <value>الكود لا يمكن ان يتعدى 100 حرف</value>
+  </data>
+  <data name="ChartOfAccountCodeRequired" xml:space="preserve">
+    <value>الكود مطلوب</value>
+  </data>
+  <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
+    <value>برجاء اخيار طبيعة حساب صالحة</value>
+  </data>
+  <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
+    <value>لا يمكن اضافة اكتر من حساب بنفس الكود</value>
+  </data>
   <data name="Currency" xml:space="preserve">
     <value>عملة</value>
   </data>

@@ -9,7 +9,6 @@ using AAA.ERP.Services.BaseServices.impelemtation;
 using AAA.ERP.Services.BaseServices.interfaces;
 using AAA.ERP.Services.Impelementation;
 using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.BussinessValidator;
 using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using AAA.ERP.Validators.BussinessValidator.Impelementation;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;
@@ -22,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using AAA.ERP.DBConfiguration.DbContext;
 using AAA.ERP.Models.Entities.Identity;
 using Microsoft.Extensions.Options;
+using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 
 namespace AAA.ERP.Utility;
 
@@ -112,6 +112,7 @@ public static class WebBuilderExtensions
         services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
         services.AddScoped<IAccountGuideService, AccountGuideService>();
+        services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<IGLSettingService, GLSettingService>();
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
@@ -125,7 +126,9 @@ public static class WebBuilderExtensions
         services.AddScoped<IBaseSettingBussinessValidator<AccountGuide>, AccountGuideBussinessValidator>();
         services.AddScoped<IBaseBussinessValidator<FinancialPeriod>, FinancialPeriodBussinessValidator>();
         services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
+        services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
         services.AddScoped<IFinancialPeriodBussinessValidator, FinancialPeriodBussinessValidator>();
+        services.AddScoped<IChartOfAccountBussinessValidator, ChartOfAccountBussinessValidator>();
 
         // fluent validators
         services.AddScoped<AccountGuideInputValidator>();
@@ -133,6 +136,7 @@ public static class WebBuilderExtensions
         services.AddScoped<GLSettingInputValidator>();
         services.AddScoped<FinancialPeriodInputValidator>();
         services.AddScoped<FinancialPeriodUpdateValidator>();
+        services.AddScoped<ChartOfAccountInputValidator>();
 
     }
     public static void AddReositories(this IServiceCollection services)
@@ -144,6 +148,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
+        services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
     }
     public static void ConfigureApplication(this WebApplicationBuilder builder)
     {

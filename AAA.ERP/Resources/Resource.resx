@@ -120,6 +120,24 @@
   <data name="AccountGuide" xml:space="preserve">
     <value>Account Guide</value>
   </data>
+  <data name="CannotDeleteParent" xml:space="preserve">
+    <value>Parent Cannot be deleted please delete chilldren first</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideRequired" xml:space="preserve">
+    <value>Account Guide Is Required</value>
+  </data>
+  <data name="ChartOfAccountCodeMaxLengthValidation" xml:space="preserve">
+    <value>code max length 100 characters</value>
+  </data>
+  <data name="ChartOfAccountCodeRequired" xml:space="preserve">
+    <value>Code is required</value>
+  </data>
+  <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
+    <value>Please Select Valid Account Nature</value>
+  </data>
+  <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
+    <value>Chart of account with same code is existed</value>
+  </data>
   <data name="Currency" xml:space="preserve">
     <value>Currency</value>
   </data>

@@ -70,6 +70,60 @@ namespace AAA.ERP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent Cannot be deleted please delete chilldren first.
+        /// </summary>
+        public static string CannotDeleteParent {
+            get {
+                return ResourceManager.GetString("CannotDeleteParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Guide Is Required.
+        /// </summary>
+        public static string ChartOfAccountAccountGuideRequired {
+            get {
+                return ResourceManager.GetString("ChartOfAccountAccountGuideRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to code max length 100 characters.
+        /// </summary>
+        public static string ChartOfAccountCodeMaxLengthValidation {
+            get {
+                return ResourceManager.GetString("ChartOfAccountCodeMaxLengthValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code is required.
+        /// </summary>
+        public static string ChartOfAccountCodeRequired {
+            get {
+                return ResourceManager.GetString("ChartOfAccountCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select Valid Account Nature.
+        /// </summary>
+        public static string ChartOfAccountNotValidAccountNature {
+            get {
+                return ResourceManager.GetString("ChartOfAccountNotValidAccountNature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chart of account with same code is existed.
+        /// </summary>
+        public static string ChartOfAccoutWithSameCodeExist {
+            get {
+                return ResourceManager.GetString("ChartOfAccoutWithSameCodeExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string Currency {

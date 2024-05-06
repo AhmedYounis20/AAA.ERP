@@ -11,13 +11,13 @@ public class CurrencyRepository : BaseSettingRepository<Currency>, ICurrencyRepo
 
     public async Task<Currency?> GetDefaultCurrency()
     {
-        return await dbSet.FirstOrDefaultAsync(e => e.IsDefault);
+        return await _dbSet.FirstOrDefaultAsync(e => e.IsDefault);
     }
 
     public async Task<bool> IsExitedCurrencySymbol(string? symbol)
     {
         string? trimmedSymbol = symbol?.Trim().ToUpper();
 
-        return await dbSet.AnyAsync(e => e.Symbol != null && e.Symbol.Trim().ToUpper() == trimmedSymbol);
+        return await _dbSet.AnyAsync(e => e.Symbol != null && e.Symbol.Trim().ToUpper() == trimmedSymbol);
     }
 }

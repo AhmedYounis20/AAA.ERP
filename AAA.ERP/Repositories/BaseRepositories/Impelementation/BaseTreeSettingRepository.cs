@@ -39,4 +39,7 @@ public class BaseTreeSettingRepository<TEntity> : BaseSettingRepository<TEntity>
         else
             return await GetChildren(children, level - 1);
     }
+
+    public async Task<bool> HasChildren(Guid id)
+    => await _dbSet.AnyAsync(e => e.ParentId == id);
 }

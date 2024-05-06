@@ -16,9 +16,12 @@ public class BaseTreeSettingController<TEntity, TInput> : BaseSettingController<
     //[HttpGet]
     //public 
     private readonly IBaseTreeSettingService<TEntity> _service;
-    public BaseTreeSettingController(IBaseTreeSettingService<TEntity> service, BaseSettingInputValidator<TInput> validator, IStringLocalizer<Resource> localizaer, IMapper mapper) : base(service, validator, localizaer, mapper)
-    => _service = service;
-
+    private readonly IStringLocalizer<Resource> _localizer;
+    public BaseTreeSettingController(IBaseTreeSettingService<TEntity> service, BaseSettingInputValidator<TInput> validator, IStringLocalizer<Resource> localizer, IMapper mapper) : base(service, validator, localizer, mapper)
+    {
+        _service = service;
+        _localizer = localizer;
+    }
 
     [HttpGet("GetLevel")]
     public virtual async Task<IActionResult> GetLevel([FromQuery] int level = 0)
@@ -28,4 +31,12 @@ public class BaseTreeSettingController<TEntity, TInput> : BaseSettingController<
     public virtual async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
     => Ok(new ApiResponse { IsSuccess = true, Result = await _service.GetChildren(parentId,level), StatusCode = HttpStatusCode.OK });
 
+    protected override async Task<IActionResult> DeleteRecord(Guid id)
+    {
+
+        var result = await _service.Delete(id);
+        result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+
+        return StatusCode((int)result.StatusCode, result);
+    }
 }

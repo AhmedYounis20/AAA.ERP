@@ -4,6 +4,7 @@ using AAA.ERP.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505103130_AddChartOfAccountsV3")]
+    partial class AddChartOfAccountsV3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,22 +71,20 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(3);
 
                     b.Property<Guid>("AccountGuidId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(1);
+                        .HasColumnOrder(5);
 
-                    b.Property<string>("AccountNature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(4);
+                    b.Property<int>("AccountNature")
+                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)")
-                        .HasColumnOrder(3);
+                        .HasColumnOrder(7);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -92,21 +92,17 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(8);
-
                     b.Property<bool>("IsDepreciable")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(5);
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPostedAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(6);
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsStopActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsStopDealing")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(7);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -118,17 +114,17 @@ namespace AAA.ERP.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(1);
 
                     b.Property<string>("NameSecondLanguage")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(2);
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(4);
 
                     b.HasKey("Id");
 
@@ -418,7 +414,7 @@ namespace AAA.ERP.Migrations
                         new
                         {
                             Id = "8b23a5fb-a2ed-4860-9863-8cb5f3322996",
-                            ConcurrencyStamp = "088e0453-ca9e-47e2-8122-8fb6d3fa34c2",
+                            ConcurrencyStamp = "ce19946d-6286-4237-923d-e37c3997362a",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });

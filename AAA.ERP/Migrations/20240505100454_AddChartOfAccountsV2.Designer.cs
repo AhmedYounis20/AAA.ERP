@@ -4,6 +4,7 @@ using AAA.ERP.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505100454_AddChartOfAccountsV2")]
+    partial class AddChartOfAccountsV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,21 +71,6 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(11);
-
-                    b.Property<Guid>("AccountGuidId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("AccountNature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(3);
 
                     b.Property<DateTime>("CreatedAt")
@@ -91,22 +78,6 @@ namespace AAA.ERP.Migrations
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActiveAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(8);
-
-                    b.Property<bool>("IsDepreciable")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(5);
-
-                    b.Property<bool>("IsPostedAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(6);
-
-                    b.Property<bool>("IsStopDealing")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(7);
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -118,24 +89,19 @@ namespace AAA.ERP.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(1);
 
                     b.Property<string>("NameSecondLanguage")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(2);
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(4);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountGuidId");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -418,7 +384,7 @@ namespace AAA.ERP.Migrations
                         new
                         {
                             Id = "8b23a5fb-a2ed-4860-9863-8cb5f3322996",
-                            ConcurrencyStamp = "088e0453-ca9e-47e2-8122-8fb6d3fa34c2",
+                            ConcurrencyStamp = "ae1ebb8a-cf7e-413b-a57f-c861c304c2f4",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });
@@ -532,12 +498,6 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("AAA.ERP.Models.Entities.ChartOfAccount.ChartOfAccount", b =>
                 {
-                    b.HasOne("AAA.ERP.Models.Entities.AccountGuide.AccountGuide", null)
-                        .WithMany()
-                        .HasForeignKey("AccountGuidId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AAA.ERP.Models.Entities.ChartOfAccount.ChartOfAccount", null)
                         .WithMany()
                         .HasForeignKey("ParentId")

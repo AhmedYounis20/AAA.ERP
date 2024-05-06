@@ -16,7 +16,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfiguration(new FinancialPeriodDbConfig())
                .ApplyConfiguration(new CurrencyDbConfig())
                .ApplyConfiguration(new AccountGuideDbConfig())
-               .ApplyConfiguration(new GLSettingDbConfig());
+               .ApplyConfiguration(new GLSettingDbConfig())
+               .ApplyConfiguration(new ChartOfAccountDbConfig());
         builder.Entity<IdentityRole>().HasData(
             new IdentityRole
             {

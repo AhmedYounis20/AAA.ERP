@@ -6,7 +6,7 @@ namespace AAA.ERP.Validators.InputValidators;
 
 public class CurrencyInputValidator : BaseSettingInputValidator<CurrencyInputModel>
 {
-    public CurrencyInputValidator() {
+    public CurrencyInputValidator():base() {
 
         _ = RuleFor(e => e.ExchangeRate).GreaterThan(0).WithMessage("ExchangeRateIsRequired");
         _ = RuleFor(e => e.ExchangeRate).Equal(1).When(e=>e.IsDefault).WithMessage("ExchageRateOnDefaultCurrency");

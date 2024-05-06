@@ -4,6 +4,7 @@ using AAA.ERP.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505094106_AddChartOfAccounts")]
+    partial class AddChartOfAccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,90 +64,6 @@ namespace AAA.ERP.Migrations
                         .IsUnique();
 
                     b.ToTable("AccountGuides", (string)null);
-                });
-
-            modelBuilder.Entity("AAA.ERP.Models.Entities.ChartOfAccount.ChartOfAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(11);
-
-                    b.Property<Guid>("AccountGuidId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("AccountNature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasColumnOrder(3);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActiveAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(8);
-
-                    b.Property<bool>("IsDepreciable")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(5);
-
-                    b.Property<bool>("IsPostedAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(6);
-
-                    b.Property<bool>("IsStopDealing")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(7);
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(9);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(10);
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(12);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountGuidId");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("ChartOfAccounts", (string)null);
                 });
 
             modelBuilder.Entity("AAA.ERP.Models.Entities.Currencies.Currency", b =>
@@ -418,7 +336,7 @@ namespace AAA.ERP.Migrations
                         new
                         {
                             Id = "8b23a5fb-a2ed-4860-9863-8cb5f3322996",
-                            ConcurrencyStamp = "088e0453-ca9e-47e2-8122-8fb6d3fa34c2",
+                            ConcurrencyStamp = "b10313b0-adb5-4526-9f82-f4022eab184f",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });
@@ -528,20 +446,6 @@ namespace AAA.ERP.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("AAA.ERP.Models.Entities.ChartOfAccount.ChartOfAccount", b =>
-                {
-                    b.HasOne("AAA.ERP.Models.Entities.AccountGuide.AccountGuide", null)
-                        .WithMany()
-                        .HasForeignKey("AccountGuidId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AAA.ERP.Models.Entities.ChartOfAccount.ChartOfAccount", null)
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .HasConstraintName("FK_ParentId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
