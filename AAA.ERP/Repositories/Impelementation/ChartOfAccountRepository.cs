@@ -55,8 +55,6 @@ public class ChartOfAccountRepository : BaseTreeSettingRepository<ChartOfAccount
         }
     }
 
-    public async Task<ChartOfAccount?> GetChartOfAccountByCode(string code)
-    => await _dbSet.Where(e=>e.Code ==  code).FirstOrDefaultAsync();
     private async Task<int> GetLevelAsync(ChartOfAccount chartOfAccount)
     {
         if (chartOfAccount.ParentId == null)
@@ -74,4 +72,6 @@ public class ChartOfAccountRepository : BaseTreeSettingRepository<ChartOfAccount
             return 1 + await GetLevelAsync(parent);
         }
     }
+    public async Task<ChartOfAccount?> GetChartOfAccountByCode(string code)
+    => await _dbSet.Where(e=>e.Code ==  code).FirstOrDefaultAsync();
 }

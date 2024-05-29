@@ -143,7 +143,7 @@ public static class WebBuilderExtensions
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
-
+        services.AddScoped<ExportDataToSeed>();
         services.AddScoped<IAccountGuideRepository, AccountGuideRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();

@@ -1,0 +1,54 @@
+[
+  {
+    "Id": "98658e69-dbf4-4857-8c73-2317146329d5",
+    "Name": "strings",
+    "NameSecondLanguage": "strings",
+    "Symbol": "EGPy",
+    "ExchangeRate": 1.30,
+    "IsDefault": false,
+    "IsActive": true,
+    "CreatedBy": "d3577e25-53ab-4ee0-b3d1-726976e5249f",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-03-23T20:35:43.5156227",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "281813e8-afd6-4539-9ae7-5d9fa8124a8f",
+    "Name": "striيسبشسيng",
+    "NameSecondLanguage": "stشسيبشring",
+    "Symbol": "sdd",
+    "ExchangeRate": 2.00,
+    "IsDefault": false,
+    "IsActive": true,
+    "CreatedBy": "d3577e25-53ab-4ee0-b3d1-726976e5249f",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-03-23T21:37:46.8360273",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0dc50cc7-9d2f-4848-8412-a95f3b0298be",
+    "Name": "Lari ",
+    "NameSecondLanguage": "Tanzanian Shilling",
+    "Symbol": "$U",
+    "ExchangeRate": 609.10,
+    "IsDefault": false,
+    "IsActive": true,
+    "CreatedBy": "d3577e25-53ab-4ee0-b3d1-726976e5249f",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-05-27T23:36:19.8284448",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "3652a280-3345-470b-a077-ae5f4ca32d8e",
+    "Name": "Euro ",
+    "NameSecondLanguage": "000",
+    "Symbol": "+++",
+    "ExchangeRate": 10.23,
+    "IsDefault": false,
+    "IsActive": true,
+    "CreatedBy": "d3577e25-53ab-4ee0-b3d1-726976e5249f",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-05-27T23:32:12.4823595",
+    "ModifiedAt": null
+  }
+]

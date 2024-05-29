@@ -1,0 +1,15 @@
+[
+  {
+    "Id": "9ae5291c-e983-49c4-b72a-8524ea10a2bb",
+    "IsAllowingEditVoucher": false,
+    "IsAllowingDeleteVoucher": false,
+    "IsAllowingNegativeBalances": false,
+    "DecimalDigitsNumber": 0,
+    "DepreciationApplication": "WithYearClosed",
+    "MonthDays": 0,
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "0001-01-01T00:00:00",
+    "ModifiedAt": null
+  }
+]
