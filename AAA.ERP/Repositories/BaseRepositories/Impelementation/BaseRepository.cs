@@ -15,6 +15,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         context = _context;
         _dbSet = context.Set<TEntity>();
+        context.GetType().GetProperties();
     }
 
     public virtual async Task<TEntity> Add(TEntity entity)

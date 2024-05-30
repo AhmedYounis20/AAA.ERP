@@ -110,6 +110,8 @@ public static class WebBuilderExtensions
     {
         services.AddScoped(typeof(IBaseSettingService<>), typeof(BaseSettingService<>));
         services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+        services.AddScoped<ExportDataToSeed>();
+        services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
@@ -143,7 +145,6 @@ public static class WebBuilderExtensions
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
-        services.AddScoped<ExportDataToSeed>();
         services.AddScoped<IAccountGuideRepository, AccountGuideRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();

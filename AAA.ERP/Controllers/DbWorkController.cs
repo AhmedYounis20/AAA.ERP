@@ -1,4 +1,6 @@
-﻿using AAA.ERP.Utility;
+﻿using System.Reflection;
+using AAA.ERP.DBConfiguration.DbContext;
+using AAA.ERP.Utility;
 
 namespace AAA.ERP.Controllers;
 
@@ -8,16 +10,26 @@ public class DbworkController : ControllerBase
 {
 
     private ExportDataToSeed _exportDataToSeed;
-    public DbworkController(ExportDataToSeed exportDataToSeed)
+    private ImportDataToSeed _importDataToSeed;
+    private ApplicationDbContext _context;
+    public DbworkController(ExportDataToSeed exportDataToSeed,ApplicationDbContext context,ImportDataToSeed importDataToSeed)
     {
         _exportDataToSeed = exportDataToSeed;
+        _context = context;
+        _importDataToSeed = importDataToSeed;
     }
 
     [HttpGet("export/{foldername}")]
-    public async Task<IActionResult> ExportData(string foldername = "account")
+    public async Task<IActionResult> ExportData(string folderName = "account")
     {
-        await _exportDataToSeed.ExportAllTablesToJsonAsync(foldername);
-        return Ok();
+        await _exportDataToSeed.ExportAllTablesToJsonAsync(folderName);
+        return Ok("Exported Successfully");
+    }
+    [HttpGet("import/{folderName}")]
+    public async Task<IActionResult> Import(string folderName = "account")
+    {
+        await _importDataToSeed.Import(folderName);
+        return Ok("Imported Successfully");
     }
 }
 

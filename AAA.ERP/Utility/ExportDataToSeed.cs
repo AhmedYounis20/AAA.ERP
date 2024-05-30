@@ -1,3 +1,5 @@
+using System.Reflection;
+using AAA.ERP.DBConfiguration.DbContext;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
@@ -6,9 +8,13 @@ namespace AAA.ERP.Utility;
 public class ExportDataToSeed
 {
     private readonly string _connectionString;
+    private readonly ApplicationDbContext _context;
 
-    public ExportDataToSeed(IConfiguration configuration)
-        => _connectionString = configuration.GetConnectionString("DefaultDbConnection");
+    public ExportDataToSeed(IConfiguration configuration, ApplicationDbContext context)
+    {
+        _connectionString = configuration.GetConnectionString("DefaultDbConnection");
+        _context = context;
+    }
 
     public async Task ExportAllTablesToJsonAsync(string outputDirectory = "account")
     {
@@ -27,6 +33,7 @@ public class ExportDataToSeed
             }
         }
     }
+
     private async Task<List<string>> GetTableNamesAsync(SqlConnection connection)
     {
         var tableNames = new List<string>();
@@ -47,6 +54,7 @@ public class ExportDataToSeed
 
         return tableNames.Where(e => e != "__EFMigrationsHistory").ToList();
     }
+
     private async Task<List<Dictionary<string, object>>> GetTableDataAsync(SqlConnection connection, string tableName)
     {
         var tableData = new List<Dictionary<string, object>>();
@@ -75,5 +83,79 @@ public class ExportDataToSeed
         }
 
         return tableData;
+    }
+
+
+    public async void InsertIntoTable(string tableName, List<object> entity)
+    {
+        var files = Directory.GetFiles("seeding/account", "*.json").Select(e => e)
+            .ToList();
+
+            var json = await File.ReadAllTextAsync(files.FirstOrDefault());
+            List<Dictionary<string, object>> dictionaryList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(json);
+
+            // Get the Type object of the class using the class name
+            Type type = Type.GetType("AccountGuide");
+
+            if (type != null)
+            {
+                // Create an empty list to hold objects of MyClass
+                List<object> objectList = new List<object>();
+
+                // Loop through each dictionary in the list
+                foreach (var dictionary in dictionaryList)
+                {
+                    // Create an instance of the class dynamically
+                    object instance = Activator.CreateInstance(type);
+
+                    // Populate the properties of the instance using reflection
+                    foreach (var kvp in dictionary)
+                    {
+                        PropertyInfo property = type.GetProperty(kvp.Key);
+                        if (property != null && property.CanWrite)
+                        {
+                            // Convert the value to the correct type if necessary
+                            object value = Convert.ChangeType(kvp.Value, property.PropertyType);
+                            property.SetValue(instance, value);
+                        }
+                    }
+
+                    // Add the populated instance to the list
+                    objectList.Add(instance);
+                }
+
+                // Now objectList contains a list of MyClass objects
+                foreach (var obj in objectList)
+                {
+                    object myObj = Convert.ChangeType(obj, type);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Class not found!");
+            }
+            var tableData = JsonConvert.DeserializeObject<Object[]>(json);
+            var t = tableData.GetType();
+       
+            // Get the DbSet property dynamically based on the table name
+            var dbSetProperty = _context.GetType().GetProperty(Path.GetFileNameWithoutExtension(files.FirstOrDefault()));
+            if (dbSetProperty == null)
+            {
+                throw new ArgumentException($"Table {tableName} does not exist in the context.");
+            }
+
+            // Get the DbSet instance
+            var dbSet = dbSetProperty.GetValue(_context);
+
+            // Use reflection to call the Add method on the DbSet
+            var addMethod = dbSet.GetType().GetMethod("Add");
+            if (addMethod == null)
+            {
+                throw new InvalidOperationException("Add method not found on DbSet.");
+            }
+            addMethod.Invoke(dbSet, tableData);
+
+            _context.SaveChanges();
+        
     }
 }
