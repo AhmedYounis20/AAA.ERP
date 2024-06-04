@@ -1,7 +1,7 @@
-﻿using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
+﻿using Domain.Account.Models.Entities.FinancialPeriods;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 
-namespace AAA.ERP.Repositories.Interfaces;
+namespace Domain.Account.Repositories.Interfaces;
 
 public interface IFinancialPeriodRepository: IBaseRepository<FinancialPeriod>
 {

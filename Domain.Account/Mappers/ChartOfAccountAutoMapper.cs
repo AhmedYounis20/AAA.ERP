@@ -1,8 +1,8 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.ChartOfAccount;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.ChartOfAccounts;
 
-namespace AAA.ERP.Mappers;
+namespace Domain.Account.Mappers;
 
 public class ChartOfAccountAutoMapper : Profile
 {

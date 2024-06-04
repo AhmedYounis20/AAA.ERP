@@ -1,4 +1,4 @@
-﻿namespace Domain.Account.Models.Entities.ChartOfAccount;
+﻿namespace Domain.Account.Models.Entities.ChartOfAccounts;
 
 public enum AccountNature
 {

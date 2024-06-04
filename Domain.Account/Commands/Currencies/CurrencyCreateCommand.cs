@@ -1,8 +1,10 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Models.Entities.Currencies;
+using Shared.Responses;
 
 namespace Domain.Account.Commands.Currencies;
 
-public class CurrencyCreateCommand : BaseSettingCreateCommand<CurrencyCreateCommand>
+public class CurrencyCreateCommand : BaseSettingCreateCommand<ApiResponse<Currency>>
 {
     public decimal ExchangeRate { get; set; }
     public string? Symbol { get; set; }

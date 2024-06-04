@@ -1,10 +1,7 @@
-﻿using AAA.ERP.DBConfiguration.Config.Currencies;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Models.Entities.Identity;
-using AAA.ERP.Utility;
+﻿using Shared.BaseEntities;
+using Shared.BaseEntities.Identity;
 
-namespace AAA.ERP.DBConfiguration.DbContext;
+namespace Domain.Account.DBConfiguration.DbContext;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -13,12 +10,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        // builder.ApplyConfiguration(new FinancialPeriodDbConfig())
-        //        .ApplyConfiguration(new CurrencyDbConfig())
-        //        .ApplyConfiguration(new AccountGuideDbConfig())
-        //        .ApplyConfiguration(new GLSettingDbConfig())
-        //        .ApplyConfiguration(new ChartOfAccountDbConfig());
-        builder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
+
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
 

@@ -1,9 +1,10 @@
-using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Entities.SubLeadgers;
-using AAA.ERP.Repositories.BaseRepositories.Impelementation;
-using AAA.ERP.Repositories.Interfaces.SubLeadgers;
+using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Entities.SubLeadgers;
+using Domain.Account.Repositories.BaseRepositories.Impelementation;
+using Domain.Account.Repositories.Interfaces.SubLeadgers;
+using Shared.BaseRepositories.Impelementation;
 
-namespace AAA.ERP.Repositories.Impelementation.SubLeadgers;
+namespace Domain.Account.Repositories.Impelementation.SubLeadgers;
 
 public class CashInBoxRepository : BaseTreeSettingRepository<CashInBox>, ICashInBoxRepository
 {

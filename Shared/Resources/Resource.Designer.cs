@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AAA.ERP.Resources {
+namespace Shared.Resources {
     using System;
     
     

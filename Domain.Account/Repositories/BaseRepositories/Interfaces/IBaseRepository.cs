@@ -1,13 +1,10 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
 
-namespace Shared.BaseRepositories.Interfaces
+namespace Domain.Account.Repositories.BaseRepositories.Interfaces
 {
-    public interface IBaseRepository<TEntity,TContext> 
+    public interface IBaseRepository<TEntity> 
         : IDisposable where TEntity : BaseEntity
-    where TContext : IdentityDbContext<ApplicationUser>
     {
         public Task<TEntity> Add(TEntity entity);
         public Task Add(IEnumerable<TEntity> entities);
@@ -20,7 +17,7 @@ namespace Shared.BaseRepositories.Interfaces
         public Task<TEntity?> Update(TEntity entity);
         public Task Update(IEnumerable<TEntity> entities);
 
-        public Task Delete(Guid entityId);
+        public Task<TEntity?> Delete(Guid entityId);
         public Task Delete(TEntity entity);
         public Task Delete(IEnumerable<TEntity> entities);
 

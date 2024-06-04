@@ -1,18 +1,15 @@
-﻿using Domain.Account.Repositories.BaseRepositories.Impelementation;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Repositories.BaseRepositories.Impelementation;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
-using Shared.BaseRepositories.Interfaces;
 
 namespace Shared.BaseRepositories.Impelementation;
 
-public class BaseTreeRepository<TEntity,TContext> 
-    : BaseRepository<TEntity,TContext>,
-        IBaseTreeRepository<TEntity,TContext> where TEntity : BaseTreeEntity<TEntity>
-    where TContext : IdentityDbContext<ApplicationUser>
+public class BaseTreeRepository<TEntity> 
+    : BaseRepository<TEntity>,
+        IBaseTreeRepository<TEntity> where TEntity : BaseTreeEntity<TEntity>
 {
-    public BaseTreeRepository(TContext context) : base(context)
+    public BaseTreeRepository(ApplicationDbContext context) : base(context)
     => _dbSet = context.Set<TEntity>();
 
     private async Task<TEntity> CheckIfInDatabase(Guid entityId)

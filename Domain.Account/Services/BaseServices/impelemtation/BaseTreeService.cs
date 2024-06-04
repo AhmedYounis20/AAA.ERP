@@ -1,8 +1,7 @@
-﻿using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+﻿using Domain.Account.Repositories.BaseRepositories.Interfaces;
+using Domain.Account.Services.BaseServices.interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Shared.BaseEntities;
-using Shared.BaseRepositories.Interfaces;
-using Shared.BaseServices.impelemtation;
-using Shared.BaseServices.interfaces;
 
 namespace Domain.Account.Services.BaseServices.impelemtation;
 

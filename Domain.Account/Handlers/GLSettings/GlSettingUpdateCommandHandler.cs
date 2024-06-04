@@ -1,16 +1,20 @@
 using AAA.ERP.Services.Interfaces.SubLeadgers;
+using Domain.Account.Commands.GLSettings;
 using Domain.Account.Commands.SubLeadgers.CashInBoxes;
 using Domain.Account.InputModels.Subleadgers;
+using Domain.Account.Models.Entities.GLSettings;
 using Domain.Account.Models.Entities.SubLeadgers;
 using Shared;
 using Shared.Responses;
 
-namespace Domain.Account.Handlers.CashInBoxes;
+namespace Domain.Account.Handlers.GLSettings;
 
-public class GLSettingUpdateCommandHandler(ICashInBoxService service): ICommandHandler<CashInBoxUpdateCommand,ApiResponse<CashInBox>>
+public class GlSettingUpdateCommandHandler(ICashInBoxService service): ICommandHandler<GlSettingUpdateCommand,ApiResponse<GLSetting>>
 {
-    public async Task<ApiResponse<CashInBox>> Handle(CashInBoxUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<GLSetting>> Handle(GlSettingUpdateCommand request, CancellationToken cancellationToken)
     {
-        return await service.Create(new BaseSubLeadgerInputModel());
+        await service.Create(new BaseSubLeadgerInputModel());
+        
+        return new ApiResponse<GLSetting>();
     }
 }

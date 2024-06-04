@@ -1,8 +1,6 @@
-﻿using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
+﻿using Domain.Account.Models.Entities.GLSettings;
 
-namespace AAA.ERP.Repositories.Interfaces;
+namespace Domain.Account.Repositories.Interfaces;
 
 public interface IGLSettingRepository{
 

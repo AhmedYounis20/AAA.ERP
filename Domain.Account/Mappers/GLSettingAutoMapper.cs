@@ -1,8 +1,8 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.GLSettings;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.GLSettings;
 
-namespace AAA.ERP.Mappers;
+namespace Domain.Account.Mappers;
 
 public class GLSettingAutoMapper : Profile
 {

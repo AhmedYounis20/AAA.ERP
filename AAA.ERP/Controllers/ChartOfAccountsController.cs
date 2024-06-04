@@ -1,26 +1,28 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Resources;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.InputValidators;
+﻿using AAA.ERP.Controllers.BaseControllers;
 using AutoMapper;
+using Domain.Account.Commands.ChartOfAccounts;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Services.Interfaces;
+using Domain.Account.Validators.InputValidators;
+using MediatR;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
 
 namespace AAA.ERP.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccount, ChartOfAccountInputModel>
+public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand,ChartOfAccountUpdateCommand>
 {
     IChartOfAccountService _service;
     public ChartOfAccountsController(IChartOfAccountService service,
-        ChartOfAccountInputValidator validator,
         IStringLocalizer<Resource> localizer,
-        IMapper mapper) : base(service, validator, localizer, mapper)
+        ISender sender) : base(service, localizer, sender)
     => _service = service;
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountInputModel input)
+    public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -35,7 +37,7 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
         return await GetRecord(id);
     }
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountInputModel input)
+    public virtual async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

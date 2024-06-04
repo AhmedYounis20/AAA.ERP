@@ -1,9 +1,9 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.OutputDtos.BaseDtos;
+﻿using AAA.ERP.OutputDtos.BaseDtos;
 using AutoMapper;
+using Domain.Account.InputModels.BaseInputModels;
+using Shared.BaseEntities;
 
-namespace AAA.ERP.Mappers;
+namespace Domain.Account.Mappers;
 
 public class AutoMapperProfile : Profile
 {

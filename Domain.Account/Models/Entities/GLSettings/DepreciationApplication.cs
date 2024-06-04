@@ -1,6 +1,4 @@
-﻿using AAA.ERP.Models.BaseEntities;
-
-namespace AAA.ERP.Models.Entities.GLSettings;
+﻿namespace Domain.Account.Models.Entities.GLSettings;
 
 public enum DepreciationApplication
 {

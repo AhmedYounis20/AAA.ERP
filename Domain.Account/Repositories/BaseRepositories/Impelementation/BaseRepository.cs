@@ -1,21 +1,21 @@
 ﻿using System.Linq.Expressions;
+using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Shared.BaseEntities;
 using Shared.BaseEntities.Identity;
-using Shared.BaseRepositories.Interfaces;
 
 namespace Domain.Account.Repositories.BaseRepositories.Impelementation;
 
-public class BaseRepository<TEntity,TContext> 
-    : IBaseRepository<TEntity,TContext> where TEntity : BaseEntity
-    where TContext : IdentityDbContext<ApplicationUser>
+public class BaseRepository<TEntity> 
+    : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
-    private TContext context;
+    private ApplicationDbContext context;
     protected DbSet<TEntity> _dbSet;
 
-    public BaseRepository(TContext _context)
+    public BaseRepository(ApplicationDbContext _context)
     {
         context = _context;
         _dbSet = context.Set<TEntity>();
@@ -57,11 +57,12 @@ public class BaseRepository<TEntity,TContext>
         await SaveChangesAsync();
     }
    
-    public virtual async Task Delete(Guid entityId)
+    public virtual async Task<TEntity?> Delete(Guid entityId)
     {
         TEntity? entity = await Get(entityId);
         await Task.Run(() => { _dbSet.Remove(entity); });
         await SaveChangesAsync();
+        return entity;
     }
     public virtual async Task Delete(TEntity entity)
     {

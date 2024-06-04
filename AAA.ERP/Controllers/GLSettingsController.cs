@@ -1,15 +1,12 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Resources;
-using AAA.ERP.Responses;
-using AAA.ERP.Services.BaseServices.interfaces;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.InputValidators;
-using AAA.ERP.Validators.InputValidators.FinancialPeriods;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.GLSettings;
+using Domain.Account.Services.Interfaces;
+using Domain.Account.Validators.InputValidators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
+using Shared.Responses;
 
 namespace AAA.ERP.Controllers;
 
@@ -53,7 +50,7 @@ public class GLSettingsController : ControllerBase
         else
         {
             return BadRequest(
-               new ApiResponse
+               new ApiResponse <GLSetting>
                {
                    IsSuccess = false,
                    StatusCode = HttpStatusCode.BadRequest,

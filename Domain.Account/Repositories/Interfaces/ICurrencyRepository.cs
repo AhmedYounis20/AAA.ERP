@@ -1,7 +1,7 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
+﻿using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 
-namespace AAA.ERP.Repositories.Interfaces;
+namespace Domain.Account.Repositories.Interfaces;
 
 public interface ICurrencyRepository: IBaseSettingRepository<Currency> {
 

@@ -1,10 +1,10 @@
-﻿using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Repositories.BaseRepositories.Impelementation;
-using AAA.ERP.Repositories.Interfaces;
-using System.Numerics;
+﻿using System.Numerics;
+using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Repositories.Interfaces;
+using Shared.BaseRepositories.Impelementation;
 
-namespace AAA.ERP.Repositories.Impelementation;
+namespace Domain.Account.Repositories.Impelementation;
 
 public class ChartOfAccountRepository : BaseTreeSettingRepository<ChartOfAccount>, IChartOfAccountRepository
 {

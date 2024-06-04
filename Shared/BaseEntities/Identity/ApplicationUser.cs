@@ -1,4 +1,6 @@
-﻿namespace Domain.Account.Models.Entities.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Shared.BaseEntities.Identity;
 
 public class ApplicationUser : IdentityUser
 {

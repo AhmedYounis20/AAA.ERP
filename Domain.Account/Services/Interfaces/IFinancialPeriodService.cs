@@ -1,13 +1,11 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Responses;
-using AAA.ERP.Services.BaseServices.interfaces;
+﻿using Domain.Account.Models.Entities.FinancialPeriods;
+using Domain.Account.Services.BaseServices.interfaces;
+using Shared.Responses;
 
-namespace AAA.ERP.Services.Interfaces;
+namespace Domain.Account.Services.Interfaces;
 
 public interface IFinancialPeriodService: IBaseService<FinancialPeriod>
 {
 
-    Task<ApiResponse> GetCurrentFinancailPeriod();
+    Task<ApiResponse<FinancialPeriod>> GetCurrentFinancailPeriod();
 }

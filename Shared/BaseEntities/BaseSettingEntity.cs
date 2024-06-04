@@ -1,6 +1,4 @@
-﻿using Domain.Account.Models.BaseEntities;
-
-namespace Domain.Account.Models.BaseEntities;
+﻿namespace Shared.BaseEntities;
 
 public class BaseSettingEntity : BaseEntity
 {

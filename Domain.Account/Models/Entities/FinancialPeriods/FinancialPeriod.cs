@@ -1,6 +1,6 @@
-﻿using AAA.ERP.Models.BaseEntities;
+﻿using Shared.BaseEntities;
 
-namespace AAA.ERP.Models.Entities.FinancialPeriods;
+namespace Domain.Account.Models.Entities.FinancialPeriods;
 
 public class FinancialPeriod : BaseEntity
 {

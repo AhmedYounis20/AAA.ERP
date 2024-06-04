@@ -1,25 +1,27 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Resources;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.InputValidators;
+﻿using AAA.ERP.Controllers.BaseControllers;
 using AutoMapper;
+using Domain.Account.Commands.AccountGuides;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Services.Interfaces;
+using Domain.Account.Validators.InputValidators;
+using MediatR;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
 
 namespace AAA.ERP.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideInputModel>
+public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideCreateCommand,AccountGuideUpdateCommand>
 {
     public AccountGuidesController(IAccountGuideService service,
-        AccountGuideInputValidator validator,
         IStringLocalizer<Resource> localizer,
-        IMapper mapper) : base(service, validator, localizer, mapper)
+        ISender mapper) : base(service, localizer, mapper)
     { }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] AccountGuideInputModel input)
+    public virtual async Task<IActionResult> Create([FromBody] AccountGuideCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -34,7 +36,7 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
         return await GetRecord(id);
     }
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] AccountGuideInputModel input)
+    public virtual async Task<IActionResult> Update(Guid id, [FromBody] AccountGuideUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

@@ -1,7 +1,7 @@
-﻿using AAA.ERP.DBConfiguration.Config.BaseConfig;
-using System.Reflection;
+﻿using System.Reflection;
+using Domain.Account.DBConfiguration.Config.BaseConfig;
 
-namespace AAA.ERP.Utility;
+namespace Domain.Account.Utility;
 
 public static class ModelBuilderExtensions
 {

@@ -1,3 +1,3 @@
-using AAA.ERP.Utility;
+using AAA.ERP.Utilities;
 
 WebApplication.CreateBuilder(args).ConfigureApplication();

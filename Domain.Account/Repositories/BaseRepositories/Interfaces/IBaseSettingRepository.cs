@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
+﻿using Shared.BaseEntities;
 
-namespace Shared.BaseRepositories.Interfaces;
+namespace Domain.Account.Repositories.BaseRepositories.Interfaces;
 
-public interface IBaseSettingRepository<TEntity,TContext> 
-    : IBaseRepository<TEntity,TContext>, IDisposable where TEntity : BaseSettingEntity
-    where TContext : IdentityDbContext<ApplicationUser>
+public interface IBaseSettingRepository<TEntity> 
+    : IBaseRepository<TEntity>, IDisposable where TEntity : BaseSettingEntity
 {
     Task<IEnumerable<TEntity>> Search(string name);
     Task<bool> AnyByNames(string? name,string? nameSecondLanguage);

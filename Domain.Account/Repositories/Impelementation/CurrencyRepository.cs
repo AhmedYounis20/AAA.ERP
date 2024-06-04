@@ -1,9 +1,9 @@
-﻿using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Repositories.BaseRepositories.Impelementation;
-using AAA.ERP.Repositories.Interfaces;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Repositories.BaseRepositories.Impelementation;
+using Domain.Account.Repositories.Interfaces;
 
-namespace AAA.ERP.Repositories.Impelementation;
+namespace Domain.Account.Repositories.Impelementation;
 
 public class CurrencyRepository : BaseSettingRepository<Currency>, ICurrencyRepository
 {

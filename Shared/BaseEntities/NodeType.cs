@@ -1,4 +1,4 @@
-namespace Domain.Account.Models.BaseEntities;
+namespace Shared.BaseEntities;
 
 public enum NodeType
 {

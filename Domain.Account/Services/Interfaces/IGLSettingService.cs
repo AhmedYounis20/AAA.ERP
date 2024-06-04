@@ -1,12 +1,10 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Responses;
-using AAA.ERP.Services.BaseServices.interfaces;
+﻿using Domain.Account.Models.Entities.GLSettings;
+using Shared.Responses;
 
-namespace AAA.ERP.Services.Interfaces;
+namespace Domain.Account.Services.Interfaces;
 
 public interface IGLSettingService{
 
-    public Task<ApiResponse> Update(GLSetting glsettting);
-    public Task<ApiResponse> Get();
+    public Task<ApiResponse<GLSetting>> Update(GLSetting glsettting);
+    public Task<ApiResponse<GLSetting>> Get();
 }

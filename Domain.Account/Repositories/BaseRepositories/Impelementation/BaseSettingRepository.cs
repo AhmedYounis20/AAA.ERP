@@ -1,22 +1,19 @@
-﻿using Domain.Account.Repositories.BaseRepositories.Impelementation;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Shared.BaseEntities;
 using Shared.BaseEntities.Identity;
-using Shared.BaseRepositories.Interfaces;
 
-namespace Shared.BaseRepositories.Impelementation;
+namespace Domain.Account.Repositories.BaseRepositories.Impelementation;
 
-public class BaseSettingRepository<TEntity,TContext> 
-    : BaseRepository<TEntity,TContext>,
-        IBaseSettingRepository<TEntity,TContext> 
+public class BaseSettingRepository<TEntity> 
+    : BaseRepository<TEntity>,
+        IBaseSettingRepository<TEntity> 
         where TEntity : BaseSettingEntity
-        where TContext : IdentityDbContext<ApplicationUser>
 
 {
-    private TContext _context;
+    private ApplicationDbContext _context;
 
-    public BaseSettingRepository(TContext context) : base(context)
+    public BaseSettingRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
         _dbSet = context.Set<TEntity>();

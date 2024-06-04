@@ -1,17 +1,19 @@
 using AAA.ERP.Services.Interfaces.SubLeadgers;
-using Domain.Account.Commands.SubLeadgers.CashInBoxes;
+using Domain.Account.Commands.FinancialPeriods;
 using Domain.Account.InputModels.Subleadgers;
-using Domain.Account.Models.Entities.SubLeadgers;
+using Domain.Account.Models.Entities.FinancialPeriods;
 using Shared;
 using Shared.Responses;
 
-namespace Domain.Account.Handlers.CashInBoxes;
+namespace Domain.Account.Handlers.FinancialPeriods;
 
-public class FinancialPeriodCreateCommandHandler(ICashInBoxService service): ICommandHandler<CashInBoxCreateCommand,ApiResponse<CashInBox>>
+public class FinancialPeriodCreateCommandHandler(ICashInBoxService service): ICommandHandler<FinancialPeriodCreateCommand,ApiResponse<FinancialPeriod>>
 {
-    public async Task<ApiResponse<CashInBox>> Handle(CashInBoxCreateCommand request,
+    public async Task<ApiResponse<FinancialPeriod>> Handle(FinancialPeriodCreateCommand request,
         CancellationToken cancellationToken)
     {
-        return await service.Create(new BaseSubLeadgerInputModel());
+        await service.Create(new BaseSubLeadgerInputModel());
+
+        return new ApiResponse<FinancialPeriod>();
     }
 }

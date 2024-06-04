@@ -1,19 +1,24 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using AAA.ERP.Services.Impelementation;
+using AAA.ERP.Services.Impelementation.SubLeadgers;
+using AAA.ERP.Services.Interfaces.SubLeadgers;
 using AAA.ERP.Validators.BussinessValidator.Interfaces;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Entities.AccountGuide;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.FinancialPeriods;
-using Domain.Account.Models.Entities.Identity;
 using Domain.Account.Repositories.BaseRepositories.Impelementation;
 using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Domain.Account.Repositories.Impelementation;
+using Domain.Account.Repositories.Impelementation.SubLeadgers;
 using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Repositories.Interfaces.SubLeadgers;
 using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Impelementation;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Utility;
 using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Domain.Account.Validators.BussinessValidator.Impelementation;
@@ -21,25 +26,26 @@ using Domain.Account.Validators.BussinessValidator.Interfaces;
 using Domain.Account.Validators.InputValidators;
 using Domain.Account.Validators.InputValidators.FinancialPeriods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-
-namespace Domain.Account.Utility;
+using Shared.BaseEntities.Identity;
+using Shared.Behaviors;
+namespace AAA.ERP.Utilities;
 
 public static class WebBuilderExtensions
 {
     public static void AddProjectUtilities(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(Program).Assembly);
+        services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
 
-
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(typeof(ApplicationDbContext).Assembly);
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
         services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(
             opt =>
@@ -124,6 +130,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<IGLSettingService, GLSettingService>();
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
+        services.AddScoped<ICashInBoxService, CashInBoxService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
@@ -156,6 +163,9 @@ public static class WebBuilderExtensions
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
+        services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
+        services.AddScoped<IUnitOfWork,UnitOfWork>();
+        services.AddHttpContextAccessor();
     }
     public static void ConfigureApplication(this WebApplicationBuilder builder)
     {
@@ -170,8 +180,9 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("AAA.ERP"));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            
         });
 
 

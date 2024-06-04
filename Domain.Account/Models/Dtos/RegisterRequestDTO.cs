@@ -1,4 +1,4 @@
-﻿namespace AAA.ERP;
+﻿namespace Domain.Account.Models.Dtos;
 
 public class RegisterRequestDTO
 {

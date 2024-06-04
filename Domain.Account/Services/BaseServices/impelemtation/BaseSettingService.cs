@@ -1,9 +1,10 @@
-﻿using System.Net;
+﻿using Domain.Account.Repositories.BaseRepositories.Interfaces;
+using Domain.Account.Services.BaseServices.interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Shared.BaseEntities;
-using Shared.BaseServices.interfaces;
 using Shared.Responses;
 
-namespace Shared.BaseServices.impelemtation;
+namespace Domain.Account.Services.BaseServices.impelemtation;
 
 public class BaseSettingService<TEntity> : BaseService<TEntity>, IBaseSettingService<TEntity> where TEntity : BaseSettingEntity
 {
@@ -11,12 +12,12 @@ public class BaseSettingService<TEntity> : BaseService<TEntity>, IBaseSettingSer
     public BaseSettingService(IBaseSettingRepository<TEntity> repository,IBaseSettingBussinessValidator<TEntity> bussinessValidator) : base(repository, bussinessValidator)
     => _repository = repository;
 
-    public virtual async Task<ApiResponse> SearchByName(string name)
+    public virtual async Task<ApiResponse<IEnumerable<TEntity>>> SearchByName(string name)
     {
         try
         {
             var entities = await _repository.Search(name);
-            return new ApiResponse
+            return new ApiResponse<IEnumerable<TEntity>>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.Created,
@@ -25,7 +26,7 @@ public class BaseSettingService<TEntity> : BaseService<TEntity>, IBaseSettingSer
         }
         catch (Exception ex)
         {
-            return new ApiResponse
+            return new ApiResponse<IEnumerable<TEntity>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,

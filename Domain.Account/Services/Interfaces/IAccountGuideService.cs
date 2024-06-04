@@ -1,6 +1,6 @@
-﻿using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Services.BaseServices.interfaces;
+﻿using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Services.BaseServices.interfaces;
 
-namespace AAA.ERP.Services.Interfaces;
+namespace Domain.Account.Services.Interfaces;
 
 public interface IAccountGuideService: IBaseSettingService<AccountGuide>{}

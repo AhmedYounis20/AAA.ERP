@@ -1,12 +1,11 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Services.BaseServices.impelemtation;
-using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
-using AAA.ERP.Responses;
-using AAA.ERP.Models.Entities.FinancialPeriods;
+﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using Domain.Account.Models.Entities.FinancialPeriods;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Services.BaseServices.impelemtation;
+using Domain.Account.Services.Interfaces;
+using Shared.Responses;
 
-namespace AAA.ERP.Services.Impelementation;
+namespace Domain.Account.Services.Impelementation;
 
 public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPeriodService
 {
@@ -20,12 +19,12 @@ public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPe
         _bussinessValidator = bussinessValidator;
     }
 
-    public override async Task<ApiResponse> Create(FinancialPeriod entity, bool isValidate = true)
+    public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriod entity, bool isValidate = true)
     {
         var validationResult = await _bussinessValidator.ValidateCreateBussiness(entity);
         if (!validationResult.IsValid)
         {
-            return new ApiResponse
+            return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
@@ -43,12 +42,12 @@ public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPe
         return await base.Create(entity, false);
     }
 
-    public async Task<ApiResponse> GetCurrentFinancailPeriod()
+    public async Task<ApiResponse<FinancialPeriod>> GetCurrentFinancailPeriod()
     {
         FinancialPeriod? currentFinancialPeriod = await _repository.GetCurrentFinancialPeroid();
         if(currentFinancialPeriod == null)
         {
-            return new ApiResponse
+            return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
@@ -57,7 +56,7 @@ public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPe
         }
         else
         {
-            return new ApiResponse
+            return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
@@ -66,12 +65,12 @@ public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPe
         }
     }
 
-    public override async Task<ApiResponse> Update(FinancialPeriod entity, bool isValidate = false)
+    public override async Task<ApiResponse<FinancialPeriod>> Update(FinancialPeriod entity, bool isValidate = false)
     {
         var validationResult = await _bussinessValidator.ValidateUpdateBussiness(entity);
         if (!validationResult.IsValid)
         {
-            return new ApiResponse
+            return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,

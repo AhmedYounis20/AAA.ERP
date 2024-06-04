@@ -1,9 +1,7 @@
-﻿using Shared;
+﻿namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-
-public class BaseUpdateCommand<TCommand> : ICommand<TCommand> 
+public class BaseSettingUpdateCommand<TResponse> : BaseUpdateCommand<TResponse> 
 {
-    public Guid Id { get; set; }
-    public string? Notes { get; set; }
+    public string? Name { get; set; }
+    public string? NameSecondLanguage { get; set; }
 }

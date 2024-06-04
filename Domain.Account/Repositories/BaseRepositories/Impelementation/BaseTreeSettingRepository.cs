@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Repositories.BaseRepositories.Impelementation;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
-using Shared.BaseRepositories.Interfaces;
 
 namespace Shared.BaseRepositories.Impelementation;
 
-public class BaseTreeSettingRepository<TEntity,TContext> 
-    : BaseSettingRepository<TEntity,TContext>,
-        IBaseTreeSettingRepository<TEntity,TContext> 
+public class BaseTreeSettingRepository<TEntity> 
+    : BaseSettingRepository<TEntity>,
+        IBaseTreeSettingRepository<TEntity> 
     where TEntity : BaseTreeSettingEntity<TEntity>
-    where TContext : IdentityDbContext<ApplicationUser>
-
 {
-    public BaseTreeSettingRepository(TContext context) : base(context)
+    public BaseTreeSettingRepository(ApplicationDbContext context) : base(context)
     => _dbSet = context.Set<TEntity>();
     
     public async Task<List<TEntity>> GetLevel(int level = 0)

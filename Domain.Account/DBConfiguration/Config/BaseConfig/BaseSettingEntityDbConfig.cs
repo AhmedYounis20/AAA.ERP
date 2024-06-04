@@ -1,9 +1,7 @@
-﻿using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Entities.AccountGuide;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.BaseEntities;
 
-namespace AAA.ERP.DBConfiguration.Config.BaseConfig;
+namespace Domain.Account.DBConfiguration.Config.BaseConfig;
 
 public class BaseSettingEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity> where TEntity : BaseSettingEntity
 {

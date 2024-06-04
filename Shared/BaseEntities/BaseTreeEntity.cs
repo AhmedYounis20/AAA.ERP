@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Account.Models.BaseEntities;
 
-namespace Domain.Account.Models.BaseEntities;
+namespace Shared.BaseEntities;
 
 public class BaseTreeEntity<TEntity> : BaseEntity where TEntity : BaseEntity
 {

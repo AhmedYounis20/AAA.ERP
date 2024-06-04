@@ -1,11 +1,10 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Services.BaseServices.impelemtation;
-using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
-using AAA.ERP.Responses;
+﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Services.BaseServices.impelemtation;
+using Domain.Account.Services.Interfaces;
 
-namespace AAA.ERP.Services.Impelementation;
+namespace Domain.Account.Services.Impelementation;
 
 public class CurrencyService : BaseSettingService<Currency>, ICurrencyService
 {

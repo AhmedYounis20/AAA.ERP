@@ -1,22 +1,32 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Resources;
-using AAA.ERP.Services.BaseServices.interfaces;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
+﻿using AAA.ERP.Validators.InputValidators.BaseValidators;
 using AutoMapper;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.InputModels.BaseInputModels;
+using Domain.Account.Services.BaseServices.interfaces;
+using MediatR;
 using Microsoft.Extensions.Localization;
+using Shared.BaseEntities;
+using Shared.Resources;
+using Shared.Responses;
 
-namespace AAA.ERP.Controllers;
+namespace AAA.ERP.Controllers.BaseControllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BaseSettingController<TEntity, TInput> : BaseController<TEntity, TInput> where TEntity : BaseSettingEntity where TInput : BaseSettingInputModel
-
+public class BaseSettingController<TEntity, TCreate,TUpdate> 
+    : BaseController<TEntity, TCreate,TUpdate> 
+    where TEntity : BaseSettingEntity 
+    where TCreate : BaseSettingCreateCommand<ApiResponse<TEntity>>
+    where TUpdate : BaseSettingUpdateCommand<ApiResponse<TEntity>>
 {
     //[HttpGet]
     //public 
     private readonly IBaseSettingService<TEntity> _service;
-    public BaseSettingController(IBaseSettingService<TEntity> service, BaseSettingInputValidator<TInput> validator,IStringLocalizer<Resource> localizaer, IMapper mapper) : base(service, validator, localizaer, mapper)
+    public BaseSettingController(
+        IBaseSettingService<TEntity> service,
+        IStringLocalizer<Resource> localizaer,
+        ISender sender) : base(service, localizaer, sender)
     => _service = service;
 
     [HttpGet("search")]

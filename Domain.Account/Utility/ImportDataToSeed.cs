@@ -1,16 +1,16 @@
-using System.Reflection;
-using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Models.Entities.Identity;
-using Microsoft.Data.SqlClient;
+using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Models.Entities.FinancialPeriods;
+using Domain.Account.Models.Entities.GLSettings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Shared.BaseEntities;
+using Shared.BaseEntities.Identity;
 
-namespace AAA.ERP.Utility;
+namespace Domain.Account.Utility;
 
 public class ImportDataToSeed
 {

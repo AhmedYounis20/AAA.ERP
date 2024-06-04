@@ -2,7 +2,7 @@
 
 namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 
-public class BaseTreeInputModel<TCommand> : BaseInputModel<TCommand>
+public class BaseTreeCreateCommand<TResponse> : BaseCreateCommand<TResponse>
 {
     public Guid? ParentId { get; set; }
 }

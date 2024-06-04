@@ -1,9 +1,9 @@
-﻿using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Services.Interfaces;
-using AAA.ERP.Responses;
-using AAA.ERP.Models.Entities.GLSettings;
+﻿using Domain.Account.Models.Entities.GLSettings;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Services.Interfaces;
+using Shared.Responses;
 
-namespace AAA.ERP.Services.Impelementation;
+namespace Domain.Account.Services.Impelementation;
 
 public class GLSettingService : IGLSettingService
 {
@@ -11,9 +11,9 @@ public class GLSettingService : IGLSettingService
     public GLSettingService(IGLSettingRepository repository)
     => _repository = repository;
 
-    public async Task<ApiResponse> Get()
+    public async Task<ApiResponse<GLSetting>> Get()
     {
-        return new ApiResponse
+        return new ApiResponse<GLSetting>
         {
             IsSuccess = true,
             StatusCode = HttpStatusCode.OK,
@@ -21,7 +21,7 @@ public class GLSettingService : IGLSettingService
         };
     }
 
-    public async Task<ApiResponse> Update(GLSetting glsetting)
+    public async Task<ApiResponse<GLSetting>> Update(GLSetting glsetting)
     {
         var dbGLSetting = await _repository.GetGLSetting();
         if (dbGLSetting != null)
@@ -35,7 +35,7 @@ public class GLSettingService : IGLSettingService
             dbGLSetting.ModifiedBy = glsetting.ModifiedBy;
 
             var updated = await _repository.Update(dbGLSetting);
-            return new ApiResponse
+            return new ApiResponse<GLSetting>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
@@ -43,7 +43,7 @@ public class GLSettingService : IGLSettingService
             };
         }
 
-        return new ApiResponse
+        return new ApiResponse<GLSetting>
         {
             IsSuccess = false,
             StatusCode = HttpStatusCode.NotFound,

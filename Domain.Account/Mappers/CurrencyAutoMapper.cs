@@ -1,10 +1,9 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.OutputDtos;
+﻿using AAA.ERP.OutputDtos;
 using AutoMapper;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.Currencies;
 
-namespace AAA.ERP.Mappers;
+namespace Domain.Account.Mappers;
 
 public class CurrencyAutoMapper : Profile
 {

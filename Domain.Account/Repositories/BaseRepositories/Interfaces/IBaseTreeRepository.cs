@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
+﻿using Shared.BaseEntities;
 
-namespace Shared.BaseRepositories.Interfaces
+namespace Domain.Account.Repositories.BaseRepositories.Interfaces
 {   
-    public interface IBaseTreeRepository<TEntity,TContext> 
-        : IBaseRepository<TEntity,TContext>,
+    public interface IBaseTreeRepository<TEntity> 
+        : IBaseRepository<TEntity>,
             IDisposable where TEntity : BaseTreeEntity<TEntity>
-        where TContext : IdentityDbContext<ApplicationUser>
 
     {
         Task<List<TEntity>> GetLevel(int level = 0 );

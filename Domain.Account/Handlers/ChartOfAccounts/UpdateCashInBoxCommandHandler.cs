@@ -1,16 +1,20 @@
 using AAA.ERP.Services.Interfaces.SubLeadgers;
+using Domain.Account.Commands.ChartOfAccounts;
 using Domain.Account.Commands.SubLeadgers.CashInBoxes;
 using Domain.Account.InputModels.Subleadgers;
+using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.SubLeadgers;
 using Shared;
 using Shared.Responses;
 
 namespace Domain.Account.Handlers.CashInBoxes;
 
-public class UpdateCashInBoxCommandHandlerCashInBoxCommandHandler(ICashInBoxService service): ICommandHandler<CashInBoxUpdateCommand,ApiResponse<CashInBox>>
+public class ChartOfAccountUpdateCommandHandler(ICashInBoxService service): ICommandHandler<ChartOfAccountUpdateCommand,ApiResponse<ChartOfAccount>>
 {
-    public async Task<ApiResponse<CashInBox>> Handle(CashInBoxUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<ChartOfAccount>> Handle(ChartOfAccountUpdateCommand request, CancellationToken cancellationToken)
     {
-        return await service.Create(new BaseSubLeadgerInputModel());
+         await service.Create(new BaseSubLeadgerInputModel());
+
+         return new ApiResponse<ChartOfAccount>();
     }
 }

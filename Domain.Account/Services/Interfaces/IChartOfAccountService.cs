@@ -1,11 +1,12 @@
-﻿using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Responses;
-using AAA.ERP.Services.BaseServices.Interfaces;
+﻿using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Services.BaseServices.interfaces;
+using Shared.Responses;
 
-namespace AAA.ERP.Services.Interfaces;
+namespace Domain.Account.Services.Interfaces;
 
 public interface IChartOfAccountService : IBaseTreeSettingService<ChartOfAccount>
 {
     public Task<string> GenerateNewCodeForChild(Guid? parentId);
-    public Task<ApiResponse> NextAccountDefaultData(Guid? parentId);
+    public Task<ApiResponse<ChartOfAccountInputModel>> NextAccountDefaultData(Guid? parentId);
 }

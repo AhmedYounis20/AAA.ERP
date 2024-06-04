@@ -1,5 +1,4 @@
-﻿using Domain.Account.Models.Entities.ChartOfAccount;
-using Shared.BaseEntities;
+﻿using Shared.BaseEntities;
 
 namespace Domain.Account.Models.Entities.ChartOfAccounts;
 

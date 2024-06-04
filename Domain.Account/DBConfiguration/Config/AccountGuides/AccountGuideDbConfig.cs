@@ -1,8 +1,9 @@
-﻿using AAA.ERP.DBConfiguration.Config.BaseConfig;
-using AAA.ERP.Models.Entities.AccountGuide;
+﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
+using Domain.Account.Models.Entities.AccountGuide;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AAA.ERP.DBConfiguration.Config.Currencies
+namespace Domain.Account.DBConfiguration.Config.AccountGuides
 {
     public class AccountGuideDbConfig : BaseSettingEntityDbConfig<AccountGuide>
     {

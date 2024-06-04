@@ -2,7 +2,7 @@
 
 namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 
-public class BaseInputModel<TCommand> : ICommand<TCommand> 
+public class BaseCreateCommand<TResponse> : ICommand<TResponse> 
 {
     public string? Notes { get; set; }
 }

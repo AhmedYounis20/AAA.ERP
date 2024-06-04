@@ -5,7 +5,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.GLSettings;
 
-public class GLSettingUpdateCommand : BaseUpdateCommand<ApiResponse<GLSetting>>
+public class GlSettingUpdateCommand : BaseUpdateCommand<ApiResponse<GLSetting>>
 {
     public bool IsAllowingEditVoucher { get; set; }
     public bool IsAllowingDeleteVoucher { get; set; }

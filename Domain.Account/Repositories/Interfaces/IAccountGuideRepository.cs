@@ -1,6 +1,6 @@
-﻿using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
+﻿using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 
-namespace AAA.ERP.Repositories.Interfaces;
+namespace Domain.Account.Repositories.Interfaces;
 
 public interface IAccountGuideRepository: IBaseSettingRepository<AccountGuide>{}

@@ -1,12 +1,8 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Domain.Account.Models.Entities.SubLeadgers;
 using Shared.BaseEntities;
-using Shared.Responses;
 
-namespace Domain.Account.Commands.SubLeadgers.BaseSubLeadgersCommands;
+namespace Domain.Account.Commands.SubLeadgers.CashInBoxes;
 
-public class BaseSubLeadgerCreateCommand<TEntity> : BaseTreeSettingCreateCommand<ApiResponse<SubLeadgerBaseEntity<TEntity>>> where TEntity :BaseSettingEntity
-{
-    public NodeType NodeType { get; set; }
-    public string? Code { get; set; }  
-}
+public class CashInBoxCreateCommand : BaseSubLeadgerCreateCommand<CashInBox> 
+{ }

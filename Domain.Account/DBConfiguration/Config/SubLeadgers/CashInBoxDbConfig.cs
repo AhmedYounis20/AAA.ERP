@@ -1,10 +1,9 @@
-﻿using AAA.ERP.DBConfiguration.Config.BaseConfig;
-using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Models.Entities.SubLeadgers;
+﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
+using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Models.Entities.SubLeadgers;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AAA.ERP.DBConfiguration.Config.Currencies
+namespace Domain.Account.DBConfiguration.Config.SubLeadgers
 {
     public class CashInBoxDbConfig : BaseTreeSettingEntityDbConfig<CashInBox>
     {
@@ -14,7 +13,7 @@ namespace AAA.ERP.DBConfiguration.Config.Currencies
             builder.ToTable("CashInBox");
             base.ApplyConfiguration(builder);
             _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++).IsRequired();
-            _ = builder.HasOne<ChartOfAccount>().WithMany().HasForeignKey(e => e.ChartOfAccountId);
+            _ = builder.HasOne(e=>e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
 
             return builder;
         }

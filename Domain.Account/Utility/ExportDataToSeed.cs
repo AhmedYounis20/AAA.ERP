@@ -1,9 +1,10 @@
 using System.Reflection;
-using AAA.ERP.DBConfiguration.DbContext;
+using Domain.Account.DBConfiguration.DbContext;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace AAA.ERP.Utility;
+namespace Domain.Account.Utility;
 
 public class ExportDataToSeed
 {

@@ -1,6 +1,8 @@
-namespace Domain.Account.InputModels.AccountGuides;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Models.Entities.AccountGuide;
+using Shared.Responses;
 
-public class AccountGuideCreateCommand
-{
-    
-}
+namespace Domain.Account.Commands.AccountGuides;
+
+public class AccountGuideCreateCommand : BaseSettingCreateCommand<ApiResponse<AccountGuide>>
+{ }

@@ -1,7 +1,7 @@
-using AAA.ERP.Models.Entities.SubLeadgers;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
+using Domain.Account.Models.Entities.SubLeadgers;
+using Domain.Account.Repositories.BaseRepositories.Interfaces;
 
-namespace AAA.ERP.Repositories.Interfaces.SubLeadgers;
+namespace Domain.Account.Repositories.Interfaces.SubLeadgers;
 
 public interface ICashInBoxRepository : IBaseTreeSettingRepository<CashInBox>
 { }

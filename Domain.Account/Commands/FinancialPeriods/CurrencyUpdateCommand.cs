@@ -1,11 +1,10 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Models.Entities.FinancialPeriods;
+using Shared.Responses;
 
-namespace Domain.Account.Commands.Currencies;
+namespace Domain.Account.Commands.FinancialPeriods;
 
-public class CurrencyUpdateCommand : BaseSettingUpdateCommand<CurrencyUpdateCommand>
+public class FinancialPeriodUpdateCommand : BaseUpdateCommand<ApiResponse<FinancialPeriod>>
 {
-    public decimal ExchangeRate { get; set; }
-    public string? Symbol { get; set; }
-    public bool IsDefault { get; set; }
-    public bool IsActive { get; set; }
+    public string? YearNumber { get; set; }
 }

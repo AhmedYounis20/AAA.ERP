@@ -1,9 +1,8 @@
-﻿using AAA.ERP.InputModels.FinancialPeriods;
-using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Models.Entities.GLSettings;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Account.InputModels.FinancialPeriods;
+using Domain.Account.Models.Entities.FinancialPeriods;
 
-namespace AAA.ERP.Mappers;
+namespace Domain.Account.Mappers;
 
 public class FinancialPeriodAutoMapper : Profile
 {

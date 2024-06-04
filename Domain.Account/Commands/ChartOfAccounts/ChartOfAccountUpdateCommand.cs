@@ -1,9 +1,10 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Entities.ChartOfAccounts;
+using Shared.Responses;
 
 namespace Domain.Account.Commands.ChartOfAccounts;
 
-public class ChartOfAccountUpdateCommand : BaseSettingUpdateCommand<ChartOfAccountUpdateCommand>
+public class ChartOfAccountUpdateCommand : BaseTreeSettingUpdateCommand<ApiResponse<ChartOfAccount>>
 {
     public string? Code { get; set; }
     public Guid AccountGuidId { get; set; }

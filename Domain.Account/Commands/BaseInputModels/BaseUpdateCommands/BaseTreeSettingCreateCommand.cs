@@ -1,8 +1,6 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+﻿namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-
-public class BaseTreeSettingCreateCommand<TCommand> : BaseSettingCreateCommand<TCommand>
+public class BaseTreeSettingUpdateCommand<TCommand> : BaseSettingUpdateCommand<TCommand>
 {
     public Guid? ParentId { get; set; }
 }

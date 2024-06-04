@@ -1,3 +1,3 @@
-namespace AAA.ERP.Models.Entities.SubLeadgers;
+namespace Domain.Account.Models.Entities.SubLeadgers;
 
 public class CashInBox : SubLeadgerBaseEntity<CashInBox> { }

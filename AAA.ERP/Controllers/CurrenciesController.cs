@@ -1,22 +1,27 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Resources;
-using AAA.ERP.Services.BaseServices.interfaces;
-using AAA.ERP.Validators.InputValidators;
+﻿using AAA.ERP.Controllers.BaseControllers;
 using AutoMapper;
+using Domain.Account.Commands.Currencies;
+using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Services.BaseServices.interfaces;
+using Domain.Account.Validators.InputValidators;
+using MediatR;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
 
 namespace AAA.ERP.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CurrenciesController : BaseSettingController<Currency, CurrencyInputModel>
+public class CurrenciesController : BaseSettingController<Currency, CurrencyCreateCommand,CurrencyUpdateCommand>
 {
-    public CurrenciesController(IBaseSettingService<Currency> service, CurrencyInputValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper) : base(service, validator, localizer, mapper)
+    public CurrenciesController(IBaseSettingService<Currency> service,
+        CurrencyInputValidator validator, 
+        IStringLocalizer<Resource> localizer,
+        ISender sender) : base(service, localizer, sender)
     { }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] CurrencyInputModel input)
+    public virtual async Task<IActionResult> Create([FromBody] CurrencyCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -31,7 +36,7 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyInpu
         return await GetRecord(id);
     }
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyInputModel input)
+    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

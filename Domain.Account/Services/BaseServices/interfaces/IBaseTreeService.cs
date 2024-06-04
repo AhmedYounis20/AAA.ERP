@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace Shared.BaseServices.interfaces;
+namespace Domain.Account.Services.BaseServices.interfaces;
 
 public interface IBaseTreeService<TEntity> : IBaseService<TEntity> where TEntity : BaseTreeEntity<TEntity>
 {
