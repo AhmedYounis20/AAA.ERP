@@ -1,4 +1,4 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
+﻿using Domain.Account.InputModels.BaseInputModels;
 
 namespace AAA.ERP.Validators.InputValidators.BaseValidators;
 

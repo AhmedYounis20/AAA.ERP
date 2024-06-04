@@ -1,11 +1,11 @@
-﻿using AAA.ERP.Models.Entities.Currencies;
-using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Resources;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
 
-namespace AAA.ERP.Validators.BussinessValidator.Impelementation;
+namespace Domain.Account.Validators.BussinessValidator.Impelementation;
 
 public class CurrencyBussinessValidator : BaseSettingBussinessValidator<Currency>, ICurrencyBussinessValidator
 {

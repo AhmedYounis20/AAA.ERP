@@ -1,11 +1,11 @@
-﻿using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Resources;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+﻿using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
+using Domain.Account.Validators.BussinessValidator.Interfaces;
 using Microsoft.Extensions.Localization;
+using Shared.Resources;
 
-namespace AAA.ERP.Validators.BussinessValidator.Impelementation;
+namespace Domain.Account.Validators.BussinessValidator.Impelementation;
 
 public class ChartOfAccountBussinessValidator : BaseTreeSettingBussinessValidator<ChartOfAccount>, IChartOfAccountBussinessValidator
 {

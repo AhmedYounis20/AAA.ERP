@@ -1,10 +1,9 @@
-﻿using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Repositories.Interfaces;
-using AAA.ERP.Responses;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
+﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
+using Domain.Account.Models.Entities.FinancialPeriods;
+using Domain.Account.Repositories.Interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 
-namespace AAA.ERP.Validators.BussinessValidator.Impelementation;
+namespace Domain.Account.Validators.BussinessValidator.Impelementation;
 
 public class FinancialPeriodBussinessValidator : BaseBussinessValidator<FinancialPeriod>, IFinancialPeriodBussinessValidator
 {

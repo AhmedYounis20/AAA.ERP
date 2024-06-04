@@ -1,9 +1,8 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+﻿using Domain.Account.Repositories.BaseRepositories.Interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+using Shared.BaseEntities;
 
-namespace AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
+namespace Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 
 public class BaseBussinessValidator<TEntity> : IBaseBussinessValidator<TEntity> where TEntity : BaseEntity
 {

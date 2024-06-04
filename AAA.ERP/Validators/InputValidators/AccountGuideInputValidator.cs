@@ -1,7 +1,7 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
+﻿using AAA.ERP.Validators.InputValidators.BaseValidators;
+using Domain.Account.InputModels;
 
-namespace AAA.ERP.Validators.InputValidators;
+namespace Domain.Account.Validators.InputValidators;
 
 public class AccountGuideInputValidator : BaseSettingInputValidator<AccountGuideInputModel>
 {}

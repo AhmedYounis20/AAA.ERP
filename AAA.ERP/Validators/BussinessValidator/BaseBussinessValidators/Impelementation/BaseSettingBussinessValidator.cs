@@ -1,10 +1,9 @@
-﻿using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Repositories.BaseRepositories.Interfaces;
-using AAA.ERP.Resources;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+﻿using Domain.Account.Repositories.BaseRepositories.Interfaces;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Microsoft.Extensions.Localization;
-
-namespace AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
+using Shared.BaseEntities;
+using Shared.Resources;
+namespace Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 
 public class BaseSettingBussinessValidator<TEntity> : BaseBussinessValidator<TEntity>, IBaseSettingBussinessValidator<TEntity> where TEntity : BaseSettingEntity
 {

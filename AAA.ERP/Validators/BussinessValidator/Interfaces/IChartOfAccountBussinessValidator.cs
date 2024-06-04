@@ -1,7 +1,7 @@
-﻿using AAA.ERP.Models.Entities.ChartOfAccount;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+﻿using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 
-namespace AAA.ERP.Validators.BussinessValidator.Interfaces;
+namespace Domain.Account.Validators.BussinessValidator.Interfaces;
 
 public interface IChartOfAccountBussinessValidator : IBaseTreeSettingBussinessValidator<ChartOfAccount>
 { }

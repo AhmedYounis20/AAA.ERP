@@ -1,11 +1,9 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.InputModels.FinancialPeriods;
-using AAA.ERP.Models.Entities.FinancialPeriods;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
+﻿using AAA.ERP.Validators.InputValidators.BaseValidators;
+using Domain.Account.InputModels.FinancialPeriods;
+using Domain.Account.Models.Entities.FinancialPeriods;
 using FluentValidation;
 
-namespace AAA.ERP.Validators.InputValidators.FinancialPeriods;
+namespace Domain.Account.Validators.InputValidators.FinancialPeriods;
 
 public class FinancialPeriodInputValidator : BaseInputValidator<FinancialPeriodInputModel>
 {

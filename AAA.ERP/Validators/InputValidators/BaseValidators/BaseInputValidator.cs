@@ -1,7 +1,7 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
-using AAA.ERP.OutputDtos.BaseDtos;
+﻿using AAA.ERP.OutputDtos.BaseDtos;
 using FluentValidation;
 using System.Data;
+using Domain.Account.InputModels.BaseInputModels;
 
 namespace AAA.ERP.Validators.InputValidators.BaseValidators;
 

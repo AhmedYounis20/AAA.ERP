@@ -1,8 +1,8 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
+﻿using AAA.ERP.Validators.InputValidators.BaseValidators;
+using Domain.Account.InputModels;
 using FluentValidation;
 
-namespace AAA.ERP.Validators.InputValidators;
+namespace Domain.Account.Validators.InputValidators;
 
 public class ChartOfAccountInputValidator : BaseTreeSettingInputValidator<ChartOfAccountInputModel>
 {

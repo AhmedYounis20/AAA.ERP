@@ -1,9 +1,9 @@
-﻿using AAA.ERP.InputModels;
-using AAA.ERP.Models.Entities.GLSettings;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
+﻿using AAA.ERP.Validators.InputValidators.BaseValidators;
+using Domain.Account.InputModels;
+using Domain.Account.Models.Entities.GLSettings;
 using FluentValidation;
 
-namespace AAA.ERP.Validators.InputValidators;
+namespace Domain.Account.Validators.InputValidators;
 
 public class GLSettingInputValidator : BaseInputValidator<GLSettingInputModel>
 {

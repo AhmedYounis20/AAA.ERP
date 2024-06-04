@@ -1,6 +1,6 @@
-﻿using AAA.ERP.Models.BaseEntities;
+﻿using Shared.BaseEntities;
 
-namespace AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+namespace Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 
 public interface IBaseBussinessValidator<TEntity> where TEntity : BaseEntity
 {

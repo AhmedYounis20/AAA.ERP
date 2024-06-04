@@ -1,7 +1,7 @@
-﻿using AAA.ERP.Models.Entities.AccountGuide;
-using AAA.ERP.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
+﻿using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 
-namespace AAA.ERP.Validators.BussinessValidator.Interfaces;
+namespace Domain.Account.Validators.BussinessValidator.Interfaces;
 
 public interface IAccountGuideBussinessValidator : IBaseSettingBussinessValidator<AccountGuide>
 { }
