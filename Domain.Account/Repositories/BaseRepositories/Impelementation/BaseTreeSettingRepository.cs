@@ -13,7 +13,7 @@ public class BaseTreeSettingRepository<TEntity>
     public BaseTreeSettingRepository(ApplicationDbContext context) : base(context)
     => _dbSet = context.Set<TEntity>();
     
-    public async Task<List<TEntity>> GetLevel(int level = 0)
+    public virtual async Task<List<TEntity>> GetLevel(int level = 0)
     {
         List<TEntity> entities = new List<TEntity>();
         entities = await _dbSet.Where(e => e.ParentId == null).ToListAsync();
@@ -32,7 +32,7 @@ public class BaseTreeSettingRepository<TEntity>
         return parents;
     }
 
-    public async Task<List<TEntity>> GetChildren(Guid id, int level = 1)
+    public virtual async Task<List<TEntity>> GetChildren(Guid id, int level = 1)
     {
         List<TEntity> children = new List<TEntity>();
 

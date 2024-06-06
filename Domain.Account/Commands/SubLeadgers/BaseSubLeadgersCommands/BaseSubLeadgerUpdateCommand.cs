@@ -5,7 +5,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.SubLeadgers.BaseSubLeadgersCommands;
 
-public class BaseSubLeadgerUpdateCommand<TEntity> : BaseTreeSettingUpdateCommand<ApiResponse<TEntity>> where TEntity :BaseSettingEntity
+public class BaseSubLeadgerUpdateCommand<TEntity> : BaseTreeSettingUpdateCommand<TEntity> where TEntity :BaseSettingEntity
 {
     public NodeType NodeType { get; set; }
     public string? Code { get; set; }  

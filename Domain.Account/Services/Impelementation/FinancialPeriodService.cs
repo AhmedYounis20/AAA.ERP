@@ -1,57 +1,78 @@
-﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
+﻿using Domain.Account.Commands.FinancialPeriods;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.Interfaces;
+using Mapster;
 using Shared.Responses;
 
 namespace Domain.Account.Services.Impelementation;
 
-public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPeriodService
+public class FinancialPeriodService :
+    BaseService<FinancialPeriod, FinancialPeriodCreateCommand, FinancialPeriodUpdateCommand>, IFinancialPeriodService
 {
     IFinancialPeriodRepository _repository;
-    IFinancialPeriodBussinessValidator _bussinessValidator;
     TimeSpan tick = new TimeSpan(0, 0, 0, 0, 1);
-    public FinancialPeriodService(IFinancialPeriodRepository repository,
-                           IFinancialPeriodBussinessValidator bussinessValidator) : base(repository, bussinessValidator)
+
+    public FinancialPeriodService(IFinancialPeriodRepository repository) : base(repository)
     {
         _repository = repository;
-        _bussinessValidator = bussinessValidator;
     }
 
-    public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriod entity, bool isValidate = true)
+    public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
+        bool isValidate = true)
     {
-        var validationResult = await _bussinessValidator.ValidateCreateBussiness(entity);
-        if (!validationResult.IsValid)
+        try
+        {
+            var validationResult = await ValidateCreate(command);
+            if (!validationResult.isValid)
+            {
+                return new ApiResponse<FinancialPeriod>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = validationResult.errors
+                };
+            }
+
+            FinancialPeriod? lastFinancialPeriod = await _repository.GetLastFinancialPeriod();
+            FinancialPeriod entity = command.Adapt<FinancialPeriod>();
+            if (lastFinancialPeriod != null)
+                entity.StartDate = lastFinancialPeriod.EndDate.AddTicks(1);
+
+
+            entity.EndDate = entity.StartDate.AddMonths(entity.PeriodTypeByMonth).AddTicks(-1);
+
+
+            entity = await _repository.Add(entity);
+
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entity,
+            };
+        }
+        catch (Exception ex)
         {
             return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = validationResult.ListOfErrors
             };
         }
-
-        FinancialPeriod? lastFinancialPeriod = await _repository.GetLastFinancialPeriod();
-
-        if (lastFinancialPeriod != null)
-            entity.StartDate = lastFinancialPeriod.EndDate.AddTicks(1);
-
-        entity.EndDate = entity.StartDate.AddMonths(entity.PeriodTypeByMonth).AddTicks(-1);
-
-        return await base.Create(entity, false);
     }
 
     public async Task<ApiResponse<FinancialPeriod>> GetCurrentFinancailPeriod()
     {
         FinancialPeriod? currentFinancialPeriod = await _repository.GetCurrentFinancialPeroid();
-        if(currentFinancialPeriod == null)
+        if (currentFinancialPeriod == null)
         {
             return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
+                ErrorMessages = new List<string> {"NotFoundCurrentFinancialPeriod"}
             };
         }
         else
@@ -65,21 +86,70 @@ public class FinancialPeriodService : BaseService<FinancialPeriod>, IFinancialPe
         }
     }
 
-    public override async Task<ApiResponse<FinancialPeriod>> Update(FinancialPeriod entity, bool isValidate = false)
+    public override async Task<ApiResponse<FinancialPeriod>> Update(FinancialPeriodUpdateCommand command,
+        bool isValidate = false)
     {
-        var validationResult = await _bussinessValidator.ValidateUpdateBussiness(entity);
-        if (!validationResult.IsValid)
+        try
+        {
+            var validationResult = await ValidateUpdate(command);
+            if (!validationResult.isValid)
+            {
+                return new ApiResponse<FinancialPeriod>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = validationResult.errors
+                };
+            }
+
+            FinancialPeriod? entity = validationResult.entity;
+            if (entity != null)
+            {
+                entity.YearNumber = command.YearNumber;
+                await _repository.Update(entity);
+            }
+
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entity
+            };
+        }
+        catch (Exception ex)
         {
             return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = validationResult.ListOfErrors
             };
         }
-        if (validationResult.entity != null)
-            validationResult.entity.YearNumber = entity.YearNumber;
+    }
 
-        return await base.Update(validationResult.entity ?? new(), false);
+    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(
+        FinancialPeriodCreateCommand command)
+    {
+        var result = await base.ValidateCreate(command);
+        bool isExisted = await _repository.IsExisted(command.YearNumber);
+        if (isExisted)
+        {
+            result.isValid = false;
+            result.errors.Add("FinancialPeriodWithYearNumberIsExisted");
+        }
+
+        return result;
+    }
+
+    protected override async Task<(bool isValid, List<string> errors, FinancialPeriod? entity)> ValidateUpdate(FinancialPeriodUpdateCommand command)
+    {
+        var result = await base.ValidateUpdate(command);
+ 
+        if (result.entity?.StartDate < DateTime.Now)
+        {
+            result.isValid = false; 
+            result.errors.Add("FinancialPeriodCurrentOrPastUpdateError"); 
+        }
+
+        return result;
     }
 }
