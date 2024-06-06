@@ -5,7 +5,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.FinancialPeriods;
 
-public class FinancialPeriodCreateCommand : BaseCreateCommand<ApiResponse<FinancialPeriod>>
+public class FinancialPeriodCreateCommand : BaseCreateCommand<FinancialPeriod>
 {
     public string? YearNumber { get; set; }
     public byte PeriodTypeByMonth { get; set; } = FinancialPeriodType.OneYear;

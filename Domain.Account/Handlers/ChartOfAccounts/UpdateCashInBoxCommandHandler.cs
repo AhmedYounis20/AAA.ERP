@@ -4,17 +4,16 @@ using Domain.Account.Commands.SubLeadgers.CashInBoxes;
 using Domain.Account.InputModels.Subleadgers;
 using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.SubLeadgers;
+using Domain.Account.Services.Interfaces;
 using Shared;
 using Shared.Responses;
 
 namespace Domain.Account.Handlers.CashInBoxes;
 
-public class ChartOfAccountUpdateCommandHandler(ICashInBoxService service): ICommandHandler<ChartOfAccountUpdateCommand,ApiResponse<ChartOfAccount>>
+public class ChartOfAccountUpdateCommandHandler(IChartOfAccountService service): ICommandHandler<ChartOfAccountUpdateCommand,ApiResponse<ChartOfAccount>>
 {
     public async Task<ApiResponse<ChartOfAccount>> Handle(ChartOfAccountUpdateCommand request, CancellationToken cancellationToken)
     {
-         await service.Create(new BaseSubLeadgerInputModel());
-
-         return new ApiResponse<ChartOfAccount>();
+         return await service.Update(request);
     }
 }

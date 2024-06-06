@@ -4,5 +4,5 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.AccountGuides;
 
-public class AccountGuideUpdateCommand : BaseSettingUpdateCommand<ApiResponse<AccountGuide>>
+public class AccountGuideUpdateCommand : BaseSettingUpdateCommand<AccountGuide>
 { }

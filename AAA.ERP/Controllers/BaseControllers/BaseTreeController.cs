@@ -17,13 +17,13 @@ namespace AAA.ERP.Controllers.BaseControllers;
 public class BaseTreeController<TEntity, TCreate,TUpdate> 
     : BaseController<TEntity, TCreate,TUpdate> 
     where TEntity : BaseTreeEntity<TEntity> 
-    where TCreate : BaseTreeCreateCommand<ApiResponse<TEntity>>
-    where TUpdate : BaseTreeUpdateCommand<ApiResponse<TEntity>>
+    where TCreate : BaseTreeCreateCommand<TEntity>
+    where TUpdate : BaseTreeUpdateCommand<TEntity>
 {
     //[HttpGet]
     //public 
-    private readonly IBaseTreeService<TEntity> _service;
-    public BaseTreeController(IBaseTreeService<TEntity> service,
+    private readonly IBaseTreeService<TEntity,TCreate,TUpdate> _service;
+    public BaseTreeController(IBaseTreeService<TEntity,TCreate,TUpdate> service,
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
     => _service = service;

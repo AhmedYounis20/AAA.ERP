@@ -1,38 +1,45 @@
-﻿using System.Collections;
+﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Domain.Account.Services.BaseServices.interfaces;
+using Mapster;
 using Shared.BaseEntities;
 using Shared.Responses;
 
 namespace Domain.Account.Services.BaseServices.impelemtation;
 
-public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEntity
+public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
+    IBaseService<TEntity, TCreateCommand, TUpdateCommand>
+    where TEntity : BaseEntity
+    where TCreateCommand : BaseCreateCommand<TEntity>
+    where TUpdateCommand : BaseUpdateCommand<TEntity>
 {
     private readonly IBaseRepository<TEntity> _repository;
-    private readonly IBaseBussinessValidator<TEntity> _bussinessValidator;
-    public BaseService(IBaseRepository<TEntity> repository, IBaseBussinessValidator<TEntity> bussinessValidator)
+
+    public BaseService(IBaseRepository<TEntity> repository)
     {
         _repository = repository;
-        _bussinessValidator = bussinessValidator;
     }
 
-    public virtual async Task<ApiResponse<TEntity>> Create(TEntity entity, bool isValidate = true)
+    public virtual async Task<ApiResponse<TEntity>> Create(TCreateCommand command, bool isValidate = true)
     {
         try
         {
             if (isValidate)
             {
-                var bussinessValidationResult = await _bussinessValidator.ValidateCreateBussiness(entity);
-                if (!bussinessValidationResult.IsValid)
+                var bussinessValidationResult = await ValidateCreate(command);
+                if (!bussinessValidationResult.isValid)
                 {
                     return new ApiResponse<TEntity>
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = bussinessValidationResult.ListOfErrors
+                        ErrorMessages = bussinessValidationResult.errors
                     };
                 }
             }
+
+            TEntity entity = command.Adapt<TEntity>();
             await _repository.Add(entity);
             return new ApiResponse<TEntity>
             {
@@ -47,7 +54,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -70,7 +77,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -93,7 +100,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -116,7 +123,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -125,13 +132,33 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
     {
         try
         {
+            TEntity? entity = null;
+            if (isValidate)
+            {
+                var validationResult = await ValidateDelete(id);
+                if (!validationResult.isValid)
+                {
+                    return new ApiResponse<TEntity>
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = validationResult.errors
+                    };
+                }
+
+                entity = validationResult.entity;
+            }
+            else
+                entity = await _repository.Get(id);
+
+            if(entity != null)
+                await _repository.Delete(entity);
             
-            var removedEntity = await _repository.Delete(id);
             return new ApiResponse<TEntity>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
-                Result = removedEntity
+                Result = entity
             };
         }
         catch (Exception ex)
@@ -140,7 +167,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -163,7 +190,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -187,30 +214,41 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
 
-    public virtual async Task<ApiResponse<TEntity>> Update(TEntity entity, bool isValidate = true)
+    public virtual async Task<ApiResponse<TEntity>> Update(TUpdateCommand command, bool isValidate = true)
     {
         try
         {
+            TEntity? entity = null;
             if (isValidate)
             {
-                var bussinessValidationResult = await _bussinessValidator.ValidateUpdateBussiness(entity);
-                if (!bussinessValidationResult.IsValid)
+                var bussinessValidationResult = await ValidateUpdate(command);
+                if (!bussinessValidationResult.isValid)
                 {
                     return new ApiResponse<TEntity>
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = bussinessValidationResult.ListOfErrors
+                        ErrorMessages = bussinessValidationResult.errors
                     };
                 }
+
+                entity = bussinessValidationResult.entity;
+            }
+            else
+                entity = await _repository.Get(command.Id);
+
+            if (entity != null)
+            {
+                entity = command.Adapt<TEntity>();
+                entity.ModifiedAt = DateTime.Now;
+                await _repository.Update(entity);
             }
 
-            await _repository.Update(entity);
             return new ApiResponse<TEntity>
             {
                 IsSuccess = true,
@@ -224,7 +262,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
     }
@@ -247,8 +285,39 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                ErrorMessages = new List<string> {ex.Message}
             };
         }
+    }
+
+    protected virtual async Task<(bool isValid, List<string> errors)> ValidateCreate(TCreateCommand command)
+    {
+        await Task.CompletedTask;
+        return (true, new List<string>());
+    }
+
+    protected virtual async Task<(bool isValid, List<string> errors,TEntity? entity)> ValidateUpdate(TUpdateCommand command)
+    {
+        bool isValid = true;
+        List<string> listOfErrors = new List<string>();
+        TEntity? entity = await _repository.Get(command.Id);
+        if(entity == null)
+        {
+            isValid = false;
+            listOfErrors = new List<string> { $"{typeof(TEntity).Name} with Id: {command.Id} not found"};
+            return (isValid, listOfErrors, entity);
+        }
+
+        await Task.CompletedTask;
+        return (isValid, listOfErrors, entity);
+    }
+
+    protected virtual async Task<(bool isValid, List<string> errors,TEntity? entity)> ValidateDelete(Guid id)
+    {
+        TEntity? entity = await _repository.Get(id);
+        if (entity is null)
+            return (false, ["RecordNotFound"], null);
+        
+        return (true, [],entity);
     }
 }

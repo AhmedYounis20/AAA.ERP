@@ -1,6 +1,6 @@
 ﻿namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 
-public class BaseTreeSettingUpdateCommand<TCommand> : BaseSettingUpdateCommand<TCommand>
+public class BaseTreeSettingUpdateCommand<TResponse> : BaseSettingUpdateCommand<TResponse>
 {
     public Guid? ParentId { get; set; }
 }

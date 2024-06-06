@@ -3,17 +3,16 @@ using Domain.Account.Commands.Currencies;
 using Domain.Account.Commands.SubLeadgers.CashInBoxes;
 using Domain.Account.InputModels.Subleadgers;
 using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Services.Interfaces;
 using Shared;
 using Shared.Responses;
 
 namespace Domain.Account.Handlers.Currencies;
 
-public class CurrencyUpdateCommandHandler(ICashInBoxService service): ICommandHandler<CurrencyUpdateCommand,ApiResponse<Currency>>
+public class CurrencyUpdateCommandHandler(ICurrencyService service): ICommandHandler<CurrencyUpdateCommand,ApiResponse<Currency>>
 {
     public async Task<ApiResponse<Currency>> Handle(CurrencyUpdateCommand request, CancellationToken cancellationToken)
     {
-         await service.Create(new BaseSubLeadgerInputModel());
-
-         return new ApiResponse<Currency>();
+         return await service.Update(request);
     }
 }

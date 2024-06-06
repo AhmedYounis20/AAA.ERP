@@ -5,5 +5,5 @@ using Shared.Responses;
 
 namespace Domain.Account.Validators.ComandValidators.AccountGuides;
 
-public class AccountGuideCreateValidator : BaseSettingCreateValidator<AccountGuideCreateCommand,ApiResponse<AccountGuide>>
+public class AccountGuideCreateValidator : BaseSettingCreateValidator<AccountGuideCreateCommand,AccountGuide>
 { }

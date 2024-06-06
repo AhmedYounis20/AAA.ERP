@@ -4,7 +4,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.Currencies;
 
-public class CurrencyCreateCommand : BaseSettingCreateCommand<ApiResponse<Currency>>
+public class CurrencyCreateCommand : BaseSettingCreateCommand<Currency>
 {
     public decimal ExchangeRate { get; set; }
     public string? Symbol { get; set; }

@@ -1,4 +1,5 @@
-﻿using Domain.Account.Models.Entities.GLSettings;
+﻿using Domain.Account.Commands.GLSettings;
+using Domain.Account.Models.Entities.GLSettings;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.Interfaces;
 using Shared.Responses;
@@ -21,7 +22,7 @@ public class GLSettingService : IGLSettingService
         };
     }
 
-    public async Task<ApiResponse<GLSetting>> Update(GLSetting glsetting)
+    public async Task<ApiResponse<GLSetting>> Update(GlSettingUpdateCommand glsetting)
     {
         var dbGLSetting = await _repository.GetGLSetting();
         if (dbGLSetting != null)
@@ -32,7 +33,7 @@ public class GLSettingService : IGLSettingService
             dbGLSetting.DecimalDigitsNumber = glsetting.DecimalDigitsNumber;
             dbGLSetting.MonthDays = glsetting.MonthDays;
             dbGLSetting.DepreciationApplication = glsetting.DepreciationApplication;
-            dbGLSetting.ModifiedBy = glsetting.ModifiedBy;
+            dbGLSetting.ModifiedAt = DateTime.Now;
 
             var updated = await _repository.Update(dbGLSetting);
             return new ApiResponse<GLSetting>

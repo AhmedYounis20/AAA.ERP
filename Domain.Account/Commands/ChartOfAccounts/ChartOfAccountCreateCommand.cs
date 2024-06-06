@@ -4,7 +4,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.ChartOfAccounts;
 
-public class ChartOfAccountCreateCommand : BaseTreeSettingCreateCommand<ApiResponse<ChartOfAccount>>
+public class ChartOfAccountCreateCommand : BaseTreeSettingCreateCommand<ChartOfAccount>
 {
     public string? Code { get; set; }
     public Guid AccountGuidId { get; set; }

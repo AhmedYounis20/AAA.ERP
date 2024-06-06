@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Domain.Account.Commands.GLSettings;
 using Domain.Account.InputModels;
 using Domain.Account.Models.Entities.GLSettings;
 using Domain.Account.Services.Interfaces;
 using Domain.Account.Validators.InputValidators;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 using Shared.Resources;
@@ -19,7 +21,10 @@ public class GLSettingsController : ControllerBase
     IMapper _mapper;
     IStringLocalizer<Resource> _localizer;
     IGLSettingService _service;
-    public GLSettingsController(IGLSettingService service, GLSettingInputValidator validator, IStringLocalizer<Resource> localizer, IMapper mapper)
+    public GLSettingsController(IGLSettingService service,
+        GLSettingInputValidator validator,
+        IStringLocalizer<Resource> localizer,
+        IMapper mapper)
     {
         _validator = validator;
         _mapper = mapper;
@@ -36,15 +41,16 @@ public class GLSettingsController : ControllerBase
     }
 
     [HttpPut]
-    public virtual async Task<IActionResult> Update(GLSettingInputModel input)
+    public virtual async Task<IActionResult> Update(GlSettingUpdateCommand input)
     {
-        var validationResult = _validator.Validate(input);
+        var toValidate = input.Adapt<GLSettingInputModel>();
+        var validationResult = _validator.Validate(toValidate);
         if (validationResult.IsValid)
         {
             var entity = _mapper.Map<GLSetting>(input);
             var userId = User.Claims.FirstOrDefault(e => e.Type == "id")?.Value;
             entity.ModifiedBy = Guid.Parse(userId ?? "");
-            var result = await _service.Update(entity);
+            var result = await _service.Update(input);
             return StatusCode((int)result.StatusCode, result);
         }
         else

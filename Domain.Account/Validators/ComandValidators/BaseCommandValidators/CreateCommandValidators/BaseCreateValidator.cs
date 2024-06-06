@@ -1,5 +1,6 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using FluentValidation;
+using Shared.Responses;
 
 namespace Domain.Account.Validators.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 

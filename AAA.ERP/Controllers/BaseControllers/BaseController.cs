@@ -15,14 +15,14 @@ namespace AAA.ERP.Controllers.BaseControllers
     [Authorize]
     public class BaseController<TEntity, TCreate, TUpdate> : ControllerBase
         where TEntity : BaseEntity
-        where TCreate : BaseCreateCommand<ApiResponse<TEntity>>
-        where TUpdate : BaseUpdateCommand<ApiResponse<TEntity>>
+        where TCreate : BaseCreateCommand<TEntity>
+        where TUpdate : BaseUpdateCommand<TEntity>
     {
-        private readonly IBaseService<TEntity> _service;
+        private readonly IBaseService<TEntity,TCreate,TUpdate> _service;
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
 
-        public BaseController(IBaseService<TEntity> service,
+        public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,
             IStringLocalizer<Resource> localizer,
             ISender sender)
         {

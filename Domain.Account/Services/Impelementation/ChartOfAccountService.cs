@@ -1,4 +1,5 @@
-﻿using Domain.Account.InputModels;
+﻿using Domain.Account.Commands.ChartOfAccounts;
+using Domain.Account.InputModels;
 using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;
@@ -7,23 +8,22 @@ using Domain.Account.Validators.BussinessValidator.Interfaces;
 using Shared.Responses;
 
 namespace Domain.Account.Services.Impelementation;
-public class ChartOfAccountService : BaseTreeSettingService<ChartOfAccount>, IChartOfAccountService
-{
-    IChartOfAccountRepository _repo;
-    public ChartOfAccountService(IChartOfAccountRepository repository, IChartOfAccountBussinessValidator bussinessValidator) : base(repository, bussinessValidator)
-    => _repo = repository;
-    public async Task<string> GenerateNewCodeForChild(Guid? parentId)
-        => await _repo.GenerateNewCodeForChild(parentId);
 
-    public override async Task<ApiResponse<ChartOfAccount>> Create(ChartOfAccount entity, bool isValidate = true)
-    {
-        entity.Code = await GenerateNewCodeForChild(entity.ParentId);
-        entity.IsDepreciable = false;
-        return await base.Create(entity, isValidate);
-    }
+public class ChartOfAccountService :
+    BaseTreeSettingService<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>,
+    IChartOfAccountService
+{
+    IChartOfAccountRepository _repository;
+
+    public ChartOfAccountService(IChartOfAccountRepository repository) : base(repository)
+        => _repository = repository;
+
+    public async Task<string> GenerateNewCodeForChild(Guid? parentId)
+        => await _repository.GenerateNewCodeForChild(parentId);
+
     public async Task<ApiResponse<ChartOfAccountInputModel>> NextAccountDefaultData(Guid? parentId)
     {
-        ChartOfAccount? parent = parentId is not null  ? (await _repo.Get(parentId?? Guid.Empty)): null;
+        ChartOfAccount? parent = parentId is not null ? (await _repository.Get(parentId ?? Guid.Empty)) : null;
         ChartOfAccountInputModel inputModel = new ChartOfAccountInputModel
         {
             parentId = parentId,
@@ -42,5 +42,35 @@ public class ChartOfAccountService : BaseTreeSettingService<ChartOfAccount>, ICh
             IsSuccess = true,
             Result = inputModel
         };
+    }
+
+    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ChartOfAccountCreateCommand command)
+    {
+        var result = await base.ValidateCreate(command);
+        ChartOfAccount? chartOfAccount = await _repository.GetChartOfAccountByCode(command.Code ?? "");
+
+        if (chartOfAccount != null) {
+            result.isValid = false;
+            result.errors.Add("ChartOfAccoutWithSameCodeExist");
+        }
+
+        return result;
+        
+    }
+
+    protected override async Task<(bool isValid, List<string> errors, ChartOfAccount? entity)> ValidateUpdate(ChartOfAccountUpdateCommand command)
+    {
+        var result = await  base.ValidateUpdate(command);
+        ChartOfAccount? chartOfAccount = await _repository.Get(command.Id);
+        if (chartOfAccount != null)
+        {
+            if(command.Code != chartOfAccount.Code)
+            {
+                result.isValid = false;
+                result.errors.Add("ChartOfAccountCodeCannotBeChanged");
+            }
+        }
+
+        return result;
     }
 }

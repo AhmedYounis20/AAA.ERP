@@ -4,7 +4,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.FinancialPeriods;
 
-public class FinancialPeriodUpdateCommand : BaseUpdateCommand<ApiResponse<FinancialPeriod>>
+public class FinancialPeriodUpdateCommand : BaseUpdateCommand<FinancialPeriod>
 {
     public string? YearNumber { get; set; }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain.Account.Commands.Currencies;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Services.BaseServices.interfaces;
+using Domain.Account.Services.Interfaces;
 using Domain.Account.Validators.InputValidators;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -14,7 +15,7 @@ namespace AAA.ERP.Controllers;
 [ApiController]
 public class CurrenciesController : BaseSettingController<Currency, CurrencyCreateCommand,CurrencyUpdateCommand>
 {
-    public CurrenciesController(IBaseSettingService<Currency> service,
+    public CurrenciesController(ICurrencyService service,
         CurrencyInputValidator validator, 
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
