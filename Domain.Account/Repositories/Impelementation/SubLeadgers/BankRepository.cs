@@ -6,7 +6,7 @@ using Shared.BaseRepositories.Impelementation;
 
 namespace Domain.Account.Repositories.Impelementation.SubLeadgers;
 
-public class CashInBoxRepository : BaseSubLeadgerRepository<CashInBox>, ICashInBoxRepository
+public class BankRepository : BaseSubLeadgerRepository<Bank>, IBankRepository
 {
-    public CashInBoxRepository(ApplicationDbContext context) : base(context){}
+    public BankRepository(ApplicationDbContext context) : base(context){}
 }

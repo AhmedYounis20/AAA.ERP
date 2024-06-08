@@ -9,6 +9,7 @@ using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Utility;
 using Mapster;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using Shared.BaseEntities;
 using Shared.Responses;
 
@@ -25,25 +26,27 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     private IUnitOfWork _unitOfWork;
     private IBaseSubLeadgerRepository<TEntity> _repository;
     private IHttpContextAccessor _accessor;
+    private string _accountId;
 
     public SubLeadgerService(IUnitOfWork unitOfWork, IBaseSubLeadgerRepository<TEntity> repository,
-        IHttpContextAccessor accessor) : base(repository)
+        IHttpContextAccessor accessor, string accountId) : base(repository)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
         _repository = repository;
+        _accountId = accountId;
     }
 
     public async Task<ApiResponse<TCreateCommand>> GetNextSubLeadgers(Guid? parentId)
     {
         string? code =
-            await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(SD.ChartAccountId));
+            await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(_accountId));
         TCreateCommand inputModel = Activator.CreateInstance<TCreateCommand>();
 
         inputModel.Code = code;
         inputModel.NodeType = NodeType.Domain;
         inputModel.ParentId = parentId;
-        
+
         return new ApiResponse<TCreateCommand>
         {
             IsSuccess = true,
@@ -58,10 +61,10 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         {
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
             ChartOfAccount? chartOfAccountParent =
-                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.ChartAccountId));
+                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(_accountId));
             string newCode = await _unitOfWork
                 .ChartOfAccountRepository
-                .GenerateNewCodeForChild(Guid.Parse(SD.ChartAccountId));
+                .GenerateNewCodeForChild(Guid.Parse(_accountId));
             TEntity entity = command.Adapt<TEntity>();
             if (isDomain)
             {
@@ -69,14 +72,15 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                 {
                     Name = command.Name,
                     NameSecondLanguage = command.NameSecondLanguage,
-                    ParentId = Guid.Parse(SD.ChartAccountId),
+                    ParentId = Guid.Parse(_accountId),
                     Code = newCode,
                     AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
                     IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,
                     IsActiveAccount = chartOfAccountParent?.IsActiveAccount ?? false,
                     IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
                     IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
-                    AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid()
+                    AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
+                    IsCreatedFromSubLeadger = true
                 };
             }
             else
@@ -85,7 +89,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                 entity.ChartOfAccount = null;
             }
             await _repository.Add(entity);
-            
+
             return new ApiResponse<TEntity>
             {
                 IsSuccess = true,
@@ -112,7 +116,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             if (entity != null)
             {
                 var newEntity = command.Adapt<TEntity>();
-                
+
                 if (entity.ChartOfAccount is not null)
                 {
                     newEntity.ChartOfAccount = entity.ChartOfAccount;
@@ -140,8 +144,51 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         }
     }
 
-    public Task<ApiResponse<CashInBox>> Delete(Guid id)
+    public override async Task<ApiResponse<TEntity>> Delete(Guid id, bool isValidate = true)
     {
-        throw new NotImplementedException();
+        var validationResult = await ValidateDelete(id);
+        if (validationResult.isValid)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                if (validationResult.entity is not null)
+                {
+
+                    var entity = validationResult.entity;
+
+                    await _repository.Delete(entity);
+
+                    if (entity.ChartOfAccountId.HasValue)
+                        await _unitOfWork.ChartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
+                }
+                await _unitOfWork.CommitAsync();
+
+                return new ApiResponse<TEntity>
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.OK,
+                    Result = validationResult.entity
+                };
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackAsync();
+                Log.Error(ex.Message.ToString());
+                return new ApiResponse<TEntity>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = [ex.Message.Trim().ToString()]
+                };
+            }
+        }
+
+        return new ApiResponse<TEntity>
+        {
+            IsSuccess = false,
+            StatusCode = HttpStatusCode.BadRequest,
+            ErrorMessages = validationResult.errors
+        };
     }
 }

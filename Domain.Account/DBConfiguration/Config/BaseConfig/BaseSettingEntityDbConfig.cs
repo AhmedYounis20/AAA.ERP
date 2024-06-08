@@ -9,8 +9,8 @@ public class BaseSettingEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity> wh
     {
         base.ApplyConfiguration(builder);
 
-        _ = builder.Property(e => e.Name).IsRequired().HasMaxLength(50).HasColumnOrder(columnNumber++);
-        _ = builder.Property(e => e.NameSecondLanguage).HasMaxLength(50).IsRequired().HasColumnOrder(columnNumber++);
+        _ = builder.Property(e => e.Name).IsRequired().HasMaxLength(100).HasColumnOrder(columnNumber++);
+        _ = builder.Property(e => e.NameSecondLanguage).HasMaxLength(100).IsRequired().HasColumnOrder(columnNumber++);
         _ = builder.HasIndex(e => e.Name).IsUnique();
         _ = builder.HasIndex(e => e.NameSecondLanguage).IsUnique();
 

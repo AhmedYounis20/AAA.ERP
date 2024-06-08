@@ -37,7 +37,7 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> {ex.Message}
+                ErrorMessages = new List<string> { ex.Message }
             };
         }
     }
@@ -79,5 +79,5 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
         }
 
         return (isValid, listOfErrors, entity);
-            }
+    }
 }

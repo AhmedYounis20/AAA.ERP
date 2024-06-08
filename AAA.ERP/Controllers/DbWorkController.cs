@@ -18,7 +18,7 @@ public class DbworkController : ControllerBase
         _importDataToSeed = importDataToSeed;
     }
 
-    [HttpGet("export/{foldername}")]
+    [HttpGet("export/{folderName}")]
     public async Task<IActionResult> ExportData(string folderName = "account")
     {
         await _exportDataToSeed.ExportAllTablesToJsonAsync(folderName);

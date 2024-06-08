@@ -9,6 +9,7 @@ namespace Domain.Account.DBConfiguration.Config.ChartOfAccountDbConfig
     {
         protected override EntityTypeBuilder<ChartOfAccount> ApplyConfiguration(EntityTypeBuilder<ChartOfAccount> builder)
         {
+            builder.ToTable("ChartOfAccounts");
             
             _ = builder.Property(e => e.AccountGuidId).HasColumnOrder(columnNumber++).IsRequired();
             _ = builder.HasOne<AccountGuide>().WithMany().HasForeignKey(e => e.AccountGuidId);
@@ -22,9 +23,10 @@ namespace Domain.Account.DBConfiguration.Config.ChartOfAccountDbConfig
             _ = builder.Property(e => e.IsPostedAccount).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsStopDealing).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsActiveAccount).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.IsCreatedFromSubLeadger).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.IsSubLeadgerBaseAccount).HasColumnOrder(columnNumber++);
 
             base.ApplyConfiguration(builder);
-            builder.ToTable("ChartOfAccounts");
 
             return builder;
         }

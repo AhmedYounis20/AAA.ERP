@@ -12,6 +12,6 @@ public class CashInBoxCreateCommandHandler(ICashInBoxService service): ICommandH
     public async Task<ApiResponse<CashInBox>> Handle(CashInBoxCreateCommand request,
         CancellationToken cancellationToken)
     {
-        return await service.Create(new BaseSubLeadgerInputModel());
+        return await service.Create(request);
     }
 }

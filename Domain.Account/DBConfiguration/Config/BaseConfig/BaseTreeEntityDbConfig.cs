@@ -13,7 +13,7 @@ public class BaseTreeEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity>  wher
         _ = builder.HasKey(e => e.Id);
         _ = builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.ParentId).HasColumnOrder(columnNumber++);
-        _ = builder.HasOne<TEntity>().WithMany().HasForeignKey(e => e.ParentId).HasConstraintName("FK_ParentId");
+        _ = builder.HasOne<TEntity>().WithMany().HasForeignKey(e => e.ParentId);
 
         return builder;
     }

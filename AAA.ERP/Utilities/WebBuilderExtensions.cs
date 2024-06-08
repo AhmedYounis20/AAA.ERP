@@ -1,5 +1,5 @@
-﻿using System.Collections.Immutable;
-using System.Globalization;
+﻿using System.Globalization;
+using AAA.ERP.Controllers;
 using AAA.ERP.Services.Impelementation;
 using AAA.ERP.Services.Impelementation.SubLeadgers;
 using AAA.ERP.Services.Interfaces.SubLeadgers;
@@ -17,20 +17,26 @@ using Domain.Account.Repositories.Interfaces.SubLeadgers;
 using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Impelementation;
+using Domain.Account.Services.Impelementation.SubLeadgers;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
 using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
 using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Domain.Account.Validators.BussinessValidator.Impelementation;
 using Domain.Account.Validators.BussinessValidator.Interfaces;
+using Domain.Account.Validators.ComandValidators.AccountGuides;
 using Domain.Account.Validators.InputValidators;
 using Domain.Account.Validators.InputValidators.FinancialPeriods;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Shared.BaseEntities.Identity;
 using Shared.Behaviors;
+
 namespace AAA.ERP.Utilities;
 
 public static class WebBuilderExtensions
@@ -40,7 +46,8 @@ public static class WebBuilderExtensions
         services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
-
+        services.AddValidatorsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(typeof(ApplicationDbContext).Assembly);
@@ -120,8 +127,8 @@ public static class WebBuilderExtensions
     }
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBaseSettingService<>), typeof(BaseSettingService<>));
-        services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+        services.AddScoped(typeof(IBaseSettingService<,,>), typeof(BaseSettingService<,,>));
+        services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>));
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
 
@@ -131,6 +138,9 @@ public static class WebBuilderExtensions
         services.AddScoped<IGLSettingService, GLSettingService>();
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
+        services.AddScoped<IBankService, BankService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ISupplierService, SupplierService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
@@ -144,7 +154,8 @@ public static class WebBuilderExtensions
         services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
         services.AddScoped<IFinancialPeriodBussinessValidator, FinancialPeriodBussinessValidator>();
         services.AddScoped<IChartOfAccountBussinessValidator, ChartOfAccountBussinessValidator>();
-
+        
+        services.AddScoped<AccountGuideCreateValidator>();
         // fluent validators
         services.AddScoped<AccountGuideInputValidator>();
         services.AddScoped<CurrencyInputValidator>();
@@ -164,6 +175,9 @@ public static class WebBuilderExtensions
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
+        services.AddScoped<IBankRepository, BankRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
         services.AddHttpContextAccessor();
     }

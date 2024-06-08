@@ -19,7 +19,7 @@ public class ChartOfAccountRepository : BaseTreeSettingRepository<ChartOfAccount
         {
             // If parent not found, generate code based on siblings
             var siblingCodes = await _dbSet
-                .Where(e => e.ParentId == parentId)
+                .Where(e => e.ParentId == null)
                 .Select(e => e.Code)
                 .ToListAsync();
 
