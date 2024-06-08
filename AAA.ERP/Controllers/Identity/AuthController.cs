@@ -1,6 +1,8 @@
-﻿using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Models.Entities.Identity;
-using AAA.ERP.Responses;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Dtos;
+using Domain.Account.Utility;
+using Shared.BaseEntities.Identity;
+using Shared.Responses;
 
 namespace AAA.ERP.Controllers.Identity;
 
@@ -9,7 +11,6 @@ namespace AAA.ERP.Controllers.Identity;
 public class AuthController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
-    private ApiResponse _response;
     private string? secretKey;
 
     private UserManager<ApplicationUser> _userManager;
@@ -18,7 +19,6 @@ public class AuthController : ControllerBase
         UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _db = db;
-        _response = new ApiResponse();
         secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         _userManager = userManager;
         _roleManager = roleManager;
@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequestDTO)
     {
         ApplicationUser? userFromDb = await _db.ApplicationUsers.FirstOrDefaultAsync(e => e.UserName.ToLower() == loginRequestDTO.UserName.ToLower());
-
+        var _response = new ApiResponse<LoginResponseDTO>();
         if (userFromDb == null)
         {
             _response.IsSuccess = false;
@@ -98,7 +98,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
     {
         ApplicationUser? userFromDb = await _db.ApplicationUsers.FirstOrDefaultAsync(e => e.UserName.ToLower() == registerRequestDTO.UserName.ToLower());
-
+        var _response = new ApiResponse<ApplicationUser>();
 
         if (userFromDb != null)
         {

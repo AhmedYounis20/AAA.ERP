@@ -1,92 +1,66 @@
-﻿using AAA.ERP.InputModels.BaseInputModels;
-using AAA.ERP.Models.BaseEntities;
-using AAA.ERP.Resources;
-using AAA.ERP.Responses;
-using AAA.ERP.Services.BaseServices.interfaces;
-using AAA.ERP.Validators.InputValidators.BaseValidators;
-using AutoMapper;
+﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Services.BaseServices.interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
+using Shared.BaseEntities;
+using Shared.Resources;
+using Shared.Responses;
 
-namespace AAA.ERP.Controllers
+namespace AAA.ERP.Controllers.BaseControllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class BaseController<TEntity, TInput> : ControllerBase where TEntity : BaseEntity where TInput : BaseInputModel
+    public class BaseController<TEntity, TCreate, TUpdate> : ControllerBase
+        where TEntity : BaseEntity
+        where TCreate : BaseCreateCommand<TEntity>
+        where TUpdate : BaseUpdateCommand<TEntity>
     {
-        private readonly IBaseService<TEntity> _service;
-        private readonly BaseInputValidator<TInput> _validator;
-        private readonly IMapper _mapper;
+        private readonly IBaseService<TEntity,TCreate,TUpdate> _service;
         private readonly IStringLocalizer<Resource> _localizer;
-        public BaseController(IBaseService<TEntity> service, BaseInputValidator<TInput> validator, IStringLocalizer<Resource> localizer, IMapper mapper)
+        private readonly ISender _sender;
+
+        public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,
+            IStringLocalizer<Resource> localizer,
+            ISender sender)
         {
             _service = service;
-            _validator = validator;
-            _mapper = mapper;
             _localizer = localizer;
+            _sender = sender;
         }
 
-        protected virtual async Task<IActionResult> CreateRecord(TInput input)
+        protected virtual async Task<IActionResult> CreateRecord(TCreate input)
         {
-            var validationResult = _validator.Validate(input);
-            if (validationResult.IsValid)
-            {
-                var userId = User.Claims.FirstOrDefault(e => e.Type == "id")?.Value;
-                var entity = _mapper.Map<TEntity>(input);
-                entity.CreatedBy = Guid.Parse(userId);
-                var result = await _service.Create(entity);
-                result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-                return StatusCode((int)result.StatusCode, result);
-            }
-            else
-            {
-                return BadRequest(
-                   new ApiResponse
-                   {
-                       IsSuccess = false,
-                       StatusCode = HttpStatusCode.BadRequest,
-                       ErrorMessages = validationResult.Errors.Select(e => _localizer[e.ErrorMessage].Value).ToList(),
-                   });
-            }
+            var result = await _sender.Send(input);
+            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+            return StatusCode((int) result.StatusCode, result);
         }
+
         protected virtual async Task<IActionResult> GetAllRecords()
         {
             var result = await _service.ReadAll();
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
+
         protected virtual async Task<IActionResult> GetRecord(Guid id)
         {
             var result = await _service.ReadById(id);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
-        protected virtual async Task<IActionResult> UpdateRecord(Guid id, TInput input)
+
+        protected virtual async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
         {
-            var validationResult = _validator.Validate(input);
-            if (validationResult.IsValid)
-            {
-                var entity = _mapper.Map<TEntity>(input);
-                entity.Id = id;
-                var userId = User.Claims.FirstOrDefault(e => e.Type == "id").Value;
-                entity.ModifiedBy = Guid.Parse(userId);
-                var result = await _service.Update(entity);
-                return StatusCode((int)result.StatusCode, result);
-            }
-            else
-            {
-                return BadRequest(
-                   new ApiResponse
-                   {
-                       IsSuccess = false,
-                       StatusCode = HttpStatusCode.BadRequest,
-                       ErrorMessages = validationResult.Errors.Select(e => _localizer[e.ErrorMessage].Value).ToList(),
-                   });
-            }
+            var result = await _sender.Send(input);
+            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+            return StatusCode((int) result.StatusCode, result);
         }
+
         protected virtual async Task<IActionResult> DeleteRecord(Guid id)
         {
             var result = await _service.Delete(id);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
     }
 }

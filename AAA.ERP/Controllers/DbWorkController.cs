@@ -1,6 +1,5 @@
-﻿using System.Reflection;
-using AAA.ERP.DBConfiguration.DbContext;
-using AAA.ERP.Utility;
+﻿using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Utility;
 
 namespace AAA.ERP.Controllers;
 
@@ -19,7 +18,7 @@ public class DbworkController : ControllerBase
         _importDataToSeed = importDataToSeed;
     }
 
-    [HttpGet("export/{foldername}")]
+    [HttpGet("export/{folderName}")]
     public async Task<IActionResult> ExportData(string folderName = "account")
     {
         await _exportDataToSeed.ExportAllTablesToJsonAsync(folderName);

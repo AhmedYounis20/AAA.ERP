@@ -1,11 +1,785 @@
 [
   {
-    "Id": "5a117a50-2934-41ac-ae8b-612a221b1dba",
-    "Name": "اصول",
-    "NameSecondLanguage": "assets",
-    "CreatedBy": "d3577e25-53ab-4ee0-b3d1-726976e5249f",
+    "Id": "6371da83-a7ef-45d3-8505-08dc3dfcb068",
+    "Name": "الأصول",
+    "NameSecondLanguage": "Assets",
+    "CreatedBy": "e643539d-d0a2-4710-6467-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-05-05T13:39:59.0940226",
+    "CreatedAt": "2024-06-08T14:17:21.0179957",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a412cada-48a6-4bb5-8506-08dc3dfcb068",
+    "Name": "الخصوم",
+    "NameSecondLanguage": "Liabilities",
+    "CreatedBy": "ed83ddad-f272-4145-6468-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0179986",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "85dab58f-78c5-4ff8-8507-08dc3dfcb068",
+    "Name": "المصروفات",
+    "NameSecondLanguage": "Expenses",
+    "CreatedBy": "4b78ae2c-f8b0-4f2d-6469-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0179994",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0c68fc21-05d1-4128-8508-08dc3dfcb068",
+    "Name": "الإيرادات",
+    "NameSecondLanguage": "Revenues",
+    "CreatedBy": "4b336547-d4c8-4dbf-646a-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180002",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "b0923474-f351-4935-8509-08dc3dfcb068",
+    "Name": "حقوق الملكية",
+    "NameSecondLanguage": "Stockholder's Equity",
+    "CreatedBy": "80f7c029-94bf-4fc0-646b-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018001",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "8ac902a9-cf10-4f9b-850a-08dc3dfcb068",
+    "Name": "الأصول المتداولة",
+    "NameSecondLanguage": "Current Assets",
+    "CreatedBy": "1cee8569-8d96-4827-646c-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180018",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "ce85b80c-30a0-4c5a-850b-08dc3dfcb068",
+    "Name": "الأصول طويلة الأجل",
+    "NameSecondLanguage": "Non-Current Assets",
+    "CreatedBy": "4bc89ecd-99c7-471a-646d-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180026",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "d0e96a2b-390c-4c2d-850c-08dc3dfcb068",
+    "Name": "النقدية و ما في حكمها",
+    "NameSecondLanguage": "Cash In Box",
+    "CreatedBy": "916c5dfb-09f4-42d3-646e-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180034",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a8819d15-bae1-44ab-850d-08dc3dfcb068",
+    "Name": "العملاء",
+    "NameSecondLanguage": "Account Receivables",
+    "CreatedBy": "2ab106a0-d06c-4faa-646f-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180041",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "6066c2c6-4e74-4fc0-850e-08dc3dfcb068",
+    "Name": "أوراق القبض",
+    "NameSecondLanguage": "Notes Receivables",
+    "CreatedBy": "45b6cd78-e36b-4351-6470-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180049",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "357e4286-1904-494e-850f-08dc3dfcb068",
+    "Name": "السندات المالية - قصيرة الأجل",
+    "NameSecondLanguage": "Trading Securities - Short Term",
+    "CreatedBy": "e1230ad5-e947-4236-6471-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180057",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0e9722ff-df3d-4937-8510-08dc3dfcb068",
+    "Name": "المخزون",
+    "NameSecondLanguage": "Inventory",
+    "CreatedBy": "4594f337-9f44-4189-6472-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180064",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "e689b3a4-7cad-4373-8511-08dc3dfcb068",
+    "Name": "أرصدة مدينة اخري",
+    "NameSecondLanguage": "Other Debit Accounts",
+    "CreatedBy": "7fced01c-e4e2-4d34-6473-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180072",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "b9105e37-acbb-4154-8512-08dc3dfcb068",
+    "Name": "مدينون",
+    "NameSecondLanguage": "Debitors",
+    "CreatedBy": "96126656-8cc6-445d-6474-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180079",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "23cfb46e-f97e-43f5-8513-08dc3dfcb068",
+    "Name": "مصروفات مدفوعة مقدماً",
+    "NameSecondLanguage": "PrePaid Expenses",
+    "CreatedBy": "2d7f370b-fede-4bcf-6475-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180087",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "af131f73-8ea9-4d76-8514-08dc3dfcb068",
+    "Name": "جاري مصلحة الضرائب - المدينة",
+    "NameSecondLanguage": "Debit - Tax Authority",
+    "CreatedBy": "efe2792b-761e-4730-6476-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180095",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "bc7492d9-f338-4b46-8515-08dc3dfcb068",
+    "Name": "النقدية بالصندوق",
+    "NameSecondLanguage": "Cash",
+    "CreatedBy": "b239cf24-acb1-43cf-6477-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180103",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0aecd366-95fd-47b8-8516-08dc3dfcb068",
+    "Name": "البنوك",
+    "NameSecondLanguage": "Banks",
+    "CreatedBy": "6d5cff55-953c-41cb-6478-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180111",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "3dbbad0d-b9b4-458a-8517-08dc3dfcb068",
+    "Name": "أوراق قبض تحت التحصيل",
+    "NameSecondLanguage": "Notes Receivable Under Collection",
+    "CreatedBy": "a0922fc1-a577-4657-6479-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180119",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "20bf05a7-14fb-4580-8518-08dc3dfcb068",
+    "Name": "المحافظ الإلكنترونية",
+    "NameSecondLanguage": "E-Wallets",
+    "CreatedBy": "46de1c83-a9c5-42d5-647a-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180128",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "323df7d7-5063-4d6f-8519-08dc3dfcb068",
+    "Name": "العهد",
+    "NameSecondLanguage": "Petty Cash",
+    "CreatedBy": "44adafbd-4895-481e-647b-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180136",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "d187d066-1324-4488-851a-08dc3dfcb068",
+    "Name": "سلف",
+    "NameSecondLanguage": "Advances",
+    "CreatedBy": "5138ac55-d503-426d-647c-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180143",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "1f1ed682-bfdc-42a1-851b-08dc3dfcb068",
+    "Name": "الأصول الثابتة",
+    "NameSecondLanguage": "Property,Plant And Equipments",
+    "CreatedBy": "24f83e2f-203e-46d2-647d-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180151",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "5d5fb07f-2792-4305-851c-08dc3dfcb068",
+    "Name": "الأصول الغير ملموسة",
+    "NameSecondLanguage": "Intangible Assets",
+    "CreatedBy": "18b149f2-341a-4463-647e-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018016",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c876a456-ef78-47dc-851d-08dc3dfcb068",
+    "Name": "الإستثمارات طويلة الأجل",
+    "NameSecondLanguage": "Long-Term Assets",
+    "CreatedBy": "60345a54-dd1e-43d6-647f-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180167",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "b95baa23-ae1c-4c2b-851e-08dc3dfcb068",
+    "Name": "أصول اخري",
+    "NameSecondLanguage": "Other Assets",
+    "CreatedBy": "50be75c4-cecf-4005-6480-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180174",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "4be82e3d-ac85-44d2-851f-08dc3dfcb068",
+    "Name": "براءات الأختراع",
+    "NameSecondLanguage": "Patents",
+    "CreatedBy": "67ef6850-39c9-476a-6481-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180182",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "94cb51ea-3886-4fde-8520-08dc3dfcb068",
+    "Name": "حقوق النشر",
+    "NameSecondLanguage": "Copyright",
+    "CreatedBy": "6468e62b-23a1-450e-6482-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018019",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0ed994ab-ada2-45d9-8521-08dc3dfcb068",
+    "Name": "العلامات التجارية",
+    "NameSecondLanguage": "Trademark",
+    "CreatedBy": "07771c8a-06b8-4fc7-6483-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180197",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "2448c162-2329-418f-8522-08dc3dfcb068",
+    "Name": "الأراضي",
+    "NameSecondLanguage": "Lands",
+    "CreatedBy": "26f69646-aaef-4ed4-6484-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180205",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "66d631a5-021d-4cb5-8523-08dc3dfcb068",
+    "Name": "المباني",
+    "NameSecondLanguage": "Building",
+    "CreatedBy": "d5dd47a2-5c17-4249-6485-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180213",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "8faa0f12-3b3e-4e26-8524-08dc3dfcb068",
+    "Name": "الآلات و المعدات",
+    "NameSecondLanguage": "Equipments",
+    "CreatedBy": "a8530bdb-563c-4982-6486-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180221",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c8b5cf24-98ab-414d-8525-08dc3dfcb068",
+    "Name": "الأجهزة الكهربائية",
+    "NameSecondLanguage": "Electronic Devices",
+    "CreatedBy": "965294a1-b510-4e6a-6487-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180229",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "2b70f4c6-3851-4967-8526-08dc3dfcb068",
+    "Name": "أجهزة و معدات مكتبية",
+    "NameSecondLanguage": "Office Supplies",
+    "CreatedBy": "a276b800-048c-4a3f-6488-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180236",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "cb9fd3bd-720e-45f0-8527-08dc3dfcb068",
+    "Name": "الأثاث",
+    "NameSecondLanguage": "Furniture",
+    "CreatedBy": "4310de10-48a3-4867-6489-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180244",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "8f2a2956-a327-4ec0-8528-08dc3dfcb068",
+    "Name": "السيارات و وسائل النقل",
+    "NameSecondLanguage": "Vehicles And Transportation Items",
+    "CreatedBy": "e3781ff6-89f6-45b8-648a-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180252",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "97a25e9d-dff3-4412-8529-08dc3dfcb068",
+    "Name": "عدد و أدوات",
+    "NameSecondLanguage": "Tools",
+    "CreatedBy": "f1482032-811f-4323-648b-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018026",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "5b02732c-bd1f-4c9f-852a-08dc3dfcb068",
+    "Name": "مجمع الإهلاك",
+    "NameSecondLanguage": "Accumulated Depreciation",
+    "CreatedBy": "da87226d-2864-40b9-648c-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180268",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "86c0ab17-14f7-45cc-852b-08dc3dfcb068",
+    "Name": "مجمع إهلاك المباني",
+    "NameSecondLanguage": "Building Depreciation",
+    "CreatedBy": "d3f75524-9c4f-4361-648d-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180276",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "11756e11-9861-4158-852c-08dc3dfcb068",
+    "Name": "مجمع إهلاك الآلات و المعدات",
+    "NameSecondLanguage": "Equipments Depreciation",
+    "CreatedBy": "2f80cd15-a767-44e4-648e-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180284",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "6d116f0e-1d2a-4924-852d-08dc3dfcb068",
+    "Name": "مجمع إهلاك الأجهزة الكهربائية",
+    "NameSecondLanguage": "Electronic Devices Depreciation",
+    "CreatedBy": "1739ef9c-ea24-45f7-648f-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180292",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a29e405f-8a8a-42ff-852e-08dc3dfcb068",
+    "Name": "مجمع إهلاك أجهزة و معدات مكتبية",
+    "NameSecondLanguage": "Office Supplies Depreciation",
+    "CreatedBy": "d405a96e-7758-4fb5-6490-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.01803",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "aff2891b-f9e0-4824-852f-08dc3dfcb068",
+    "Name": "مجمع إهلاك الأثاث",
+    "NameSecondLanguage": "Furniture Depreciation",
+    "CreatedBy": "c55d7396-3f16-48cd-6491-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180309",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "de0d3b5a-f655-429a-8530-08dc3dfcb068",
+    "Name": "مجمع إهلاك السيارات و وسائل النقل",
+    "NameSecondLanguage": "Vehicles And Transportation Items Depreciation",
+    "CreatedBy": "92e54573-5cb7-4dba-6492-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180316",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "70b76b30-8307-481b-8531-08dc3dfcb068",
+    "Name": "مجمع إهلاك عدد و أدوات",
+    "NameSecondLanguage": "Tools Depreciation",
+    "CreatedBy": "7f5fb259-9c71-4ef4-6493-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180324",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c2e6b32d-509a-4ad5-8532-08dc3dfcb068",
+    "Name": "رأس المال",
+    "NameSecondLanguage": "Capital",
+    "CreatedBy": "586bb200-5bc4-47db-6494-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180331",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "2629369f-c510-48c8-8533-08dc3dfcb068",
+    "Name": "أرباح العام",
+    "NameSecondLanguage": "Year Earnings",
+    "CreatedBy": "3d6dd8bf-a9e7-4f7d-6495-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180339",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "bd9d78cd-8972-4673-8534-08dc3dfcb068",
+    "Name": "الأرباح المحتجزة",
+    "NameSecondLanguage": "Retained Earnings",
+    "CreatedBy": "8df5e5c9-8f43-4c35-6496-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180347",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "9ec12013-e48b-4ee9-8535-08dc3dfcb068",
+    "Name": "الإحتياطيات",
+    "NameSecondLanguage": "Reserves",
+    "CreatedBy": "ea601f9b-f8d3-47d8-6497-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180354",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c0341b22-299f-46b6-8536-08dc3dfcb068",
+    "Name": "الدخل الشامل المتراكم",
+    "NameSecondLanguage": "Accumulated Other Comprehensive Income",
+    "CreatedBy": "6999cc73-c7cf-4bb9-6498-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180362",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a4745578-f430-4ab6-8537-08dc3dfcb068",
+    "Name": "فروق عملة",
+    "NameSecondLanguage": "Currency Exchange Gain Or Loss",
+    "CreatedBy": "271b0506-2e26-4349-6499-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180369",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "850fcaa7-75f1-4af7-8538-08dc3dfcb068",
+    "Name": "صافي المبيعات",
+    "NameSecondLanguage": "Net Sales",
+    "CreatedBy": "556c3ef2-87de-4a67-649a-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180377",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c14c0470-ca39-4a5c-8539-08dc3dfcb068",
+    "Name": "إيرادات أخري",
+    "NameSecondLanguage": "Other Gain",
+    "CreatedBy": "87d3b9b7-e9e4-465f-649b-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180385",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "6f363dac-2d08-4d2e-853a-08dc3dfcb068",
+    "Name": "إجمالي المبيعات",
+    "NameSecondLanguage": "Total Sales",
+    "CreatedBy": "b435726d-faf4-4a43-649c-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180393",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "c4c93287-120c-4480-853b-08dc3dfcb068",
+    "Name": "خصم مسموح به",
+    "NameSecondLanguage": "Sales Discount",
+    "CreatedBy": "38bb9ae4-1287-4bdf-649d-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180401",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a1130028-4dd5-49d8-853c-08dc3dfcb068",
+    "Name": "مردودات و مسموحات المبيعات",
+    "NameSecondLanguage": "Sales Returns & Allowances",
+    "CreatedBy": "722e74e3-08c6-4d5a-649e-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180408",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "f17c4a2d-76b2-4bb5-853d-08dc3dfcb068",
+    "Name": "مصروفات الإهلاك",
+    "NameSecondLanguage": "Expenses Depreciation",
+    "CreatedBy": "1e7145a6-59b8-431d-649f-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180416",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "1ecf3cba-11d9-452d-853e-08dc3dfcb068",
+    "Name": "صافي تكلفة البضاعة المباعة",
+    "NameSecondLanguage": "COGS",
+    "CreatedBy": "28e6d1db-9097-4341-64a0-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180424",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "bc8c9cf3-d9e1-49ff-853f-08dc3dfcb068",
+    "Name": "صافي المشتريات",
+    "NameSecondLanguage": "Total Purchases",
+    "CreatedBy": "7044cfaa-33bb-4bc7-64a1-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180434",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "d2f497ac-55c7-4167-8540-08dc3dfcb068",
+    "Name": "مصروفات التشغيل",
+    "NameSecondLanguage": "Operating Expenses",
+    "CreatedBy": "012dc4aa-7d1e-49ef-64a2-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180442",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "77245203-27b8-49b3-8541-08dc3dfcb068",
+    "Name": " مصروفات أخري",
+    "NameSecondLanguage": "Other Loses",
+    "CreatedBy": "35882b5b-99e9-41b0-64a3-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180449",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "5ea51c36-42ac-46b5-8542-08dc3dfcb068",
+    "Name": "إجمالي المشتريات",
+    "NameSecondLanguage": "Total Of Purchases",
+    "CreatedBy": "04b68af7-7c0d-4bd7-64a4-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180457",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "95342fd7-57c3-4b42-8543-08dc3dfcb068",
+    "Name": "تكلفة الشحن علي المشتريات",
+    "NameSecondLanguage": "Freight In Expenses",
+    "CreatedBy": "53f84d62-41f0-45a2-64a5-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180464",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "e00a6ca8-ca43-4e59-8544-08dc3dfcb068",
+    "Name": "خصم مكتسب",
+    "NameSecondLanguage": "Purchase Discount",
+    "CreatedBy": "ec2e9db2-8492-47f4-64a6-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180471",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0a920227-23c7-4c2a-8545-08dc3dfcb068",
+    "Name": "مردودات و مسموحات المشتريات",
+    "NameSecondLanguage": "Purchases Returns & Allowances",
+    "CreatedBy": "d0644185-7efe-41b0-64a7-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180479",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "daaa60d0-446b-4df4-8546-08dc3dfcb068",
+    "Name": "إجمالي تكلفة البضاعة المباعة",
+    "NameSecondLanguage": "Total Of COGS",
+    "CreatedBy": "3200be87-5177-4a9a-64a8-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180487",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "0bce0ca3-f439-4f1b-8547-08dc3dfcb068",
+    "Name": "تكلفة مردودات و مسموحات المبيعات",
+    "NameSecondLanguage": "Cost Of Sale Returns & Allowances",
+    "CreatedBy": "3da1743b-7d70-4b80-64a9-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180494",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "f987399c-2243-4c5d-8548-08dc3dfcb068",
+    "Name": "إهلاك الأصول الثابتة",
+    "NameSecondLanguage": "Property,Plant And Equipments Depreciation",
+    "CreatedBy": "22ee8457-f470-4e02-64aa-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180502",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "d45672f5-5469-4349-8549-08dc3dfcb068",
+    "Name": "مصروف إهلاك المباني",
+    "NameSecondLanguage": "Building Depreciation Expenses",
+    "CreatedBy": "e333e713-be1d-41ed-64ab-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018051",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "42155321-78a3-4933-854a-08dc3dfcb068",
+    "Name": "مصروف إهلاك الآلات و المعدات",
+    "NameSecondLanguage": "Equipments Depreciation Expenses",
+    "CreatedBy": "11b5b6f8-9fb9-4458-64ac-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180518",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "f6e76628-2471-4a2b-854b-08dc3dfcb068",
+    "Name": "مصروف إهلاك الأجهزة الكهربائية",
+    "NameSecondLanguage": "Electronic Devices Depreciation Expenses",
+    "CreatedBy": "fb2fc077-1d45-4728-64ad-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180525",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "5440be91-6ce8-4812-854c-08dc3dfcb068",
+    "Name": "مصروف إهلاك أجهزة و معدات مكتبية",
+    "NameSecondLanguage": "Office Supplies Depreciation Expenses",
+    "CreatedBy": "a9dca1ad-d887-4845-64ae-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180533",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "4cd75337-041f-4e76-854d-08dc3dfcb068",
+    "Name": "مصروف إهلاك الأثاث",
+    "NameSecondLanguage": "Furniture Depreciation Expenses",
+    "CreatedBy": "341e46bb-9c1b-4ad0-64af-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.018054",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "b16bff28-ee42-45cb-854e-08dc3dfcb068",
+    "Name": "مصروف إهلاك السيارات و وسائل النقل",
+    "NameSecondLanguage": "Vehicles And Transportation Items Depreciation Expenses",
+    "CreatedBy": "6785cb31-9bcb-4948-64b0-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180548",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "52b23a54-38df-4d2f-854f-08dc3dfcb068",
+    "Name": "مصروف إهلاك عدد و أدوات",
+    "NameSecondLanguage": "Tools Depreciation Expenses",
+    "CreatedBy": "28b6bb4a-dc47-470e-64b1-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180555",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "e033b070-d6c0-4f08-8550-08dc3dfcb068",
+    "Name": "الخصوم المتداولة",
+    "NameSecondLanguage": "Current Liabilities",
+    "CreatedBy": "cba84009-8e44-4c8d-64b2-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180564",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "1db543a1-b26d-4d0b-8551-08dc3dfcb068",
+    "Name": "الخصوم طويلة الأجل",
+    "NameSecondLanguage": "Long-Term Liabilities",
+    "CreatedBy": "5b8ba4a8-bcda-4cf2-64b3-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180571",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "07351a32-1281-4698-8552-08dc3dfcb068",
+    "Name": "قروض طويلة الأجل",
+    "NameSecondLanguage": "Long-Term Loans",
+    "CreatedBy": "61af5ff9-ba31-4458-64b4-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180579",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "a0e8193e-6332-4259-8553-08dc3dfcb068",
+    "Name": "سندات طويلة الأجل",
+    "NameSecondLanguage": "Long-Term Bonds",
+    "CreatedBy": "a489648d-2f29-49ff-64b5-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180586",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "68cf0b75-21a6-4f8a-8554-08dc3dfcb068",
+    "Name": "الموردين",
+    "NameSecondLanguage": "Accounts Payable",
+    "CreatedBy": "0f4e82db-0353-4805-64b6-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180594",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "7c05577c-fbe1-46bd-8555-08dc3dfcb068",
+    "Name": "أوراق الدفع",
+    "NameSecondLanguage": "Notes Payable",
+    "CreatedBy": "c84194a7-c4d3-4eed-64b7-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180602",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "66c29130-a481-4a59-8556-08dc3dfcb068",
+    "Name": "أرصدة دائنة أخري",
+    "NameSecondLanguage": "Other Credit Accounts",
+    "CreatedBy": "4709953a-89d3-4631-64b8-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180611",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "46641f5d-a33d-4548-8557-08dc3dfcb068",
+    "Name": "قروض قصيرة الأجل",
+    "NameSecondLanguage": "Short-Term Loans",
+    "CreatedBy": "8ce165a6-c070-478f-64b9-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180618",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "d5184677-0e18-4717-8558-08dc3dfcb068",
+    "Name": "الدائنون",
+    "NameSecondLanguage": "Creditors",
+    "CreatedBy": "202501e3-b373-49cf-64ba-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180626",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "fdf4a4ba-c018-4bb2-8559-08dc3dfcb068",
+    "Name": "المصروفات المستحقة",
+    "NameSecondLanguage": "Accrued Expenses",
+    "CreatedBy": "9d970890-cb10-4cc3-64bb-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180633",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "47d4b53e-8330-49aa-855a-08dc3dfcb068",
+    "Name": "الإيرادات الغير محققة",
+    "NameSecondLanguage": "Unearned Revenue",
+    "CreatedBy": "73c54631-ce34-4a75-64bc-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180641",
+    "ModifiedAt": null
+  },
+  {
+    "Id": "6776b6a3-019c-480b-855b-08dc3dfcb068",
+    "Name": "جاري مصلحة الضرائب - الدائنة",
+    "NameSecondLanguage": "Tax Authority - Credit",
+    "CreatedBy": "1922da5c-d8a1-4cb3-64bd-08dc3dfcb0b3",
+    "ModifiedBy": null,
+    "CreatedAt": "2024-06-08T14:17:21.0180648",
     "ModifiedAt": null
   }
 ]
