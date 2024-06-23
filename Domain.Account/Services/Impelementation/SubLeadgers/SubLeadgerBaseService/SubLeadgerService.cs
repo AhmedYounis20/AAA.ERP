@@ -156,7 +156,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                 {
 
                     var entity = validationResult.entity;
-
+                    entity.ChartOfAccount = null;
                     await _repository.Delete(entity);
 
                     if (entity.ChartOfAccountId.HasValue)

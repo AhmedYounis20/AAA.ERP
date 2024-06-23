@@ -35,13 +35,4 @@ public class BaseTreeSettingController<TEntity, TCreate, TUpdate>
     [HttpGet("GetChildren/{parentId}")]
     public virtual async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
     => Ok(new ApiResponse { IsSuccess = true, Result = await _service.GetChildren(parentId,level), StatusCode = HttpStatusCode.OK });
-
-    protected override async Task<IActionResult> DeleteRecord(Guid id)
-    {
-
-        var result = await _service.Delete(id);
-        result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-
-        return StatusCode((int)result.StatusCode, result);
-    }
 }
