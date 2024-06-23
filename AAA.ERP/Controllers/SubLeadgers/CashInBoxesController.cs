@@ -1,7 +1,6 @@
 using AAA.ERP.Controllers.BaseControllers;
 using AAA.ERP.Services.Interfaces.SubLeadgers;
 using Domain.Account.Commands.SubLeadgers.CashInBoxes;
-using Domain.Account.InputModels.Subleadgers;
 using Domain.Account.Models.Entities.SubLeadgers;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -24,44 +23,27 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
         _service = service;
         _sender = sender;
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateRecord(CashInBoxCreateCommand input)
-    {
-        var result = await _sender.Send(input);
-        result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-        return StatusCode((int) result.StatusCode, result);
-    }
+    public async Task<IActionResult> Create(CashInBoxCreateCommand input)
+    => await CreateRecord(input);
 
     [HttpGet]
-    public async Task<IActionResult> GetAllRecords()
-    {
-        var result = await _service.ReadAll();
-        return StatusCode((int) result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get()
+    => await GetAllRecords();
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetRecord(Guid id)
-    {
-        var result = await _service.ReadById(id);
-        return StatusCode((int) result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get(Guid id)
+    => await GetRecord(id);
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRecord(Guid id, CashInBoxUpdateCommand input)
-    {
-        var result = await _service.Update(input);
-        return StatusCode((int) result.StatusCode, result);
-    }
+    public async Task<IActionResult> Update(Guid id, CashInBoxUpdateCommand input)
+    => await UpdateRecord(id, input);
+
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRecord(Guid id)
-    {
-        var result = await _service.Delete(id);
-        result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-
-        return StatusCode((int) result.StatusCode, result);
-    }
+    public async Task<IActionResult> Delete(Guid id)
+    => await DeleteRecord(id);
 
     [HttpGet("NextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)

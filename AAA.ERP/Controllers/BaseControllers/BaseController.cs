@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 using Shared.BaseEntities;
 using Shared.Resources;
-using Shared.Responses;
 
 namespace AAA.ERP.Controllers.BaseControllers
 {
@@ -21,6 +20,11 @@ namespace AAA.ERP.Controllers.BaseControllers
         private readonly IBaseService<TEntity,TCreate,TUpdate> _service;
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
+        public string CurrentLangauge => (HttpContext.Request.Headers.ContainsKey("Accept-Langauge") &&
+            HttpContext.Request.Headers["Accept-Langauge"].Contains("en")) ||
+            (HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
+            HttpContext.Request.Headers["Accept-Culture"].Contains("en")) ? "en" : "ar";
+
 
         public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,
             IStringLocalizer<Resource> localizer,

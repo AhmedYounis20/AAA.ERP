@@ -120,6 +120,9 @@
   <data name="AccountGuide" xml:space="preserve">
     <value>Account Guide</value>
   </data>
+  <data name="Added" xml:space="preserve">
+    <value>Added</value>
+  </data>
   <data name="CannotDeleteParent" xml:space="preserve">
     <value>Parent Cannot be deleted please delete chilldren first</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="DefaultCurrencyIsAlreadyExitedWithName" xml:space="preserve">
     <value>default currency is already exited with name</value>
   </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
   <data name="ExchageRateOnDefaultCurrency" xml:space="preserve">
     <value>exchage rate must be 1 for default currency</value>
   </data>
@@ -173,6 +179,12 @@
   </data>
   <data name="NameSecondLanguageMaxLength" xml:space="preserve">
     <value>name second language can't exceed 50 letters</value>
+  </data>
+  <data name="Successfully" xml:space="preserve">
+    <value>Successfully</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated</value>
   </data>
   <data name="WithSameNameIsExisted" xml:space="preserve">
     <value>with same name is existed</value>
