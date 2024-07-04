@@ -5,7 +5,7 @@
     "NameSecondLanguage": "Assets",
     "CreatedBy": "e643539d-d0a2-4710-6467-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0179957",
+    "CreatedAt": "2024-07-04T11:23:13.8879971",
     "ModifiedAt": null
   },
   {
@@ -14,7 +14,7 @@
     "NameSecondLanguage": "Liabilities",
     "CreatedBy": "ed83ddad-f272-4145-6468-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0179986",
+    "CreatedAt": "2024-07-04T11:23:13.8880046",
     "ModifiedAt": null
   },
   {
@@ -23,7 +23,7 @@
     "NameSecondLanguage": "Expenses",
     "CreatedBy": "4b78ae2c-f8b0-4f2d-6469-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0179994",
+    "CreatedAt": "2024-07-04T11:23:13.8880049",
     "ModifiedAt": null
   },
   {
@@ -32,7 +32,7 @@
     "NameSecondLanguage": "Revenues",
     "CreatedBy": "4b336547-d4c8-4dbf-646a-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180002",
+    "CreatedAt": "2024-07-04T11:23:13.8880052",
     "ModifiedAt": null
   },
   {
@@ -41,7 +41,7 @@
     "NameSecondLanguage": "Stockholder's Equity",
     "CreatedBy": "80f7c029-94bf-4fc0-646b-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018001",
+    "CreatedAt": "2024-07-04T11:23:13.8880056",
     "ModifiedAt": null
   },
   {
@@ -50,7 +50,7 @@
     "NameSecondLanguage": "Current Assets",
     "CreatedBy": "1cee8569-8d96-4827-646c-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180018",
+    "CreatedAt": "2024-07-04T11:23:13.8880059",
     "ModifiedAt": null
   },
   {
@@ -59,7 +59,7 @@
     "NameSecondLanguage": "Non-Current Assets",
     "CreatedBy": "4bc89ecd-99c7-471a-646d-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180026",
+    "CreatedAt": "2024-07-04T11:23:13.8880062",
     "ModifiedAt": null
   },
   {
@@ -68,7 +68,7 @@
     "NameSecondLanguage": "Cash In Box",
     "CreatedBy": "916c5dfb-09f4-42d3-646e-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180034",
+    "CreatedAt": "2024-07-04T11:23:13.8880065",
     "ModifiedAt": null
   },
   {
@@ -77,7 +77,7 @@
     "NameSecondLanguage": "Account Receivables",
     "CreatedBy": "2ab106a0-d06c-4faa-646f-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180041",
+    "CreatedAt": "2024-07-04T11:23:13.8880069",
     "ModifiedAt": null
   },
   {
@@ -86,7 +86,7 @@
     "NameSecondLanguage": "Notes Receivables",
     "CreatedBy": "45b6cd78-e36b-4351-6470-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180049",
+    "CreatedAt": "2024-07-04T11:23:13.8880072",
     "ModifiedAt": null
   },
   {
@@ -95,7 +95,7 @@
     "NameSecondLanguage": "Trading Securities - Short Term",
     "CreatedBy": "e1230ad5-e947-4236-6471-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180057",
+    "CreatedAt": "2024-07-04T11:23:13.8880076",
     "ModifiedAt": null
   },
   {
@@ -104,7 +104,7 @@
     "NameSecondLanguage": "Inventory",
     "CreatedBy": "4594f337-9f44-4189-6472-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180064",
+    "CreatedAt": "2024-07-04T11:23:13.888008",
     "ModifiedAt": null
   },
   {
@@ -113,7 +113,7 @@
     "NameSecondLanguage": "Other Debit Accounts",
     "CreatedBy": "7fced01c-e4e2-4d34-6473-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180072",
+    "CreatedAt": "2024-07-04T11:23:13.8880083",
     "ModifiedAt": null
   },
   {
@@ -122,7 +122,7 @@
     "NameSecondLanguage": "Debitors",
     "CreatedBy": "96126656-8cc6-445d-6474-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180079",
+    "CreatedAt": "2024-07-04T11:23:13.8880086",
     "ModifiedAt": null
   },
   {
@@ -131,7 +131,7 @@
     "NameSecondLanguage": "PrePaid Expenses",
     "CreatedBy": "2d7f370b-fede-4bcf-6475-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180087",
+    "CreatedAt": "2024-07-04T11:23:13.8880089",
     "ModifiedAt": null
   },
   {
@@ -140,7 +140,7 @@
     "NameSecondLanguage": "Debit - Tax Authority",
     "CreatedBy": "efe2792b-761e-4730-6476-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180095",
+    "CreatedAt": "2024-07-04T11:23:13.8880092",
     "ModifiedAt": null
   },
   {
@@ -149,7 +149,7 @@
     "NameSecondLanguage": "Cash",
     "CreatedBy": "b239cf24-acb1-43cf-6477-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180103",
+    "CreatedAt": "2024-07-04T11:23:13.8880096",
     "ModifiedAt": null
   },
   {
@@ -158,7 +158,7 @@
     "NameSecondLanguage": "Banks",
     "CreatedBy": "6d5cff55-953c-41cb-6478-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180111",
+    "CreatedAt": "2024-07-04T11:23:13.8880099",
     "ModifiedAt": null
   },
   {
@@ -167,7 +167,7 @@
     "NameSecondLanguage": "Notes Receivable Under Collection",
     "CreatedBy": "a0922fc1-a577-4657-6479-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180119",
+    "CreatedAt": "2024-07-04T11:23:13.8880103",
     "ModifiedAt": null
   },
   {
@@ -176,7 +176,7 @@
     "NameSecondLanguage": "E-Wallets",
     "CreatedBy": "46de1c83-a9c5-42d5-647a-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180128",
+    "CreatedAt": "2024-07-04T11:23:13.8880107",
     "ModifiedAt": null
   },
   {
@@ -185,7 +185,7 @@
     "NameSecondLanguage": "Petty Cash",
     "CreatedBy": "44adafbd-4895-481e-647b-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180136",
+    "CreatedAt": "2024-07-04T11:23:13.888011",
     "ModifiedAt": null
   },
   {
@@ -194,7 +194,7 @@
     "NameSecondLanguage": "Advances",
     "CreatedBy": "5138ac55-d503-426d-647c-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180143",
+    "CreatedAt": "2024-07-04T11:23:13.8880113",
     "ModifiedAt": null
   },
   {
@@ -203,7 +203,7 @@
     "NameSecondLanguage": "Property,Plant And Equipments",
     "CreatedBy": "24f83e2f-203e-46d2-647d-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180151",
+    "CreatedAt": "2024-07-04T11:23:13.8880117",
     "ModifiedAt": null
   },
   {
@@ -212,7 +212,7 @@
     "NameSecondLanguage": "Intangible Assets",
     "CreatedBy": "18b149f2-341a-4463-647e-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018016",
+    "CreatedAt": "2024-07-04T11:23:13.8880121",
     "ModifiedAt": null
   },
   {
@@ -221,7 +221,7 @@
     "NameSecondLanguage": "Long-Term Assets",
     "CreatedBy": "60345a54-dd1e-43d6-647f-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180167",
+    "CreatedAt": "2024-07-04T11:23:13.8880124",
     "ModifiedAt": null
   },
   {
@@ -230,7 +230,7 @@
     "NameSecondLanguage": "Other Assets",
     "CreatedBy": "50be75c4-cecf-4005-6480-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180174",
+    "CreatedAt": "2024-07-04T11:23:13.8880127",
     "ModifiedAt": null
   },
   {
@@ -239,7 +239,7 @@
     "NameSecondLanguage": "Patents",
     "CreatedBy": "67ef6850-39c9-476a-6481-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180182",
+    "CreatedAt": "2024-07-04T11:23:13.888013",
     "ModifiedAt": null
   },
   {
@@ -248,7 +248,7 @@
     "NameSecondLanguage": "Copyright",
     "CreatedBy": "6468e62b-23a1-450e-6482-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018019",
+    "CreatedAt": "2024-07-04T11:23:13.8880133",
     "ModifiedAt": null
   },
   {
@@ -257,7 +257,7 @@
     "NameSecondLanguage": "Trademark",
     "CreatedBy": "07771c8a-06b8-4fc7-6483-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180197",
+    "CreatedAt": "2024-07-04T11:23:13.8880137",
     "ModifiedAt": null
   },
   {
@@ -266,7 +266,7 @@
     "NameSecondLanguage": "Lands",
     "CreatedBy": "26f69646-aaef-4ed4-6484-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180205",
+    "CreatedAt": "2024-07-04T11:23:13.888014",
     "ModifiedAt": null
   },
   {
@@ -275,7 +275,7 @@
     "NameSecondLanguage": "Building",
     "CreatedBy": "d5dd47a2-5c17-4249-6485-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180213",
+    "CreatedAt": "2024-07-04T11:23:13.8880144",
     "ModifiedAt": null
   },
   {
@@ -284,7 +284,7 @@
     "NameSecondLanguage": "Equipments",
     "CreatedBy": "a8530bdb-563c-4982-6486-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180221",
+    "CreatedAt": "2024-07-04T11:23:13.8880148",
     "ModifiedAt": null
   },
   {
@@ -293,7 +293,7 @@
     "NameSecondLanguage": "Electronic Devices",
     "CreatedBy": "965294a1-b510-4e6a-6487-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180229",
+    "CreatedAt": "2024-07-04T11:23:13.8880152",
     "ModifiedAt": null
   },
   {
@@ -302,7 +302,7 @@
     "NameSecondLanguage": "Office Supplies",
     "CreatedBy": "a276b800-048c-4a3f-6488-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180236",
+    "CreatedAt": "2024-07-04T11:23:13.8880155",
     "ModifiedAt": null
   },
   {
@@ -311,7 +311,7 @@
     "NameSecondLanguage": "Furniture",
     "CreatedBy": "4310de10-48a3-4867-6489-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180244",
+    "CreatedAt": "2024-07-04T11:23:13.8880159",
     "ModifiedAt": null
   },
   {
@@ -320,7 +320,7 @@
     "NameSecondLanguage": "Vehicles And Transportation Items",
     "CreatedBy": "e3781ff6-89f6-45b8-648a-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180252",
+    "CreatedAt": "2024-07-04T11:23:13.8880162",
     "ModifiedAt": null
   },
   {
@@ -329,7 +329,7 @@
     "NameSecondLanguage": "Tools",
     "CreatedBy": "f1482032-811f-4323-648b-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018026",
+    "CreatedAt": "2024-07-04T11:23:13.8880165",
     "ModifiedAt": null
   },
   {
@@ -338,7 +338,7 @@
     "NameSecondLanguage": "Accumulated Depreciation",
     "CreatedBy": "da87226d-2864-40b9-648c-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180268",
+    "CreatedAt": "2024-07-04T11:23:13.8880168",
     "ModifiedAt": null
   },
   {
@@ -347,7 +347,7 @@
     "NameSecondLanguage": "Building Depreciation",
     "CreatedBy": "d3f75524-9c4f-4361-648d-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180276",
+    "CreatedAt": "2024-07-04T11:23:13.8880172",
     "ModifiedAt": null
   },
   {
@@ -356,7 +356,7 @@
     "NameSecondLanguage": "Equipments Depreciation",
     "CreatedBy": "2f80cd15-a767-44e4-648e-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180284",
+    "CreatedAt": "2024-07-04T11:23:13.8880175",
     "ModifiedAt": null
   },
   {
@@ -365,7 +365,7 @@
     "NameSecondLanguage": "Electronic Devices Depreciation",
     "CreatedBy": "1739ef9c-ea24-45f7-648f-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180292",
+    "CreatedAt": "2024-07-04T11:23:13.8880178",
     "ModifiedAt": null
   },
   {
@@ -374,7 +374,7 @@
     "NameSecondLanguage": "Office Supplies Depreciation",
     "CreatedBy": "d405a96e-7758-4fb5-6490-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.01803",
+    "CreatedAt": "2024-07-04T11:23:13.8880181",
     "ModifiedAt": null
   },
   {
@@ -383,7 +383,7 @@
     "NameSecondLanguage": "Furniture Depreciation",
     "CreatedBy": "c55d7396-3f16-48cd-6491-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180309",
+    "CreatedAt": "2024-07-04T11:23:13.8880184",
     "ModifiedAt": null
   },
   {
@@ -392,7 +392,7 @@
     "NameSecondLanguage": "Vehicles And Transportation Items Depreciation",
     "CreatedBy": "92e54573-5cb7-4dba-6492-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180316",
+    "CreatedAt": "2024-07-04T11:23:13.8880188",
     "ModifiedAt": null
   },
   {
@@ -401,7 +401,7 @@
     "NameSecondLanguage": "Tools Depreciation",
     "CreatedBy": "7f5fb259-9c71-4ef4-6493-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180324",
+    "CreatedAt": "2024-07-04T11:23:13.8880191",
     "ModifiedAt": null
   },
   {
@@ -410,7 +410,7 @@
     "NameSecondLanguage": "Capital",
     "CreatedBy": "586bb200-5bc4-47db-6494-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180331",
+    "CreatedAt": "2024-07-04T11:23:13.8880194",
     "ModifiedAt": null
   },
   {
@@ -419,7 +419,7 @@
     "NameSecondLanguage": "Year Earnings",
     "CreatedBy": "3d6dd8bf-a9e7-4f7d-6495-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180339",
+    "CreatedAt": "2024-07-04T11:23:13.8880198",
     "ModifiedAt": null
   },
   {
@@ -428,7 +428,7 @@
     "NameSecondLanguage": "Retained Earnings",
     "CreatedBy": "8df5e5c9-8f43-4c35-6496-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180347",
+    "CreatedAt": "2024-07-04T11:23:13.8880201",
     "ModifiedAt": null
   },
   {
@@ -437,7 +437,7 @@
     "NameSecondLanguage": "Reserves",
     "CreatedBy": "ea601f9b-f8d3-47d8-6497-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180354",
+    "CreatedAt": "2024-07-04T11:23:13.8880204",
     "ModifiedAt": null
   },
   {
@@ -446,7 +446,7 @@
     "NameSecondLanguage": "Accumulated Other Comprehensive Income",
     "CreatedBy": "6999cc73-c7cf-4bb9-6498-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180362",
+    "CreatedAt": "2024-07-04T11:23:13.8880207",
     "ModifiedAt": null
   },
   {
@@ -455,7 +455,7 @@
     "NameSecondLanguage": "Currency Exchange Gain Or Loss",
     "CreatedBy": "271b0506-2e26-4349-6499-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180369",
+    "CreatedAt": "2024-07-04T11:23:13.888021",
     "ModifiedAt": null
   },
   {
@@ -464,7 +464,7 @@
     "NameSecondLanguage": "Net Sales",
     "CreatedBy": "556c3ef2-87de-4a67-649a-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180377",
+    "CreatedAt": "2024-07-04T11:23:13.8880213",
     "ModifiedAt": null
   },
   {
@@ -473,7 +473,7 @@
     "NameSecondLanguage": "Other Gain",
     "CreatedBy": "87d3b9b7-e9e4-465f-649b-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180385",
+    "CreatedAt": "2024-07-04T11:23:13.8880216",
     "ModifiedAt": null
   },
   {
@@ -482,7 +482,7 @@
     "NameSecondLanguage": "Total Sales",
     "CreatedBy": "b435726d-faf4-4a43-649c-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180393",
+    "CreatedAt": "2024-07-04T11:23:13.8880219",
     "ModifiedAt": null
   },
   {
@@ -491,7 +491,7 @@
     "NameSecondLanguage": "Sales Discount",
     "CreatedBy": "38bb9ae4-1287-4bdf-649d-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180401",
+    "CreatedAt": "2024-07-04T11:23:13.8880222",
     "ModifiedAt": null
   },
   {
@@ -500,7 +500,7 @@
     "NameSecondLanguage": "Sales Returns & Allowances",
     "CreatedBy": "722e74e3-08c6-4d5a-649e-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180408",
+    "CreatedAt": "2024-07-04T11:23:13.8880225",
     "ModifiedAt": null
   },
   {
@@ -509,7 +509,7 @@
     "NameSecondLanguage": "Expenses Depreciation",
     "CreatedBy": "1e7145a6-59b8-431d-649f-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180416",
+    "CreatedAt": "2024-07-04T11:23:13.8880228",
     "ModifiedAt": null
   },
   {
@@ -518,7 +518,7 @@
     "NameSecondLanguage": "COGS",
     "CreatedBy": "28e6d1db-9097-4341-64a0-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180424",
+    "CreatedAt": "2024-07-04T11:23:13.8880231",
     "ModifiedAt": null
   },
   {
@@ -527,7 +527,7 @@
     "NameSecondLanguage": "Total Purchases",
     "CreatedBy": "7044cfaa-33bb-4bc7-64a1-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180434",
+    "CreatedAt": "2024-07-04T11:23:13.8880234",
     "ModifiedAt": null
   },
   {
@@ -536,7 +536,7 @@
     "NameSecondLanguage": "Operating Expenses",
     "CreatedBy": "012dc4aa-7d1e-49ef-64a2-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180442",
+    "CreatedAt": "2024-07-04T11:23:13.8880236",
     "ModifiedAt": null
   },
   {
@@ -545,7 +545,7 @@
     "NameSecondLanguage": "Other Loses",
     "CreatedBy": "35882b5b-99e9-41b0-64a3-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180449",
+    "CreatedAt": "2024-07-04T11:23:13.8880239",
     "ModifiedAt": null
   },
   {
@@ -554,7 +554,7 @@
     "NameSecondLanguage": "Total Of Purchases",
     "CreatedBy": "04b68af7-7c0d-4bd7-64a4-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180457",
+    "CreatedAt": "2024-07-04T11:23:13.8880242",
     "ModifiedAt": null
   },
   {
@@ -563,7 +563,7 @@
     "NameSecondLanguage": "Freight In Expenses",
     "CreatedBy": "53f84d62-41f0-45a2-64a5-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180464",
+    "CreatedAt": "2024-07-04T11:23:13.8880245",
     "ModifiedAt": null
   },
   {
@@ -572,7 +572,7 @@
     "NameSecondLanguage": "Purchase Discount",
     "CreatedBy": "ec2e9db2-8492-47f4-64a6-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180471",
+    "CreatedAt": "2024-07-04T11:23:13.8880248",
     "ModifiedAt": null
   },
   {
@@ -581,7 +581,7 @@
     "NameSecondLanguage": "Purchases Returns & Allowances",
     "CreatedBy": "d0644185-7efe-41b0-64a7-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180479",
+    "CreatedAt": "2024-07-04T11:23:13.8880251",
     "ModifiedAt": null
   },
   {
@@ -590,7 +590,7 @@
     "NameSecondLanguage": "Total Of COGS",
     "CreatedBy": "3200be87-5177-4a9a-64a8-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180487",
+    "CreatedAt": "2024-07-04T11:23:13.8880255",
     "ModifiedAt": null
   },
   {
@@ -599,7 +599,7 @@
     "NameSecondLanguage": "Cost Of Sale Returns & Allowances",
     "CreatedBy": "3da1743b-7d70-4b80-64a9-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180494",
+    "CreatedAt": "2024-07-04T11:23:13.8880258",
     "ModifiedAt": null
   },
   {
@@ -608,7 +608,7 @@
     "NameSecondLanguage": "Property,Plant And Equipments Depreciation",
     "CreatedBy": "22ee8457-f470-4e02-64aa-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180502",
+    "CreatedAt": "2024-07-04T11:23:13.8880261",
     "ModifiedAt": null
   },
   {
@@ -617,7 +617,7 @@
     "NameSecondLanguage": "Building Depreciation Expenses",
     "CreatedBy": "e333e713-be1d-41ed-64ab-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018051",
+    "CreatedAt": "2024-07-04T11:23:13.8880264",
     "ModifiedAt": null
   },
   {
@@ -626,7 +626,7 @@
     "NameSecondLanguage": "Equipments Depreciation Expenses",
     "CreatedBy": "11b5b6f8-9fb9-4458-64ac-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180518",
+    "CreatedAt": "2024-07-04T11:23:13.8880267",
     "ModifiedAt": null
   },
   {
@@ -635,7 +635,7 @@
     "NameSecondLanguage": "Electronic Devices Depreciation Expenses",
     "CreatedBy": "fb2fc077-1d45-4728-64ad-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180525",
+    "CreatedAt": "2024-07-04T11:23:13.888027",
     "ModifiedAt": null
   },
   {
@@ -644,7 +644,7 @@
     "NameSecondLanguage": "Office Supplies Depreciation Expenses",
     "CreatedBy": "a9dca1ad-d887-4845-64ae-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180533",
+    "CreatedAt": "2024-07-04T11:23:13.8880273",
     "ModifiedAt": null
   },
   {
@@ -653,7 +653,7 @@
     "NameSecondLanguage": "Furniture Depreciation Expenses",
     "CreatedBy": "341e46bb-9c1b-4ad0-64af-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.018054",
+    "CreatedAt": "2024-07-04T11:23:13.8880276",
     "ModifiedAt": null
   },
   {
@@ -662,7 +662,7 @@
     "NameSecondLanguage": "Vehicles And Transportation Items Depreciation Expenses",
     "CreatedBy": "6785cb31-9bcb-4948-64b0-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180548",
+    "CreatedAt": "2024-07-04T11:23:13.8880279",
     "ModifiedAt": null
   },
   {
@@ -671,7 +671,7 @@
     "NameSecondLanguage": "Tools Depreciation Expenses",
     "CreatedBy": "28b6bb4a-dc47-470e-64b1-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180555",
+    "CreatedAt": "2024-07-04T11:23:13.8880282",
     "ModifiedAt": null
   },
   {
@@ -680,7 +680,7 @@
     "NameSecondLanguage": "Current Liabilities",
     "CreatedBy": "cba84009-8e44-4c8d-64b2-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180564",
+    "CreatedAt": "2024-07-04T11:23:13.8880285",
     "ModifiedAt": null
   },
   {
@@ -689,7 +689,7 @@
     "NameSecondLanguage": "Long-Term Liabilities",
     "CreatedBy": "5b8ba4a8-bcda-4cf2-64b3-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180571",
+    "CreatedAt": "2024-07-04T11:23:13.8880288",
     "ModifiedAt": null
   },
   {
@@ -698,7 +698,7 @@
     "NameSecondLanguage": "Long-Term Loans",
     "CreatedBy": "61af5ff9-ba31-4458-64b4-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180579",
+    "CreatedAt": "2024-07-04T11:23:13.8880291",
     "ModifiedAt": null
   },
   {
@@ -707,7 +707,7 @@
     "NameSecondLanguage": "Long-Term Bonds",
     "CreatedBy": "a489648d-2f29-49ff-64b5-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180586",
+    "CreatedAt": "2024-07-04T11:23:13.8880294",
     "ModifiedAt": null
   },
   {
@@ -716,7 +716,7 @@
     "NameSecondLanguage": "Accounts Payable",
     "CreatedBy": "0f4e82db-0353-4805-64b6-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180594",
+    "CreatedAt": "2024-07-04T11:23:13.8880296",
     "ModifiedAt": null
   },
   {
@@ -725,7 +725,7 @@
     "NameSecondLanguage": "Notes Payable",
     "CreatedBy": "c84194a7-c4d3-4eed-64b7-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180602",
+    "CreatedAt": "2024-07-04T11:23:13.8880299",
     "ModifiedAt": null
   },
   {
@@ -734,7 +734,7 @@
     "NameSecondLanguage": "Other Credit Accounts",
     "CreatedBy": "4709953a-89d3-4631-64b8-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180611",
+    "CreatedAt": "2024-07-04T11:23:13.8880303",
     "ModifiedAt": null
   },
   {
@@ -743,7 +743,7 @@
     "NameSecondLanguage": "Short-Term Loans",
     "CreatedBy": "8ce165a6-c070-478f-64b9-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180618",
+    "CreatedAt": "2024-07-04T11:23:13.8880306",
     "ModifiedAt": null
   },
   {
@@ -752,7 +752,7 @@
     "NameSecondLanguage": "Creditors",
     "CreatedBy": "202501e3-b373-49cf-64ba-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180626",
+    "CreatedAt": "2024-07-04T11:23:13.8880309",
     "ModifiedAt": null
   },
   {
@@ -761,7 +761,7 @@
     "NameSecondLanguage": "Accrued Expenses",
     "CreatedBy": "9d970890-cb10-4cc3-64bb-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180633",
+    "CreatedAt": "2024-07-04T11:23:13.8880312",
     "ModifiedAt": null
   },
   {
@@ -770,7 +770,7 @@
     "NameSecondLanguage": "Unearned Revenue",
     "CreatedBy": "73c54631-ce34-4a75-64bc-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180641",
+    "CreatedAt": "2024-07-04T11:23:13.8880315",
     "ModifiedAt": null
   },
   {
@@ -779,7 +779,7 @@
     "NameSecondLanguage": "Tax Authority - Credit",
     "CreatedBy": "1922da5c-d8a1-4cb3-64bd-08dc3dfcb0b3",
     "ModifiedBy": null,
-    "CreatedAt": "2024-06-08T14:17:21.0180648",
+    "CreatedAt": "2024-07-04T11:23:13.8880327",
     "ModifiedAt": null
   }
 ]

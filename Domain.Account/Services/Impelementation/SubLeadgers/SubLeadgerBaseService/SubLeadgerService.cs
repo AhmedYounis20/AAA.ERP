@@ -37,7 +37,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         _accountId = accountId;
     }
 
-    public async Task<ApiResponse<TCreateCommand>> GetNextSubLeadgers(Guid? parentId)
+    public virtual async Task<ApiResponse<TCreateCommand>> GetNextSubLeadgers(Guid? parentId)
     {
         string? code =
             await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(_accountId));
