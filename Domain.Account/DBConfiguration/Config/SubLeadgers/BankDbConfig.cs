@@ -8,7 +8,7 @@ public class BankDbConfig : BaseTreeSettingEntityDbConfig<Bank>
 {
     protected override EntityTypeBuilder<Bank> ApplyConfiguration(EntityTypeBuilder<Bank> builder)
     {
-        builder.ToTable("Bank");
+        builder.ToTable("Banks");
         base.ApplyConfiguration(builder);
         _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
         _ = builder.HasOne(e=>e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);

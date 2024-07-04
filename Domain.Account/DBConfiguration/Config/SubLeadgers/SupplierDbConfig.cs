@@ -8,7 +8,7 @@ public class SupplierDbConfig : BaseTreeSettingEntityDbConfig<Supplier>
 {
     protected override EntityTypeBuilder<Supplier> ApplyConfiguration(EntityTypeBuilder<Supplier> builder)
     {
-        builder.ToTable("Supplier");
+        builder.ToTable("Suppliers");
         base.ApplyConfiguration(builder);
         _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
         _ = builder.HasOne(e=>e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
