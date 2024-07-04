@@ -8,7 +8,7 @@ namespace Domain.Account.DBConfiguration.Config.SubLeadgers
     {
         protected override EntityTypeBuilder<CashInBox> ApplyConfiguration(EntityTypeBuilder<CashInBox> builder)
         {
-            builder.ToTable("CashInBox");
+            builder.ToTable("CashInBoxes");
             base.ApplyConfiguration(builder);
             _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
             _ = builder.HasOne(e=>e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
