@@ -56,7 +56,14 @@ public class ImportDataToSeed
 
         try
         {
-            _context.Set<TEntity>().RemoveRange(_context.Set<TEntity>().AsNoTracking().ToList());
+            foreach(TEntity entity in entities)
+            {
+                TEntity? dbEntity = _context.Set<TEntity>().Where(e => e.Id == entity.Id).FirstOrDefault();
+                if (dbEntity != null)
+                    _context.Update(entity);
+                else
+                    _context.Add(entity);
+            }
             await _context.SaveChangesAsync();
             await _context.Set<TEntity>().AddRangeAsync(entities);
             await _context.SaveChangesAsync();
