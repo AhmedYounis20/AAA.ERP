@@ -142,6 +142,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
+        services.AddScoped<ICostCenterService, CostCenterService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
@@ -180,6 +181,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
+        services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
         services.AddHttpContextAccessor();
     }

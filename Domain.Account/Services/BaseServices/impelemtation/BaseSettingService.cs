@@ -78,6 +78,7 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
                 listOfErrors.Add("WithSameNameSecondLanguageIsExisted");
         }
 
+        entity = existedEntity;
         return (isValid, listOfErrors, entity);
     }
 }
