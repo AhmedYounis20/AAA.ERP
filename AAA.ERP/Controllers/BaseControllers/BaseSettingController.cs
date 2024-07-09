@@ -45,7 +45,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
             string operation = (_localizer["Added"].Value);
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
-            message.Append(CurrentLangauge == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
+            message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
             message.Append(' ');
             message.Append(_localizer["Successfully"].Value);
 
@@ -63,7 +63,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
             string operation = (_localizer["Updated"].Value);
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
-            message.Append(CurrentLangauge == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
+            message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
             message.Append(' ');
             message.Append(_localizer["Successfully"].Value);
 
@@ -81,7 +81,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
             string operation = (_localizer["Deleted"].Value);
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
-            message.Append(CurrentLangauge == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
+            message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
             message.Append(' ');
             message.Append(_localizer["Successfully"].Value);
 

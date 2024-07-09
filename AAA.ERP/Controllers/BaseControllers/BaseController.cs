@@ -20,10 +20,10 @@ namespace AAA.ERP.Controllers.BaseControllers
         private readonly IBaseService<TEntity,TCreate,TUpdate> _service;
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
-        public string CurrentLangauge => (HttpContext.Request.Headers.ContainsKey("Accept-Langauge") &&
-            HttpContext.Request.Headers["Accept-Langauge"].Contains("en")) ||
+        public string CurrentLanguage => ((HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
+            HttpContext.Request.Headers["Accept-Language"].Contains("ar")) ||
             (HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
-            HttpContext.Request.Headers["Accept-Culture"].Contains("en")) ? "en" : "ar";
+            HttpContext.Request.Headers["Accept-Culture"].Contains("ar"))) ? "ar" : "en";
 
 
         public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,
