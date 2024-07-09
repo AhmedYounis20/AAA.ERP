@@ -8,6 +8,7 @@ using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
 using Mapster;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Shared.BaseEntities;
 using Shared.Responses;
@@ -168,10 +169,20 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
             FixedAsset? entity = await _repository.GetAsNoTracking(command.Id);
             if (entity != null)
             {
-                var newEntity = command.Adapt<FixedAsset>();
-                newEntity.ChartOfAccount = null;
-                newEntity.ExpensesAccount = null;
-                newEntity.AccumlatedAccount = null;
+                entity.Name = command.Name;
+                entity.NameSecondLanguage = command.NameSecondLanguage;
+                entity.Notes = command.Notes;
+                if (command.NodeType == NodeType.Domain)
+                {
+                    entity.ManufactureCompany = command.ManufactureCompany;
+                    entity.Model = command.Model;
+                    entity.Serial = command.Serial;
+                    entity.Version = command.Version;
+                    entity.DepreciationRate = command.DepreciationRate;
+                    entity.IsDepreciable = command.IsDepreciable;
+                    entity.AssetLifeSpanByYears = command.AssetLifeSpanByYears;
+                }
+
                 if (entity.ChartOfAccountId.HasValue)
                 {
                     var account = await _unitOfWork.ChartOfAccountRepository.Get(entity.ChartOfAccountId.Value);

@@ -68,6 +68,7 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
         List<string> listOfErrors = new List<string>();
         TEntity? entity = null;
 
+        var oldEntity = await _repository.Get(command.Id);
         var existedEntity = await _repository.GetByNames(command.Name, command.NameSecondLanguage);
         if (existedEntity != null && existedEntity.Id != command.Id)
         {
@@ -78,7 +79,7 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
                 listOfErrors.Add("WithSameNameSecondLanguageIsExisted");
         }
 
-        entity = existedEntity;
+        entity = oldEntity;
         return (isValid, listOfErrors, entity);
     }
 }

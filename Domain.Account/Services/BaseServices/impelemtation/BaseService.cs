@@ -308,7 +308,6 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             return (isValid, listOfErrors, entity);
         }
 
-        await Task.CompletedTask;
         return (isValid, listOfErrors, entity);
     }
 

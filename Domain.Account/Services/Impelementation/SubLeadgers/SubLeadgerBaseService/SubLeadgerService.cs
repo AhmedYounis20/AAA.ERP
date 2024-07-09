@@ -119,12 +119,13 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
 
                 if (entity.ChartOfAccount is not null)
                 {
+                    newEntity.ChartOfAccountId = entity.ChartOfAccountId;
                     newEntity.ChartOfAccount = entity.ChartOfAccount;
                     newEntity.ChartOfAccount.Name = command.Name;
                     newEntity.ChartOfAccount.NameSecondLanguage = command.NameSecondLanguage;
                 }
 
-                await _repository.Update(entity);
+                await _repository.Update(newEntity);
             }
 
             return new ApiResponse<TEntity>
@@ -190,5 +191,20 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             StatusCode = HttpStatusCode.BadRequest,
             ErrorMessages = validationResult.errors
         };
+    }
+
+    protected override async Task<(bool isValid, List<string> errors, TEntity? entity)> ValidateUpdate(TUpdateCommand command)
+    {
+        var result = await base.ValidateUpdate(command);
+        if (result.isValid)
+        {
+            if (result.entity.NodeType != command.NodeType)
+            {
+                result.isValid = false;
+                result.errors.Add("CannotChangeNodeType");
+            }
+        }
+
+        return result;
     }
 }

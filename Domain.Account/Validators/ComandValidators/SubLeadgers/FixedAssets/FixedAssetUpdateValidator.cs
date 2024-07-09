@@ -12,7 +12,7 @@ public class FixedAssetUpdateValidator : BaseSubLeadgerUpdateValidator<FixedAsse
     {
         _ = RuleFor(e => e.Version).MaximumLength(300).When(e=>e.NodeType.Equals(NodeType.Domain));
         _ = RuleFor(e => e.Serial).MaximumLength(300).When(e=>e.NodeType.Equals(NodeType.Domain));
-        _ = RuleFor(e => e.Model).EmailAddress().MaximumLength(300).When(e=>e.NodeType.Equals(NodeType.Domain));
+        _ = RuleFor(e => e.Model).MaximumLength(300).When(e=>e.NodeType.Equals(NodeType.Domain));
         _ = RuleFor(e => e.ManufactureCompany).MaximumLength(300).When(e=>e.NodeType.Equals(NodeType.Domain));
     }
 }
