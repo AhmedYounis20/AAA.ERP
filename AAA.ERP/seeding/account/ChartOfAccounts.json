@@ -237,7 +237,7 @@
     "ModifiedAt": null,
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsSubLeadgerBaseAccount": true
   },
   {
     "AccountGuidId": "e689b3a4-7cad-4373-8511-08dc3dfcb068",
