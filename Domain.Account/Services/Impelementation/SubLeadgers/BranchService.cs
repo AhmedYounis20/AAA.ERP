@@ -25,7 +25,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
     private IBranchRepository _repository;
 
     public BranchService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
-        : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BankChartAccountId)
+        : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BranchChartOfAccountId)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
@@ -41,10 +41,10 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
         {
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
             ChartOfAccount? chartOfAccountParent =
-                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.BankChartAccountId));
+                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
             string newCode = await _unitOfWork
                 .ChartOfAccountRepository
-                .GenerateNewCodeForChild(Guid.Parse(SD.BankChartAccountId));
+                .GenerateNewCodeForChild(Guid.Parse(SD.BranchChartOfAccountId));
             Branch entity = new Branch();
 
 
@@ -55,7 +55,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 {
                     Name = command.Name,
                     NameSecondLanguage = command.NameSecondLanguage,
-                    ParentId = Guid.Parse(SD.BankChartAccountId),
+                    ParentId = Guid.Parse(SD.BranchChartOfAccountId),
                     Code = newCode,
                     AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
                     IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,

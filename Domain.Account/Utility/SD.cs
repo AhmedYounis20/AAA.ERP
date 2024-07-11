@@ -10,6 +10,7 @@ public static class SD
     public const string CustomerChartOfAccountId = "a8819d15-bae1-44ab-850d-08dc3dfcb068";
     public const string CashInBoxChartOfAccountId = "bc7492d9-f338-4b46-8515-08dc3dfcb068";
     public const string SupplierChartOfAccountId = "68cf0b75-21a6-4f8a-8554-08dc3dfcb068";
+    public const string BranchChartOfAccountId = "0e9722ff-df3d-4937-8510-08dc3dfcb068";
     public const string AccumlatedDepreciationId = "5b02732c-bd1f-4c9f-852a-08dc3dfcb068";
     public const string ExpensesDepreciationId = "f17c4a2d-76b2-4bb5-853d-08dc3dfcb068";
 
