@@ -13,7 +13,9 @@ public class UnitOfWork : IUnitOfWork
     public ICurrencyRepository CurrencyRepository { get; set; }
     public IGLSettingRepository GlSettingRepository { get; set; }
     public IFinancialPeriodRepository FinancialPeriodRepository { get; set; }
+    public IAttachmentRepository AttachmentRepository { get; set; }
     public ICashInBoxRepository CashInBoxRepository { get; set; }
+    public IBranchRepository BranchRepository { get; set; }
     private IDbContextTransaction? _sqlTransaction;
     private ApplicationDbContext _context;
 
@@ -25,6 +27,9 @@ public class UnitOfWork : IUnitOfWork
         CashInBoxRepository = new CashInBoxRepository(context);
         GlSettingRepository = new GLSettingRepository(context);
         FinancialPeriodRepository = new FinancialPeriodRepository(context);
+        AttachmentRepository = new AttachmentRepository(context);
+        BranchRepository = new BranchRepository(context);
+        
         _context = context;
     }
 

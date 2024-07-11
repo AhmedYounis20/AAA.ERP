@@ -2,7 +2,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Domain.Account.Services.BaseServices.interfaces;
-using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
 using Shared.BaseEntities;
 using Shared.Responses;
 

@@ -1,5 +1,4 @@
-﻿using AAA.ERP.Validators.BussinessValidator.Interfaces;
-using Domain.Account.Commands.Currencies;
+﻿using Domain.Account.Commands.Currencies;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;

@@ -3,7 +3,6 @@ using AAA.ERP.Controllers;
 using AAA.ERP.Services.Impelementation;
 using AAA.ERP.Services.Impelementation.SubLeadgers;
 using AAA.ERP.Services.Interfaces.SubLeadgers;
-using AAA.ERP.Validators.BussinessValidator.Interfaces;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Entities.AccountGuide;
 using Domain.Account.Models.Entities.Currencies;
@@ -21,10 +20,6 @@ using Domain.Account.Services.Impelementation.SubLeadgers;
 using Domain.Account.Services.Interfaces;
 using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
-using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Impelementation;
-using Domain.Account.Validators.BussinessValidator.BaseBussinessValidators.Interfaces;
-using Domain.Account.Validators.BussinessValidator.Impelementation;
-using Domain.Account.Validators.BussinessValidator.Interfaces;
 using Domain.Account.Validators.ComandValidators.AccountGuides;
 using Domain.Account.Validators.InputValidators;
 using Domain.Account.Validators.InputValidators.FinancialPeriods;
@@ -139,24 +134,15 @@ public static class WebBuilderExtensions
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBankService, BankService>();
+        services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<ICostCenterService, CostCenterService>();
+        services.AddScoped<IBranchService, BranchService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBaseBussinessValidator<>), typeof(BaseBussinessValidator<>));
-        services.AddScoped(typeof(IBaseSettingBussinessValidator<>), typeof(BaseSettingBussinessValidator<>));
-        services.AddScoped<ICurrencyBussinessValidator, CurrencyBussinessValidator>();
-        services.AddScoped<IBaseSettingBussinessValidator<Currency>, CurrencyBussinessValidator>();
-        services.AddScoped<IBaseSettingBussinessValidator<AccountGuide>, AccountGuideBussinessValidator>();
-        services.AddScoped<IBaseBussinessValidator<FinancialPeriod>, FinancialPeriodBussinessValidator>();
-        services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
-        services.AddScoped<IAccountGuideBussinessValidator, AccountGuideBussinessValidator>();
-        services.AddScoped<IFinancialPeriodBussinessValidator, FinancialPeriodBussinessValidator>();
-        services.AddScoped<IChartOfAccountBussinessValidator, ChartOfAccountBussinessValidator>();
-        
         services.AddScoped<AccountGuideCreateValidator>();
         // fluent validators
         services.AddScoped<AccountGuideInputValidator>();
@@ -165,9 +151,8 @@ public static class WebBuilderExtensions
         services.AddScoped<FinancialPeriodInputValidator>();
         services.AddScoped<FinancialPeriodUpdateValidator>();
         services.AddScoped<ChartOfAccountInputValidator>();
-
     }
-    public static void AddReositories(this IServiceCollection services)
+    public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
@@ -208,7 +193,7 @@ public static class WebBuilderExtensions
         //        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         builder.Services.AddControllers();
         builder.Services.AddServices();
-        builder.Services.AddReositories();
+        builder.Services.AddRepositories();
         builder.Services.AddValidators();
         builder.Services.AddProjectUtilities();
         builder.Services.AddSwaggerConfiguration();
@@ -241,6 +226,5 @@ public static class WebBuilderExtensions
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
-
     }
 }
