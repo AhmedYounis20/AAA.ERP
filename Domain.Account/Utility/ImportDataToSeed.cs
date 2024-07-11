@@ -71,8 +71,6 @@ public class ImportDataToSeed
                     _context.Add(entity);
             }
             await _context.SaveChangesAsync();
-            await _context.Set<TEntity>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
