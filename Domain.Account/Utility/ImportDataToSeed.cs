@@ -1,9 +1,11 @@
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Models.Entities.Attachments;
 using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Models.Entities.GLSettings;
+using Domain.Account.Models.Entities.Roles;
 using Domain.Account.Models.Entities.SubLeadgers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -44,6 +46,7 @@ public class ImportDataToSeed
     private async Task ImportBussinessData(string folder)
     {
         await ImportTable<AccountGuide>(folder, "AccountGuides.json");
+        // await ImportTable<Role>(folder, "Roles.json");
         await ImportTable<ChartOfAccount>(folder, "ChartOfAccounts.json");
         await ImportTable<GLSetting>(folder, "GLSettings.json");
         await ImportTable<Currency>(folder, "Currencies.json");
@@ -52,7 +55,9 @@ public class ImportDataToSeed
         await ImportTable<Customer>(folder, "Customers.json");
         await ImportTable<Supplier>(folder, "Suppliers.json");
         await ImportTable<CashInBox>(folder, "CashInBoxes.json");
-        await ImportTable<FixedAsset>(folder, "FixedAssets.json");
+        // await ImportTable<FixedAsset>(folder, "FixedAssets.json");
+        // await ImportTable<Attachment>(folder, "Attachments.json");
+        // await ImportTable<Branch>(folder, "Branches.json");
     }
 
     private async Task ImportTable<TEntity>(string folder, string jsonFile) where TEntity : BaseEntity

@@ -140,17 +140,18 @@ public static class WebBuilderExtensions
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IBranchService, BranchService>();
+        services.AddScoped<IRoleService, RoleService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
-        services.AddScoped<AccountGuideCreateValidator>();
         // fluent validators
-        services.AddScoped<AccountGuideInputValidator>();
-        services.AddScoped<CurrencyInputValidator>();
-        services.AddScoped<GLSettingInputValidator>();
-        services.AddScoped<FinancialPeriodInputValidator>();
-        services.AddScoped<FinancialPeriodUpdateValidator>();
-        services.AddScoped<ChartOfAccountInputValidator>();
+        // services.AddScoped<AccountGuideCreateValidator>();
+        // services.AddScoped<AccountGuideInputValidator>();
+        // services.AddScoped<CurrencyInputValidator>();
+        // services.AddScoped<GLSettingInputValidator>();
+        // services.AddScoped<FinancialPeriodInputValidator>();
+        // services.AddScoped<FinancialPeriodUpdateValidator>();
+        // services.AddScoped<ChartOfAccountInputValidator>();
     }
     public static void AddRepositories(this IServiceCollection services)
     {
@@ -167,6 +168,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
         services.AddHttpContextAccessor();
     }

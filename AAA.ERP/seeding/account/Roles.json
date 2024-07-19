@@ -1,0 +1,62 @@
+[
+  {
+    "Id": "311f0fb2-abac-476b-9ab9-0bfbe6bcebc3",
+    "Commission": 100,
+    "Name": "كاشير",
+    "NameSecondLanguage": "Cashier",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:33:43.7853356",
+    "ModifiedAt": "2024-07-19T21:00:09.2757194"
+  },
+  {
+    "Id": "fd8cfa25-0bef-45a2-b896-346aaf5d528a",
+    "Commission": 100,
+    "Name": "محصل مالي",
+    "NameSecondLanguage": "ٍFinancial collector",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:36:05.9778031",
+    "ModifiedAt": "2024-07-19T21:00:09.2757191"
+  },
+  {
+    "Id": "197f9650-99e4-4868-a259-4cc66cab1f65",
+    "Commission": 100,
+    "Name": "أمين مخزن",
+    "NameSecondLanguage": "ٍStore Keeper",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:35:08.5642323",
+    "ModifiedAt": "2024-07-19T21:00:09.2757188"
+  },
+  {
+    "Id": "dee3fdb6-5c4e-41dd-ac6f-a0ee8187306b",
+    "Commission": 100,
+    "Name": "مدير عام",
+    "NameSecondLanguage": "General Manager",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:32:05.7890452",
+    "ModifiedAt": "2024-07-19T21:00:09.2757185"
+  },
+  {
+    "Id": "3298be4f-9daa-48ff-a018-ad5261177ce5",
+    "Commission": 100,
+    "Name": "بائع",
+    "NameSecondLanguage": "sales",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:34:13.8085438",
+    "ModifiedAt": "2024-07-19T21:00:09.2757182"
+  },
+  {
+    "Id": "610fb245-5ad4-4d7c-bd97-c496a2a30e5a",
+    "Commission": 100,
+    "Name": "مدير فرع",
+    "NameSecondLanguage": "Branch Manager",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-19T20:33:04.2355402",
+    "ModifiedAt": "2024-07-19T21:00:09.2757168"
+  }
+]
