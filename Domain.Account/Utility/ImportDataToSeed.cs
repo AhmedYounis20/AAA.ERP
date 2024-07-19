@@ -46,7 +46,7 @@ public class ImportDataToSeed
     private async Task ImportBussinessData(string folder)
     {
         await ImportTable<AccountGuide>(folder, "AccountGuides.json");
-        // await ImportTable<Role>(folder, "Roles.json");
+        await ImportTable<Role>(folder, "Roles.json");
         await ImportTable<ChartOfAccount>(folder, "ChartOfAccounts.json");
         await ImportTable<GLSetting>(folder, "GLSettings.json");
         await ImportTable<Currency>(folder, "Currencies.json");
@@ -56,8 +56,8 @@ public class ImportDataToSeed
         await ImportTable<Supplier>(folder, "Suppliers.json");
         await ImportTable<CashInBox>(folder, "CashInBoxes.json");
         // await ImportTable<FixedAsset>(folder, "FixedAssets.json");
-        // await ImportTable<Attachment>(folder, "Attachments.json");
-        // await ImportTable<Branch>(folder, "Branches.json");
+        await ImportTable<Attachment>(folder, "Attachments.json");
+        await ImportTable<Branch>(folder, "Branches.json");
     }
 
     private async Task ImportTable<TEntity>(string folder, string jsonFile) where TEntity : BaseEntity

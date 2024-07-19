@@ -36,7 +36,6 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
     public override async Task<ApiResponse<Branch>> Create(BranchCreateCommand command, bool isValidate = true)
     {
         await _unitOfWork.BeginTransactionAsync();
-
         try
         {
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
@@ -90,8 +89,8 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 entity.NodeType = command.NodeType;
             }
 
-            _unitOfWork.BranchRepository.Add(entity);
-            _unitOfWork.CommitAsync();
+            await _unitOfWork.BranchRepository.Add(entity);
+            await _unitOfWork.CommitAsync();
             return new ApiResponse<Branch>
             {
                 IsSuccess = true,
