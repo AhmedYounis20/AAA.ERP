@@ -21,9 +21,9 @@ namespace AAA.ERP.Controllers.BaseControllers
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
         public string CurrentLanguage => ((HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
-            HttpContext.Request.Headers["Accept-Language"].Contains("ar")) ||
+            HttpContext.Request.Headers["Accept-Language"].Any(e=>e.Contains("ar"))) ||
             (HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
-            HttpContext.Request.Headers["Accept-Culture"].Contains("ar"))) ? "ar" : "en";
+            HttpContext.Request.Headers["Accept-Culture"].Any(e=>e.Contains("ar")))) ? "ar" : "en";
 
 
         public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,

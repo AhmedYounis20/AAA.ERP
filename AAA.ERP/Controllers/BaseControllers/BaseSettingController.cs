@@ -57,6 +57,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
 
     protected override async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
     {
+        input.Id = id;
         var result = await _sender.Send(input);
         if (result.IsSuccess)
         {

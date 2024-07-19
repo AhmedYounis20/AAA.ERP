@@ -18,5 +18,7 @@ public class CurrencyUpdateValidator : BaseSettingUpdateValidator<CurrencyUpdate
         _ = RuleFor(e => e.IsActive).Equal(true).When(e => e.IsDefault).WithMessage("CurrencyActiveOnDefault");
 
         _ = RuleFor(e => e.Symbol).MaximumLength(4).WithMessage("CurrencySymbolMaxLength");
+        _ = RuleFor(e => e.Symbol).NotEmpty().WithMessage("CurrencySymbolIsRequired");
+
     }
 }

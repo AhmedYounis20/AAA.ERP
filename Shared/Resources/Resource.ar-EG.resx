@@ -145,7 +145,7 @@
     <value>عملة</value>
   </data>
   <data name="CurrencyActiveOnDefault" xml:space="preserve">
-    <value>الاعملة الافتراضية يجب ان تكون مفعلة</value>
+    <value>الاعملة الافتراضية يجب ان تكون نشطة</value>
   </data>
   <data name="CurrencySymbolIsExisted" xml:space="preserve">
     <value>عملة بهذا الرمز موجودة بالفعل</value>
@@ -188,5 +188,11 @@
   </data>
   <data name="WithSameNameSecondLanguageIsExisted" xml:space="preserve">
     <value>بنفس الاسم باللغة الثانية موجود</value>
+  </data>
+  <data name="CurrencySymbolIsRequired" xml:space="preserve">
+    <value>رمز العملة مطلوب</value>
+  </data>
+  <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
+    <value>معدل تحويل العملية يجب ان يكون اكبر من صفر</value>
   </data>
 </root>

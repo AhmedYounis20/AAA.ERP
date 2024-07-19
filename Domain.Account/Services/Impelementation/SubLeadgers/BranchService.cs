@@ -67,18 +67,19 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 };
                 if (command.Logo != null)
                 {
+                    Attachment attachment = new();
                     using (var memoryStream = new MemoryStream())
                     {
                         await command.Logo.CopyToAsync(memoryStream);
-                        Attachment attachment = new Attachment
+                        attachment = new Attachment
                         {
                             FileData = memoryStream.ToArray(),
                             FileContentType = command.Logo.ContentType,
                             FileName = command.Logo.FileName
                         };
+                    }
                         attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
                         entity.AttachmentId = attachment.Id;
-                    }
                 }
             }
             else

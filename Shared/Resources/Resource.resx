@@ -165,9 +165,6 @@
   <data name="ExchangeRateIsRequired" xml:space="preserve">
     <value>Exchange Rate Is Required</value>
   </data>
-  <data name="ExchangeRateIsRequired1" xml:space="preserve">
-    <value>معدل التحويل مطلوب</value>
-  </data>
   <data name="NameIsRequired" xml:space="preserve">
     <value>name is required</value>
   </data>
@@ -191,5 +188,11 @@
   </data>
   <data name="WithSameNameSecondLanguageIsExisted" xml:space="preserve">
     <value>with same name second language is existed</value>
+  </data>
+  <data name="CurrencySymbolIsRequired" xml:space="preserve">
+    <value>Currency Symol is required</value>
+  </data>
+  <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
+    <value>Exchange rate must be greater than zero</value>
   </data>
 </root>
