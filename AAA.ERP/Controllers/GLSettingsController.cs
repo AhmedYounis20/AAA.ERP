@@ -47,7 +47,7 @@ public class GLSettingsController : ControllerBase
         var validationResult = _validator.Validate(toValidate);
         if (validationResult.IsValid)
         {
-            var entity = _mapper.Map<GLSetting>(input);
+            var entity = input.Adapt<GLSetting>();
             var userId = User.Claims.FirstOrDefault(e => e.Type == "id")?.Value;
             entity.ModifiedBy = Guid.Parse(userId ?? "");
             var result = await _service.Update(input);
