@@ -153,8 +153,8 @@
   <data name="CurrencySymbolMaxLength" xml:space="preserve">
     <value>currency symbol can't exceed 4 letters</value>
   </data>
-  <data name="DefaultCurrencyIsAlreadyExitedWithName" xml:space="preserve">
-    <value>default currency is already exited with name</value>
+  <data name="DefaultCurrencyIsAlreadyExistedWithName" xml:space="preserve">
+    <value>default currency is already existed with name</value>
   </data>
   <data name="Deleted" xml:space="preserve">
     <value>Deleted</value>
@@ -194,5 +194,8 @@
   </data>
   <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
     <value>Exchange rate must be greater than zero</value>
+  </data>
+  <data name="GLSettings" xml:space="preserve">
+    <value>GLSettings</value>
   </data>
 </root>

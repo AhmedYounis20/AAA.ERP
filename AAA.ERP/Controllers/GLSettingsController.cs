@@ -18,26 +18,30 @@ namespace AAA.ERP.Controllers;
 public class GLSettingsController : ControllerBase
 {
     GLSettingInputValidator _validator;
-    IMapper _mapper;
     IStringLocalizer<Resource> _localizer;
     IGLSettingService _service;
+
+    public string CurrentLanguage => ((HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
+                                       HttpContext.Request.Headers["Accept-Language"].Any(e => e.Contains("ar"))) ||
+                                      (HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
+                                       HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar"))))
+        ? "ar"
+        : "en";
+
     public GLSettingsController(IGLSettingService service,
         GLSettingInputValidator validator,
-        IStringLocalizer<Resource> localizer,
-        IMapper mapper)
+        IStringLocalizer<Resource> localizer)
     {
         _validator = validator;
-        _mapper = mapper;
         _localizer = localizer;
         _service = service;
-
     }
 
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         var result = await _service.Get();
-        return StatusCode((int)result.StatusCode, result);
+        return StatusCode((int) result.StatusCode, result);
     }
 
     [HttpPut]
@@ -51,17 +55,32 @@ public class GLSettingsController : ControllerBase
             var userId = User.Claims.FirstOrDefault(e => e.Type == "id")?.Value;
             entity.ModifiedBy = Guid.Parse(userId ?? "");
             var result = await _service.Update(input);
-            return StatusCode((int)result.StatusCode, result);
+
+            if (result.IsSuccess)
+            {
+                string operation = (_localizer["Updated"].Value);
+                StringBuilder message = new StringBuilder(operation);
+                message.Append(' ');
+                message.Append(_localizer["GLSettings"]);
+                message.Append(' ');
+                message.Append(_localizer["Successfully"].Value);
+
+                result.SuccessMessage = message.ToString();
+            }
+
+            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+
+            return StatusCode((int) result.StatusCode, result);
         }
         else
         {
             return BadRequest(
-               new ApiResponse <GLSetting>
-               {
-                   IsSuccess = false,
-                   StatusCode = HttpStatusCode.BadRequest,
-                   ErrorMessages = validationResult.Errors.Select(e => _localizer[e.ErrorMessage].Value).ToList(),
-               });
+                new ApiResponse<GLSetting>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = validationResult.Errors.Select(e => _localizer[e.ErrorMessage].Value).ToList(),
+                });
         }
     }
 }

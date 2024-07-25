@@ -177,11 +177,11 @@ namespace Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to default currency is already exited with name.
+        ///   Looks up a localized string similar to default currency is already existed with name.
         /// </summary>
-        public static string DefaultCurrencyIsAlreadyExitedWithName {
+        public static string DefaultCurrencyIsAlreadyExistedWithName {
             get {
-                return ResourceManager.GetString("DefaultCurrencyIsAlreadyExitedWithName", resourceCulture);
+                return ResourceManager.GetString("DefaultCurrencyIsAlreadyExistedWithName", resourceCulture);
             }
         }
         
@@ -218,6 +218,15 @@ namespace Shared.Resources {
         public static string ExchangeRateIsRequired {
             get {
                 return ResourceManager.GetString("ExchangeRateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GLSettings.
+        /// </summary>
+        public static string GLSettings {
+            get {
+                return ResourceManager.GetString("GLSettings", resourceCulture);
             }
         }
         

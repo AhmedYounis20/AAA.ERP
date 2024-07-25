@@ -198,6 +198,7 @@ public static class WebBuilderExtensions
         builder.Services.AddRepositories();
         builder.Services.AddValidators();
         builder.Services.AddProjectUtilities();
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddSwaggerConfiguration();
         builder.Services.AddAuthenticationConfiguration(builder.Configuration);
 

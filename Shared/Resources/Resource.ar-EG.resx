@@ -153,9 +153,6 @@
   <data name="CurrencySymbolMaxLength" xml:space="preserve">
     <value>لا يمكن ان يتعدى الرمز 4 حروف</value>
   </data>
-  <data name="DefaultCurrencyIsAlreadyExitedWithName" xml:space="preserve">
-    <value>العملة الافتراضية موجودة باسم</value>
-  </data>
   <data name="Deleted" xml:space="preserve">
     <value>تم حذف</value>
   </data>
@@ -194,5 +191,11 @@
   </data>
   <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
     <value>معدل تحويل العملية يجب ان يكون اكبر من صفر</value>
+  </data>
+  <data name="DefaultCurrencyIsAlreadyExistedWithName" xml:space="preserve">
+    <value>العملة الافتراضية موجودة باسم</value>
+  </data>
+  <data name="GLSettings" xml:space="preserve">
+    <value>الاعدادات العامة</value>
   </data>
 </root>
