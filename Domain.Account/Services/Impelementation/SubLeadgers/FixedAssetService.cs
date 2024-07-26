@@ -44,12 +44,18 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
             FixedAsset entity = command.Adapt<FixedAsset>();
             if (isDomain)
             {
+                if (!command.IsDepreciable)
+                {
+                    entity.AssetLifeSpanByYears = 0;
+                    entity.DepreciationRate = 0;
+                }
+                
                 var fixedAssetsDepreciationDetails =
                     SD.FixedAssetsDepreciationDetails[command.FixedAssetType ?? FixedAssetType.Lands];
-                ChartOfAccount accumlatedDepriciation =
-                    await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
+                ChartOfAccount? accumlatedDepriciation =
+                    command.FixedAssetType == FixedAssetType.Lands ? null : await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
                 ChartOfAccount expensesDepriciation =
-                    await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[1]));
+                    command.FixedAssetType == FixedAssetType.Lands ? null : await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[1]));
                 entity.ChartOfAccount = new ChartOfAccount
                 {
                     Name = command.Name,
@@ -143,11 +149,16 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
         FixedAssetType fixedAssetType)
     {
         var chartOfAccountId = Guid.Parse(SD.FixedAssetsIds[fixedAssetType]);
+        var assetCodes = SD.FixedAssetsDepreciationDetails[fixedAssetType];
         string? code =
             await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(chartOfAccountId);
+        string accumelatedCode = fixedAssetType == FixedAssetType.Lands ? "": await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[0]));
+        string expenseCode = fixedAssetType == FixedAssetType.Lands ? "": await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[1]));
         FixedAssetCreateCommand inputModel = Activator.CreateInstance<FixedAssetCreateCommand>();
 
         inputModel.Code = code;
+        inputModel.ExpensesCode = expenseCode;
+        inputModel.AccumelatedCode = accumelatedCode;
         inputModel.NodeType = NodeType.Domain;
         inputModel.ParentId = parentId;
         inputModel.FixedAssetType = fixedAssetType;
@@ -181,6 +192,11 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                     entity.DepreciationRate = command.DepreciationRate;
                     entity.IsDepreciable = command.IsDepreciable;
                     entity.AssetLifeSpanByYears = command.AssetLifeSpanByYears;
+                    if (!command.IsDepreciable)
+                    {
+                        entity.AssetLifeSpanByYears = 0;
+                        entity.DepreciationRate = 0;
+                    }
                 }
 
                 if (entity.ChartOfAccountId.HasValue)
