@@ -177,6 +177,15 @@ namespace Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default currency cannot be deleted.
+        /// </summary>
+        public static string DefaultCurrencyCannotBeDeleted {
+            get {
+                return ResourceManager.GetString("DefaultCurrencyCannotBeDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to default currency is already existed with name.
         /// </summary>
         public static string DefaultCurrencyIsAlreadyExistedWithName {

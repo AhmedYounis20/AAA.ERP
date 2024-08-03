@@ -56,7 +56,7 @@ public class CurrencyService : BaseSettingService<Currency,CurrencyCreateCommand
         var result = await base.ValidateUpdate(command);
         Currency? currencyWithSameSymbol =
             await _repository.GetQuery().Where(e => e.Symbol == command.Symbol).FirstOrDefaultAsync();
-        if (currencyWithSameSymbol.Id != command.Id)
+        if (currencyWithSameSymbol is not null && currencyWithSameSymbol.Id != command.Id)
         {
             result.isValid = false;
             result.errors.Add("CurrencySymbolIsExisted");
@@ -78,6 +78,18 @@ public class CurrencyService : BaseSettingService<Currency,CurrencyCreateCommand
             }
         }
 
+        return result;
+    }
+
+    protected override async  Task<(bool isValid, List<string> errors, Currency? entity)> ValidateDelete(Guid id)
+    {
+        var result = await base.ValidateDelete(id);
+        if (result.entity is not null && result.entity.IsDefault)
+        {
+            result.isValid = false;
+            result.errors.Add("DefaultCurrencyCannotBeDeleted");
+        }
+    
         return result;
     }
 } 

@@ -198,4 +198,7 @@
   <data name="GLSettings" xml:space="preserve">
     <value>الاعدادات العامة</value>
   </data>
+  <data name="DefaultCurrencyCannotBeDeleted" xml:space="preserve">
+    <value>لا يمكن حذف العملة الافتراضية</value>
+  </data>
 </root>

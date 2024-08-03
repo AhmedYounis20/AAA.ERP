@@ -198,4 +198,7 @@
   <data name="GLSettings" xml:space="preserve">
     <value>GLSettings</value>
   </data>
+  <data name="DefaultCurrencyCannotBeDeleted" xml:space="preserve">
+    <value>Default currency cannot be deleted</value>
+  </data>
 </root>
