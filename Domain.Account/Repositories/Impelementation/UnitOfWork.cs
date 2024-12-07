@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public IChartOfAccountRepository ChartOfAccountRepository { get; set; }
     public ICurrencyRepository CurrencyRepository { get; set; }
     public IGLSettingRepository GlSettingRepository { get; set; }
+    public IEntryRepository EntryRepository { get; set; }
     public IFinancialPeriodRepository FinancialPeriodRepository { get; set; }
     public IAttachmentRepository AttachmentRepository { get; set; }
     public ICashInBoxRepository CashInBoxRepository { get; set; }
@@ -29,6 +30,7 @@ public class UnitOfWork : IUnitOfWork
         FinancialPeriodRepository = new FinancialPeriodRepository(context);
         AttachmentRepository = new AttachmentRepository(context);
         BranchRepository = new BranchRepository(context);
+        EntryRepository = new EntryRepository(context);
         
         _context = context;
     }
