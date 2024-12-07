@@ -25,7 +25,7 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] BranchCreateCommand input)
+    public async Task<IActionResult> Create( BranchCreateCommand input)
     => await CreateRecord(input);
 
     [HttpGet]
@@ -37,9 +37,8 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
     => await GetRecord(id);
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id,[FromBody] BranchUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id,[FromForm] BranchUpdateCommand input)
     => await UpdateRecord(id, input);
-
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
