@@ -9,6 +9,7 @@ using Domain.Account.Validators.InputValidators;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Shared.Resources;
+using Shared.Responses;
 
 namespace AAA.ERP.Controllers;
 
@@ -16,10 +17,12 @@ namespace AAA.ERP.Controllers;
 [ApiController]
 public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryUpdateCommand>
 {
+    private IEntryService _service;
+
     public EntriesController(IEntryService service,
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
-    { }
+        => _service = service;
 
     [HttpPost]
     public virtual async Task<IActionResult> Create(EntryCreateCommand input)
@@ -41,9 +44,17 @@ public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryU
     {
         return await UpdateRecord(id, input);
     }
+    
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
         return await DeleteRecord(id);
+    }
+
+    [HttpGet("GetEntryNumber")]
+    public async Task<IActionResult> GetEntryNumber([FromQuery]DateTime dateTime)
+    {
+        var result = await _service.GetEntryNumber(dateTime);
+        return StatusCode((int)result.StatusCode, result);
     }
 }
