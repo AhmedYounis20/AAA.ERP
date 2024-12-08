@@ -56,6 +56,7 @@ namespace AAA.ERP.Controllers.BaseControllers
 
         protected virtual async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
         {
+            input.Id = id;
             var result = await _sender.Send(input);
             result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
             return StatusCode((int) result.StatusCode, result);

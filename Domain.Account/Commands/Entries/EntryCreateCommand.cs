@@ -1,6 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
+using Microsoft.AspNetCore.Http;
 using Shared.Responses;
 
 namespace Domain.Account.Commands.Currencies;
@@ -16,4 +17,5 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public DateTime EntryDate { get; set; }
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
+    public List<IFormFile> Attachments { get; set; }
 }

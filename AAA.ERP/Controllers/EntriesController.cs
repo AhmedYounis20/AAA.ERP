@@ -22,7 +22,7 @@ public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryU
     { }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] EntryCreateCommand input)
+    public virtual async Task<IActionResult> Create(EntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -37,7 +37,7 @@ public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryU
         return await GetRecord(id);
     }
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] EntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id,EntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

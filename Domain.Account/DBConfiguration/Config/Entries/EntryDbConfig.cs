@@ -32,6 +32,11 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
             _ = builder.Property(e => e.ReceiverName).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.Notes).HasColumnOrder(columnNumber++);
 
+            _ = builder.HasMany<EntryAttachment>(e => e.EntryAttachments)
+                .WithOne()
+                .HasForeignKey(e => e.EntryId)
+                .OnDelete(DeleteBehavior.Cascade);
+           
             return builder;
         }
     }

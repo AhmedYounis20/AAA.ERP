@@ -141,6 +141,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IEntryService, EntryService>();
     }
     public static void AddValidators(this IServiceCollection services)
     {
@@ -169,6 +170,7 @@ public static class WebBuilderExtensions
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
         services.AddHttpContextAccessor();
     }
