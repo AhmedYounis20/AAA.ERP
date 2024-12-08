@@ -67,18 +67,14 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 if (command.Logo != null)
                 {
                     Attachment attachment = new();
-                    using (var memoryStream = new MemoryStream())
+                    attachment = new Attachment
                     {
-                        await command.Logo.CopyToAsync(memoryStream);
-                        attachment = new Attachment
-                        {
-                            FileData = memoryStream.ToArray(),
-                            FileContentType = command.Logo.ContentType,
-                            FileName = command.Logo.FileName
-                        };
-                    }
-                        attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
-                        entity.AttachmentId = attachment.Id;
+                        FileData = command.Logo.ToArray(),
+                        FileContentType = command.Logo.ContentType,
+                        FileName = command.Logo.FileName
+                    };
+                    attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
+                    entity.AttachmentId = attachment.Id;
                 }
             }
             else
@@ -150,30 +146,22 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                     await _unitOfWork.AttachmentRepository.Delete(entity.AttachmentId.Value);
                 else if (!entity.AttachmentId.HasValue && (command.Logo != null && command.Logo.Length > 0))
                 {
-                    using (var memoryStream = new MemoryStream())
+                    Attachment attachment = new Attachment
                     {
-                        await command.Logo.CopyToAsync(memoryStream);
-                        Attachment attachment = new Attachment
-                        {
-                            FileData = memoryStream.ToArray(),
-                            FileContentType = command.Logo.ContentType,
-                            FileName = command.Logo.FileName
-                        };
-                        attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
-                        entity.AttachmentId = attachment.Id;
-                    }
+                        FileData = command.Logo.ToArray(),
+                        FileContentType = command.Logo.ContentType,
+                        FileName = command.Logo.FileName
+                    };
+                    attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
+                    entity.AttachmentId = attachment.Id;
                 }
                 else if (entity.AttachmentId.HasValue && (command.Logo != null && command.Logo.Length > 0))
                 {
                     Attachment attachment = await _unitOfWork.AttachmentRepository.Get(entity.AttachmentId.Value);
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await command.Logo.CopyToAsync(memoryStream);
-                        attachment.FileData = memoryStream.ToArray();
-                        attachment.FileName = command.Logo.FileName;
-                        attachment.FileContentType = command.Logo.ContentType;
-                        attachment = await _unitOfWork.AttachmentRepository.Update(attachment);
-                    }
+                    attachment.FileData = command.Logo.ToArray();
+                    attachment.FileName = command.Logo.FileName;
+                    attachment.FileContentType = command.Logo.ContentType;
+                    attachment = await _unitOfWork.AttachmentRepository.Update(attachment);
                 }
 
                 entity = await _unitOfWork.BranchRepository.Update(entity);

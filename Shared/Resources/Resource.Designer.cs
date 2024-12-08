@@ -276,6 +276,15 @@ namespace Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Found Current Financial Period.
+        /// </summary>
+        public static string NotFoundCurrentFinancialPeriod {
+            get {
+                return ResourceManager.GetString("NotFoundCurrentFinancialPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfully.
         /// </summary>
         public static string Successfully {

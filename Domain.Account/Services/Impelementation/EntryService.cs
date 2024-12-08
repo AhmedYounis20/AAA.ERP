@@ -39,11 +39,9 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                     if (file != null)
                     {
                         Attachment attachment = new();
-                        using var memoryStream = new MemoryStream();
-                        await file.CopyToAsync(memoryStream);
                         attachment = new Attachment
                         {
-                            FileData = memoryStream.ToArray(),
+                            FileData = file.ToArray(),
                             FileContentType = file.ContentType,
                             FileName = file.FileName
                         };

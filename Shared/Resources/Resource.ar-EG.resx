@@ -201,4 +201,7 @@
   <data name="DefaultCurrencyCannotBeDeleted" xml:space="preserve">
     <value>لا يمكن حذف العملة الافتراضية</value>
   </data>
+  <data name="NotFoundCurrentFinancialPeriod" xml:space="preserve">
+    <value>لا توجد فترة مالية حالية</value>
+  </data>
 </root>
