@@ -27,9 +27,9 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     private IBaseSubLeadgerRepository<TEntity> _repository;
     private IHttpContextAccessor _accessor;
     private string _accountId;
-
+    private PaymentType? relatedPaymentType;
     public SubLeadgerService(IUnitOfWork unitOfWork, IBaseSubLeadgerRepository<TEntity> repository,
-        IHttpContextAccessor accessor, string accountId) : base(repository)
+        IHttpContextAccessor accessor, string accountId,PaymentType? relatedPaymentType = null) : base(repository)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
@@ -80,7 +80,8 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                     IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
                     IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
                     AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-                    IsCreatedFromSubLeadger = true
+                    IsCreatedFromSubLeadger = true,
+                    RelatedPaymentType = relatedPaymentType
                 };
             }
             else

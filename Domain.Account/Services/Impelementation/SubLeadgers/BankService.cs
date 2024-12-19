@@ -22,7 +22,7 @@ public class BankService : SubLeadgerService<Bank, BankCreateCommand,BankUpdateC
     private IHttpContextAccessor _accessor;
 
     public BankService(IUnitOfWork unitOfWork,IBankRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor,SD.BankChartAccountId)
+        : base(unitOfWork, repository, accessor,SD.BankChartAccountId, PaymentType.Cheque)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;

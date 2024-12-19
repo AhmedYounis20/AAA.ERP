@@ -25,7 +25,7 @@ public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryU
         => _service = service;
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create(EntryCreateCommand input)
+    public async Task<IActionResult> Create(EntryCreateCommand input)
     {
         return await CreateRecord(input);
     }

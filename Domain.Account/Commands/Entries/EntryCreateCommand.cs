@@ -1,5 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Models.Dtos.Attachments;
+using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
 using Microsoft.AspNetCore.Http;
@@ -19,4 +20,5 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
     public List<AttachmentDto> Attachments { get; set; }
+    public List<FinancialTransactionInputModel> FinancialTransactions { get; set; }
 }

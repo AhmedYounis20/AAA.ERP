@@ -1,4 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Models.Dtos.Attachments;
+using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
 using Shared.Responses;
@@ -16,4 +18,7 @@ public class EntryUpdateCommand : BaseUpdateCommand<Entry>
     public DateTime EntryDate { get; set; }
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
+    public List<AttachmentDto> Attachments { get; set; }
+    public List<FinancialTransactionInputModel> FinancialTransactions { get; set; }
+
 }

@@ -4,6 +4,7 @@ using Domain.Account.Commands.Currencies;
 using Domain.Account.Commands.GLSettings;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Entities.Attachments;
+using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Models.Entities.GLSettings;
@@ -31,6 +32,16 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
     {
         try
         {
+            var bussinessValidationResult = await ValidateCreate(command);
+            if (!bussinessValidationResult.isValid)
+            {
+                return new ApiResponse<Entry>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = bussinessValidationResult.errors
+                };
+            }
             var entry = command.Adapt<Entry>();
             if (command.Attachments != null && command.Attachments.Any())
             {
@@ -50,6 +61,21 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                             Attachment = attachment
                         });
                     }
+                }
+
+                foreach (var transaction in command.FinancialTransactions)
+                {
+                    var debitTransaction = transaction.Adapt<FinancialTransaction>();
+                    debitTransaction.ChartOfAccountId = transaction.DebitAccountId;
+                    debitTransaction.Id = Guid.NewGuid();    
+                    var creditTransaction = transaction.Adapt<FinancialTransaction>();
+                    creditTransaction.ChartOfAccountId = transaction.CreditAccountId;
+                    creditTransaction.AccountNature = debitTransaction.AccountNature == AccountNature.Debit
+                        ? AccountNature.Credit
+                        : AccountNature.Debit;
+                    creditTransaction.ComplementTransactionId = debitTransaction.Id;
+                    entry.FinancialTransactions.Add(debitTransaction);
+                    entry.FinancialTransactions.Add(creditTransaction);
                 }
             }
 
