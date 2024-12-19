@@ -37,6 +37,11 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
                 .HasForeignKey(e => e.EntryId)
                 .OnDelete(DeleteBehavior.Cascade);
            
+            _ = builder.HasMany<FinancialTransaction>(e => e.FinancialTransactions)
+                .WithOne()
+                .HasForeignKey(e => e.EntryId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             return builder;
         }
     }

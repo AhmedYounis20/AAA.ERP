@@ -25,6 +25,7 @@ namespace Domain.Account.DBConfiguration.Config.ChartOfAccountDbConfig
             _ = builder.Property(e => e.IsActiveAccount).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsCreatedFromSubLeadger).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsSubLeadgerBaseAccount).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.RelatedPaymentType).HasConversion<string>().HasColumnOrder(columnNumber++);
 
             base.ApplyConfiguration(builder);
 

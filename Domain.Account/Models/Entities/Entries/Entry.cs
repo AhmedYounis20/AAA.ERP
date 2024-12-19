@@ -20,4 +20,6 @@ public class Entry : BaseEntity
     public Guid FinancialPeriodId { get; set; }
     public virtual FinancialPeriod? FinancialPeriod { get; set; }
     public virtual List<EntryAttachment> EntryAttachments { get; set; }
+    
+    public virtual List<FinancialTransaction>  FinancialTransactions { get; set; }
 }
