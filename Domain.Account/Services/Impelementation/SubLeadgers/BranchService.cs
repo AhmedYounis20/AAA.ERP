@@ -135,6 +135,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 entity.Notes = command.Notes;
                 entity.ModifiedAt = DateTime.Now;
                 entity.ChartOfAccount = null;
+                entity.Attachment = null;
                 if (entity.ChartOfAccountId.HasValue)
                 {
                     var account = await _unitOfWork.ChartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
@@ -142,8 +143,12 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                     account.NameSecondLanguage = command.NameSecondLanguage;
                     await _unitOfWork.ChartOfAccountRepository.Update(account);
                 }
+
                 if ((command.Logo == null || command.Logo.Length <= 0) && entity.AttachmentId.HasValue)
+                {
                     await _unitOfWork.AttachmentRepository.Delete(entity.AttachmentId.Value);
+                    entity.AttachmentId = null;
+                }
                 else if (!entity.AttachmentId.HasValue && (command.Logo != null && command.Logo.Length > 0))
                 {
                     Attachment attachment = new Attachment
