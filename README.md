@@ -4,6 +4,8 @@ This is the backend part of the **Accounting Management System** developed using
 
 🔗 **Frontend Demo**: [ERP Frontend System](https://erp-frontend-system.netlify.app)
 
+🔗 **Frontend Repo**: [Accounting Management System](https://github.com/AhmedYounis20/aaa-dashboard)
+
 ## 🛠️ Technologies Used
 
 ![dotnet](https://img.shields.io/badge/.NET-8-512BD4?logo=.net&logoColor=white)  
