@@ -8,7 +8,7 @@ namespace Domain.Account.Models.Entities.Entries;
 public class Entry : BaseEntity
 {
     public string EntryNumber { get; set; } = string.Empty;
-    public string? DocumentNubmer { get; set; }
+    public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }
     public virtual Currency? Currency { get; set; }
     public decimal ExchageRate { get; set; }

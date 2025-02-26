@@ -16,7 +16,7 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
             builder.ToTable("Entries");
 
             _ = builder.Property(e => e.EntryNumber).IsRequired().HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.DocumentNubmer).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.DocumentNumber).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
 
             _ = builder.Property(e => e.FinancialPeriodId).HasColumnOrder(columnNumber++);
@@ -38,7 +38,7 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
                 .OnDelete(DeleteBehavior.Cascade);
            
             _ = builder.HasMany<FinancialTransaction>(e => e.FinancialTransactions)
-                .WithOne()
+                .WithOne(e=>e.Entry)
                 .HasForeignKey(e => e.EntryId)
                 .OnDelete(DeleteBehavior.Cascade);
             

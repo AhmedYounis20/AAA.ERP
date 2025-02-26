@@ -4,6 +4,7 @@ using Domain.Account.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241230201047_update_financialTransaction_DeleteEntryId1")]
+    partial class update_financialTransaction_DeleteEntryId1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -87,7 +89,7 @@ namespace AAA.ERP.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -150,7 +152,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(10);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -175,7 +177,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(15);
 
-                    b.Property<string>("SubLeadgerType")
+                    b.Property<string>("RelatedPaymentType")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(11);
 
@@ -213,7 +215,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -273,7 +275,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -316,7 +318,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(5);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -381,7 +383,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CurrencyId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DocumentNumber")
+                    b.Property<string>("DocumentNubmer")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(2);
 
@@ -405,7 +407,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("FinancialPeriodId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -455,7 +457,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("EntryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -521,7 +523,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -566,6 +568,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("ChequeBankId");
 
+                    b.HasIndex("ComplementTransactionId");
+
                     b.HasIndex("EntryId");
 
                     b.ToTable("FinancialTransactions", (string)null);
@@ -588,7 +592,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -650,7 +654,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(3);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -674,7 +678,6 @@ namespace AAA.ERP.Migrations
                             IsAllowingDeleteVoucher = false,
                             IsAllowingEditVoucher = false,
                             IsAllowingNegativeBalances = false,
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MonthDays = (byte)0
                         });
                 });
@@ -696,7 +699,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -757,7 +760,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(7);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -830,7 +833,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -897,7 +900,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -976,7 +979,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(8);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -1076,7 +1079,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(7);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -1169,7 +1172,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(8);
 
-                    b.Property<DateTime>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -1528,6 +1531,10 @@ namespace AAA.ERP.Migrations
                         .WithMany()
                         .HasForeignKey("ChequeBankId");
 
+                    b.HasOne("Domain.Account.Models.Entities.Entries.FinancialTransaction", "ComplementTransaction")
+                        .WithMany()
+                        .HasForeignKey("ComplementTransactionId");
+
                     b.HasOne("Domain.Account.Models.Entities.Entries.Entry", "Entry")
                         .WithMany("FinancialTransactions")
                         .HasForeignKey("EntryId")
@@ -1537,6 +1544,8 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
 
                     b.Navigation("ChequeBank");
+
+                    b.Navigation("ComplementTransaction");
 
                     b.Navigation("Entry");
                 });

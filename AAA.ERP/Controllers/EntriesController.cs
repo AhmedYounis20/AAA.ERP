@@ -1,7 +1,6 @@
 ﻿using AAA.ERP.Controllers.BaseControllers;
 using AutoMapper;
-using Domain.Account.Commands.Currencies;
-using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Commands.Entries;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Interfaces;
@@ -15,17 +14,17 @@ namespace AAA.ERP.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryUpdateCommand>
+public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
 {
-    private IEntryService _service;
+    private IComplexEntryService _service;
 
-    public EntriesController(IEntryService service,
+    public EntriesController(IComplexEntryService service,
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
         => _service = service;
 
     [HttpPost]
-    public async Task<IActionResult> Create(EntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] ComplexEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -37,10 +36,12 @@ public class EntriesController : BaseController<Entry, EntryCreateCommand,EntryU
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        return await GetRecord(id);
+        var result = await _service.GetComplexEntryById(id);
+        return StatusCode((int) result.StatusCode, result);
     }
+    
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id,EntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id,ComplexEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

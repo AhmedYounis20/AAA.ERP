@@ -8,7 +8,8 @@ using Shared.Responses;
 
 namespace Domain.Account.Services.Interfaces;
 
-public interface IEntryService : IBaseService<Entry, EntryCreateCommand, EntryUpdateCommand>
+public interface IComplexEntryService : IBaseService<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);
+    Task<ApiResponse<EntryDto>> GetComplexEntryById(Guid id);
 }

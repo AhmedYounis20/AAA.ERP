@@ -1,4 +1,5 @@
 using Domain.Account.Commands.SubLeadgers.Customers;
+using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.SubLeadgers;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Repositories.Interfaces.SubLeadgers;
@@ -16,7 +17,7 @@ public class CustomerService : SubLeadgerService<Customer, CustomerCreateCommand
     private IHttpContextAccessor _accessor;
 
     public CustomerService(IUnitOfWork unitOfWork,ICustomerRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, SD.CustomerChartOfAccountId)
+        : base(unitOfWork, repository, accessor, SD.CustomerChartOfAccountId,SubLeadgerType.Customer)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;

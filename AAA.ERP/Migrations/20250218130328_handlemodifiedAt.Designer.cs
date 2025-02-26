@@ -4,6 +4,7 @@ using Domain.Account.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218130328_handlemodifiedAt")]
+    partial class handlemodifiedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,7 +177,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(15);
 
-                    b.Property<string>("SubLeadgerType")
+                    b.Property<string>("RelatedPaymentType")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(11);
 
@@ -381,7 +383,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CurrencyId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DocumentNumber")
+                    b.Property<string>("DocumentNubmer")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(2);
 
@@ -565,6 +567,8 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("ChartOfAccountId");
 
                     b.HasIndex("ChequeBankId");
+
+                    b.HasIndex("ComplementTransactionId");
 
                     b.HasIndex("EntryId");
 
@@ -1528,6 +1532,10 @@ namespace AAA.ERP.Migrations
                         .WithMany()
                         .HasForeignKey("ChequeBankId");
 
+                    b.HasOne("Domain.Account.Models.Entities.Entries.FinancialTransaction", "ComplementTransaction")
+                        .WithMany()
+                        .HasForeignKey("ComplementTransactionId");
+
                     b.HasOne("Domain.Account.Models.Entities.Entries.Entry", "Entry")
                         .WithMany("FinancialTransactions")
                         .HasForeignKey("EntryId")
@@ -1537,6 +1545,8 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
 
                     b.Navigation("ChequeBank");
+
+                    b.Navigation("ComplementTransaction");
 
                     b.Navigation("Entry");
                 });

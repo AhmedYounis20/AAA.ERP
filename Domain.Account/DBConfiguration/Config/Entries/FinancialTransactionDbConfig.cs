@@ -1,4 +1,5 @@
 ﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
+using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
@@ -17,16 +18,13 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
 
             _ = builder.Property(e => e.EntryId).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.ChartOfAccountId).IsRequired().HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.AccountNature).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.AccountNature).HasConversion<string>().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.Amount).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.OrderNumber).HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.OrderNumber).HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.OrderNumber).HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.OrderNumber).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.PaymentType).HasConversion<string>().HasDefaultValue(PaymentType.Cash).HasColumnOrder(columnNumber++);
             
             _ = builder.HasOne<Bank>(e=>e.ChequeBank).WithMany().HasForeignKey(e => e.ChequeBankId);
-            _ = builder.HasOne<FinancialTransaction>(e=>e.ComplementTransaction).WithMany().HasForeignKey(e => e.ComplementTransactionId);
-       
+          
             _ = builder.Property(e => e.Notes).HasColumnOrder(columnNumber++);
 
             return builder;

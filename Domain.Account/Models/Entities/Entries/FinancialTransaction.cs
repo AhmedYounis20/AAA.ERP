@@ -14,18 +14,17 @@ public class FinancialTransaction : BaseEntity
     public Guid ChartOfAccountId { get; set; }
     public ChartOfAccount? ChartOfAccount { get; set; }
     public Guid? ComplementTransactionId { get; set; }
-    public virtual FinancialTransaction? ComplementTransaction { get; set; }
     public string? Notes { get; set; }
     public AccountNature AccountNature { get; set; }
-
+    public PaymentType PaymentType { get; set; }
     public Guid? ChequeBankId { get; set; }
     public Bank? ChequeBank { get; set; }
-    public string ChequeNumber { get; set; }
+    public string? ChequeNumber { get; set; }
     public string? ChequeIssueDate { get; set; }
     public DateTime? ChequeCollectionDate { get; set; }
 
     public DateTime? CollectionDate { get; set; }
-    public string Number { get; set; }
+    public string? Number { get; set; }
     
     public string? PromissoryName { get; set; }
     public string? PromissoryNumber { get; set; }

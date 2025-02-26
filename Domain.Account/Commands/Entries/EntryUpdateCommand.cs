@@ -1,11 +1,13 @@
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
+using Microsoft.AspNetCore.Http;
 using Shared.Responses;
 
-namespace Domain.Account.Commands.Currencies;
+namespace Domain.Account.Commands.Entries;
 
 public class EntryUpdateCommand : BaseUpdateCommand<Entry>
 {
@@ -19,6 +21,5 @@ public class EntryUpdateCommand : BaseUpdateCommand<Entry>
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
     public List<AttachmentDto> Attachments { get; set; }
-    public List<FinancialTransactionInputModel> FinancialTransactions { get; set; }
-
+    public List<FinancialTransaction> FinancialTransactions { get; set; }
 }

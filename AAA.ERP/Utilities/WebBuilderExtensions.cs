@@ -141,6 +141,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
     }
     public static void AddValidators(this IServiceCollection services)

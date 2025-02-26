@@ -8,7 +8,7 @@ using Shared.Responses;
 
 namespace Domain.Account.Commands.Entries;
 
-public class EntryCreateCommand : BaseCreateCommand<Entry>
+public class ComplexEntryCreateCommand : BaseCreateCommand<Entry>
 {
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
@@ -20,4 +20,5 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
     public List<AttachmentDto> Attachments { get; set; }
-    public List<FinancialTransaction> FinancialTransactions { get; set; }}
+    public List<ComplexFinancialTransactionDto> FinancialTransactions { get; set; }
+}

@@ -1,14 +1,13 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
-using Microsoft.AspNetCore.Http;
 using Shared.Responses;
 
 namespace Domain.Account.Commands.Entries;
 
-public class EntryCreateCommand : BaseCreateCommand<Entry>
+public class ComplexEntryUpdateCommand : BaseUpdateCommand<Entry>
 {
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
@@ -20,4 +19,6 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
     public List<AttachmentDto> Attachments { get; set; }
-    public List<FinancialTransaction> FinancialTransactions { get; set; }}
+    public List<ComplexFinancialTransactionDto> FinancialTransactions { get; set; }
+
+}

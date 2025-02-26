@@ -19,7 +19,7 @@ public class CashInBoxService : SubLeadgerService<CashInBox, CashInBoxCreateComm
     private IHttpContextAccessor _accessor;
 
     public CashInBoxService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
-        : base(unitOfWork, unitOfWork.CashInBoxRepository, accessor, SD.CashInBoxChartOfAccountId,PaymentType.Cash)
+        : base(unitOfWork, unitOfWork.CashInBoxRepository, accessor, SD.CashInBoxChartOfAccountId,SubLeadgerType.CashInBox)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;

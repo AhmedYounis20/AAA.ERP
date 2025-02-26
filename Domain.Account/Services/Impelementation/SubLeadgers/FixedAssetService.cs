@@ -23,7 +23,7 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
     private IHttpContextAccessor _accessor;
 
     public FixedAssetService(IUnitOfWork unitOfWork, IFixedAssetRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, SD.BankChartAccountId)
+        : base(unitOfWork, repository, accessor, SD.BankChartAccountId,SubLeadgerType.FixedAsset)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
@@ -68,7 +68,8 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                     IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
                     IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
                     AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-                    IsCreatedFromSubLeadger = true
+                    IsCreatedFromSubLeadger = true,
+                    SubLeadgerType = SubLeadgerType.FixedAsset
                 };
                 if (accumlatedDepriciation != null)
                 {

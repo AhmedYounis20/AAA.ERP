@@ -27,14 +27,15 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     private IBaseSubLeadgerRepository<TEntity> _repository;
     private IHttpContextAccessor _accessor;
     private string _accountId;
-    private PaymentType? relatedPaymentType;
+    protected SubLeadgerType? _subLeadgerType;
     public SubLeadgerService(IUnitOfWork unitOfWork, IBaseSubLeadgerRepository<TEntity> repository,
-        IHttpContextAccessor accessor, string accountId,PaymentType? relatedPaymentType = null) : base(repository)
+        IHttpContextAccessor accessor, string accountId,SubLeadgerType? subLeadgerType = null) : base(repository)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
         _repository = repository;
         _accountId = accountId;
+        _subLeadgerType = subLeadgerType;
     }
 
     public virtual async Task<ApiResponse<TCreateCommand>> GetNextSubLeadgers(Guid? parentId)
@@ -81,7 +82,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                     IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
                     AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
                     IsCreatedFromSubLeadger = true,
-                    RelatedPaymentType = relatedPaymentType
+                    SubLeadgerType = _subLeadgerType
                 };
             }
             else

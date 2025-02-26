@@ -25,7 +25,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
     private IBranchRepository _repository;
 
     public BranchService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
-        : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BranchChartOfAccountId)
+        : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BranchChartOfAccountId,SubLeadgerType.Branch)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
@@ -62,7 +62,8 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                     IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
                     IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
                     AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-                    IsCreatedFromSubLeadger = true
+                    IsCreatedFromSubLeadger = true,
+                    SubLeadgerType = SubLeadgerType.Branch
                 };
                 if (command.Logo != null)
                 {
