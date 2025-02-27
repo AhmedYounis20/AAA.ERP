@@ -663,20 +663,6 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GLSettings", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ae5291c-e983-49c4-b72a-8524ea10a2bb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DecimalDigitsNumber = (byte)0,
-                            DepreciationApplication = "WithYearClosed",
-                            IsAllowingDeleteVoucher = false,
-                            IsAllowingEditVoucher = false,
-                            IsAllowingNegativeBalances = false,
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MonthDays = (byte)0
-                        });
                 });
 
             modelBuilder.Entity("Domain.Account.Models.Entities.Roles.Role", b =>

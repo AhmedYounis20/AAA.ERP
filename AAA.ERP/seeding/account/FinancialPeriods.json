@@ -1,7 +1,7 @@
 [
   {
     "Id": "1aa18e65-664a-4a45-80a6-27b28b681a80",
-    "YearNumber": "string",
+    "YearNumber": "فترة اولى",
     "PeriodTypeByMonth": 1,
     "StartDate": "2024-03-16T12:02:09.995",
     "EndDate": "2024-04-16T12:02:09.9949999",
@@ -12,7 +12,7 @@
   },
   {
     "Id": "5357feae-ae73-402d-bbd4-528c2fc8bdcc",
-    "YearNumber": "stringnn",
+    "YearNumber": "فترة تانية",
     "PeriodTypeByMonth": 12,
     "StartDate": "2024-04-16T12:02:09.995",
     "EndDate": "2025-04-16T12:02:09.9949999",

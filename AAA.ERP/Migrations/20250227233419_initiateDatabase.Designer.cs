@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241208103609_add_entriesAttachments")]
-    partial class add_entriesAttachments
+    [Migration("20250227233419_initiateDatabase")]
+    partial class initiateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -89,7 +89,7 @@ namespace AAA.ERP.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -105,7 +105,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(13);
+                        .HasColumnOrder(14);
 
                     b.Property<Guid>("AccountGuidId")
                         .HasColumnType("uniqueidentifier")
@@ -152,7 +152,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(10);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -162,20 +162,24 @@ namespace AAA.ERP.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(12);
 
                     b.Property<string>("NameSecondLanguage")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(13);
 
                     b.Property<int>("NodeType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(14);
+                        .HasColumnOrder(15);
+
+                    b.Property<string>("SubLeadgerType")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(11);
 
                     b.HasKey("Id");
 
@@ -211,7 +215,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -271,7 +275,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -314,7 +318,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(5);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -379,7 +383,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CurrencyId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DocumentNubmer")
+                    b.Property<string>("DocumentNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(2);
 
@@ -403,7 +407,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("FinancialPeriodId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -453,7 +457,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("EntryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -466,6 +470,107 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("EntryId");
 
                     b.ToTable("EntryAttachments", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.FinancialTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("AccountNature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(3);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(4);
+
+                    b.Property<Guid>("ChartOfAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("ChequeBankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ChequeCollectionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ChequeIssueDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChequeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CollectionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ComplementTransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreditCardLastDigits")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EntryId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(7);
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Cash")
+                        .HasColumnOrder(6);
+
+                    b.Property<DateTime?>("PromissoryCollectionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PromissoryIdentityCard")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PromissoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PromissoryNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WireTransferReferenceNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("ChequeBankId");
+
+                    b.HasIndex("EntryId");
+
+                    b.ToTable("FinancialTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Account.Models.Entities.FinancialPeriods.FinancialPeriod", b =>
@@ -485,7 +590,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -547,7 +652,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(3);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -560,19 +665,6 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GLSettings", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9ae5291c-e983-49c4-b72a-8524ea10a2bb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DecimalDigitsNumber = (byte)0,
-                            DepreciationApplication = "WithYearClosed",
-                            IsAllowingDeleteVoucher = false,
-                            IsAllowingEditVoucher = false,
-                            IsAllowingNegativeBalances = false,
-                            MonthDays = (byte)0
-                        });
                 });
 
             modelBuilder.Entity("Domain.Account.Models.Entities.Roles.Role", b =>
@@ -592,7 +684,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -653,7 +745,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(7);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -726,7 +818,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -793,7 +885,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -872,7 +964,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(8);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -972,7 +1064,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(7);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -1065,7 +1157,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnOrder(8);
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -1412,6 +1504,31 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Attachment");
                 });
 
+            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.FinancialTransaction", b =>
+                {
+                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartOfAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Bank", "ChequeBank")
+                        .WithMany()
+                        .HasForeignKey("ChequeBankId");
+
+                    b.HasOne("Domain.Account.Models.Entities.Entries.Entry", "Entry")
+                        .WithMany("FinancialTransactions")
+                        .HasForeignKey("EntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChartOfAccount");
+
+                    b.Navigation("ChequeBank");
+
+                    b.Navigation("Entry");
+                });
+
             modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Bank", b =>
                 {
                     b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
@@ -1429,7 +1546,8 @@ namespace AAA.ERP.Migrations
                 {
                     b.HasOne("Domain.Account.Models.Entities.Attachments.Attachment", "Attachment")
                         .WithMany()
-                        .HasForeignKey("AttachmentId");
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
@@ -1567,6 +1685,8 @@ namespace AAA.ERP.Migrations
             modelBuilder.Entity("Domain.Account.Models.Entities.Entries.Entry", b =>
                 {
                     b.Navigation("EntryAttachments");
+
+                    b.Navigation("FinancialTransactions");
                 });
 #pragma warning restore 612, 618
         }

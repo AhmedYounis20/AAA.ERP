@@ -34,6 +34,7 @@ public class ImportDataToSeed
         {
             await ImportBussinessData(folder);
             await ImportIdentityData(folder);
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
         catch (Exception ex)
@@ -75,7 +76,6 @@ public class ImportDataToSeed
                 else
                     _context.Add(entity);
             }
-            await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
