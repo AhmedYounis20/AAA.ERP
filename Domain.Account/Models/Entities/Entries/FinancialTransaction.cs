@@ -1,4 +1,5 @@
 ﻿using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Models.Entities.CollectionBooks;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Models.Entities.SubLeadgers;
@@ -23,8 +24,10 @@ public class FinancialTransaction : BaseEntity
     public string? ChequeIssueDate { get; set; }
     public DateTime? ChequeCollectionDate { get; set; }
 
-    public DateTime? CollectionDate { get; set; }
-    public string? Number { get; set; }
+    public Guid? CollectionBookId { get; set; }
+    public CollectionBook? CollectionBook { get; set; }
+    public string? CashAgentName { get; set; }
+    public string? CashPhoneNumber { get; set; }
     
     public string? PromissoryName { get; set; }
     public string? PromissoryNumber { get; set; }
@@ -32,8 +35,9 @@ public class FinancialTransaction : BaseEntity
     public DateTime? PromissoryCollectionDate { get; set; }
     
     public string? WireTransferReferenceNumber { get; set; }
+    public string? AtmReferenceNumber { get; set; }
     
     public string? CreditCardLastDigits { get; set; }
-    
+    public bool IsPaymentTransaction { get; set; } = true;
     public int OrderNumber { get; set; }
-}
+}       

@@ -143,17 +143,7 @@ public static class WebBuilderExtensions
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
-    }
-    public static void AddValidators(this IServiceCollection services)
-    {
-        // fluent validators
-        // services.AddScoped<AccountGuideCreateValidator>();
-        // services.AddScoped<AccountGuideInputValidator>();
-        // services.AddScoped<CurrencyInputValidator>();
-        // services.AddScoped<GLSettingInputValidator>();
-        // services.AddScoped<FinancialPeriodInputValidator>();
-        // services.AddScoped<FinancialPeriodUpdateValidator>();
-        // services.AddScoped<ChartOfAccountInputValidator>();
+        services.AddScoped<ICollectionBookService, CollectionBookService>();
     }
     public static void AddRepositories(this IServiceCollection services)
     {
@@ -172,6 +162,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
+        services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
         services.AddHttpContextAccessor();
     }
@@ -199,7 +190,6 @@ public static class WebBuilderExtensions
         builder.Services.AddControllers();
         builder.Services.AddServices();
         builder.Services.AddRepositories();
-        builder.Services.AddValidators();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSwaggerConfiguration();

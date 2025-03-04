@@ -2,6 +2,7 @@
 
 public enum PaymentType
 {
+    None,
     Cash,
     Cheque,
     Promissory,
