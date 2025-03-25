@@ -3,6 +3,7 @@ using Domain.Account.Commands.Entries;
 using Domain.Account.InputModels.Subleadgers;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Services.Interfaces.Entries;
 using Shared;
 using Shared.Responses;
 
