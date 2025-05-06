@@ -1,12 +1,8 @@
 ﻿using System.Globalization;
-using AAA.ERP.Controllers;
 using AAA.ERP.Services.Impelementation;
 using AAA.ERP.Services.Impelementation.SubLeadgers;
 using AAA.ERP.Services.Interfaces.SubLeadgers;
 using Domain.Account.DBConfiguration.DbContext;
-using Domain.Account.Models.Entities.AccountGuide;
-using Domain.Account.Models.Entities.Currencies;
-using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Repositories.BaseRepositories.Impelementation;
 using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Domain.Account.Repositories.Impelementation;
@@ -15,14 +11,12 @@ using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Repositories.Interfaces.SubLeadgers;
 using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.BaseServices.interfaces;
+using Domain.Account.Services.Identity;
 using Domain.Account.Services.Impelementation;
 using Domain.Account.Services.Impelementation.SubLeadgers;
 using Domain.Account.Services.Interfaces;
 using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
-using Domain.Account.Validators.ComandValidators.AccountGuides;
-using Domain.Account.Validators.InputValidators;
-using Domain.Account.Validators.InputValidators.FinancialPeriods;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -144,6 +138,7 @@ public static class WebBuilderExtensions
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
     public static void AddRepositories(this IServiceCollection services)
     {

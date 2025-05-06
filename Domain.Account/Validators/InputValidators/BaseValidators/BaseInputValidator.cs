@@ -12,3 +12,4 @@ public class BaseInputValidator<TEntity> : AbstractValidator<TEntity> where TEnt
         _ = RuleFor(e=>e.Notes).MaximumLength(300);
     }
 }
+    
