@@ -49,7 +49,7 @@ namespace Domain.Account.Services.Identity
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: creds
             );
 
@@ -159,6 +159,7 @@ namespace Domain.Account.Services.Identity
                     UserName = registerRequestDTO.Email,
                     Email = registerRequestDTO.Email,
                     NormalizedEmail = registerRequestDTO.Email.ToUpper(),
+                    RefreshToken = String.Empty
                 };
 
                 var result = await _userManager.CreateAsync(newUser, registerRequestDTO.Password ?? "");

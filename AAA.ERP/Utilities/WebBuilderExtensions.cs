@@ -78,6 +78,7 @@ public static class WebBuilderExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
+                ValidateLifetime = true,
             };
         });
     }

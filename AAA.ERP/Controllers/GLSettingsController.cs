@@ -52,7 +52,7 @@ public class GLSettingsController : ControllerBase
         if (validationResult.IsValid)
         {
             var entity = input.Adapt<GLSetting>();
-            var userId = User.Claims.FirstOrDefault(e => e.Type == "id")?.Value;
+            var userId = User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier)?.Value;
             entity.ModifiedBy = Guid.Parse(userId ?? "");
             var result = await _service.Update(input);
 
