@@ -4,6 +4,7 @@ using Domain.Account.Commands.Entries;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Services.Interfaces.Entries;
 using Domain.Account.Validators.InputValidators;
 using MediatR;
 using Microsoft.Extensions.Localization;

@@ -13,8 +13,10 @@ using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Identity;
 using Domain.Account.Services.Impelementation;
+using Domain.Account.Services.Impelementation.Entries;
 using Domain.Account.Services.Impelementation.SubLeadgers;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Services.Interfaces.Entries;
 using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
 using FluentValidation;
@@ -138,6 +140,7 @@ public static class WebBuilderExtensions
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
+        services.AddScoped<IOpeningEntryService, OpeningEntryService>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
     }

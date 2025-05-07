@@ -1,24 +1,21 @@
 ﻿using System.Numerics;
 using AAA.ERP.OutputDtos;
 using Domain.Account.Commands.Entries;
-using Domain.Account.Commands.GLSettings;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Dtos.Entry;
-using Domain.Account.Models.Entities.Attachments;
 using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
-using Domain.Account.Models.Entities.GLSettings;
-using Domain.Account.Models.Entities.SubLeadgers;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;
 using Domain.Account.Services.Interfaces;
+using Domain.Account.Services.Interfaces.Entries;
 using Domain.Account.Utility;
 using Mapster;
 using Serilog;
 using Shared.Responses;
 
-namespace Domain.Account.Services.Impelementation;
+namespace Domain.Account.Services.Impelementation.Entries;
 
 public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,ComplexEntryUpdateCommand>,IComplexEntryService
 {
