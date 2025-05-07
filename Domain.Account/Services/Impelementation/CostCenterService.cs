@@ -45,22 +45,22 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
             CostCenter costCenter = command.Adapt<CostCenter>();
 
             if (command.NodeType.Equals(NodeType.Domain) &&
-                command.CostCenterType.Equals(CostCenterType.RelatedToAccount))
+                command.CostCenterType.Equals(CostCenterType.RelatedToAccount) && command.ChartOfAccounts != null)
             {
                 costCenter.ChartOfAccounts = new List<CostCenterChartOfAccount>();
-                command.ChartOfAccounts.ForEach(async (e) =>
-                    {
-                        if (await _chartOfAccountRepository.Get(e) != null)
+                foreach(var account in command.ChartOfAccounts)
+                {
+                    var accountINDb = await _chartOfAccountRepository.Get(account);
+                        if (accountINDb != null)
                         {
                             costCenter.ChartOfAccounts.Add(new CostCenterChartOfAccount
                             {
-                                ChartOfAccountId = e,
+                                ChartOfAccountId = account,
                                 CreatedAt = DateTime.Now,
                                 ModifiedAt = DateTime.Now,
                             });
                         }
-                    }
-                );
+                }
             }
             else
                 costCenter.ChartOfAccounts = null;
