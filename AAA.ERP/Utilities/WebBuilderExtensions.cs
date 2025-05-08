@@ -142,6 +142,8 @@ public static class WebBuilderExtensions
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
         services.AddScoped<IJournalEntryService, JournalEntryService>();
+        services.AddScoped<IPaymentEntryService, PaymentEntryService>();
+        services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
