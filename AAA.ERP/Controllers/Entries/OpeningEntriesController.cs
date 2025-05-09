@@ -29,13 +29,14 @@ public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreate
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetDto();
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        var result = await _service.ReadById(id);
-        return StatusCode((int) result.StatusCode, result);
+        var result = await _service.GetDto(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     
     [HttpPut("{id}")]

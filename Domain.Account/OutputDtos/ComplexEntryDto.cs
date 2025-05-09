@@ -1,11 +1,11 @@
 ﻿using Domain.Account.Models.Dtos.Attachments;
+using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
-using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.SubLeadgers;
 
 namespace AAA.ERP.OutputDtos;
 
-public class EntryDto 
+public class ComplexEntryDto 
 {
     public Guid Id { get; set; }
     public Guid? CreatedBy { get; set; } 
@@ -25,5 +25,5 @@ public class EntryDto
     public Guid FinancialPeriodId { get; set; }
     public string? FinancialPeriodNumber { get; set; }
     public virtual List<AttachmentDto> Attachments { get; set; }
-    public virtual List<FinancialTransaction>  FinancialTransactions { get; set; }
+    public virtual List<ComplexFinancialTransactionDto>  FinancialTransactions { get; set; }
 }

@@ -1,7 +1,6 @@
 ﻿using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Repositories.BaseRepositories.Impelementation;
-using Domain.Account.Repositories.BaseRepositories.Interfaces;
 using Domain.Account.Repositories.Interfaces;
 
 namespace Domain.Account.Repositories.Impelementation;
@@ -15,14 +14,33 @@ public class EntryRepository : BaseRepository<Entry>, IEntryRepository
     {
         return await _dbSet.Include(e=>e.FinancialPeriod).Include(e => e.EntryAttachments)
             .ThenInclude(e => e.Attachment)
+            .Include(e=>e.FinancialTransactions)
             .Where(e => e.Id == id)
             .FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Entry>> Get()
+    public override async Task<IEnumerable<Entry>> Get()
     {
         return await _dbSet.Include(e=>e.FinancialPeriod).Include(e => e.EntryAttachments)
             .ThenInclude(e => e.Attachment)
             .ToListAsync();
     }
+
+    public  async Task<Entry?> Get(Guid id,EntryType entryType)
+    {
+        return await _dbSet.Include(e => e.FinancialPeriod).Include(e => e.EntryAttachments)
+            .ThenInclude(e => e.Attachment)
+            .Include(e => e.FinancialTransactions)
+            .Where(e => e.Id == id && e.EntryType == entryType)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<Entry>> Get(EntryType entryType)
+    {
+        return await _dbSet.Include(e => e.FinancialPeriod).Include(e => e.EntryAttachments)
+            .ThenInclude(e => e.Attachment)
+            .Where(e=>e.EntryType == entryType)
+            .ToListAsync();
+    }
+
 }

@@ -16,6 +16,8 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
             builder.ToTable("Entries");
 
             _ = builder.Property(e => e.EntryNumber).IsRequired().HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.EntryType).HasConversion<string>().HasColumnOrder(columnNumber++);
+            _ = builder.HasIndex(e => e.EntryType);
             _ = builder.Property(e => e.DocumentNumber).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
 

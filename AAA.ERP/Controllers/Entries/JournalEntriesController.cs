@@ -1,9 +1,6 @@
 ﻿using AAA.ERP.Controllers.BaseControllers;
-using Domain.Account.Commands.Entries;
 using Domain.Account.Commands.Entries.JournalEntries;
-using Domain.Account.Commands.Entries.OpeningEntries;
 using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Services.Interfaces;
 using Domain.Account.Services.Interfaces.Entries;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -30,12 +27,13 @@ public class JournalEntriesController : BaseController<Entry, JournalEntryCreate
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetDto();
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        var result = await _service.ReadById(id);
+        var result = await _service.GetDto(id);
         return StatusCode((int) result.StatusCode, result);
     }
     

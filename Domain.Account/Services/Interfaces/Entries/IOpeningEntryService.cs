@@ -9,4 +9,6 @@ namespace Domain.Account.Services.Interfaces.Entries;
 public interface IOpeningEntryService : IBaseService<Entry, OpeningEntryCreateCommand, OpeningEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);
+    Task<ApiResponse<IEnumerable<EntryDto>>> GetDto();
+    Task<ApiResponse<EntryDto>> GetDto(Guid id);
 }

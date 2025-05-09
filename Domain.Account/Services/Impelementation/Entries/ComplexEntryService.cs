@@ -140,12 +140,12 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
         };
     }
 
-    public async Task<ApiResponse<EntryDto>> GetComplexEntryById(Guid id)
+    public async Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id, EntryType? entryType = null)
     {
-        var entry = await _dbContext.Set<Entry>().Include(e=>e.FinancialTransactions).FirstOrDefaultAsync(e => e.Id == id);
+        var entry = await _dbContext.Set<Entry>().Include(e=>e.FinancialTransactions).FirstOrDefaultAsync(e => e.Id == id && (entryType == null ? true : e.EntryType == entryType));
         if (entry == null)
         {
-            return new ApiResponse<EntryDto>
+            return new ApiResponse<ComplexEntryDto>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
@@ -155,7 +155,7 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
         var financialPeriod = await _dbContext.Set<FinancialPeriod>()
             .FirstOrDefaultAsync(e => e.Id == entry.FinancialPeriodId);
         
-        var entryDto = entry.Adapt<EntryDto>();
+        var entryDto = entry.Adapt<ComplexEntryDto>();
         entryDto.FinancialPeriodNumber = financialPeriod?.YearNumber;
         entryDto.Attachments = (await _dbContext.Set<EntryAttachment>().Include(e => e.Attachment)
             .Where(e => e.EntryId == id)
@@ -163,14 +163,54 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
             .ToListAsync()).ToAttachmentDto().ToList();
 
         entryDto.FinancialTransactions = CreateComplexFinancialTransactionDto(entry.FinancialTransactions).ToList();
-        return new ApiResponse<EntryDto>
+        return new ApiResponse<ComplexEntryDto>
         {
             IsSuccess = true,
             Result = entryDto,
             StatusCode = HttpStatusCode.OK
         };
     }
-    private  IEnumerable<ComplexFinancialTransactionDto> CreateComplexFinancialTransactionDto(List<FinancialTransaction> financialTransactions)
+
+    public async Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries(EntryType? entryType = null)
+    {
+        var entries = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).Include(e => e.FinancialPeriod).Where(e => (entryType == null ? true : e.EntryType == entryType))
+                         .Select(e => new ComplexEntryDto
+                         {
+                             Id = e.Id,
+                             EntryDate = e.EntryDate,
+                             BranchId = e.BranchId,
+                             CreatedAt = e.CreatedAt,
+                             CreatedBy = e.CreatedBy,
+                             CurrencyId = e.CurrencyId,
+                             DocumentNumber = e.DocumentNumber,
+                             EntryNumber = e.EntryNumber,
+                             ExchageRate = e.ExchageRate,
+                             FinancialPeriodId = e.FinancialPeriodId,
+                             FinancialPeriodNumber = e.FinancialPeriod != null ? e.FinancialPeriod.YearNumber : string.Empty,
+                             FinancialTransactions = CreateComplexFinancialTransactionDto(e.FinancialTransactions).ToList(),
+                             ModifiedAt = e.ModifiedAt,
+                             ModifiedBy = e.ModifiedBy,
+                             Notes = e.Notes,
+                             ReceiverName = e.ReceiverName,
+                         }).ToListAsync();
+        
+        if (entries == null)
+        {
+            return new ApiResponse<IEnumerable<ComplexEntryDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
+            };
+        }
+
+        return new ApiResponse<IEnumerable<ComplexEntryDto>>
+        {
+            IsSuccess = true,
+            Result = entries,
+            StatusCode = HttpStatusCode.OK
+        };
+    }
+    private static IEnumerable<ComplexFinancialTransactionDto> CreateComplexFinancialTransactionDto(List<FinancialTransaction> financialTransactions)
     {
         foreach (var debitTransaction in financialTransactions.Where(e=>e.AccountNature == AccountNature.Debit))
         {
@@ -208,4 +248,6 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
 
        return validationResult;
     }
+    
+
 }

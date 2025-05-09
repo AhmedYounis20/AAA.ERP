@@ -1,16 +1,14 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Dtos.Attachments;
-using Domain.Account.Models.Dtos.Entry;
-using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
-using Microsoft.AspNetCore.Http;
-using Shared.Responses;
+using System.Text.Json.Serialization;
 
 namespace Domain.Account.Commands.Entries;
 
 public class EntryUpdateCommand : BaseUpdateCommand<Entry>
 {
+    [JsonIgnore]
+    public EntryType Type { get; set; } = EntryType.Compined;
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }

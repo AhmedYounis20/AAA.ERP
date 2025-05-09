@@ -7,6 +7,7 @@ namespace Domain.Account.Models.Entities.Entries;
 
 public class Entry : BaseEntity
 {
+    public EntryType EntryType { get; set; } = EntryType.Compined;
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }

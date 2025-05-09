@@ -1,18 +1,13 @@
 ﻿using System.Numerics;
 using AAA.ERP.OutputDtos;
 using Domain.Account.Commands.Entries;
-using Domain.Account.Commands.GLSettings;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Entities.Attachments;
-using Domain.Account.Models.Entities.ChartOfAccounts;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
-using Domain.Account.Models.Entities.GLSettings;
-using Domain.Account.Models.Entities.SubLeadgers;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;
-using Domain.Account.Services.Interfaces;
 using Domain.Account.Services.Interfaces.Entries;
 using Domain.Account.Utility;
 using Mapster;
@@ -46,6 +41,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                 };
             }
             var entry = command.Adapt<Entry>();
+            entry.EntryType = command.Type;
             entry.FinancialTransactions = command.FinancialTransactions;
             
             if (command.Attachments != null && command.Attachments.Any())
@@ -122,6 +118,72 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                 ErrorMessages = [ex.Message]
             };
         }
+    }
+
+    public async Task<ApiResponse<IEnumerable<EntryDto>>> Get(EntryType? entryType = null)
+    {
+        var entries = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).Include(e=>e.FinancialPeriod).Where(e => (entryType == null ? true : e.EntryType == entryType))
+                    .Select(e=> new EntryDto
+                    {
+                        Id=e.Id,
+                        EntryDate = e.EntryDate,
+                        BranchId = e.BranchId,
+                        CreatedAt = e.CreatedAt,
+                        CreatedBy = e.CreatedBy,
+                        CurrencyId = e.CurrencyId,
+                        DocumentNumber = e.DocumentNumber,
+                        EntryNumber = e.EntryNumber,
+                        ExchageRate =   e.ExchageRate,
+                        FinancialPeriodId = e.FinancialPeriodId,
+                        FinancialPeriodNumber   = e.FinancialPeriod != null ? e.FinancialPeriod.YearNumber : string.Empty,
+                        FinancialTransactions= e.FinancialTransactions,
+                        ModifiedAt = e.ModifiedAt,
+                        ModifiedBy = e.ModifiedBy,
+                        Notes = e.Notes,
+                        ReceiverName = e.ReceiverName,
+                    }).ToListAsync();
+        if (entries == null)
+        {
+            return new ApiResponse<IEnumerable<EntryDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
+            };
+        }
+
+        return new ApiResponse<IEnumerable<EntryDto>>
+        {
+            IsSuccess = true,
+            Result = entries,
+            StatusCode = HttpStatusCode.OK
+        };
+    }
+
+
+    public async Task<ApiResponse<EntryDto>> Get(Guid id,EntryType? entryType = null)
+    {
+        var entry = await _repository.Get(id, entryType ?? EntryType.Compined);
+        if (entry == null)
+        {
+            return new ApiResponse<EntryDto>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
+            };
+        }
+
+        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
+            .FirstOrDefaultAsync(e => e.Id == entry.FinancialPeriodId);
+
+        EntryDto entryDto = entry.Adapt<EntryDto>();
+        entryDto.FinancialPeriodNumber = financialPeriod?.YearNumber;
+
+        return new ApiResponse<EntryDto>
+        {
+            IsSuccess = true,
+            Result = entryDto,
+            StatusCode = HttpStatusCode.OK
+        };
     }
 
     private  async Task UpdateEntryAttachments(EntryUpdateCommand command, Entry entry)

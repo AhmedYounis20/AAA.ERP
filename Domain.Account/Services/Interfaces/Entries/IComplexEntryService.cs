@@ -9,5 +9,6 @@ namespace Domain.Account.Services.Interfaces.Entries;
 public interface IComplexEntryService : IBaseService<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);
-    Task<ApiResponse<EntryDto>> GetComplexEntryById(Guid id);
+    Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id,EntryType? entryType = null);
+    Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries(EntryType? entryType = null);
 }

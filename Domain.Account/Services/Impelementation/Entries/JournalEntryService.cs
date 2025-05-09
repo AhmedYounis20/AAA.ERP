@@ -17,6 +17,7 @@ public class JournalEntryService(IEntryService _entryService, IEntryRepository _
     public override async Task<ApiResponse<Entry>> Create(JournalEntryCreateCommand entity, bool isValidate = true)
     {
         var entryCreateCommand = entity.Adapt<EntryCreateCommand>();
+        entryCreateCommand.Type = EntryType.Journal;
         return await _entryService.Create(entryCreateCommand, isValidate);
     }
 
@@ -30,4 +31,11 @@ public class JournalEntryService(IEntryService _entryService, IEntryRepository _
     {
         return await _entryService.GetEntryNumber(dateTime);
     }
+
+    public async Task<ApiResponse<IEnumerable<EntryDto>>> GetDto()
+    => await _entryService.Get(EntryType.Journal);
+
+    public async Task<ApiResponse<EntryDto>> GetDto(Guid id)
+    => await _entryService.Get(id,EntryType.Journal);
+
 }

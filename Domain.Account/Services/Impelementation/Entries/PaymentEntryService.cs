@@ -17,8 +17,15 @@ public class PaymentEntryService(IComplexEntryService _entryService, IEntryRepos
     public override async Task<ApiResponse<Entry>> Create(PaymentEntryCreateCommand entity, bool isValidate = true)
     {
         var complexEntry = entity.Adapt<ComplexEntryCreateCommand>();
+        complexEntry.Type = EntryType.Payment;
         return await _entryService.Create(complexEntry, isValidate);
     }
+
+    public async Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries()
+    => await _entryService.GetComplexEntries(EntryType.Payment);
+
+    public async Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id)
+    => await _entryService.GetComplexEntryById(id, EntryType.Payment);
 
     public async Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
     {

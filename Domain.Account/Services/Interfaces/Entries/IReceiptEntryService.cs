@@ -9,4 +9,6 @@ namespace Domain.Account.Services.Interfaces.Entries;
 public interface IReceiptEntryService : IBaseService<Entry, ReceiptEntryCreateCommand, ReceiptEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);
+    Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id);
+    Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries();
 }
