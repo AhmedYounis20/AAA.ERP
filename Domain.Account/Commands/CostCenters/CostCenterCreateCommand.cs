@@ -1,4 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Models.Entities.CostCenters;
 using Domain.Account.Models.Entities.Currencies;
 using Shared.Responses;
 

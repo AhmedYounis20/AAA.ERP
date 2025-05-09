@@ -1,7 +1,7 @@
 using AAA.ERP.Services.Interfaces.SubLeadgers;
 using Domain.Account.Commands.Currencies;
 using Domain.Account.InputModels.Subleadgers;
-using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Models.Entities.CostCenters;
 using Domain.Account.Services.Interfaces;
 using Shared;
 using Shared.Responses;

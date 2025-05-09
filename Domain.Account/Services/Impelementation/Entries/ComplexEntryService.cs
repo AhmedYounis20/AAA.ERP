@@ -8,7 +8,6 @@ using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Repositories.Interfaces;
 using Domain.Account.Services.BaseServices.impelemtation;
-using Domain.Account.Services.Interfaces;
 using Domain.Account.Services.Interfaces.Entries;
 using Domain.Account.Utility;
 using Mapster;
@@ -20,12 +19,10 @@ namespace Domain.Account.Services.Impelementation.Entries;
 public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,ComplexEntryUpdateCommand>,IComplexEntryService
 {
     private ApplicationDbContext _dbContext;
-    private IEntryRepository _repository;
     private IEntryService _entryService;
     public ComplexEntryService(IEntryRepository repository,ApplicationDbContext dbContext, IEntryService entryService) : base(repository)
     {
         _dbContext = dbContext;
-        _repository = repository;
         _entryService = entryService;
     }
 

@@ -16,7 +16,8 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public string? ReceiverName { get; set; }
     public Guid BranchId { get; set; }
     public DateTime EntryDate { get; set; }
-    public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
-    public List<AttachmentDto> Attachments { get; set; }
-    public List<FinancialTransaction> FinancialTransactions { get; set; }}
+    public List<AttachmentDto> Attachments { get; set; } = [];
+    public List<FinancialTransaction> FinancialTransactions { get; set; } = [];
+    public List<EntryCostCenter> CostCenters { get; set; } = [];
+}

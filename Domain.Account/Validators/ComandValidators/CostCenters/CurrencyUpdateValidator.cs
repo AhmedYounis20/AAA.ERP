@@ -1,6 +1,7 @@
 using Domain.Account.Commands.AccountGuides;
 using Domain.Account.Commands.Currencies;
 using Domain.Account.Models.Entities.AccountGuide;
+using Domain.Account.Models.Entities.CostCenters;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Validators.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using FluentValidation;

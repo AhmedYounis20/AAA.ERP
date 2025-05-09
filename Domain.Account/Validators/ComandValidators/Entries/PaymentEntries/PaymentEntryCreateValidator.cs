@@ -16,5 +16,6 @@ public class PaymentEntryCreateValidator : BaseCreateValidator<PaymentEntryCreat
         _ = RuleFor(e => e.ReceiverName).MaximumLength(100).WithMessage("ReceiverNameMaximumLength");
         _ = RuleFor(e => e.DocumentNumber).MaximumLength(100).WithMessage("DocumentNumberMaximumLength");
         _ = RuleFor(e => e.FinancialTransactions).NotEmpty().WithMessage("EntryFinancialTransactionsRequired");
+        _ = RuleForEach(e=>e.CostCenters).SetValidator(new EntryCostCenterValidator()).When(e=> e.CostCenters != null && e.CostCenters.Any());
     }
 }

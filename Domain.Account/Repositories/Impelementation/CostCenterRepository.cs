@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Domain.Account.DBConfiguration.DbContext;
+using Domain.Account.Models.Entities.CostCenters;
 using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Repositories.BaseRepositories.Impelementation;
 using Domain.Account.Repositories.Interfaces;

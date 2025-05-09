@@ -1,18 +1,13 @@
-using System.Data;
-using Domain.Account.Commands.AccountGuides;
 using Domain.Account.Commands.Entries;
-using Domain.Account.Models.Entities.AccountGuide;
-using Domain.Account.Models.Entities.Currencies;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Validators.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using FluentValidation;
-using Shared.Responses;
 
 namespace Domain.Account.Validators.ComandValidators.Entries;
 
-public class CurrencyCreateValidator : BaseCreateValidator<ComplexEntryCreateCommand, Entry>
+public class EntryCreateValidator : BaseCreateValidator<ComplexEntryCreateCommand, Entry>
 {
-    public CurrencyCreateValidator() : base()
+    public EntryCreateValidator() : base()
     {
 
         _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage("BranchIdIsRequired");
@@ -22,5 +17,6 @@ public class CurrencyCreateValidator : BaseCreateValidator<ComplexEntryCreateCom
         _ = RuleFor(e => e.ReceiverName).MaximumLength(100).WithMessage("ReceiverNameMaximumLength");
         _ = RuleFor(e => e.DocumentNumber).MaximumLength(100).WithMessage("DocumentNumberMaximumLength");
         _ = RuleFor(e => e.FinancialTransactions).NotEmpty().WithMessage("EntryFinancialTransactionsRequired");
+        _ = RuleForEach(e=>e.CostCenters).SetValidator(new EntryCostCenterValidator()).When(e=> e.CostCenters != null && e.CostCenters.Any());
     }
 }

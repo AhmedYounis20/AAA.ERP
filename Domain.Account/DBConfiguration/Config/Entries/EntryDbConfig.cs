@@ -38,12 +38,17 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
                 .WithOne()
                 .HasForeignKey(e => e.EntryId)
                 .OnDelete(DeleteBehavior.Cascade);
-           
+
             _ = builder.HasMany<FinancialTransaction>(e => e.FinancialTransactions)
-                .WithOne(e=>e.Entry)
+                .WithOne(e => e.Entry)
                 .HasForeignKey(e => e.EntryId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
+            _ = builder.HasMany<EntryCostCenter>(e => e.CostCenters)
+                .WithOne(e => e.Entry)
+                .HasForeignKey(e => e.EntryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             return builder;
         }
     }

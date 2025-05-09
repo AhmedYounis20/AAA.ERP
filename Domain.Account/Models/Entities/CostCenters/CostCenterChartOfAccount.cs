@@ -1,7 +1,7 @@
 ﻿using Domain.Account.Models.Entities.ChartOfAccounts;
 using Shared.BaseEntities;
 
-namespace Domain.Account.Models.Entities.Currencies;
+namespace Domain.Account.Models.Entities.CostCenters;
 
 public class CostCenterChartOfAccount : BaseEntity
 {

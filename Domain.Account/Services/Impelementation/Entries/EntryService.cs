@@ -94,8 +94,9 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
             entry.CurrencyId = command.CurrencyId;
             await UpdateEntryAttachments(command, entry);
             await UpdateFinancialTransactions(entry, command.FinancialTransactions);
+            await UpdateEntryCostCenter(entry, command.CostCenters);
             entry.FinancialTransactions = [];
-            entry.EntryAttachments = null;
+            entry.EntryAttachments = [];
             _dbContext.Set<Entry>().Update(entry);
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -200,7 +201,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                                                             .ToList();
 
         
-        await SyncUpdatedEntryAttachments(updatedAttachments, command.Attachments);
+        SyncUpdatedEntryAttachments(updatedAttachments, command.Attachments);
         if (deletedAttachments.Any())
         {
             _dbContext.Set<EntryAttachment>().RemoveRange(deletedEntryAttachments);
@@ -228,7 +229,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
             Attachment = attachment
         };
 
-    private async Task SyncUpdatedEntryAttachments(List<Attachment> oldAttachments,
+    private void SyncUpdatedEntryAttachments(List<Attachment> oldAttachments,
         List<AttachmentDto> newAttachments)
     {
         foreach (var oldAttachment in oldAttachments)
@@ -267,19 +268,75 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.ToString());
+            Log.Error($"{ex}");
             throw;
         }
     }
 
-    private async Task SyncCreationInfoToUpdatedTransactions(IEnumerable<FinancialTransaction> oldFinancialTransactions,
+    private async Task UpdateEntryCostCenter(Entry entry, IEnumerable<EntryCostCenter> newCostCenters)
+    {
+        try
+        {
+
+            List<EntryCostCenter> existedCostCenters =
+                _dbContext.Set<EntryCostCenter>().Where(e => e.EntryId.Equals(entry.Id)).ToList();
+
+            IEnumerable<EntryCostCenter> deletedCostCenters =
+                existedCostCenters.Where(f => !newCostCenters.Any(e => e.Id == f.Id));
+
+            List<EntryCostCenter> addedCostCenters =
+                newCostCenters.Where(f => !existedCostCenters.Any(e => e.Id == f.Id)).ToList();
+            addedCostCenters.ForEach(e => e.EntryId = entry.Id);
+            List<EntryCostCenter> updatedFinancialTransactions = newCostCenters
+                .Where(f => existedCostCenters.Any(e => e.Id == f.Id)).ToList();
+            SyncCreationInfoToUpdatedCostCenters(existedCostCenters, updatedFinancialTransactions);
+
+            if (addedCostCenters.Any())
+                await _dbContext.Set<EntryCostCenter>().AddRangeAsync(addedCostCenters);
+            if (updatedFinancialTransactions.Any())
+                _dbContext.Set<EntryCostCenter>().UpdateRange(updatedFinancialTransactions);
+            if (deletedCostCenters.Any())
+                _dbContext.Set<EntryCostCenter>().RemoveRange(deletedCostCenters);
+
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            Log.Error($"{ex}");
+            throw;
+        }
+    }
+
+    private static void SyncCreationInfoToUpdatedTransactions(IEnumerable<FinancialTransaction> oldFinancialTransactions,
         List<FinancialTransaction> newFinancialTransactions)
     {
         foreach(var transaction in newFinancialTransactions)
         {
-            FinancialTransaction oldTransaction = oldFinancialTransactions.FirstOrDefault(e => e.Id == transaction.Id);
-            transaction.CreatedAt = oldTransaction.CreatedAt;
-            transaction.CreatedBy = oldTransaction.CreatedBy;
-            transaction.EntryId = oldTransaction.EntryId;
+            FinancialTransaction? oldTransaction = oldFinancialTransactions.FirstOrDefault(e => e.Id == transaction.Id);
+            if(oldTransaction != null)
+            {
+
+                transaction.CreatedAt = oldTransaction.CreatedAt;
+                transaction.CreatedBy = oldTransaction.CreatedBy;
+                transaction.EntryId = oldTransaction.EntryId;
+            }
+        }
+    }
+
+    private static void SyncCreationInfoToUpdatedCostCenters(IEnumerable<EntryCostCenter> oldCostCenters,
+    List<EntryCostCenter> newCostCenters)
+    {
+        foreach (var costCenter in newCostCenters)
+        {
+            EntryCostCenter? oldCostCenter = oldCostCenters.FirstOrDefault(e => e.Id == costCenter.Id);
+            if (oldCostCenter != null)
+            {
+                costCenter.CreatedAt = oldCostCenter.CreatedAt;
+                costCenter.CreatedBy = oldCostCenter.CreatedBy;
+                costCenter.EntryId = oldCostCenter.EntryId;
+            }
         }
     }
 
@@ -300,7 +357,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
         }
 
         result.FinancialPeriodId = financialPeriod.Id;
-        result.FinancialPeriodNumber = financialPeriod.YearNumber;
+        result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
 
 
         var lastEntryNumber =  _dbContext.Set<Entry>()
@@ -309,8 +366,6 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                                     .OrderByDescending(e =>BigInteger.Parse(e.EntryNumber))
                                     .Select(e =>BigInteger.Parse(e.EntryNumber))
                                     .FirstOrDefault();
-        if (lastEntryNumber == null)
-            lastEntryNumber = 0;
         
         result.EntryNumber = (lastEntryNumber + 1).ToString();
                 

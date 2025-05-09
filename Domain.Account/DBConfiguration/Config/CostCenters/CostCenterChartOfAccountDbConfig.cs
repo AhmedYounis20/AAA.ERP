@@ -1,5 +1,5 @@
 ﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
-using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Models.Entities.CostCenters;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.Account.DBConfiguration.Config.Currencies
