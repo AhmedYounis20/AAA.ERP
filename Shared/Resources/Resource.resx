@@ -159,8 +159,8 @@
   <data name="Deleted" xml:space="preserve">
     <value>Deleted</value>
   </data>
-  <data name="ExchageRateOnDefaultCurrency" xml:space="preserve">
-    <value>exchage rate must be 1 for default currency</value>
+  <data name="ExchangeRateOnDefaultCurrency" xml:space="preserve">
+    <value>exchange rate must be 1 for default currency</value>
   </data>
   <data name="ExchangeRateIsRequired" xml:space="preserve">
     <value>Exchange Rate Is Required</value>

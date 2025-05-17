@@ -1,6 +1,8 @@
 ﻿using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Currencies;
+using Domain.Account.Models.Entities.Entries;
+using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Models.Entities.SubLeadgers;
 
 namespace AAA.ERP.OutputDtos;
@@ -16,14 +18,16 @@ public class ComplexEntryDto
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }
     public virtual Currency? Currency { get; set; }
-    public decimal ExchageRate { get; set; }
+    public decimal ExchangeRate { get; set; }
     public string? ReceiverName { get; set; }
     public Guid BranchId { get; set; }
     public Branch? Branch { get; set; }
     public DateTime EntryDate { get; set; }
     public string? Notes { get; set; }
     public Guid FinancialPeriodId { get; set; }
+    public FinancialPeriod? FinancialPeriod { get; set; }
     public string? FinancialPeriodNumber { get; set; }
-    public virtual List<AttachmentDto> Attachments { get; set; }
-    public virtual List<ComplexFinancialTransactionDto>  FinancialTransactions { get; set; }
+    public virtual List<AttachmentDto> Attachments { get; set; } = [];
+    public virtual List<ComplexFinancialTransactionDto> FinancialTransactions { get; set; } = [];
+    public virtual List<EntryCostCenter> CostCenters { get; set; } = [];
 }

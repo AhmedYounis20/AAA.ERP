@@ -9,7 +9,7 @@ public class JournalEntryUpdateCommand : BaseUpdateCommand<Entry>
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }
-    public decimal ExchageRate { get; set; }
+    public decimal ExchangeRate { get; set; }
     public string? ReceiverName { get; set; }
     public Guid BranchId { get; set; }
     public DateTime EntryDate { get; set; }

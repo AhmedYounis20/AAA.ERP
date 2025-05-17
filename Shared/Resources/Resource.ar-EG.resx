@@ -156,7 +156,7 @@
   <data name="Deleted" xml:space="preserve">
     <value>تم حذف</value>
   </data>
-  <data name="ExchageRateOnDefaultCurrency" xml:space="preserve">
+  <data name="ExchangeRateOnDefaultCurrency" xml:space="preserve">
     <value>معدل التحويل للعملة الافتراضية يجب ان يكون 1</value>
   </data>
   <data name="ExchangeRateIsRequired" xml:space="preserve">

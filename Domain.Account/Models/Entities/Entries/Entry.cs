@@ -12,7 +12,7 @@ public class Entry : BaseEntity
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }
     public virtual Currency? Currency { get; set; }
-    public decimal ExchageRate { get; set; }
+    public decimal ExchangeRate { get; set; }
     public string? ReceiverName { get; set; }
     public Guid BranchId { get; set; }
     public Branch? Branch { get; set; }

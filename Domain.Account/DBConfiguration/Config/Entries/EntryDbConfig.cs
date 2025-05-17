@@ -22,11 +22,11 @@ namespace Domain.Account.DBConfiguration.Config.GLSettings
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
 
             _ = builder.Property(e => e.FinancialPeriodId).HasColumnOrder(columnNumber++);
-            _ = builder.HasOne<FinancialPeriod>().WithMany().HasForeignKey(e => e.FinancialPeriodId);
+            _ = builder.HasOne<FinancialPeriod>(e=>e.FinancialPeriod).WithMany().HasForeignKey(e => e.FinancialPeriodId);
 
             _ = builder.Property(e => e.CurrencyId).HasColumnOrder(columnNumber++);
             _ = builder.HasOne<Currency>().WithMany().HasForeignKey(e => e.CurrencyId);
-            _ = builder.Property(e => e.ExchageRate).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.ExchangeRate).HasColumnOrder(columnNumber++);
 
             _ = builder.Property(e => e.BranchId).HasColumnOrder(columnNumber++);
             _ = builder.HasOne<Branch>().WithMany().HasForeignKey(e => e.BranchId);

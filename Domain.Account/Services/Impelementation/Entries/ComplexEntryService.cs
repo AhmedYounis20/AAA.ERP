@@ -4,6 +4,7 @@ using Domain.Account.Commands.Entries;
 using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.ChartOfAccounts;
+using Domain.Account.Models.Entities.CostCenters;
 using Domain.Account.Models.Entities.Entries;
 using Domain.Account.Models.Entities.FinancialPeriods;
 using Domain.Account.Repositories.Interfaces;
@@ -16,11 +17,11 @@ using Shared.Responses;
 
 namespace Domain.Account.Services.Impelementation.Entries;
 
-public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,ComplexEntryUpdateCommand>,IComplexEntryService
+public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>, IComplexEntryService
 {
     private ApplicationDbContext _dbContext;
     private IEntryService _entryService;
-    public ComplexEntryService(IEntryRepository repository,ApplicationDbContext dbContext, IEntryService entryService) : base(repository)
+    public ComplexEntryService(IEntryRepository repository, ApplicationDbContext dbContext, IEntryService entryService) : base(repository)
     {
         _dbContext = dbContext;
         _entryService = entryService;
@@ -32,13 +33,13 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
         {
             var financialTransactions = new List<FinancialTransaction>();
             int i = 1;
-            command.FinancialTransactions.ForEach(e=>e.OrderNumber = i++);
+            command.FinancialTransactions.ForEach(e => e.OrderNumber = i++);
             MapFinancialTransactions(command.FinancialTransactions, financialTransactions);
 
             var createEntryCommand = command.Adapt<EntryCreateCommand>();
             createEntryCommand.FinancialTransactions = financialTransactions;
-        
-           return await _entryService.Create(createEntryCommand);
+
+            return await _entryService.Create(createEntryCommand);
         }
         catch (Exception ex)
         {
@@ -57,12 +58,12 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
         {
             var financialTransactions = new List<FinancialTransaction>();
             int i = 1;
-            command.FinancialTransactions.ForEach(e=>e.OrderNumber = i++);
+            command.FinancialTransactions.ForEach(e => e.OrderNumber = i++);
             MapFinancialTransactions(command.FinancialTransactions, financialTransactions);
 
             var updateEntryCommand = command.Adapt<EntryUpdateCommand>();
             updateEntryCommand.FinancialTransactions = financialTransactions;
-        
+
             return await _entryService.Update(updateEntryCommand);
         }
         catch (Exception ex)
@@ -84,15 +85,15 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
             var debitTransaction = transaction.Adapt<FinancialTransaction>();
             var creditTransaction = transaction.Adapt<FinancialTransaction>();
             debitTransaction.ChartOfAccountId = transaction.DebitAccountId;
-            debitTransaction.Id = transaction.Id.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.Id;    
-            creditTransaction.Id = transaction.ComplementId.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.ComplementId;    
+            debitTransaction.Id = transaction.Id.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.Id;
+            creditTransaction.Id = transaction.ComplementId.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.ComplementId;
             creditTransaction.ChartOfAccountId = transaction.CreditAccountId;
             creditTransaction.AccountNature = debitTransaction.AccountNature == AccountNature.Debit
                 ? AccountNature.Credit
                 : AccountNature.Debit;
             creditTransaction.ComplementTransactionId = debitTransaction.Id;
             debitTransaction.ComplementTransactionId = creditTransaction.Id;
-            
+
             financialTransactions.Add(debitTransaction);
             financialTransactions.Add(creditTransaction);
         }
@@ -110,7 +111,7 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.Found,
-                ErrorMessages = new List<string> {"NotFoundCurrentFinancialPeriod"}
+                ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
             };
         }
 
@@ -118,17 +119,17 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
         result.FinancialPeriodNumber = financialPeriod.YearNumber;
 
 
-        var lastEntryNumber =  _dbContext.Set<Entry>()
+        var lastEntryNumber = _dbContext.Set<Entry>()
                                     .Where(e => e.FinancialPeriodId == financialPeriod.Id)
                                     .ToList()
-                                    .OrderByDescending(e =>BigInteger.Parse(e.EntryNumber))
-                                    .Select(e =>BigInteger.Parse(e.EntryNumber))
+                                    .OrderByDescending(e => BigInteger.Parse(e.EntryNumber))
+                                    .Select(e => BigInteger.Parse(e.EntryNumber))
                                     .FirstOrDefault();
         if (lastEntryNumber == null)
             lastEntryNumber = 0;
-        
+
         result.EntryNumber = (lastEntryNumber + 1).ToString();
-                
+
         return new ApiResponse<EntryNumberDto>
         {
             IsSuccess = true,
@@ -139,38 +140,58 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
 
     public async Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id, EntryType? entryType = null)
     {
-        var entry = await _dbContext.Set<Entry>().Include(e=>e.FinancialTransactions).FirstOrDefaultAsync(e => e.Id == id && (entryType == null ? true : e.EntryType == entryType));
-        if (entry == null)
+        try
+        {
+
+            var entryDto = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).
+     Include(e => e.FinancialPeriod).Include(e => e.CostCenters).Include(e => e.EntryAttachments).ThenInclude(e => e.Attachment)
+     .Where(e => e.Id == id && (entryType == null || e.EntryType == entryType))
+                  .Select(e => new ComplexEntryDto
+                  {
+                      Id = e.Id,
+                      EntryDate = e.EntryDate,
+                      BranchId = e.BranchId,
+                      CreatedAt = e.CreatedAt,
+                      CreatedBy = e.CreatedBy,
+                      CurrencyId = e.CurrencyId,
+                      DocumentNumber = e.DocumentNumber,
+                      EntryNumber = e.EntryNumber,
+                      ExchangeRate = e.ExchangeRate,
+                      FinancialPeriodId = e.FinancialPeriodId,
+                      FinancialPeriod = e.FinancialPeriod,
+                      FinancialPeriodNumber = e.FinancialPeriod == null ? string.Empty : e.FinancialPeriod.YearNumber,
+                      FinancialTransactions = CreateComplexFinancialTransactionDto(e.FinancialTransactions).ToList(),
+                      CostCenters = e.CostCenters.ToList(),
+                      ModifiedAt = e.ModifiedAt,
+                      ModifiedBy = e.ModifiedBy,
+                      Notes = e.Notes,
+                      ReceiverName = e.ReceiverName,
+                      Attachments = e.EntryAttachments.Select(e => e.Attachment).ToAttachmentDto().ToList(),
+                  }).FirstOrDefaultAsync();
+
+            return new ApiResponse<ComplexEntryDto>
+            {
+                IsSuccess = true,
+                Result = entryDto,
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        catch (Exception ex)
         {
             return new ApiResponse<ComplexEntryDto>
             {
                 IsSuccess = false,
-                StatusCode = HttpStatusCode.NotFound,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = [ex.Message]
             };
         }
-
-        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-            .FirstOrDefaultAsync(e => e.Id == entry.FinancialPeriodId);
-        
-        var entryDto = entry.Adapt<ComplexEntryDto>();
-        entryDto.FinancialPeriodNumber = financialPeriod?.YearNumber;
-        entryDto.Attachments = (await _dbContext.Set<EntryAttachment>().Include(e => e.Attachment)
-            .Where(e => e.EntryId == id)
-            .Select(e => e.Attachment)
-            .ToListAsync()).ToAttachmentDto().ToList();
-
-        entryDto.FinancialTransactions = CreateComplexFinancialTransactionDto(entry.FinancialTransactions).ToList();
-        return new ApiResponse<ComplexEntryDto>
-        {
-            IsSuccess = true,
-            Result = entryDto,
-            StatusCode = HttpStatusCode.OK
-        };
     }
 
     public async Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries(EntryType? entryType = null)
     {
-        var entries = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).Include(e => e.FinancialPeriod).Where(e => (entryType == null ? true : e.EntryType == entryType))
+        var entries = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).
+            Include(e => e.FinancialPeriod)
+            .Where(e => (entryType == null ? true : e.EntryType == entryType))
                          .Select(e => new ComplexEntryDto
                          {
                              Id = e.Id,
@@ -181,7 +202,7 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
                              CurrencyId = e.CurrencyId,
                              DocumentNumber = e.DocumentNumber,
                              EntryNumber = e.EntryNumber,
-                             ExchageRate = e.ExchageRate,
+                             ExchangeRate = e.ExchangeRate,
                              FinancialPeriodId = e.FinancialPeriodId,
                              FinancialPeriodNumber = e.FinancialPeriod != null ? e.FinancialPeriod.YearNumber : string.Empty,
                              FinancialTransactions = CreateComplexFinancialTransactionDto(e.FinancialTransactions).ToList(),
@@ -190,7 +211,7 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
                              Notes = e.Notes,
                              ReceiverName = e.ReceiverName,
                          }).ToListAsync();
-        
+
         if (entries == null)
         {
             return new ApiResponse<IEnumerable<ComplexEntryDto>>
@@ -209,7 +230,7 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
     }
     private static IEnumerable<ComplexFinancialTransactionDto> CreateComplexFinancialTransactionDto(List<FinancialTransaction> financialTransactions)
     {
-        foreach (var debitTransaction in financialTransactions.Where(e=>e.AccountNature == AccountNature.Debit))
+        foreach (var debitTransaction in financialTransactions.Where(e => e.AccountNature == AccountNature.Debit))
         {
             FinancialTransaction compelementTransaction =
                 financialTransactions.FirstOrDefault(e => e.Id == debitTransaction.ComplementTransactionId);
@@ -224,27 +245,27 @@ public class ComplexEntryService : BaseService<Entry,ComplexEntryCreateCommand,C
     }
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ComplexEntryCreateCommand command)
     {
-       var validationResult =  await base.ValidateCreate(command);
-        
-       var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-           .FirstOrDefaultAsync(e => e.StartDate <= command.EntryDate && e.EndDate > command.EntryDate);
-       if (financialPeriod == null || command.FinancialPeriodId != financialPeriod.Id)
-       {
-           validationResult.isValid = false;
-           validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
-       }
+        var validationResult = await base.ValidateCreate(command);
 
-       var entryWithSameNumber = await _dbContext.Set<Entry>()
-           .Where(e => e.EntryNumber == command.EntryNumber && e.FinancialPeriodId == command.FinancialPeriodId)
-           .FirstOrDefaultAsync();
-       if (entryWithSameNumber != null)
-       {
-           validationResult.isValid = false;
-           validationResult.errors.Add("ExistedEntryWithSameNumber");
-       }
+        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
+            .FirstOrDefaultAsync(e => e.StartDate <= command.EntryDate && e.EndDate > command.EntryDate);
+        if (financialPeriod == null || command.FinancialPeriodId != financialPeriod.Id)
+        {
+            validationResult.isValid = false;
+            validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
+        }
 
-       return validationResult;
+        var entryWithSameNumber = await _dbContext.Set<Entry>()
+            .Where(e => e.EntryNumber == command.EntryNumber && e.FinancialPeriodId == command.FinancialPeriodId)
+            .FirstOrDefaultAsync();
+        if (entryWithSameNumber != null)
+        {
+            validationResult.isValid = false;
+            validationResult.errors.Add("ExistedEntryWithSameNumber");
+        }
+
+        return validationResult;
     }
-    
+
 
 }

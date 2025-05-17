@@ -1,15 +1,12 @@
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using Domain.Account.Models.Entities.Entries;
-using System.Text.Json.Serialization;
 
-namespace Domain.Account.Commands.Entries;
+namespace Domain.Account.Commands.Entries.CompinedEntries;
 
-public class ComplexEntryUpdateCommand : BaseUpdateCommand<Entry>
+public class CompinedEntryCreateCommand : BaseCreateCommand<Entry>
 {
-    [JsonIgnore]
-    public EntryType Type { get; set; } = EntryType.Compined;
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }

@@ -89,7 +89,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
 
             entry.EntryDate = command.EntryDate;
             entry.BranchId = command.BranchId;
-            entry.ExchageRate = command.ExchageRate;
+            entry.ExchangeRate = command.ExchangeRate;
             entry.Notes = command.Notes;
             entry.CurrencyId = command.CurrencyId;
             await UpdateEntryAttachments(command, entry);
@@ -134,7 +134,7 @@ public class EntryService : BaseService<Entry,EntryCreateCommand,EntryUpdateComm
                         CurrencyId = e.CurrencyId,
                         DocumentNumber = e.DocumentNumber,
                         EntryNumber = e.EntryNumber,
-                        ExchageRate =   e.ExchageRate,
+                        ExchangeRate =   e.ExchangeRate,
                         FinancialPeriodId = e.FinancialPeriodId,
                         FinancialPeriodNumber   = e.FinancialPeriod != null ? e.FinancialPeriod.YearNumber : string.Empty,
                         FinancialTransactions= e.FinancialTransactions,
