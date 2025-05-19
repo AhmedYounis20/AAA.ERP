@@ -1,6 +1,6 @@
-using Domain.Account.Commands.Entries.JournalEntries;
-using Domain.Account.Models.Entities.Entries;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.Domain.Commands.Account.Entries.JournalEntries;
+using ERP.Domain.Models.Entities.Account.Entries;
 using FluentValidation;
 
 namespace ERP.Application.Validators.Account.ComandValidators.Entries.JournalEntries;

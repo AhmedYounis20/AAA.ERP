@@ -1,6 +1,6 @@
-﻿using Domain.Account.InputModels;
-using Domain.Account.Models.Entities.GLSettings;
-using ERP.Application.Validators.Account.InputValidators.BaseValidators;
+﻿using ERP.Application.Validators.Account.InputValidators.BaseValidators;
+using ERP.Domain.Commands.Account;
+using ERP.Domain.Models.Entities.Account.GLSettings;
 using FluentValidation;
 
 namespace ERP.Application.Validators.Account.InputValidators;

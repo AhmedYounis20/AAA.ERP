@@ -1,5 +1,5 @@
 using Domain.Account.Models.Dtos.Attachments;
-using Domain.Account.Models.Entities.Attachments;
+using ERP.Domain.Models.Entities.Account.Attachments;
 
 namespace Domain.Account.Utility;
 

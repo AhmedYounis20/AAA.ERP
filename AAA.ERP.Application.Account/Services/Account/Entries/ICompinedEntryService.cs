@@ -1,7 +1,7 @@
 using AAA.ERP.OutputDtos;
-using Domain.Account.Commands.Entries.CompinedEntries;
-using Domain.Account.Models.Entities.Entries;
 using ERP.Application.Services.BaseServices;
+using ERP.Domain.Commands.Account.Entries.CompinedEntries;
+using ERP.Domain.Models.Entities.Account.Entries;
 using Shared.Responses;
 
 namespace ERP.Application.Services.Account.Entries;

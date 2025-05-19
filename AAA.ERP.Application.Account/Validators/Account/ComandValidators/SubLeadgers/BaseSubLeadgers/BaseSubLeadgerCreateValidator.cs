@@ -1,10 +1,7 @@
-using Domain.Account.Commands.ChartOfAccounts;
-using Domain.Account.Commands.SubLeadgers.BaseSubLeadgersCommands;
-using Domain.Account.Models.Entities.ChartOfAccounts;
-using Domain.Account.Models.Entities.SubLeadgers;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using FluentValidation;
-using Shared.BaseEntities;
 
 namespace ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
 

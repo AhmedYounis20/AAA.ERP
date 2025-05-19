@@ -1,6 +1,6 @@
-using Domain.Account.Commands.SubLeadgers.Suppliers;
-using Domain.Account.Models.Entities.SubLeadgers;
 using ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+using ERP.Domain.Commands.Account.SubLeadgers.Suppliers;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using FluentValidation;
 using Shared.BaseEntities;
 

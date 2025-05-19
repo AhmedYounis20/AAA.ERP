@@ -1,6 +1,6 @@
-using Domain.Account.Models.Entities.SubLeadgers;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
-namespace ERP.Application.Repositories.SubLeadgers;
+namespace ERP.Application.Repositories.Account.SubLeadgers;
 
 public interface IBranchRepository : IBaseSubLeadgerRepository<Branch>
 { }

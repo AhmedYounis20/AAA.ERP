@@ -22,7 +22,7 @@ namespace AAA.ERP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.AccountGuide.AccountGuide", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.AccountGuides.AccountGuide", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AccountGuides", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Attachments.Attachment", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Attachments.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +98,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Attachments", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("ChartOfAccounts", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CollectionBooks.CollectionBook", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CollectionBooks.CollectionBook", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("CollectionBooks", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CostCenters.CostCenter", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +296,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("CostCenters", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CostCenters.CostCenterChartOfAccount", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CostCenters.CostCenterChartOfAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -331,7 +331,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("CostCenterChartOfAccounts", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Currencies.Currency", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Currencies.Currency", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -396,7 +396,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Currencies", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.Entry", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.Entry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -480,7 +480,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Entries", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.EntryAttachment", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.EntryAttachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -514,7 +514,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("EntryAttachments", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.EntryCostCenter", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.EntryCostCenter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -554,7 +554,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("EntryCostCenters", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.FinancialTransaction", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.FinancialTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -683,7 +683,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("FinancialTransactions", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.FinancialPeriods.FinancialPeriod", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.FinancialPeriods.FinancialPeriod", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -728,7 +728,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("FinancialPeriods", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.GLSettings.GLSetting", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.GLSettings.GLSetting", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -777,7 +777,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("GLSettings", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Roles.Role", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Roles.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -823,7 +823,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Bank", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Bank", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -905,7 +905,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Banks", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Branch", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -978,7 +978,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Branches", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.CashInBox", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.CashInBox", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1040,7 +1040,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("CashInBoxes", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Customer", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1129,7 +1129,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Customers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.FixedAsset", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.FixedAsset", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1233,7 +1233,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("FixedAssets", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Supplier", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Supplier", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1320,6 +1320,48 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Suppliers", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.PackingUnits.PackingUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.ToTable("PackingUnits", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1530,35 +1572,35 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.AccountGuide.AccountGuide", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.AccountGuides.AccountGuide", null)
                         .WithMany()
                         .HasForeignKey("AccountGuidId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CostCenters.CostCenter", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.CostCenters.CostCenter", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CostCenters.CostCenterChartOfAccount", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CostCenters.CostCenterChartOfAccount", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.CostCenters.CostCenter", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", null)
                         .WithMany("ChartOfAccounts")
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1567,27 +1609,27 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.Entry", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.Entry", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Branch", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Branch", "Branch")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchId1");
 
-                    b.HasOne("Domain.Account.Models.Entities.Currencies.Currency", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Currencies.Currency", null)
                         .WithMany()
                         .HasForeignKey("CurrencyId");
 
-                    b.HasOne("Domain.Account.Models.Entities.Currencies.Currency", "Currency")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Currencies.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyId1");
 
-                    b.HasOne("Domain.Account.Models.Entities.FinancialPeriods.FinancialPeriod", "FinancialPeriod")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.FinancialPeriods.FinancialPeriod", "FinancialPeriod")
                         .WithMany()
                         .HasForeignKey("FinancialPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1600,15 +1642,15 @@ namespace AAA.ERP.Migrations
                     b.Navigation("FinancialPeriod");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.EntryAttachment", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.EntryAttachment", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.Entries.Entry", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Entries.Entry", null)
                         .WithMany("EntryAttachments")
                         .HasForeignKey("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1617,15 +1659,15 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Attachment");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.EntryCostCenter", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.EntryCostCenter", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.CostCenters.CostCenter", "CostCenter")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", "CostCenter")
                         .WithMany()
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.Entries.Entry", "Entry")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Entries.Entry", "Entry")
                         .WithMany("CostCenters")
                         .HasForeignKey("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1636,23 +1678,23 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Entry");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.FinancialTransaction", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.FinancialTransaction", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Bank", "ChequeBank")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Bank", "ChequeBank")
                         .WithMany()
                         .HasForeignKey("ChequeBankId");
 
-                    b.HasOne("Domain.Account.Models.Entities.CollectionBooks.CollectionBook", "CollectionBook")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CollectionBooks.CollectionBook", "CollectionBook")
                         .WithMany()
                         .HasForeignKey("CollectionBookId");
 
-                    b.HasOne("Domain.Account.Models.Entities.Entries.Entry", "Entry")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Entries.Entry", "Entry")
                         .WithMany("FinancialTransactions")
                         .HasForeignKey("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1667,31 +1709,31 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Entry");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Bank", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Bank", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Bank", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Bank", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Branch", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Branch", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
@@ -1700,47 +1742,47 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.CashInBox", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.CashInBox", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.CashInBox", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.CashInBox", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Customer", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Customer", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Customer", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Customer", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.FixedAsset", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.FixedAsset", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "AccumlatedAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "AccumlatedAccount")
                         .WithMany()
                         .HasForeignKey("AccumlatedAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ExpensesAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ExpensesAccount")
                         .WithMany()
                         .HasForeignKey("ExpensesAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.FixedAsset", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.FixedAsset", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
@@ -1751,13 +1793,13 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ExpensesAccount");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.SubLeadgers.Supplier", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Supplier", b =>
                 {
-                    b.HasOne("Domain.Account.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Domain.Account.Models.Entities.SubLeadgers.Supplier", null)
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Supplier", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
@@ -1815,12 +1857,12 @@ namespace AAA.ERP.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.CostCenters.CostCenter", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", b =>
                 {
                     b.Navigation("ChartOfAccounts");
                 });
 
-            modelBuilder.Entity("Domain.Account.Models.Entities.Entries.Entry", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.Entry", b =>
                 {
                     b.Navigation("CostCenters");
 

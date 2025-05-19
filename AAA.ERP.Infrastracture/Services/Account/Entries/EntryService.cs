@@ -1,17 +1,18 @@
-﻿using Domain.Account.Commands.Entries;
-using Domain.Account.Models.Dtos.Attachments;
-using Domain.Account.Models.Entities.Attachments;
-using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Models.Entities.FinancialPeriods;
+﻿using Domain.Account.Models.Dtos.Attachments;
+using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account.Entries;
+using ERP.Domain.Commands.Account.Entries;
+using ERP.Domain.Models.Entities.Account.Attachments;
+using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
 namespace ERP.Infrastracture.Services.Account.Entries;
 
 public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCommand>, IEntryService
 {
-    private ApplicationDbContext _dbContext;
+    private IApplicationDbContext _dbContext;
     private IEntryRepository _repository;
-    public EntryService(IEntryRepository repository, ApplicationDbContext dbContext) : base(repository)
+    public EntryService(IEntryRepository repository, IApplicationDbContext dbContext) : base(repository)
     {
         _dbContext = dbContext;
         _repository = repository;

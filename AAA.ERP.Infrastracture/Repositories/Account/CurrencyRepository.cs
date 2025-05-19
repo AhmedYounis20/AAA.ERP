@@ -1,4 +1,5 @@
-﻿using Domain.Account.Models.Entities.Currencies;
+﻿using ERP.Application.Repositories.Account;
+using ERP.Domain.Models.Entities.Account.Currencies;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
 namespace ERP.Infrastracture.Repositories.Account;

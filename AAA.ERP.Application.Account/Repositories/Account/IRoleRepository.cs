@@ -1,6 +1,6 @@
-﻿using Domain.Account.Models.Entities.Roles;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.Roles;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
-public interface IRoleRepository: IBaseSettingRepository<Role>{}
+public interface IRoleRepository : IBaseSettingRepository<Role> { }

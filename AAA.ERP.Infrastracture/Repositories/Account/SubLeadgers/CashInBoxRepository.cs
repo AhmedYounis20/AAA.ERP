@@ -1,6 +1,6 @@
 using Domain.Account.DBConfiguration.DbContext;
-using Domain.Account.Models.Entities.SubLeadgers;
-using ERP.Application.Repositories.SubLeadgers;
+using ERP.Application.Repositories.Account.SubLeadgers;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
 

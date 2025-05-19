@@ -1,5 +1,5 @@
-using Domain.Account.Commands.SubLeadgers.Banks;
-using Domain.Account.Models.Entities.SubLeadgers;
+using ERP.Domain.Commands.Account.SubLeadgers.Banks;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace ERP.Application.Services.Account.SubLeadgers;
 

@@ -1,9 +1,10 @@
-﻿using Domain.Account.Commands.Entries;
-using Domain.Account.Models.Dtos.Entry;
-using Domain.Account.Models.Entities.ChartOfAccounts;
-using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Models.Entities.FinancialPeriods;
+﻿using Domain.Account.Models.Dtos.Entry;
+using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account.Entries;
+using ERP.Domain.Commands.Account.Entries;
+using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
 namespace ERP.Infrastracture.Services.Account.Entries;
 

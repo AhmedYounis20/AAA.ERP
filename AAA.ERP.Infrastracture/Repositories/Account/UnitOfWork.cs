@@ -1,5 +1,8 @@
-using ERP.Application.Repositories.SubLeadgers;
+using ERP.Application.Repositories.Account;
+using ERP.Application.Repositories.Account.SubLeadgers;
+using ERP.Application.Repositories.Inventory;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
+using ERP.Infrastracture.Repositories.Inventory;
 
 namespace ERP.Infrastracture.Repositories.Account;
 
@@ -14,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
     public IAttachmentRepository AttachmentRepository { get; set; }
     public ICashInBoxRepository CashInBoxRepository { get; set; }
     public IBranchRepository BranchRepository { get; set; }
+    public IPackingUnitRepository PackingUnitRepository { get; set; }
     private IDbContextTransaction? _sqlTransaction;
     private ApplicationDbContext _context;
 
@@ -28,7 +32,7 @@ public class UnitOfWork : IUnitOfWork
         AttachmentRepository = new AttachmentRepository(context);
         BranchRepository = new BranchRepository(context);
         EntryRepository = new EntryRepository(context);
-
+        PackingUnitRepository = new PackingUnitRepository(context);
         _context = context;
     }
 

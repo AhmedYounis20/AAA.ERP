@@ -18,8 +18,4 @@
       </PackageReference>
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Validators\InputValidators\" />
-    </ItemGroup>
 </Project>

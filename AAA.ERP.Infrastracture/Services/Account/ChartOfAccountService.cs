@@ -1,6 +1,7 @@
-﻿using Domain.Account.Commands.ChartOfAccounts;
-using Domain.Account.InputModels;
-using Domain.Account.Models.Entities.ChartOfAccounts;
+﻿using ERP.Application.Repositories.Account;
+using ERP.Domain.Commands.Account;
+using ERP.Domain.Commands.Account.ChartOfAccounts;
+using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 
 namespace ERP.Infrastracture.Services.Account;
 

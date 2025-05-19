@@ -1,6 +1,7 @@
-﻿using Domain.Account.Commands.AccountGuides;
-using Domain.Account.Models.Entities.CollectionBooks;
+﻿using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account;
+using ERP.Domain.Commands.Account.CollectionBooks;
+using ERP.Domain.Models.Entities.Account.CollectionBooks;
 
 namespace AAA.ERP.Services.Impelementation;
 public class CollectionBookService : 

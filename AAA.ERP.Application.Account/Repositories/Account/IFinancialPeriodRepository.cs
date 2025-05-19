@@ -1,9 +1,9 @@
-﻿using Domain.Account.Models.Entities.FinancialPeriods;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
-public interface IFinancialPeriodRepository: IBaseRepository<FinancialPeriod>
+public interface IFinancialPeriodRepository : IBaseRepository<FinancialPeriod>
 {
     Task<FinancialPeriod?> GetLastFinancialPeriod();
     Task<FinancialPeriod?> GetCurrentFinancialPeroid();

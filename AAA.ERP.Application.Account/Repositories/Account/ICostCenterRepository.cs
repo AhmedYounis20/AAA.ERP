@@ -1,7 +1,7 @@
-﻿using Domain.Account.Models.Entities.CostCenters;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.CostCenters;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
 public interface ICostCenterRepository : IBaseTreeSettingRepository<CostCenter>
 {

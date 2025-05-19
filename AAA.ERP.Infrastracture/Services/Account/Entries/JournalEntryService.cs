@@ -1,7 +1,8 @@
-using Domain.Account.Commands.Entries;
-using Domain.Account.Commands.Entries.JournalEntries;
-using Domain.Account.Models.Entities.Entries;
+using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account.Entries;
+using ERP.Domain.Commands.Account.Entries;
+using ERP.Domain.Commands.Account.Entries.JournalEntries;
+using ERP.Domain.Models.Entities.Account.Entries;
 
 namespace ERP.Infrastracture.Services.Account.Entries;
 

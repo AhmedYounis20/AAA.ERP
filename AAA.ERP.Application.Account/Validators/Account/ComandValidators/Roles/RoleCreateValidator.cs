@@ -1,7 +1,7 @@
 using System.Data;
-using Domain.Account.Commands.Roles;
-using Domain.Account.Models.Entities.Roles;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.Domain.Commands.Account.Roles;
+using ERP.Domain.Models.Entities.Account.Roles;
 using FluentValidation;
 using Shared.Responses;
 

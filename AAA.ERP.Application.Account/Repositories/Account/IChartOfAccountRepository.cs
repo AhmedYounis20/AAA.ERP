@@ -1,7 +1,7 @@
-﻿using Domain.Account.Models.Entities.ChartOfAccounts;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
 public interface IChartOfAccountRepository : IBaseTreeSettingRepository<ChartOfAccount>
 {

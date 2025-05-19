@@ -1,6 +1,6 @@
-using Domain.Account.Commands.AccountGuides;
-using Domain.Account.Models.Entities.AccountGuide;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.Domain.Commands.Account.AccountGuides;
+using ERP.Domain.Models.Entities.Account.AccountGuides;
 using Shared.Responses;
 
 namespace ERP.Application.Validators.Account.ComandValidators.AccountGuides;

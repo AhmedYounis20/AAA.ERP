@@ -1,6 +1,7 @@
-﻿using Domain.Account.Commands.Currencies;
-using Domain.Account.Models.Entities.Currencies;
+﻿using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account;
+using ERP.Domain.Commands.Account.Currencies;
+using ERP.Domain.Models.Entities.Account.Currencies;
 using ERP.Shared.Resources;
 using Microsoft.Extensions.Localization;
 

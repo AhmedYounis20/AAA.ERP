@@ -1,4 +1,5 @@
-﻿using Domain.Account.Models.Entities.Roles;
+﻿using ERP.Application.Repositories.Account;
+using ERP.Domain.Models.Entities.Account.Roles;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
 namespace ERP.Infrastracture.Repositories.Account;

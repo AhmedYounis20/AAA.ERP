@@ -1,6 +1,6 @@
-using Domain.Account.Commands.Entries.ReceiptEntries;
-using Domain.Account.Models.Entities.Entries;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.Domain.Commands.Account.Entries.ReceiptEntries;
+using ERP.Domain.Models.Entities.Account.Entries;
 using FluentValidation;
 
 namespace ERP.Application.Validators.Account.ComandValidators.Entries.ReceiptEntries;

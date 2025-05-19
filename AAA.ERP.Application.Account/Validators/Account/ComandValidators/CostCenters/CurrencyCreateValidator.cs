@@ -1,12 +1,8 @@
-using Domain.Account.Commands.AccountGuides;
-using Domain.Account.Commands.Currencies;
-using Domain.Account.Models.Entities.AccountGuide;
-using Domain.Account.Models.Entities.CostCenters;
-using Domain.Account.Models.Entities.Currencies;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.Domain.Commands.Account.CostCenters;
+using ERP.Domain.Models.Entities.Account.CostCenters;
 using FluentValidation;
 using Shared.BaseEntities;
-using Shared.Responses;
 
 namespace ERP.Application.Validators.Account.ComandValidators.CostCenters;
 

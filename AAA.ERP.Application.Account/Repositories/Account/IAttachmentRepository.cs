@@ -1,6 +1,6 @@
-﻿using Domain.Account.Models.Entities.Attachments;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.Attachments;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
 public interface IAttachmentRepository : IBaseRepository<Attachment> { }

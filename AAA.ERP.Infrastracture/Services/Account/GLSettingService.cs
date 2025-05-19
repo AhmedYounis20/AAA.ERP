@@ -1,6 +1,7 @@
-﻿using Domain.Account.Commands.GLSettings;
-using Domain.Account.Models.Entities.GLSettings;
+﻿using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account;
+using ERP.Domain.Commands.Account.GLSettings;
+using ERP.Domain.Models.Entities.Account.GLSettings;
 
 namespace ERP.Infrastracture.Services.Account;
 

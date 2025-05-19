@@ -1,4 +1,5 @@
-﻿using Domain.Account.Models.Entities.FinancialPeriods;
+﻿using ERP.Application.Repositories.Account;
+using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
 namespace ERP.Infrastracture.Repositories.Account;

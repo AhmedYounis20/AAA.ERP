@@ -1,4 +1,4 @@
-using Domain.Account.Models.Entities.Entries;
+using ERP.Domain.Models.Entities.Account.Entries;
 using FluentValidation;
 
 namespace ERP.Application.Validators.Account.ComandValidators.Entries;

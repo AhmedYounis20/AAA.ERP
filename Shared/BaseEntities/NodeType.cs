@@ -2,6 +2,7 @@ namespace Shared.BaseEntities;
 
 public enum NodeType
 {
-    Domain,
-    Category
+    SubDomain=2,
+    Domain=0,
+    Category=1,
 }

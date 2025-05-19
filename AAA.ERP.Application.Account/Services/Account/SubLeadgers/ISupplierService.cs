@@ -1,5 +1,5 @@
-using Domain.Account.Commands.SubLeadgers.Suppliers;
-using Domain.Account.Models.Entities.SubLeadgers;
+using ERP.Domain.Commands.Account.SubLeadgers.Suppliers;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace ERP.Application.Services.Account.SubLeadgers;
 

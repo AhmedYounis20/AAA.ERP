@@ -1,7 +1,7 @@
 ﻿using Domain.Account.Models.Dtos.Attachments;
-using Domain.Account.Models.Entities.Currencies;
-using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Models.Entities.SubLeadgers;
+using ERP.Domain.Models.Entities.Account.Currencies;
+using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace AAA.ERP.OutputDtos;
 

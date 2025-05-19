@@ -1,7 +1,6 @@
-using Domain.Account.Commands.SubLeadgers.Banks;
-using Domain.Account.Commands.SubLeadgers.CashInBoxes;
-using Domain.Account.Models.Entities.SubLeadgers;
 using ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+using ERP.Domain.Commands.Account.SubLeadgers.CashInBoxes;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace ERP.Application.Validators.Account.ComandValidators.SubLeadgers.CashInBoxes;
 

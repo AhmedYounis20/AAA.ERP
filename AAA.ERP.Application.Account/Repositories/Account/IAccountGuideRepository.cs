@@ -1,6 +1,6 @@
-﻿using Domain.Account.Models.Entities.AccountGuide;
-using ERP.Application.Repositories.BaseRepositories;
+﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Domain.Models.Entities.Account.AccountGuides;
 
-namespace ERP.Application.Repositories;
+namespace ERP.Application.Repositories.Account;
 
 public interface IAccountGuideRepository : IBaseSettingRepository<AccountGuide> { }

@@ -1,7 +1,7 @@
-﻿using Domain.Account.Commands.ChartOfAccounts;
-using Domain.Account.InputModels;
-using Domain.Account.Models.Entities.ChartOfAccounts;
-using ERP.Application.Services.BaseServices;
+﻿using ERP.Application.Services.BaseServices;
+using ERP.Domain.Commands.Account;
+using ERP.Domain.Commands.Account.ChartOfAccounts;
+using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using Shared.Responses;
 
 namespace ERP.Application.Services.Account;
