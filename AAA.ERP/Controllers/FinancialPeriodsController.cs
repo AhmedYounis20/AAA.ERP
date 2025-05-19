@@ -1,13 +1,7 @@
-﻿using AAA.ERP.Controllers.BaseControllers;
-using Domain.Account.Commands.FinancialPeriods;
+﻿using Domain.Account.Commands.FinancialPeriods;
 using Domain.Account.Models.Entities.FinancialPeriods;
-using Domain.Account.Services.Interfaces;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

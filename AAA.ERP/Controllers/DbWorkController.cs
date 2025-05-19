@@ -1,7 +1,8 @@
 ﻿using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Utility;
+using ERP.Infrastracture.Utilities;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

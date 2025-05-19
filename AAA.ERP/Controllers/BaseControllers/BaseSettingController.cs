@@ -1,12 +1,7 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using Domain.Account.Services.BaseServices.interfaces;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.BaseEntities;
-using Shared.Resources;
 
-namespace AAA.ERP.Controllers.BaseControllers;
+namespace ERP.API.Controllers.BaseControllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,7 +19,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         IBaseSettingService<TEntity, TCreate, TUpdate> service,
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
-        {
+    {
         _service = service;
         _sender = sender;
         _localizer = localizer;
@@ -34,7 +29,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
     public async Task<IActionResult> Search([FromQuery] string query)
     {
         var result = await _service.SearchByName(query);
-        return StatusCode((int) result.StatusCode, result);
+        return StatusCode((int)result.StatusCode, result);
     }
 
     protected override async Task<IActionResult> CreateRecord(TCreate input)
@@ -42,7 +37,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         var result = await _sender.Send(input);
         if (result.IsSuccess)
         {
-            string operation = (_localizer["Added"].Value);
+            string operation = _localizer["Added"].Value;
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
             message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
@@ -61,7 +56,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         var result = await _sender.Send(input);
         if (result.IsSuccess)
         {
-            string operation = (_localizer["Updated"].Value);
+            string operation = _localizer["Updated"].Value;
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
             message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
@@ -79,14 +74,14 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         var result = await _service.Delete(id);
         if (result.IsSuccess)
         {
-            string operation = (_localizer["Deleted"].Value);
+            string operation = _localizer["Deleted"].Value;
             StringBuilder message = new StringBuilder(operation);
             message.Append(' ');
             message.Append(CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name);
             message.Append(' ');
             message.Append(_localizer["Successfully"].Value);
 
-            result.SuccessMessage =  message.ToString();
+            result.SuccessMessage = message.ToString();
         }
         result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
         return StatusCode((int)result.StatusCode, result);

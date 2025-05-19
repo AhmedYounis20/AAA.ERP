@@ -1,17 +1,9 @@
-﻿using AAA.ERP.Controllers.BaseControllers;
-using AutoMapper;
-using Domain.Account.Commands.Entries;
+﻿using Domain.Account.Commands.Entries;
 using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Services.BaseServices.interfaces;
-using Domain.Account.Services.Interfaces;
-using Domain.Account.Services.Interfaces.Entries;
-using Domain.Account.Validators.InputValidators;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
-using Shared.Responses;
+using ERP.API.Controllers.BaseControllers;
+using ERP.Application.Services.Account.Entries;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

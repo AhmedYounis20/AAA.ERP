@@ -1,19 +1,12 @@
-﻿using AAA.ERP.Controllers.BaseControllers;
-using AutoMapper;
-using Domain.Account.Commands.AccountGuides;
-using Domain.Account.InputModels;
+﻿using Domain.Account.Commands.AccountGuides;
 using Domain.Account.Models.Entities.AccountGuide;
-using Domain.Account.Services.Interfaces;
-using Domain.Account.Validators.InputValidators;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
+using ERP.Application.Services.Account;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideCreateCommand,AccountGuideUpdateCommand>
+public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>
 {
     public AccountGuidesController(IAccountGuideService service,
         IStringLocalizer<Resource> localizer,

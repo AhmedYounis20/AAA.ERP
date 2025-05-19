@@ -1,12 +1,9 @@
-﻿using AAA.ERP.Controllers.BaseControllers;
-using Domain.Account.Commands.Entries.JournalEntries;
+﻿using Domain.Account.Commands.Entries.JournalEntries;
 using Domain.Account.Models.Entities.Entries;
-using Domain.Account.Services.Interfaces.Entries;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
+using ERP.API.Controllers.BaseControllers;
+using ERP.Application.Services.Account.Entries;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

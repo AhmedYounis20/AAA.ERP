@@ -1,13 +1,8 @@
-using AAA.ERP.Controllers.BaseControllers;
-using Domain.Account.Commands.SubLeadgers.Banks;
 using Domain.Account.Commands.SubLeadgers.FixedAssets;
 using Domain.Account.Models.Entities.SubLeadgers;
-using Domain.Account.Services.Interfaces.SubLeadgers;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
+using ERP.Application.Services.Account.SubLeadgers;
 
-namespace AAA.ERP.Controllers.SubLeadgers;
+namespace ERP.API.Controllers.SubLeadgers;
 
 [Route("api/[controller]")]
 [ApiController]

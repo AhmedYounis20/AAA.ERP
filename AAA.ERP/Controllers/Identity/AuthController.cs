@@ -1,11 +1,8 @@
-﻿using Domain.Account.DBConfiguration.DbContext;
-using Domain.Account.Models.Dtos;
-using Domain.Account.Services.Identity;
-using Domain.Account.Utility;
-using Shared.BaseEntities.Identity;
+﻿using Domain.Account.Models.Dtos;
+using ERP.Application.Services.Identity;
 using Shared.Responses;
 
-namespace AAA.ERP.Controllers.Identity;
+namespace ERP.API.Controllers.Identity;
 
 [Route("api/[controller]")]
 [ApiController]

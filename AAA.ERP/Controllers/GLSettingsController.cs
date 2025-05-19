@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using Domain.Account.Commands.GLSettings;
+﻿using Domain.Account.Commands.GLSettings;
 using Domain.Account.InputModels;
 using Domain.Account.Models.Entities.GLSettings;
-using Domain.Account.Services.Interfaces;
-using Domain.Account.Validators.InputValidators;
+using ERP.Application.Validators.Account.InputValidators;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
 using Shared.Responses;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

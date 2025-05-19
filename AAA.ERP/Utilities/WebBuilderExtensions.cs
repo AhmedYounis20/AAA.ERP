@@ -1,26 +1,24 @@
 ﻿using System.Globalization;
 using AAA.ERP.Services.Impelementation;
-using AAA.ERP.Services.Impelementation.SubLeadgers;
-using AAA.ERP.Services.Interfaces.SubLeadgers;
 using Domain.Account.DBConfiguration.DbContext;
-using Domain.Account.Repositories.BaseRepositories.Impelementation;
-using Domain.Account.Repositories.BaseRepositories.Interfaces;
-using Domain.Account.Repositories.Impelementation;
-using Domain.Account.Repositories.Impelementation.SubLeadgers;
-using Domain.Account.Repositories.Interfaces;
-using Domain.Account.Repositories.Interfaces.SubLeadgers;
-using Domain.Account.Services.BaseServices.impelemtation;
-using Domain.Account.Services.BaseServices.interfaces;
 using Domain.Account.Services.Identity;
-using Domain.Account.Services.Impelementation;
-using Domain.Account.Services.Impelementation.Entries;
-using Domain.Account.Services.Impelementation.SubLeadgers;
-using Domain.Account.Services.Interfaces;
-using Domain.Account.Services.Interfaces.Entries;
-using Domain.Account.Services.Interfaces.SubLeadgers;
 using Domain.Account.Utility;
+using ERP.Application.Data;
+using ERP.Application.Repositories;
+using ERP.Application.Repositories.BaseRepositories;
+using ERP.Application.Repositories.SubLeadgers;
+using ERP.Application.Services.Account.Entries;
+using ERP.Application.Services.Account.SubLeadgers;
+using ERP.Application.Services.Identity;
+using ERP.Infrastracture.Repositories.Account;
+using ERP.Infrastracture.Repositories.Account.SubLeadgers;
+using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastracture.Services.Account;
+using ERP.Infrastracture.Services.Account.Entries;
+using ERP.Infrastracture.Services.Account.SubLeadgers;
+using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastracture.Utilities;
 using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
@@ -28,7 +26,7 @@ using Microsoft.OpenApi.Models;
 using Shared.BaseEntities.Identity;
 using Shared.Behaviors;
 
-namespace AAA.ERP.Utilities;
+namespace ERP.Api.Utilities;
 
 public static class WebBuilderExtensions
 {
@@ -37,7 +35,7 @@ public static class WebBuilderExtensions
         services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
-        services.AddValidatorsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddMediatR(config =>
         {
@@ -60,7 +58,7 @@ public static class WebBuilderExtensions
             }
             );
     }
-    public static void AddAuthenticationConfiguration(this IServiceCollection services,IConfiguration configuration)
+    public static void AddAuthenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var key = configuration.GetValue<string>("ApiSettings:Secret");
 
@@ -89,16 +87,16 @@ public static class WebBuilderExtensions
 
         services.AddSwaggerGen(options =>
         {
-            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
                 Description = "JWt Authorization header using the Bearer scheme. \r\n\r\n" +
                                "Enter 'Bearer' [space] and you token in the text input below \r\n\r\n",
                 Name = "Authorization",
-                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                In = ParameterLocation.Header,
                 Scheme = JwtBearerDefaults.AuthenticationScheme
             });
 
-            options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {
             new OpenApiSecurityScheme{
@@ -136,7 +134,6 @@ public static class WebBuilderExtensions
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<ICostCenterService, CostCenterService>();
-        services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
@@ -147,6 +144,7 @@ public static class WebBuilderExtensions
         services.AddScoped<ICompinedEntryService, CompinedEntryService>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
     public static void AddRepositories(this IServiceCollection services)
     {
@@ -166,7 +164,7 @@ public static class WebBuilderExtensions
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
-        services.AddScoped<IUnitOfWork,UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHttpContextAccessor();
     }
     public static void ConfigureApplication(this WebApplicationBuilder builder)
@@ -184,7 +182,7 @@ public static class WebBuilderExtensions
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("AAA.ERP"));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            
+
         });
 
 

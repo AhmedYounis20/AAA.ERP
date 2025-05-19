@@ -1,13 +1,7 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using Domain.Account.Services.BaseServices.interfaces;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Localization;
-using Shared.BaseEntities;
-using Shared.Resources;
 
-namespace AAA.ERP.Controllers.BaseControllers
+namespace ERP.API.Controllers.BaseControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,16 +11,16 @@ namespace AAA.ERP.Controllers.BaseControllers
         where TCreate : BaseCreateCommand<TEntity>
         where TUpdate : BaseUpdateCommand<TEntity>
     {
-        private readonly IBaseService<TEntity,TCreate,TUpdate> _service;
+        private readonly IBaseService<TEntity, TCreate, TUpdate> _service;
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
-        public string CurrentLanguage => ((HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
-            HttpContext.Request.Headers["Accept-Language"].Any(e=>e.Contains("ar"))) ||
-            (HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
-            HttpContext.Request.Headers["Accept-Culture"].Any(e=>e.Contains("ar")))) ? "ar" : "en";
+        public string CurrentLanguage => HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
+            HttpContext.Request.Headers["Accept-Language"].Any(e => e.Contains("ar")) ||
+            HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
+            HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar")) ? "ar" : "en";
 
 
-        public BaseController(IBaseService<TEntity,TCreate,TUpdate> service,
+        public BaseController(IBaseService<TEntity, TCreate, TUpdate> service,
             IStringLocalizer<Resource> localizer,
             ISender sender)
         {
@@ -39,19 +33,19 @@ namespace AAA.ERP.Controllers.BaseControllers
         {
             var result = await _sender.Send(input);
             result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> GetAllRecords()
         {
             var result = await _service.ReadAll();
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> GetRecord(Guid id)
         {
             var result = await _service.ReadById(id);
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
@@ -59,13 +53,13 @@ namespace AAA.ERP.Controllers.BaseControllers
             input.Id = id;
             var result = await _sender.Send(input);
             result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> DeleteRecord(Guid id)
         {
             var result = await _service.Delete(id);
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
     }
 }

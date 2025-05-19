@@ -1,12 +1,7 @@
-﻿using AAA.ERP.Controllers.BaseControllers;
-using Domain.Account.Commands.Currencies;
+﻿using Domain.Account.Commands.Currencies;
 using Domain.Account.Models.Entities.CostCenters;
-using Domain.Account.Services.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Localization;
-using Shared.Resources;
 
-namespace AAA.ERP.Controllers;
+namespace ERP.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
