@@ -5,9 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\AAA.ERP.Application.Account\ERP.Application.csproj" />
+    <ProjectReference Include="..\ERP.Domain\ERP.Domain.csproj" />
     <ProjectReference Include="..\Shared\ERP.Shared.csproj" />
   </ItemGroup>
 

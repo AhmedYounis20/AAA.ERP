@@ -12,8 +12,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AAA.ERP.Application.Account\ERP.Application.csproj" />
-    <ProjectReference Include="..\AAA.ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
   </ItemGroup>
 
 </Project>
