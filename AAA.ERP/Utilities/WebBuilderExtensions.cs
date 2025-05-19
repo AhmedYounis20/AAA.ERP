@@ -180,7 +180,7 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("AAA.ERP"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("ERP.API"));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         });
