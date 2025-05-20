@@ -128,18 +128,15 @@ public static class WebBuilderExtensions
         var app = builder.Build();
         // Configure the HTTP request pipeline.
         app.UseSwagger();
-        if (app.Environment.IsDevelopment())
+
+        app.UseSwaggerUI(e =>
         {
-            app.UseSwaggerUI();
-        }
-        else
-        {
-            app.UseSwaggerUI(e =>
-            {
-                e.SwaggerEndpoint("/swagger/v1/swagger.json", "AAA ERP Api V1");
-                e.RoutePrefix = string.Empty;
-            });
-        }
+            e.SwaggerEndpoint("/swagger/v1/swagger.json", "AAA ERP Api V1");
+            e.RoutePrefix = string.Empty;
+            e.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None); // Collapse all
+
+        });
+        
         app.UseHttpsRedirection();
 
         var localizeOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();

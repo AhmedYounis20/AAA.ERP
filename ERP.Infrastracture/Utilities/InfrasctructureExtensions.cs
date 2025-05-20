@@ -59,6 +59,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IPackingUnitService, PackingUnitService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ISellingPriceService, SellingPriceService>();
+        services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
     public static void AddRepositories(this IServiceCollection services)
@@ -81,6 +82,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
+        services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHttpContextAccessor();
     }
