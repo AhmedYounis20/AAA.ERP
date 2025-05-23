@@ -6,6 +6,7 @@ namespace ERP.Domain.Models.Entities.Inventory.Items;
 public class ItemSellingPriceDiscount : BaseEntity
 {
     public Guid ItemId { get; set; }
+    public Item? Item { get; set; }
     public Guid SellingPriceId { get; set; }
     public SellingPrice? SellingPrice { get; set; }
     public decimal Discount { get; set; }

@@ -1,43 +1,78 @@
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
-using ERP.Infrastracture.Repositories.Account.SubLeadgers;
-using ERP.Infrastracture.Repositories.Inventory;
+using ERP.Domain.Models.Entities.Inventory.Items;
 
 namespace ERP.Infrastracture.Repositories.Account;
 
 public class UnitOfWork : IUnitOfWork
 {
-    public IAccountGuideRepository AccountGuideRepository { get; set; }
-    public IChartOfAccountRepository ChartOfAccountRepository { get; set; }
-    public ICurrencyRepository CurrencyRepository { get; set; }
-    public IGLSettingRepository GlSettingRepository { get; set; }
-    public IEntryRepository EntryRepository { get; set; }
-    public IFinancialPeriodRepository FinancialPeriodRepository { get; set; }
-    public IAttachmentRepository AttachmentRepository { get; set; }
-    public ICashInBoxRepository CashInBoxRepository { get; set; }
-    public IBranchRepository BranchRepository { get; set; }
-    public IPackingUnitRepository PackingUnitRepository { get; set; }
+    private readonly IApplicationDbContext _context;
     private IDbContextTransaction? _sqlTransaction;
-    private ApplicationDbContext _context;
 
-    public UnitOfWork(ApplicationDbContext context)
+    public IAccountGuideRepository AccountGuideRepository { get; }
+    public IChartOfAccountRepository ChartOfAccountRepository { get; }
+    public ICurrencyRepository CurrencyRepository { get; }
+    public IGLSettingRepository GlSettingRepository { get; }
+    public IEntryRepository EntryRepository { get; }
+    public IFinancialPeriodRepository FinancialPeriodRepository { get; }
+    public IAttachmentRepository AttachmentRepository { get; }
+    public ICashInBoxRepository CashInBoxRepository { get; }
+    public IBranchRepository BranchRepository { get; }
+    public IPackingUnitRepository PackingUnitRepository { get; }
+    public IItemRepository ItemRepository { get; }
+    public IBaseRepository<ItemSupplier> ItemSupplierRepository { get; }
+    public IBaseRepository<ItemCode> ItemCodeRepository { get; }
+    public IBaseRepository<ItemManufacturerCompany> ItemManufacturerCompanyRepository { get; }
+    public IBaseRepository<ItemPackingUnit> ItemPackingUnitRepository { get; }
+    public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
+    public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
+
+    public UnitOfWork(
+        IApplicationDbContext context,
+        IAccountGuideRepository accountGuideRepository,
+        IChartOfAccountRepository chartOfAccountRepository,
+        ICurrencyRepository currencyRepository,
+        IGLSettingRepository glSettingRepository,
+        IEntryRepository entryRepository,
+        IFinancialPeriodRepository financialPeriodRepository,
+        IAttachmentRepository attachmentRepository,
+        ICashInBoxRepository cashInBoxRepository,
+        IBranchRepository branchRepository,
+        IPackingUnitRepository packingUnitRepository,
+        IItemRepository itemRepository,
+        IBaseRepository<ItemSupplier> itemSupplierRepository,
+        IBaseRepository<ItemCode> itemCodeRepository,
+        IBaseRepository<ItemManufacturerCompany> itemManufacturerCompanyRepository,
+        IBaseRepository<ItemPackingUnit> itemPackingUnitRepository,
+        IBaseRepository<ItemPackingUnitSellingPrice> itemPackingUnitSellingPriceRepository,
+        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository
+    )
     {
-        AccountGuideRepository = new AccountGuideRepository(context);
-        ChartOfAccountRepository = new ChartOfAccountRepository(context);
-        CurrencyRepository = new CurrencyRepository(context);
-        CashInBoxRepository = new CashInBoxRepository(context);
-        GlSettingRepository = new GLSettingRepository(context);
-        FinancialPeriodRepository = new FinancialPeriodRepository(context);
-        AttachmentRepository = new AttachmentRepository(context);
-        BranchRepository = new BranchRepository(context);
-        EntryRepository = new EntryRepository(context);
-        PackingUnitRepository = new PackingUnitRepository(context);
         _context = context;
+        AccountGuideRepository = accountGuideRepository;
+        ChartOfAccountRepository = chartOfAccountRepository;
+        CurrencyRepository = currencyRepository;
+        GlSettingRepository = glSettingRepository;
+        EntryRepository = entryRepository;
+        FinancialPeriodRepository = financialPeriodRepository;
+        AttachmentRepository = attachmentRepository;
+        CashInBoxRepository = cashInBoxRepository;
+        BranchRepository = branchRepository;
+        PackingUnitRepository = packingUnitRepository;
+        ItemRepository = itemRepository;
+        ItemSupplierRepository = itemSupplierRepository;
+        ItemCodeRepository = itemCodeRepository;
+        ItemManufacturerCompanyRepository = itemManufacturerCompanyRepository;
+        ItemPackingUnitRepository = itemPackingUnitRepository;
+        ItemPackingUnitSellingPriceRepository = itemPackingUnitSellingPriceRepository;
+        ItemSellingPriceDiscountRepository = itemSellingPriceDiscountRepository;
     }
 
     public async Task BeginTransactionAsync()
-        => _sqlTransaction = _sqlTransaction ?? await _context.Database.BeginTransactionAsync();
+    {
+        _sqlTransaction ??= await _context.Database.BeginTransactionAsync();
+    }
 
     public async Task CommitAsync()
     {

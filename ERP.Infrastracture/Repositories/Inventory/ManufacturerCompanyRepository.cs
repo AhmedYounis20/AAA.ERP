@@ -6,5 +6,5 @@ namespace ERP.Infrastracture.Repositories.Inventory;
 
 public class ManufacturerCompanyRepository : BaseSettingRepository<ManufacturerCompany>, IManufacturerCompanyRepository
 {
-    public ManufacturerCompanyRepository(ApplicationDbContext context) : base(context) { }
+    public ManufacturerCompanyRepository(IApplicationDbContext context) : base(context) { }
 }

@@ -1,6 +1,6 @@
-﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+﻿using ERP.Domain.Models.Entities.Account.AccountGuides;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ERP.Infrastracture.DBConfiguration.Config.Account.ChartOfAccountDbConfig
