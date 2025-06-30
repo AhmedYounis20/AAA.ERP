@@ -1,9 +1,10 @@
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
+using ERP.Application.Repositories.SubLeadgers;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace ERP.Infrastracture.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -25,8 +26,11 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<ItemCode> ItemCodeRepository { get; }
     public IBaseRepository<ItemManufacturerCompany> ItemManufacturerCompanyRepository { get; }
     public IBaseRepository<ItemPackingUnit> ItemPackingUnitRepository { get; }
+    public ISizeRepository SizeRepository { get; }
+    public IColorRepository ColorRepository { get; }
     public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
     public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
+    public ISupplierRepository SupplierRepository { get; }
 
     public UnitOfWork(
         IApplicationDbContext context,
@@ -46,7 +50,10 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ItemManufacturerCompany> itemManufacturerCompanyRepository,
         IBaseRepository<ItemPackingUnit> itemPackingUnitRepository,
         IBaseRepository<ItemPackingUnitSellingPrice> itemPackingUnitSellingPriceRepository,
-        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository
+        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,
+        ISupplierRepository supplierRepository,
+        ISizeRepository sizeRepository,
+        IColorRepository colorRepository
     )
     {
         _context = context;
@@ -67,6 +74,9 @@ public class UnitOfWork : IUnitOfWork
         ItemPackingUnitRepository = itemPackingUnitRepository;
         ItemPackingUnitSellingPriceRepository = itemPackingUnitSellingPriceRepository;
         ItemSellingPriceDiscountRepository = itemSellingPriceDiscountRepository;
+        SupplierRepository = supplierRepository;
+        SizeRepository = sizeRepository;
+        ColorRepository = colorRepository;
     }
 
     public async Task BeginTransactionAsync()

@@ -25,7 +25,8 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetItemDtos();
+        return StatusCode((int)result.StatusCode, result);
     }
 
     [HttpGet("getNextCode")]
@@ -37,7 +38,8 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        return await GetRecord(id);
+        var result = await _service.GetItemDtoById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ItemUpdateCommand input)

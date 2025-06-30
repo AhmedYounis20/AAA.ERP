@@ -12,6 +12,7 @@ using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using ERP.Infrastracture.Repositories.Inventory;
+using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Services.Account;
 using ERP.Infrastracture.Services.Account.Entries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
@@ -61,6 +62,8 @@ public static class InfrasctructureExtensions
         services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
         services.AddScoped<IItemService, ItemService>();
+        services.AddScoped<ISizeService, SizeService>();
+        services.AddScoped<IColorService, ColorService>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
     public static void AddRepositories(this IServiceCollection services)
@@ -87,6 +90,8 @@ public static class InfrasctructureExtensions
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddScoped<ISizeRepository, SizeRepository>();
+        services.AddScoped<IColorRepository, ColorRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHttpContextAccessor();
     }

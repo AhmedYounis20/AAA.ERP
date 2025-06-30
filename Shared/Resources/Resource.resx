@@ -204,4 +204,7 @@
   <data name="NotFoundCurrentFinancialPeriod" xml:space="preserve">
     <value>Not Found Current Financial Period</value>
   </data>
+  <data name="ColorCodeIsRequired" xml:space="preserve">
+    <value>Color Code is required</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Items
             builder.ToTable("ItemSellingPriceDiscounts");
 
             _ = builder.Property(x => x.DiscountType).HasConversion<string>();
+            _ = builder.HasIndex(e => new { e.ItemId, e.SellingPriceId }).IsUnique();
 
             _ = builder.HasOne(e => e.SellingPrice)
             .WithMany()

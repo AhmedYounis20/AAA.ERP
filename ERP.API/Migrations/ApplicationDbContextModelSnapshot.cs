@@ -1322,6 +1322,56 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Suppliers", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Colors.Color", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ColorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColorCode")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.ToTable("Colors", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Items.Item", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1470,9 +1520,10 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("ManufacturerCompanyId");
+
+                    b.HasIndex("ItemId", "ManufacturerCompanyId")
+                        .IsUnique();
 
                     b.ToTable("ItemManufacturerCompanies", (string)null);
                 });
@@ -1493,6 +1544,9 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDefaultPackingUnit")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDefaultPurchases")
                         .HasColumnType("bit");
 
@@ -1511,6 +1565,9 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("PackingUnitId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1519,9 +1576,10 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("PackingUnitId");
+
+                    b.HasIndex("ItemId", "PackingUnitId")
+                        .IsUnique();
 
                     b.ToTable("ItemPackingUnits", (string)null);
                 });
@@ -1542,7 +1600,7 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ItemPackingUnitPriceId")
+                    b.Property<Guid>("ItemPackingUnitId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedAt")
@@ -1551,14 +1609,15 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("sellingPriceId")
+                    b.Property<Guid>("SellingPriceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemPackingUnitPriceId");
+                    b.HasIndex("SellingPriceId");
 
-                    b.HasIndex("sellingPriceId");
+                    b.HasIndex("ItemPackingUnitId", "SellingPriceId")
+                        .IsUnique();
 
                     b.ToTable("ItemPackingUnitSellingPrices", (string)null);
                 });
@@ -1597,9 +1656,10 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("SellingPriceId");
+
+                    b.HasIndex("ItemId", "SellingPriceId")
+                        .IsUnique();
 
                     b.ToTable("ItemSellingPriceDiscounts", (string)null);
                 });
@@ -1631,9 +1691,10 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("SupplierId");
+
+                    b.HasIndex("ItemId", "SupplierId")
+                        .IsUnique();
 
                     b.ToTable("ItemSuppliers", (string)null);
                 });
@@ -1762,6 +1823,48 @@ namespace AAA.ERP.Migrations
                         .IsUnique();
 
                     b.ToTable("SellingPrices", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Sizes.Size", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.ToTable("Sizes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -2264,19 +2367,19 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Items.ItemPackingUnitSellingPrice", b =>
                 {
-                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Items.ItemPackingUnit", "ItemPackingUnitPrice")
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Items.ItemPackingUnit", "ItemPackingUnit")
                         .WithMany("ItemPackingUnitSellingPrices")
-                        .HasForeignKey("ItemPackingUnitPriceId")
+                        .HasForeignKey("ItemPackingUnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.SellingPrices.SellingPrice", "SellingPrice")
                         .WithMany()
-                        .HasForeignKey("sellingPriceId")
+                        .HasForeignKey("SellingPriceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ItemPackingUnitPrice");
+                    b.Navigation("ItemPackingUnit");
 
                     b.Navigation("SellingPrice");
                 });

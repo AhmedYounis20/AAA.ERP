@@ -11,9 +11,11 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Items
             base.ApplyConfiguration(builder);
             builder.ToTable("ItemPackingUnitSellingPrices");
 
+            _ = builder.HasIndex(e => new { e.ItemPackingUnitId, e.SellingPriceId }).IsUnique();
+
             _ = builder.HasOne(e => e.SellingPrice)
             .WithMany()
-            .HasForeignKey(e => e.sellingPriceId)
+            .HasForeignKey(e => e.SellingPriceId)
             .OnDelete(DeleteBehavior.Restrict);
 
             return builder;

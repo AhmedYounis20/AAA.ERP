@@ -14,4 +14,9 @@ public class ItemUpdateCommand : BaseTreeSettingUpdateCommand<Item>
     public string? Model { get; set; }
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }
+    public List<Guid> SuppliersIds { get; set; } = [];
+    public List<string> BarCodes { get; set; } = [];
+    public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
+    public List<ItemSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
+    public List<ItemPackingUnitDto> PackingUnits { get; set; } = [];
 }

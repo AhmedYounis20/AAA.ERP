@@ -11,6 +11,8 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Items
             base.ApplyConfiguration(builder);
             builder.ToTable("ItemSuppliers");
 
+            _ = builder.HasIndex(e => new { e.ItemId, e.SupplierId }).IsUnique();
+
             _ = builder.HasOne(e => e.Supplier)
             .WithMany()
             .HasForeignKey(e => e.SupplierId)
