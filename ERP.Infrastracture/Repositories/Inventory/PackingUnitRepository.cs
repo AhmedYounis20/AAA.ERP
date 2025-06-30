@@ -6,5 +6,5 @@ namespace ERP.Infrastracture.Repositories.Inventory;
 
 public class PackingUnitRepository : BaseSettingRepository<PackingUnit>, IPackingUnitRepository
 {
-    public PackingUnitRepository(ApplicationDbContext context) : base(context) { }
+    public PackingUnitRepository(IApplicationDbContext context) : base(context) { }
 }

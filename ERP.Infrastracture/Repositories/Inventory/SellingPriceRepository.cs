@@ -6,5 +6,5 @@ namespace ERP.Infrastracture.Repositories.Inventory;
 
 public class SellingPriceRepository : BaseSettingRepository<SellingPrice>, ISellingPriceRepository
 {
-    public SellingPriceRepository(ApplicationDbContext context) : base(context) { }
+    public SellingPriceRepository(IApplicationDbContext context) : base(context) { }
 }

@@ -15,6 +15,7 @@
     "TwoFactorEnabled": false,
     "LockoutEnd": null,
     "LockoutEnabled": true,
-    "AccessFailedCount": 0
+    "AccessFailedCount": 0,
+    "RefreshToken": ""
   }
 ]

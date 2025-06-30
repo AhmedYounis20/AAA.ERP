@@ -5,7 +5,7 @@ public class BaseTreeSettingRepository<TEntity>
         IBaseTreeSettingRepository<TEntity>
     where TEntity : BaseTreeSettingEntity<TEntity>
 {
-    public BaseTreeSettingRepository(ApplicationDbContext context) : base(context)
+    public BaseTreeSettingRepository(IApplicationDbContext context) : base(context)
     => _dbSet = context.Set<TEntity>();
 
     public virtual async Task<List<TEntity>> GetLevel(int level = 0)

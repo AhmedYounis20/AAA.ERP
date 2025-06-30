@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.Json.Serialization;
 using Domain.Account.DBConfiguration.DbContext;
 using ERP.Application.Data;
 using ERP.Infrastracture.Utilities;
@@ -118,7 +119,10 @@ public static class WebBuilderExtensions
         });
         //.AddJsonOptions(options =>
         //        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(opts =>
+        {
+            opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
