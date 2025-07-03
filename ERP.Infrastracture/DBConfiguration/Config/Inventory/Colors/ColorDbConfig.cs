@@ -12,8 +12,10 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Colors
             base.ApplyConfiguration(builder);
             builder.ToTable("Colors");
 
-            _ = builder.HasIndex(e => e.ColorCode).IsUnique();
-            _ = builder.Property(e => e.ColorCode).IsRequired().HasColumnOrder(columnNumber++);
+            _ = builder.HasIndex(e => e.Code).IsUnique();
+            _ = builder.Property(e => e.Code).IsRequired().HasColumnOrder(columnNumber++);
+            _ = builder.HasIndex(e => e.ColorValue).IsUnique();
+            _ = builder.Property(e => e.ColorValue).IsRequired().HasColumnOrder(columnNumber++);
             return builder;
         }
     }

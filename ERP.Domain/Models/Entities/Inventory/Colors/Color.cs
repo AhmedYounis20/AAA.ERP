@@ -4,5 +4,6 @@ namespace ERP.Domain.Models.Entities.Inventory.Colors;
 
 public class Color : BaseSettingEntity
 {
-    public string ColorCode { get; set; } = string.Empty;
+    public string ColorValue { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
 }

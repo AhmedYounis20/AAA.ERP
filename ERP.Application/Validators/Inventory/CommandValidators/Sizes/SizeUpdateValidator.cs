@@ -6,4 +6,9 @@ using FluentValidation;
 namespace ERP.Application.Validators.Inventory.CommandValidators.Sizes;
 
 public class SizeUpdateValidator : BaseSettingUpdateValidator<SizeUpdateCommand, Size>
-{ }
+{
+    public SizeUpdateValidator() : base()
+    {
+        RuleFor(e => e.Code).NotEmpty().WithMessage("CodeIsRequired");
+    }
+}

@@ -16,5 +16,7 @@ global using ERP.Shared.Resources;
 global using Microsoft.AspNetCore.Authorization;
 global using ERP.API.Controllers.BaseControllers;
 global using ERP.Application.Services.Account;
+global using Shared.Responses;
+
 
 

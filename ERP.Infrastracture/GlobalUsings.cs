@@ -18,3 +18,4 @@ global using Serilog;
 global using Microsoft.AspNetCore.Http;
 global using ERP.Application.Services.Account;
 global using Shared;
+global using Shared.Responses;

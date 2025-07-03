@@ -4,4 +4,7 @@ using ERP.Domain.Models.Entities.Inventory.Sizes;
 
 namespace ERP.Application.Services.Inventory;
 
-public interface ISizeService : IBaseSettingService<Size, SizeCreateCommand, SizeUpdateCommand> { }
+public interface ISizeService : IBaseSettingService<Size, SizeCreateCommand, SizeUpdateCommand>
+{
+    Task<ApiResponse<string>> GetNextCodeAsync();
+}

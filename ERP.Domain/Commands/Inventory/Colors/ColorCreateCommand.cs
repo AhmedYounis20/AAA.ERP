@@ -5,5 +5,5 @@ namespace ERP.Domain.Commands.Inventory.Colors;
 
 public class ColorCreateCommand : BaseSettingCreateCommand<Color>
 {
-    public string ColorCode { get; set; } = string.Empty;
+    public string ColorValue { get; set; } = string.Empty;
 }

@@ -9,6 +9,6 @@ public class ColorCreateValidator : BaseSettingCreateValidator<ColorCreateComman
 {
     public ColorCreateValidator() : base()
     {
-        RuleFor(e => e.ColorCode).NotEmpty().WithMessage("ColorCodeIsRequired");
+        RuleFor(e => e.ColorValue).NotEmpty().WithMessage("ColorValueIsRequired");
     }
 }

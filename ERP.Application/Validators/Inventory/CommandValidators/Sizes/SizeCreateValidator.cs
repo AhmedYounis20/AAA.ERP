@@ -5,5 +5,4 @@ using FluentValidation;
 
 namespace ERP.Application.Validators.Inventory.CommandValidators.Sizes;
 
-public class SizeCreateValidator : BaseSettingCreateValidator<SizeCreateCommand, Size>
-{ }
+public class SizeCreateValidator : BaseSettingCreateValidator<SizeCreateCommand, Size>{}

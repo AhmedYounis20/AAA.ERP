@@ -8,10 +8,13 @@ namespace ERP.API.Controllers.Inventory;
 [ApiController]
 public class ColorsController : BaseSettingController<Color, ColorCreateCommand, ColorUpdateCommand>
 {
+    private readonly IColorService _service;
     public ColorsController(IColorService service,
         IStringLocalizer<Resource> localizer,
         ISender mapper) : base(service, localizer, mapper)
-    { }
+    {
+        _service = service;
+    }
 
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ColorCreateCommand input)
@@ -38,5 +41,10 @@ public class ColorsController : BaseSettingController<Color, ColorCreateCommand,
     {
         return await DeleteRecord(id);
     }
-
+    [HttpGet("nextCode")]
+    public async Task<IActionResult> GetNextCode()
+    {
+        var result = await _service.GetNextCodeAsync();
+        return StatusCode((int)result.StatusCode, result);
+    }
 }

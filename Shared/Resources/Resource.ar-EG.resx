@@ -207,4 +207,7 @@
   <data name="ColorCodeIsRequired" xml:space="preserve">
     <value>كود اللون مطلوب</value>
   </data>
+  <data name="ColorValueIsDuplicate" xml:space="preserve">
+    <value>قيمة اللون موجودة بالفعل</value>
+  </data>
 </root>

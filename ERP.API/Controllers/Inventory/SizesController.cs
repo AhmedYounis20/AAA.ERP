@@ -8,10 +8,13 @@ namespace ERP.API.Controllers.Inventory;
 [ApiController]
 public class SizesController : BaseSettingController<Size, SizeCreateCommand, SizeUpdateCommand>
 {
+    private readonly ISizeService _service;
     public SizesController(ISizeService service,
         IStringLocalizer<Resource> localizer,
         ISender mapper) : base(service, localizer, mapper)
-    { }
+    {
+        _service = service;
+    }
 
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] SizeCreateCommand input)
@@ -38,5 +41,10 @@ public class SizesController : BaseSettingController<Size, SizeCreateCommand, Si
     {
         return await DeleteRecord(id);
     }
-
+    [HttpGet("nextCode")]
+    public async Task<IActionResult> GetNextCode()
+    {
+        var result = await _service.GetNextCodeAsync();
+        return StatusCode((int)result.StatusCode, result);
+    }
 }
