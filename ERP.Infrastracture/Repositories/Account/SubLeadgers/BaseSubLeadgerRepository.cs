@@ -16,7 +16,7 @@ public class BaseSubLeadgerRepository<TEntity> : BaseTreeSettingRepository<TEnti
         return await _dbSet.Include(e => e.ChartOfAccount).ToListAsync();
     }
 
-    public override async Task<TEntity?> Get(Guid id)
+    public override async Task<TEntity?> Get(Guid? id)
     {
         return await _dbSet.Where(e => e.Id.Equals(id)).Include(e => e.ChartOfAccount).FirstOrDefaultAsync();
     }

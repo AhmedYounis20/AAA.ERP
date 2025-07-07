@@ -9,7 +9,7 @@ public class EntryRepository : BaseRepository<Entry>, IEntryRepository
     public EntryRepository(ApplicationDbContext context) : base(context)
     { }
 
-    public override async Task<Entry?> Get(Guid id)
+    public override async Task<Entry?> Get(Guid? id)
     {
         return await _dbSet.Include(e=>e.FinancialPeriod).Include(e => e.EntryAttachments)
             .ThenInclude(e => e.Attachment)

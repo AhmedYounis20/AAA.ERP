@@ -9,7 +9,7 @@ namespace ERP.Application.Repositories.BaseRepositories
         public Task<TEntity> Add(TEntity entity);
         public Task Add(IEnumerable<TEntity> entities);
 
-        public Task<TEntity?> Get(Guid id);
+        public Task<TEntity?> Get(Guid? id);
         public Task<IEnumerable<TEntity>> Get();
         public IQueryable<TEntity> GetQuery();
         public Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate);

@@ -1,6 +1,7 @@
 ﻿using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using ERP.Domain.Models.Dtos.Inventory;
 
 namespace ERP.Domain.Models.Entities.Inventory.Items;
 
@@ -30,6 +31,7 @@ public class ItemDto
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ItemSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ItemPackingUnitDto> PackingUnits { get; set; } = [];
+    public List<ColorSizeCombinationDto> SubDomainCombinations { get; set; } = [];
 
     public string? CreatedByName { get; set; }
     public string? CreatedByNameSecondLanguage { get; set; }

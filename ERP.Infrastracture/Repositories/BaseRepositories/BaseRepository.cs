@@ -24,7 +24,7 @@ public class BaseRepository<TEntity>
         await SaveChangesAsync();
     }
 
-    public virtual async Task<TEntity?> Get(Guid id)
+    public virtual async Task<TEntity?> Get(Guid? id)
     => await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
     public virtual async Task<IEnumerable<TEntity>> Get()
     => await _dbSet.ToListAsync(); // handle in future add pagination

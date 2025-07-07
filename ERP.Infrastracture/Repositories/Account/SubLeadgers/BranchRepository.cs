@@ -13,7 +13,7 @@ public class BranchRepository : BaseSubLeadgerRepository<Branch>, IBranchReposit
         return await _dbSet.Include(e => e.Attachment).Include(e => e.ChartOfAccount).ToListAsync();
     }
 
-    public override async Task<Branch?> Get(Guid id)
+    public override async Task<Branch?> Get(Guid? id)
     {
         return await _dbSet.Where(e => e.Id.Equals(id)).Include(e => e.Attachment).Include(e => e.ChartOfAccount).FirstOrDefaultAsync();
     }
