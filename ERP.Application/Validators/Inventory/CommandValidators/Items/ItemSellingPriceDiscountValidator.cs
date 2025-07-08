@@ -8,7 +8,7 @@ public class ItemSellingPriceDiscountValidator : AbstractValidator<ItemSellingPr
     public ItemSellingPriceDiscountValidator() {
 
         _ = RuleFor(e => e.SellingPriceId).NotEmpty().WithMessage("SellingPriceIsRequired");
-        _ = RuleFor(e => e.Discount).GreaterThan(0).WithMessage("DiscountCannotBeNegative");
+        _ = RuleFor(e => e.Discount).GreaterThanOrEqualTo(0).WithMessage("DiscountCannotBeNegative");
         _ = RuleFor(e => e.DiscountType).IsInEnum().WithMessage("DiscountTypeIsNotValid");
     }
 }

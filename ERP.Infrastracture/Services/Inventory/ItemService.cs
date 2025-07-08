@@ -2,6 +2,9 @@
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.Colors;
+using ERP.Domain.Models.Entities.Inventory.Sizes;
 using System.Text.RegularExpressions;
 
 namespace ERP.Infrastracture.Services.Inventory;
@@ -45,6 +48,10 @@ public class ItemService :
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
+
+        // Start transaction for Domain + SubDomains creation
+        await _unitOfWork.BeginTransactionAsync();
+        
         try
         {
             Item item = new Item
@@ -83,14 +90,25 @@ public class ItemService :
                 item.ItemSuppliers = [];
                 item.ItemType = command.ItemType;
                 item.ConditionalDiscount = command.ConditionalDiscount;
+                item.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
                 item.DefaultDiscount = command.DefaultDiscount;
                 item.DefaultDiscountType = command.DefaultDiscountType;
-                item.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
+                item.ApplyDomainChanges = command.ApplyDomainChanges;
+                if (command.IsDiscountBasedOnSellingPrice)
+                {
+                    List<ItemSellingPriceDiscount> discounts = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
+                    {
+                        SellingPriceId = e.SellingPriceId,
+                        Discount = e.Discount,
+                        DiscountType = e.DiscountType
+                    }).ToList();
+
+                    item.ItemSellingPriceDiscounts = discounts;
+                }
                 item.MaxDiscount = command.MaxDiscount;
 
                 if (item.IsDiscountBasedOnSellingPrice)
                     item.DefaultDiscountType = 0;
-
 
                 foreach (var supplierId in command.SuppliersIds)
                     item.ItemSuppliers.Add(
@@ -136,15 +154,36 @@ public class ItemService :
 
                             }).ToList()
                         });
-
             }
 
             item = await _repository.Add(item);
+
+            // Create SubDomains if this is a Domain item with combinations
+            if (command.NodeType == NodeType.Domain && command.SubDomainCombinations?.Any() == true)
+            {
+                var subDomainResult = await CreateSubDomains(item.Id, command.SubDomainCombinations);
+                if (!subDomainResult.IsSuccess)
+                {
+                    // Rollback transaction if SubDomain creation fails
+                    await _unitOfWork.RollbackAsync();
+                    return new ApiResponse<Item> 
+                    { 
+                        IsSuccess = false, 
+                        StatusCode = HttpStatusCode.InternalServerError, 
+                        ErrorMessages = subDomainResult.ErrorMessages 
+                    };
+                }
+            }
+
+            // Commit transaction - everything succeeded
+            await _unitOfWork.CommitAsync();
 
             return new ApiResponse<Item> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = item };
         }
         catch (Exception ex)
         {
+            // Rollback transaction on any exception
+            await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
             return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
         }
@@ -161,35 +200,82 @@ public class ItemService :
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
+
+        // Start transaction for Domain + SubDomains update
+        await _unitOfWork.BeginTransactionAsync();
+        
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
             Item item = validationResult.entity;
-            item.Name = command.Name;
-            item.NameSecondLanguage = command.NameSecondLanguage;
-
-            if (item.NodeType == NodeType.Domain)
+            // Restrict SubDomain updates
+            if (item.NodeType == NodeType.SubDomain)
             {
-                item.Model = command.Model;
-                item.Version = command.Version;
-                item.CountryOfOrigin = command.CountryOfOrigin;
+                // Do NOT update Name, NameSecondLanguage, or Code
+                // Only update allowed fields
+                item.ApplyDomainChanges = command.ApplyDomainChanges;
+                item.ColorId = command.ColorId;
+                item.SizeId = command.SizeId;
+                item.ItemType = command.ItemType;
                 item.MaxDiscount = command.MaxDiscount;
                 item.ConditionalDiscount = command.ConditionalDiscount;
                 item.DefaultDiscount = command.DefaultDiscount;
                 item.DefaultDiscountType = command.DefaultDiscountType;
-                item.ItemType = command.ItemType;
-
+                item.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
+                item.Model = command.Model;
+                item.Version = command.Version;
+                item.CountryOfOrigin = command.CountryOfOrigin;
                 await UpdateSuppliers(command, item);
                 await UpdateBarCodes(command, item);
                 await UpdateManufacturerCompanies(command, item);
                 await UpdateSellingPriceDiscounts(command, item);
                 await UpdateItemPackingUnits(command, item);
             }
+            else
+            {
+                item.Name = command.Name;
+                item.NameSecondLanguage = command.NameSecondLanguage;
+                if (item.NodeType == NodeType.Domain)
+                {
+                    item.Model = command.Model;
+                    item.Version = command.Version;
+                    item.CountryOfOrigin = command.CountryOfOrigin;
+                    item.MaxDiscount = command.MaxDiscount;
+                    item.ConditionalDiscount = command.ConditionalDiscount;
+                    item.DefaultDiscount = command.DefaultDiscount;
+                    item.DefaultDiscountType = command.DefaultDiscountType;
+                    item.ItemType = command.ItemType;
+
+                    await UpdateSuppliers(command, item);
+                    await UpdateBarCodes(command, item);
+                    await UpdateManufacturerCompanies(command, item);
+                    await UpdateSellingPriceDiscounts(command, item);
+                    await UpdateItemPackingUnits(command, item);
+                    if (item.ApplyDomainChanges)
+                        await SyncDomainChangesToSubDomains(item);
+                }
+            }
             await _repository.Update(item);
 
+            // Handle SubDomain combinations if this is a Domain item
+            if (item.NodeType == NodeType.Domain && command.SubDomainCombinations?.Any() == true)
+            {
+                var subDomainResult = await CreateSubDomains(item.Id, command.SubDomainCombinations);
+                if (!subDomainResult.IsSuccess)
+                {
+                    // Rollback transaction if SubDomain creation fails
+                    await _unitOfWork.RollbackAsync();
+                    return new ApiResponse<Item> 
+                    { 
+                        IsSuccess = false, 
+                        StatusCode = HttpStatusCode.InternalServerError, 
+                        ErrorMessages = subDomainResult.ErrorMessages 
+                    };
+                }
+            }
 
-
+            // Commit transaction - everything succeeded
             await _unitOfWork.CommitAsync();
+            
             item.ItemCodes = [];
             item.ItemManufacturerCompanies = [];
             item.ItemSuppliers = [];
@@ -198,6 +284,8 @@ public class ItemService :
         }
         catch (Exception ex)
         {
+            // Rollback transaction on any exception
+            await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
             return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
         }
@@ -315,14 +403,14 @@ public class ItemService :
     {
         List<ItemSellingPriceDiscount> existedItemSuppliers = await _unitOfWork.ItemSellingPriceDiscountRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSellingPriceDiscount> itemSellingPriceDiscountsToAdd = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
-        {
-            ItemId = item.Id,
-            SellingPriceId = e.SellingPriceId,
-            Discount = e.Discount,
-            DiscountType = e.DiscountType,
-            CreatedAt = DateTime.Now,
-            ModifiedAt = DateTime.Now,
-        }).Except(existedItemSuppliers).ToList();
+            {
+                ItemId = item.Id,
+                SellingPriceId = e.SellingPriceId,
+                Discount = e.Discount,
+                DiscountType = e.DiscountType,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+        }).Where(e=> !existedItemSuppliers.Any(old=>old.SellingPriceId == e.SellingPriceId)).ToList();
 
         List<ItemSellingPriceDiscount> itemSellingPricesToUpdate = [];
         List<ItemSellingPriceDiscount> itemSellingPricesToRemove = [];
@@ -372,14 +460,21 @@ public class ItemService :
     {
         List<ItemCode> existedItemBarCodes = await _unitOfWork.ItemCodeRepository.GetQuery().Where(e => e.ItemId == item.Id && e.CodeType == ItemCodeType.BarCode).ToListAsync();
         List<ItemCode> itemBarCodesToRemove = existedItemBarCodes.Where(e => !command.BarCodes.Contains(e.Code)).ToList();
-        List<ItemCode> itemBarCodesToAdd = command.BarCodes.Select(e => new ItemCode
-        {
-            Code = e,
-            CodeType = ItemCodeType.BarCode,
-            ItemId = item.Id,
-            CreatedAt = DateTime.Now,
-            ModifiedAt = DateTime.Now,
-        }).Except(existedItemBarCodes).ToList();
+        
+        // Get existing barcode codes for comparison
+        var existingBarcodeCodes = existedItemBarCodes.Select(e => e.Code).ToList();
+        
+        // Only add barcodes that don't already exist for this item
+        List<ItemCode> itemBarCodesToAdd = command.BarCodes
+            .Where(barcode => !existingBarcodeCodes.Contains(barcode))
+            .Select(e => new ItemCode
+            {
+                Code = e,
+                CodeType = ItemCodeType.BarCode,
+                ItemId = item.Id,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+            }).ToList();
 
         if (itemBarCodesToRemove != null && itemBarCodesToRemove.Any())
             await _unitOfWork.ItemCodeRepository.Delete(itemBarCodesToRemove);
@@ -458,6 +553,17 @@ public class ItemService :
             validationResult.errors.Add("ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND");
         }
 
+        // Prevent SubDomain as parent
+        if (command.ParentId != null)
+        {
+            var parent = await _repository.Get(command.ParentId.Value);
+            if (parent != null && parent.NodeType == NodeType.SubDomain)
+            {
+                validationResult.isValid = false;
+                validationResult.errors.Add("CANNOT_SET_SUBDOMAIN_AS_PARENT");
+            }
+        }
+
         return validationResult;
     }
 
@@ -503,6 +609,17 @@ public class ItemService :
             validationResult.isValid = false;
             validationResult.errors.Add("ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND");
         }
+
+        // Prevent SubDomain as parent
+        if (command.ParentId != null)
+        {
+            var parent = await _repository.Get(command.ParentId.Value);
+            if (parent != null && parent.NodeType == NodeType.SubDomain)
+            {
+                validationResult.isValid = false;
+                validationResult.errors.Add("CANNOT_SET_SUBDOMAIN_AS_PARENT");
+            }
+        }
         return validationResult;
     }
     public static string GetNextChildCode(string lastChildCode, string parentCode)
@@ -545,6 +662,25 @@ public class ItemService :
     public async Task<ApiResponse<ItemDto?>> GetItemDtoById(Guid id)
     {
         var item = await _repository.GetDtoById(id);
+        
+        // If this is a Domain item, get the existing SubDomain combinations
+        if (item != null && item.NodeType == NodeType.Domain)
+        {
+            var existingSubDomains = await _repository.GetQuery()
+                .Where(i => i.ParentId == id && i.NodeType == NodeType.SubDomain)
+                .ToListAsync();
+
+            var subDomainCombinations = existingSubDomains.Select(subDomain => new ColorSizeCombinationDto
+            {
+                ColorId = subDomain.ColorId ?? Guid.Empty,
+                SizeId = subDomain.SizeId ?? Guid.Empty,
+                ApplyDomainChanges = subDomain.ApplyDomainChanges
+            }).ToList();
+
+            // Add the combinations to the item DTO
+            item.SubDomainCombinations = subDomainCombinations;
+        }
+        
         return new ApiResponse<ItemDto?>
         {
             StatusCode = item == null ? HttpStatusCode.NotFound : HttpStatusCode.OK,
@@ -555,12 +691,201 @@ public class ItemService :
 
     public async Task<ApiResponse<List<ItemDto>>> GetItemDtos()
     {
-        var item = await _repository.GetDtos();
+        var items = await _repository.GetQuery().Include(e => e.ItemCodes).ToListAsync();
+        var itemDtos = items.Select(e => new ItemDto
+        {
+            Id = e.Id,
+            Name = e.Name,
+            NameSecondLanguage = e.NameSecondLanguage,
+            Code = e.ItemCodes.FirstOrDefault(c => c.CodeType == ItemCodeType.Code)?.Code ?? string.Empty,
+            NodeType = e.NodeType,
+            ParentId = e.ParentId,
+            CreatedAt = e.CreatedAt,
+            ModifiedAt = e.ModifiedAt
+        }).ToList();
         return new ApiResponse<List<ItemDto>>
         {
-            StatusCode = item == null ? HttpStatusCode.NotFound : HttpStatusCode.OK,
-            IsSuccess = item != null,
-            Result = item?.ToList()
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = itemDtos
         };
+    }
+
+    // Transaction-based SubDomain creation method
+    private async Task<ApiResponse<List<Item>>> CreateSubDomains(Guid domainItemId, List<ColorSizeCombinationDto> combinations)
+    {
+        try
+        {
+            var domainItem = await _repository.Get(domainItemId);
+            if (domainItem == null || domainItem.NodeType != NodeType.Domain)
+            {
+                return new ApiResponse<List<Item>>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = ["InvalidDomainItem"]
+                };
+            }
+
+            var createdSubDomains = new List<Item>();
+            
+            foreach (var combination in combinations)
+            {
+                // Check if SubDomain already exists
+                var existingSubDomain = await _repository.GetQuery()
+                    .Where(i => i.ParentId == domainItemId && 
+                               i.ColorId == combination.ColorId && 
+                               i.SizeId == combination.SizeId)
+                    .FirstOrDefaultAsync();
+
+                if (existingSubDomain != null)
+                    continue; // Skip if already exists
+
+                // Create SubDomain name: ItemName + ColorCode + SizeCode
+                var color = await _unitOfWork.ColorRepository.Get(combination.ColorId);
+                var size = await _unitOfWork.SizeRepository.Get(combination.SizeId);
+                
+                var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
+                var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";
+
+                // Generate code for SubDomain using GetNextChildCode
+                var domainCode = await _codeRepossitory.GetQuery()
+                    .Where(e => e.ItemId == domainItemId && e.CodeType == ItemCodeType.Code)
+                    .Select(e => e.Code)
+                    .FirstOrDefaultAsync();
+
+                var lastSubDomainCode = await _repository.GetQuery()
+                    .Where(i => i.ParentId == domainItemId)
+                    .OrderByDescending(e => e.CreatedAt)
+                    .SelectMany(i => i.ItemCodes)
+                    .Where(c => c.CodeType == ItemCodeType.Code)
+                    .OrderByDescending(c => c.CreatedAt)
+                    .Select(c => c.Code)
+                    .FirstOrDefaultAsync();
+
+                var subDomainCode = GetNextChildCode(lastSubDomainCode ?? string.Empty, domainCode ?? string.Empty);
+
+                var subDomainItem = new Item
+                {
+                    Name = subDomainName,
+                    NameSecondLanguage = subDomainNameSecondLanguage,
+                    NodeType = NodeType.SubDomain,
+                    ParentId = domainItemId, // SubDomain's parent should be the Domain item itself
+                    ColorId = combination.ColorId,
+                    SizeId = combination.SizeId,
+                    ApplyDomainChanges = combination.ApplyDomainChanges,
+                    
+                    // Copy properties from domain
+                    ItemType = domainItem.ItemType,
+                    MaxDiscount = domainItem.MaxDiscount,
+                    ConditionalDiscount = domainItem.ConditionalDiscount,
+                    DefaultDiscount = domainItem.DefaultDiscount,
+                    DefaultDiscountType = domainItem.DefaultDiscountType,
+                    IsDiscountBasedOnSellingPrice = domainItem.IsDiscountBasedOnSellingPrice,
+                    Model = domainItem.Model,
+                    Version = domainItem.Version,
+                    CountryOfOrigin = domainItem.CountryOfOrigin,
+                    
+                    // Initialize collections with generated code
+                    ItemCodes = [new ItemCode
+                    {
+                        Code = subDomainCode,
+                        CodeType = ItemCodeType.Code,
+                    }],
+                    ItemSuppliers = [],
+                    ItemManufacturerCompanies = [],
+                    ItemSellingPriceDiscounts = [],
+                    ItemPackingUnitPrices = []
+                };
+
+                var createdSubDomain = await _repository.Add(subDomainItem);
+                createdSubDomains.Add(createdSubDomain);
+            }
+
+            return new ApiResponse<List<Item>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.Created,
+                Result = createdSubDomains
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<List<Item>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = [ex.Message]
+            };
+        }
+    }
+
+    public async Task<ApiResponse<bool>> SyncDomainChangesToSubDomains(Item domainItem)
+    {
+        // Start transaction for Domain-to-SubDomain synchronization        
+        try
+        {
+            if (domainItem == null || domainItem.NodeType != NodeType.Domain)
+            {
+                await _unitOfWork.RollbackAsync();
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = ["InvalidDomainItem"]
+                };
+            }
+
+            var subDomains = await _repository.GetQuery()
+                .Where(i => i.ParentId == domainItem.Id && i.ApplyDomainChanges)
+                .ToListAsync();
+
+            foreach (var subDomain in subDomains)
+            {
+                // Sync properties from domain to subdomain
+                if (subDomain.ApplyDomainChanges)
+                {
+                    var color = await _unitOfWork.ColorRepository.Get(subDomain.ColorId);
+                    var size = await _unitOfWork.SizeRepository.Get(subDomain.SizeId);
+                
+                    var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
+                    var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";
+
+                    subDomain.Name = subDomainName;
+                    subDomain.NameSecondLanguage = subDomainNameSecondLanguage;
+                    subDomain.ItemType = domainItem.ItemType;
+                    subDomain.MaxDiscount = domainItem.MaxDiscount;
+                    subDomain.ConditionalDiscount = domainItem.ConditionalDiscount;
+                    subDomain.DefaultDiscount = domainItem.DefaultDiscount;
+                    subDomain.DefaultDiscountType = domainItem.DefaultDiscountType;
+                    subDomain.IsDiscountBasedOnSellingPrice = domainItem.IsDiscountBasedOnSellingPrice;
+                    subDomain.Model = domainItem.Model;
+                    subDomain.Version = domainItem.Version;
+                    subDomain.CountryOfOrigin = domainItem.CountryOfOrigin;
+                }
+
+                await _repository.Update(subDomain);
+            }
+
+            // Commit transaction - all syncs succeeded
+
+            return new ApiResponse<bool>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = true
+            };
+        }
+        catch (Exception ex)
+        {
+            // Rollback transaction on any exception
+            await _unitOfWork.RollbackAsync();
+            return new ApiResponse<bool>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = [ex.Message]
+            };
+        }
     }
 }

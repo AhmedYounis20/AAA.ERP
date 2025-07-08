@@ -13,6 +13,12 @@ public class Item : BaseTreeSettingEntity<Item>
     public ItemCode? EGSCode { get => ItemCodes.FirstOrDefault(e => e.CodeType == ItemCodeType.EGS); }
     [NotMapped]
     public List<ItemCode> BarCodes { get => ItemCodes.Where(e => e.CodeType == ItemCodeType.BarCode).ToList(); }
+    
+    // SubDomain Properties (only for NodeType.SubDomain)
+    public bool ApplyDomainChanges { get; set; } = true; // Whether changes in parent domain apply to this subdomain
+    public Guid? ColorId { get; set; } // For SubDomain items
+    public Guid? SizeId { get; set; } // For SubDomain items    
+    
     public ItemType? ItemType { get; set; }
     public decimal MaxDiscount { get; set; }
     public decimal ConditionalDiscount { get; set; }

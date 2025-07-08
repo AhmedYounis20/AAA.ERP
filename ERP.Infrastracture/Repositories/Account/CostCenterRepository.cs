@@ -12,7 +12,7 @@ public class CostCenterRepository : BaseTreeSettingRepository<CostCenter>, ICost
         => _context = context;
 
 
-    public override async Task<CostCenter?> Get(Guid id)
+    public override async Task<CostCenter?> Get(Guid? id)
     {
         return await _context.Set<CostCenter>().Include(e => e.ChartOfAccounts).Where(e => e.Id.Equals(id))
             .FirstOrDefaultAsync();

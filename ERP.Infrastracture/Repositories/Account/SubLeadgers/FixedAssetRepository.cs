@@ -8,7 +8,7 @@ public class FixedAssetRepository : BaseSubLeadgerRepository<FixedAsset>, IFixed
     public FixedAssetRepository(ApplicationDbContext context) : base(context) { }
 
 
-    public override async Task<FixedAsset?> Get(Guid id)
+    public override async Task<FixedAsset?> Get(Guid? id)
     {
         return await _dbSet.Where(e => e.Id.Equals(id)).Include(e => e.ChartOfAccount).Include(e => e.ExpensesAccount).Include(e => e.AccumlatedAccount).AsNoTracking().FirstOrDefaultAsync();
     }

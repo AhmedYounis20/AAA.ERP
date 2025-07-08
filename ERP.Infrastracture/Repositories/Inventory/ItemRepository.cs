@@ -81,7 +81,8 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                Version = item.Version,
                                SuppliersIds = item.ItemSuppliers.Select(e=>e.SupplierId).ToList(),
                                ManufacturerCompaniesIds = item.ItemManufacturerCompanies.Select(e=>e.ManufacturerCompanyId).ToList(),
-                               SellingPriceDiscounts = _context.Set<ItemSellingPriceDiscount>().Select(e=> new ItemSellingPriceDiscountDto
+                               SellingPriceDiscounts = _context.Set<ItemSellingPriceDiscount>()
+                               .Where(e=>e.ItemId == item.Id).Select(e=> new ItemSellingPriceDiscountDto
                                {
                                    SellingPriceId = e.SellingPriceId,
                                    Discount = e.Discount,
