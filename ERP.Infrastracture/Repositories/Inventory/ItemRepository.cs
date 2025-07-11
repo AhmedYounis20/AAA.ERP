@@ -33,6 +33,7 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                MaxDiscount = item.MaxDiscount,
                                NodeType = item.NodeType,
                                Version = item.Version,
+                               ApplyDomainChanges = item.ApplyDomainChanges
                            }).OrderBy(e=>e.CreatedAt).ToListAsync();
 
         return items;
@@ -79,16 +80,17 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                MaxDiscount = item.MaxDiscount,
                                NodeType = item.NodeType,
                                Version = item.Version,
-                               SuppliersIds = item.ItemSuppliers.Select(e=>e.SupplierId).ToList(),
-                               ManufacturerCompaniesIds = item.ItemManufacturerCompanies.Select(e=>e.ManufacturerCompanyId).ToList(),
+                               SuppliersIds = item.ItemSuppliers.Select(e => e.SupplierId).ToList(),
+                               ManufacturerCompaniesIds = item.ItemManufacturerCompanies.Select(e => e.ManufacturerCompanyId).ToList(),
                                SellingPriceDiscounts = _context.Set<ItemSellingPriceDiscount>()
-                               .Where(e=>e.ItemId == item.Id).Select(e=> new ItemSellingPriceDiscountDto
+                               .Where(e => e.ItemId == item.Id).Select(e => new ItemSellingPriceDiscountDto
                                {
                                    SellingPriceId = e.SellingPriceId,
                                    Discount = e.Discount,
                                    DiscountType = e.DiscountType
                                }).ToList(),
-                               PackingUnits = itemPackingUnits
+                               PackingUnits = itemPackingUnits,
+                               ApplyDomainChanges = item.ApplyDomainChanges
 
                            }).FirstOrDefaultAsync(e=>e.Id == id);
 

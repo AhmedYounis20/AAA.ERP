@@ -32,6 +32,7 @@ public class ItemDto
     public List<ItemSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ItemPackingUnitDto> PackingUnits { get; set; } = [];
     public List<ColorSizeCombinationDto> SubDomainCombinations { get; set; } = [];
+    public bool ApplyDomainChanges { get; set; }
 
     public string? CreatedByName { get; set; }
     public string? CreatedByNameSecondLanguage { get; set; }
