@@ -31,6 +31,8 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
     public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
     public ISupplierRepository SupplierRepository { get; }
+    public IInventoryTransactionRepository InventoryTransactionRepository { get; }
+    public IStockBalanceRepository StockBalanceRepository { get; }
 
     public UnitOfWork(
         IApplicationDbContext context,
@@ -53,7 +55,9 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,
         ISupplierRepository supplierRepository,
         ISizeRepository sizeRepository,
-        IColorRepository colorRepository
+        IColorRepository colorRepository,
+        IInventoryTransactionRepository inventoryTransactionRepository,
+        IStockBalanceRepository stockBalanceRepository
     )
     {
         _context = context;
@@ -77,6 +81,8 @@ public class UnitOfWork : IUnitOfWork
         SupplierRepository = supplierRepository;
         SizeRepository = sizeRepository;
         ColorRepository = colorRepository;
+        InventoryTransactionRepository = inventoryTransactionRepository;
+        StockBalanceRepository = stockBalanceRepository;
     }
 
     public async Task BeginTransactionAsync()

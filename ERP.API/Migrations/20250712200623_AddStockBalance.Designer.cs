@@ -4,6 +4,7 @@ using Domain.Account.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AAA.ERP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250712200623_AddStockBalance")]
+    partial class AddStockBalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1402,10 +1404,6 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnOrder(4);
 
-                    b.Property<Guid>("FinancialPeriodId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(7);
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -1415,7 +1413,7 @@ namespace AAA.ERP.Migrations
                     b.Property<string>("Notes")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(7);
 
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2")
@@ -1439,8 +1437,6 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
-
-                    b.HasIndex("FinancialPeriodId");
 
                     b.HasIndex("TransactionPartyId");
 
@@ -2522,12 +2518,6 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Domain.Models.Entities.Account.FinancialPeriods.FinancialPeriod", "FinancialPeriod")
-                        .WithMany()
-                        .HasForeignKey("FinancialPeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "TransactionParty")
                         .WithMany()
                         .HasForeignKey("TransactionPartyId")
@@ -2535,8 +2525,6 @@ namespace AAA.ERP.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
-
-                    b.Navigation("FinancialPeriod");
 
                     b.Navigation("TransactionParty");
                 });

@@ -25,6 +25,8 @@ public interface IUnitOfWork
     public IBaseRepository<ItemPackingUnit> ItemPackingUnitRepository { get; }
     public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
     public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
+    public IInventoryTransactionRepository InventoryTransactionRepository { get; }
+    public IStockBalanceRepository StockBalanceRepository { get; }
 
     public Task BeginTransactionAsync();
     public Task CommitAsync();

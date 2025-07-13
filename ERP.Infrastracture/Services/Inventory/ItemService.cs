@@ -697,12 +697,13 @@ public class ItemService :
             Id = e.Id,
             Name = e.Name,
             NameSecondLanguage = e.NameSecondLanguage,
-            Code = e.ItemCodes.FirstOrDefault(c => c.CodeType == ItemCodeType.Code)?.Code ?? string.Empty,
+            Code = e.Code?.Code ?? string.Empty,
             NodeType = e.NodeType,
             ParentId = e.ParentId,
             CreatedAt = e.CreatedAt,
-            ModifiedAt = e.ModifiedAt
-        }).ToList();
+            ModifiedAt = e.ModifiedAt,
+            ItemCodes = e.ItemCodes
+        }).OrderBy(e=> e.Code).ToList();
         return new ApiResponse<List<ItemDto>>
         {
             IsSuccess = true,
