@@ -53,8 +53,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
         ApplyCreateUpdateTime();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
-
-  
-
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 }

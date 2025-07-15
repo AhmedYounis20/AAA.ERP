@@ -30,7 +30,7 @@ public class BaseRepository<TEntity>
     => await _dbSet.ToListAsync(); // handle in future add pagination
     public virtual async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate)
     => await _dbSet.Where(predicate).ToListAsync();
-    public IQueryable<TEntity> GetQuery()
+    public DbSet<TEntity> GetQuery()
      => _dbSet;
 
     public virtual async Task<TEntity?> Update(TEntity entity)

@@ -73,11 +73,15 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
     {
         foreach (var transaction in complexTransactions)
         {
+            transaction.Id = Guid.NewGuid();
+            transaction.ComplementId = Guid.NewGuid();
+            
             var debitTransaction = transaction.Adapt<FinancialTransaction>();
             var creditTransaction = transaction.Adapt<FinancialTransaction>();
+            
             debitTransaction.ChartOfAccountId = transaction.DebitAccountId;
-            debitTransaction.Id = transaction.Id.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.Id;
-            creditTransaction.Id = transaction.ComplementId.Equals(Guid.NewGuid()) ? Guid.NewGuid() : transaction.ComplementId;
+            debitTransaction.Id = transaction.Id.Equals(Guid.Empty) ? Guid.NewGuid() : transaction.Id;
+            creditTransaction.Id = transaction.ComplementId.Equals(Guid.Empty) ? Guid.NewGuid() : transaction.ComplementId;
             creditTransaction.ChartOfAccountId = transaction.CreditAccountId;
             creditTransaction.AccountNature = debitTransaction.AccountNature == AccountNature.Debit
                 ? AccountNature.Credit

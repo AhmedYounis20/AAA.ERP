@@ -10,12 +10,12 @@ namespace ERP.Infrastracture.Services.Account.Entries;
 
 public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCommand>, IEntryService
 {
-    private IApplicationDbContext _dbContext;
     private IEntryRepository _repository;
-    public EntryService(IEntryRepository repository, IApplicationDbContext dbContext) : base(repository)
+    private IUnitOfWork _unitOfWork;
+    public EntryService(IEntryRepository repository, IUnitOfWork unitOfWork) : base(repository)
     {
-        _dbContext = dbContext;
         _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public override async Task<ApiResponse<Entry>> Create(EntryCreateCommand command, bool isValidate = true)
@@ -33,13 +33,21 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
                 };
             }
             var entry = command.Adapt<Entry>();
+            var entryNumberResult = await GetEntryNumber(entry.EntryDate);
+            if (entryNumberResult.IsSuccess == false || entryNumberResult.Result == null)
+                throw new Exception("FaildToGenerateEntryNubmer");
+
+            var entryNumber = entryNumberResult.Result;
+            entry.EntryNumber = entryNumber.EntryNumber;
+            entry.FinancialPeriodId = entryNumber.FinancialPeriodId;
+            
             entry.EntryType = command.Type;
             entry.FinancialTransactions = command.FinancialTransactions;
 
             if (command.Attachments != null && command.Attachments.Any())
                 entry.EntryAttachments = command.Attachments.ToAttachment().Select(e => CreateEntryAttachment(e)).ToList();
 
-            entry = await _repository.Add(entry);
+            entry = await _unitOfWork.EntryRepository.Add(entry);
             entry.FinancialTransactions = [];
 
             return new ApiResponse<Entry>
@@ -63,7 +71,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
 
     public override async Task<ApiResponse<Entry>> Update(EntryUpdateCommand command, bool isValidate = true)
     {
-        var transaction = await _dbContext.Database.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync();
         try
         {
             var bussinessValidationResult = await ValidateUpdate(command);
@@ -89,9 +97,8 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             await UpdateEntryCostCenter(entry, command.CostCenters);
             entry.FinancialTransactions = [];
             entry.EntryAttachments = [];
-            _dbContext.Set<Entry>().Update(entry);
-            await _dbContext.SaveChangesAsync();
-            await transaction.CommitAsync();
+            await _unitOfWork.EntryRepository.Update(entry);
+            await _unitOfWork.CommitAsync();
             entry.FinancialTransactions = [];
             return new ApiResponse<Entry>
             {
@@ -102,7 +109,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
+            await _unitOfWork.RollbackAsync();
             Log.Error(ex.ToString());
             return new ApiResponse<Entry>
             {
@@ -115,7 +122,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
 
     public async Task<ApiResponse<IEnumerable<EntryDto>>> Get(EntryType? entryType = null)
     {
-        var entries = await _dbContext.Set<Entry>().Include(e => e.FinancialTransactions).Include(e => e.FinancialPeriod).Where(e => entryType == null ? true : e.EntryType == entryType)
+        var entries = await _unitOfWork.EntryRepository.GetQuery().Include(e => e.FinancialTransactions).Include(e => e.FinancialPeriod).Where(e => entryType == null ? true : e.EntryType == entryType)
                     .Select(e => new EntryDto
                     {
                         Id = e.Id,
@@ -165,8 +172,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             };
         }
 
-        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-            .FirstOrDefaultAsync(e => e.Id == entry.FinancialPeriodId);
+        var financialPeriod = await _unitOfWork.FinancialPeriodRepository.Get(entry.FinancialPeriodId);
 
         EntryDto entryDto = entry.Adapt<EntryDto>();
         entryDto.FinancialPeriodNumber = financialPeriod?.YearNumber;
@@ -181,7 +187,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
 
     private async Task UpdateEntryAttachments(EntryUpdateCommand command, Entry entry)
     {
-        IEnumerable<EntryAttachment> oldAttachments = await _dbContext.Set<EntryAttachment>()
+        IEnumerable<EntryAttachment> oldAttachments = await _unitOfWork.EntryAttachmentRepository.GetQuery()
                                                                 .Include(e => e.Attachment)
                                                                 .Where(e => e.EntryId == entry.Id).ToListAsync();
 
@@ -196,8 +202,8 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         SyncUpdatedEntryAttachments(updatedAttachments, command.Attachments);
         if (deletedAttachments.Any())
         {
-            _dbContext.Set<EntryAttachment>().RemoveRange(deletedEntryAttachments);
-            _dbContext.Set<Attachment>().RemoveRange(deletedAttachments);
+            await _unitOfWork.EntryAttachmentRepository.Delete(deletedEntryAttachments);
+            await _unitOfWork.AttachmentRepository.Delete(deletedAttachments);
         }
 
         var newEntryAttachments = newAttachments.Select(e =>
@@ -208,11 +214,10 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         });
 
         if (newAttachments.Any())
-            await _dbContext.Set<EntryAttachment>().AddRangeAsync(newEntryAttachments);
+            await _unitOfWork.EntryAttachmentRepository.Add(newEntryAttachments);
 
         if (updatedAttachments.Any())
-            _dbContext.Set<Attachment>().UpdateRange(updatedAttachments);
-        await _dbContext.SaveChangesAsync();
+            await _unitOfWork.AttachmentRepository.Update(updatedAttachments);
     }
 
     private EntryAttachment CreateEntryAttachment(Attachment attachment)
@@ -237,7 +242,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         {
 
             List<FinancialTransaction> existedFinancialTransactions =
-                _dbContext.Set<FinancialTransaction>().Where(e => e.EntryId.Equals(entry.Id)).ToList();
+                _unitOfWork.FinancialTransactionRepository.GetQuery().Where(e => e.EntryId.Equals(entry.Id)).ToList();
 
             IEnumerable<FinancialTransaction> deletedFinancialTransactions =
                 existedFinancialTransactions.Where(f => !newFinancialTransactions.Any(e => e.Id == f.Id));
@@ -250,13 +255,12 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             SyncCreationInfoToUpdatedTransactions(existedFinancialTransactions, updatedFinancialTransactions);
 
             if (addedFinancialTransactions.Any())
-                await _dbContext.Set<FinancialTransaction>().AddRangeAsync(addedFinancialTransactions);
+                await  _unitOfWork.FinancialTransactionRepository.Add(addedFinancialTransactions);
             if (updatedFinancialTransactions.Any())
-                _dbContext.Set<FinancialTransaction>().UpdateRange(updatedFinancialTransactions);
+                await  _unitOfWork.FinancialTransactionRepository.Update(updatedFinancialTransactions);
             if (deletedFinancialTransactions.Any())
-                _dbContext.Set<FinancialTransaction>().RemoveRange(deletedFinancialTransactions);
+                 await _unitOfWork.FinancialTransactionRepository.Delete(deletedFinancialTransactions);
 
-            await _dbContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -272,7 +276,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         {
 
             List<EntryCostCenter> existedCostCenters =
-                _dbContext.Set<EntryCostCenter>().Where(e => e.EntryId.Equals(entry.Id)).ToList();
+                _unitOfWork.Set<EntryCostCenter>().Where(e => e.EntryId.Equals(entry.Id)).ToList();
 
             IEnumerable<EntryCostCenter> deletedCostCenters =
                 existedCostCenters.Where(f => !newCostCenters.Any(e => e.Id == f.Id));
@@ -285,13 +289,13 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             SyncCreationInfoToUpdatedCostCenters(existedCostCenters, updatedFinancialTransactions);
 
             if (addedCostCenters.Any())
-                await _dbContext.Set<EntryCostCenter>().AddRangeAsync(addedCostCenters);
+                await _unitOfWork.Set<EntryCostCenter>().AddRangeAsync(addedCostCenters);
             if (updatedFinancialTransactions.Any())
-                _dbContext.Set<EntryCostCenter>().UpdateRange(updatedFinancialTransactions);
+                _unitOfWork.Set<EntryCostCenter>().UpdateRange(updatedFinancialTransactions);
             if (deletedCostCenters.Any())
-                _dbContext.Set<EntryCostCenter>().RemoveRange(deletedCostCenters);
+                _unitOfWork.Set<EntryCostCenter>().RemoveRange(deletedCostCenters);
 
-            await _dbContext.SaveChangesAsync();
+            await _unitOfWork.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -336,7 +340,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
     {
         var result = new EntryNumberDto();
 
-        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
+        var financialPeriod = await _unitOfWork.Set<FinancialPeriod>()
             .FirstOrDefaultAsync(e => e.StartDate <= dateTime && e.EndDate > dateTime);
         if (financialPeriod == null)
         {
@@ -352,13 +356,11 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
 
 
-        var lastEntryNumber = _dbContext.Set<Entry>()
-                                    .Where(e => e.FinancialPeriodId == financialPeriod.Id)
-                                    .ToList()
-                                    .OrderByDescending(e => BigInteger.Parse(e.EntryNumber))
-                                    .Select(e => BigInteger.Parse(e.EntryNumber))
-                                    .FirstOrDefault();
-
+    var lastEntryNumber = await _unitOfWork.Set<Entry>()
+        .Where(e => e.FinancialPeriodId == financialPeriod.Id)
+        .OrderByDescending(e => Convert.ToInt64(e.EntryNumber))
+        .Select(e => Convert.ToInt64(e.EntryNumber))
+        .FirstOrDefaultAsync();
         result.EntryNumber = (lastEntryNumber + 1).ToString();
 
         return new ApiResponse<EntryNumberDto>
@@ -374,7 +376,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
     {
         var validationResult = await base.ValidateCreate(command);
 
-        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
+        var financialPeriod = await _unitOfWork.Set<FinancialPeriod>()
             .FirstOrDefaultAsync(e => e.StartDate <= command.EntryDate && e.EndDate > command.EntryDate);
         if (financialPeriod == null || command.FinancialPeriodId != financialPeriod.Id)
         {
@@ -382,7 +384,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
         }
 
-        var entryWithSameNumber = await _dbContext.Set<Entry>()
+        var entryWithSameNumber = await _unitOfWork.Set<Entry>()
             .Where(e => e.EntryNumber == command.EntryNumber && e.FinancialPeriodId == command.FinancialPeriodId)
             .FirstOrDefaultAsync();
         if (entryWithSameNumber != null)

@@ -18,7 +18,7 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Account.Entries
             _ = builder.Property(e => e.AccountNature).HasConversion<string>().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.Amount).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.OrderNumber).HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.PaymentType).HasConversion<string>().HasDefaultValue(PaymentType.Cash).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.PaymentType).HasConversion<string>().HasColumnOrder(columnNumber++);
 
             _ = builder.Property(e => e.CollectionBookId).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.CashAgentName).HasColumnOrder(columnNumber++);

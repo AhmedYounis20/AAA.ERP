@@ -154,7 +154,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             }
 
             // Get the default packing unit for the item
-            var defaultPackingUnit = await _unitOfWork.ItemPackingUnitRepository.GetQuery().Where(e => e.ItemId == itemId && e.IsDefaultPackingUnit).FirstOrDefaultAsync();
+            var defaultPackingUnit = await _unitOfWork.ItemPackingUnitRepository.GetQuery().AsNoTracking().Where(e => e.ItemId == itemId && e.IsDefaultPackingUnit).FirstOrDefaultAsync();
             if(defaultPackingUnit == null)
             {
                 return new ApiResponse<bool>
@@ -169,7 +169,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             var defaultPackingUnitId = defaultPackingUnit.PackingUnitId;
 
             // Get existing stock balance
-            var existingStockBalance = await _repository.GetByItemPackingUnitAndBranch(itemId, defaultPackingUnitId, branchId);
+            var existingStockBalance = await _repository.GetByItemPackingUnitAndBranchWithoutInclues(itemId, defaultPackingUnitId, branchId);
 
             if (existingStockBalance == null)
             {

@@ -1,4 +1,5 @@
-﻿using Shared.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.BaseEntities;
 using System.Linq.Expressions;
 
 namespace ERP.Application.Repositories.BaseRepositories
@@ -11,7 +12,7 @@ namespace ERP.Application.Repositories.BaseRepositories
 
         public Task<TEntity?> Get(Guid? id);
         public Task<IEnumerable<TEntity>> Get();
-        public IQueryable<TEntity> GetQuery();
+        public DbSet<TEntity> GetQuery();
         public Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate);
 
         public Task<TEntity?> Update(TEntity entity);

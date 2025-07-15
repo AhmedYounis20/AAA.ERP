@@ -3,9 +3,13 @@ using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using Microsoft.EntityFrameworkCore;
-using System.Numerics;
-
+using MediatR;
+using ERP.Domain.Models.Entities.Account.Currencies;
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using ERP.Domain.Commands.Account.Entries.CompinedEntries;
+using Domain.Account.Models.Dtos.Entry;
+using ERP.Application.Services.Account.Entries;
 namespace ERP.Infrastracture.Services.Inventory;
 
 public class InventoryTransactionService : BaseService<InventoryTransaction, InventoryTransactionCreateCommand, InventoryTransactionUpdateCommand>, IInventoryTransactionService
@@ -14,17 +18,19 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
     private readonly IStockBalanceService _stockBalanceService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ApplicationDbContext _dbContext;
-
+    private readonly IMediator _mediator;
     public InventoryTransactionService(
         IInventoryTransactionRepository repository,
         IStockBalanceService stockBalanceService,
         IUnitOfWork unitOfWork,
-        ApplicationDbContext dbContext) : base(repository)
+        ApplicationDbContext dbContext,
+        IMediator mediator) : base(repository)
     {
         _repository = repository;
         _stockBalanceService = stockBalanceService;
         _unitOfWork = unitOfWork;
         _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     public async Task<ApiResponse<InventoryTransaction>> GetWithItems(Guid id)
@@ -177,7 +183,6 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     };
                 }
             }
-
             // Get financial period for the transaction date
             var financialPeriod = await _dbContext.Set<FinancialPeriod>()
                 .FirstOrDefaultAsync(e => e.StartDate <= command.TransactionDate && e.EndDate > command.TransactionDate);
@@ -190,6 +195,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     ErrorMessages = ["NotFoundCurrentFinancialPeriod"]
                 };
             }
+
 
             // Generate transaction number following the same pattern as Entry number generation
             var lastTransactionNumber = _repository.GetQuery()
@@ -267,6 +273,25 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     throw new Exception("Failed To Add Stock Balance");
             }
 
+            // --- Combined Entry Logic ---
+            var creatingEntryCommandResult = await CreateCompinedEntryCreateCommand(command, financialPeriod);
+            if (!creatingEntryCommandResult.isSuccess || creatingEntryCommandResult.compinedEntryCommand == null)
+            {
+                return creatingEntryCommandResult.validationResult;
+            }
+            var entryResult = await _mediator.Send(creatingEntryCommandResult.compinedEntryCommand);
+            if (!entryResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+                return new ApiResponse<InventoryTransaction>
+                {
+                    IsSuccess = false,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                    ErrorMessages = entryResult.ErrorMessages
+                };
+            }
+            // --- End Combined Entry Logic ---
+
             await _unitOfWork.CommitAsync();
 
             return new ApiResponse<InventoryTransaction>
@@ -286,6 +311,66 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 ErrorMessages = [ex.Message]
             };
         }
+    }
+
+    private async Task<(bool isSuccess, ApiResponse<InventoryTransaction> validationResult,CompinedEntryCreateCommand? compinedEntryCommand)> CreateCompinedEntryCreateCommand(InventoryTransactionCreateCommand command, FinancialPeriod financialPeriod)
+    {
+        var totalAmount = command.Items.Sum(i => i.TotalCost);
+        var defaultCurrency = await _dbContext.Set<Currency>().FirstOrDefaultAsync(e => e.IsDefault);
+        if (defaultCurrency == null)
+        {
+            await _unitOfWork.RollbackAsync();
+            return (false,new ApiResponse<InventoryTransaction>
+            {
+                IsSuccess = false,
+                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                ErrorMessages = ["DefaultCurrencyNotFound"]
+            },null);
+        }
+        var branch = await _dbContext.Set<Branch>().FirstOrDefaultAsync(b => b.Id == command.BranchId);
+        if (branch == null || branch.ChartOfAccountId == null)
+        {
+            await _unitOfWork.RollbackAsync();
+            return ( false,  new ApiResponse<InventoryTransaction>
+            {
+                IsSuccess = false,
+                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                ErrorMessages = ["BranchOrBranchAccountNotFound"]
+            },null);
+        }
+        var branchAccountId = branch.ChartOfAccountId.Value;
+        var partyAccount = await _dbContext.Set<ChartOfAccount>().FirstOrDefaultAsync(a => a.Id == command.TransactionPartyId);
+        if (partyAccount == null)
+        {
+            await _unitOfWork.RollbackAsync();
+            return (false, new ApiResponse<InventoryTransaction>
+            {
+                IsSuccess = false,
+                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                ErrorMessages = ["PartyAccountNotFound"]
+            },null);
+        }
+        var partyAccountId = partyAccount.Id;
+        CompinedEntryCreateCommand compinedEntryCommand = new CompinedEntryCreateCommand
+        {
+            BranchId = command.BranchId,
+            CurrencyId = defaultCurrency.Id,
+            ExchangeRate = defaultCurrency.ExchangeRate,
+            EntryDate = command.TransactionDate,
+            FinancialPeriodId = financialPeriod.Id,
+            FinancialTransactions = new List<ComplexFinancialTransactionDto>
+                {
+                    new ComplexFinancialTransactionDto
+                    {
+                        DebitAccountId = command.TransactionType == InventoryTransactionType.Receipt ? branchAccountId : partyAccountId,
+                        CreditAccountId = command.TransactionType == InventoryTransactionType.Receipt ? partyAccountId : branchAccountId,
+                        Amount = totalAmount,
+                        PaymentType = PaymentType.None
+                    }
+                }
+        };
+        
+        return (true, null, compinedEntryCommand);
     }
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(InventoryTransactionCreateCommand command)
