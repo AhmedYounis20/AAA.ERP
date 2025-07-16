@@ -30,7 +30,8 @@ public class GLSettingService : IGLSettingService
             dbGLSetting.IsAllowingEditVoucher = glsetting.IsAllowingEditVoucher;
             dbGLSetting.IsAllowingNegativeBalances = glsetting.IsAllowingNegativeBalances;
             dbGLSetting.DecimalDigitsNumber = glsetting.DecimalDigitsNumber;
-            dbGLSetting.MonthDays = glsetting.MonthDays;
+            if (glsetting.DepreciationApplication == DepreciationApplication.Monthly)
+                dbGLSetting.MonthDays = glsetting.MonthDays;
             dbGLSetting.DepreciationApplication = glsetting.DepreciationApplication;
             dbGLSetting.ModifiedAt = DateTime.Now;
 
