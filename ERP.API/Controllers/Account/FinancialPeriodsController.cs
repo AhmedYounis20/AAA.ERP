@@ -29,16 +29,25 @@ public class
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetDtos();
+        return StatusCode((int)result.StatusCode, result);
     }
 
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        return await GetRecord(id);
+        var result = await _service.GetDto(id);
+        return StatusCode((int)result.StatusCode, result);   
     }
 
-    [HttpGet("GetCurrentFinancialPeriod")]
+    [HttpGet("nextDefaultdata")]
+    public virtual async Task<IActionResult> GetNextDefaultdata()
+    {
+        var result = await _service.GetNextDefaultdata();
+        return StatusCode((int)result.StatusCode, result);   
+    }
+
+    [HttpGet("GetCurrentFinancialPeriod")]  
     public virtual async Task<IActionResult> GetCurrentFinancialPeriod()
     {
         var result = await _service.GetCurrentFinancailPeriod();

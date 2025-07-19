@@ -9,219 +9,341 @@
 
 namespace ERP.Shared.Resources {
     using System;
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resource {
-        
+    public class Resource
+    {
+
         private static System.Resources.ResourceManager resourceMan;
-        
+
         private static System.Globalization.CultureInfo resourceCulture;
-        
+
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal Resource()
+        {
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.Equals(null, resourceMan)) {
+        public static System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.Equals(null, resourceMan))
+                {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("ERP.Shared.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Globalization.CultureInfo Culture {
-            get {
+        public static System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
-        public static string AccountGuide {
-            get {
+
+        public static string AccountGuide
+        {
+            get
+            {
                 return ResourceManager.GetString("AccountGuide", resourceCulture);
             }
         }
-        
-        public static string Added {
-            get {
+
+        public static string Added
+        {
+            get
+            {
                 return ResourceManager.GetString("Added", resourceCulture);
             }
         }
-        
-        public static string CannotDeleteParent {
-            get {
+
+        public static string CannotDeleteParent
+        {
+            get
+            {
                 return ResourceManager.GetString("CannotDeleteParent", resourceCulture);
             }
         }
-        
-        public static string ChartOfAccountAccountGuideRequired {
-            get {
+
+        public static string ChartOfAccountAccountGuideRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("ChartOfAccountAccountGuideRequired", resourceCulture);
             }
         }
-        
-        public static string ChartOfAccountCodeMaxLengthValidation {
-            get {
+
+        public static string ChartOfAccountCodeMaxLengthValidation
+        {
+            get
+            {
                 return ResourceManager.GetString("ChartOfAccountCodeMaxLengthValidation", resourceCulture);
             }
         }
-        
-        public static string ChartOfAccountCodeRequired {
-            get {
+
+        public static string ChartOfAccountCodeRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("ChartOfAccountCodeRequired", resourceCulture);
             }
         }
-        
-        public static string ChartOfAccountNotValidAccountNature {
-            get {
+
+        public static string ChartOfAccountNotValidAccountNature
+        {
+            get
+            {
                 return ResourceManager.GetString("ChartOfAccountNotValidAccountNature", resourceCulture);
             }
         }
-        
-        public static string ChartOfAccoutWithSameCodeExist {
-            get {
+
+        public static string ChartOfAccoutWithSameCodeExist
+        {
+            get
+            {
                 return ResourceManager.GetString("ChartOfAccoutWithSameCodeExist", resourceCulture);
             }
         }
-        
-        public static string Currency {
-            get {
+
+        public static string Currency
+        {
+            get
+            {
                 return ResourceManager.GetString("Currency", resourceCulture);
             }
         }
-        
-        public static string CurrencyActiveOnDefault {
-            get {
+
+        public static string CurrencyActiveOnDefault
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrencyActiveOnDefault", resourceCulture);
             }
         }
-        
-        public static string CurrencySymbolIsExisted {
-            get {
+
+        public static string CurrencySymbolIsExisted
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrencySymbolIsExisted", resourceCulture);
             }
         }
-        
-        public static string CurrencySymbolMaxLength {
-            get {
+
+        public static string CurrencySymbolMaxLength
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrencySymbolMaxLength", resourceCulture);
             }
         }
-        
-        public static string DefaultCurrencyIsAlreadyExistedWithName {
-            get {
+
+        public static string DefaultCurrencyIsAlreadyExistedWithName
+        {
+            get
+            {
                 return ResourceManager.GetString("DefaultCurrencyIsAlreadyExistedWithName", resourceCulture);
             }
         }
-        
-        public static string Deleted {
-            get {
+
+        public static string Deleted
+        {
+            get
+            {
                 return ResourceManager.GetString("Deleted", resourceCulture);
             }
         }
-        
-        public static string ExchangeRateOnDefaultCurrency {
-            get {
+
+        public static string ExchangeRateOnDefaultCurrency
+        {
+            get
+            {
                 return ResourceManager.GetString("ExchangeRateOnDefaultCurrency", resourceCulture);
             }
         }
-        
-        public static string ExchangeRateIsRequired {
-            get {
+
+        public static string ExchangeRateIsRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("ExchangeRateIsRequired", resourceCulture);
             }
         }
-        
-        public static string NameIsRequired {
-            get {
+
+        public static string NameIsRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("NameIsRequired", resourceCulture);
             }
         }
-        
-        public static string NameMaxLength {
-            get {
+
+        public static string NameMaxLength
+        {
+            get
+            {
                 return ResourceManager.GetString("NameMaxLength", resourceCulture);
             }
         }
-        
-        public static string NameSecondLanguageIsRequired {
-            get {
+
+        public static string NameSecondLanguageIsRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("NameSecondLanguageIsRequired", resourceCulture);
             }
         }
-        
-        public static string NameSecondLanguageMaxLength {
-            get {
+
+        public static string NameSecondLanguageMaxLength
+        {
+            get
+            {
                 return ResourceManager.GetString("NameSecondLanguageMaxLength", resourceCulture);
             }
         }
-        
-        public static string Successfully {
-            get {
+
+        public static string Successfully
+        {
+            get
+            {
                 return ResourceManager.GetString("Successfully", resourceCulture);
             }
         }
-        
-        public static string Updated {
-            get {
+
+        public static string Updated
+        {
+            get
+            {
                 return ResourceManager.GetString("Updated", resourceCulture);
             }
         }
-        
-        public static string WithSameNameIsExisted {
-            get {
+
+        public static string WithSameNameIsExisted
+        {
+            get
+            {
                 return ResourceManager.GetString("WithSameNameIsExisted", resourceCulture);
             }
         }
-        
-        public static string WithSameNameSecondLanguageIsExisted {
-            get {
+
+        public static string WithSameNameSecondLanguageIsExisted
+        {
+            get
+            {
                 return ResourceManager.GetString("WithSameNameSecondLanguageIsExisted", resourceCulture);
             }
         }
-        
-        public static string CurrencySymbolIsRequired {
-            get {
+
+        public static string CurrencySymbolIsRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrencySymbolIsRequired", resourceCulture);
             }
         }
-        
-        public static string ExchangeRateGreaterThanZero {
-            get {
+
+        public static string ExchangeRateGreaterThanZero
+        {
+            get
+            {
                 return ResourceManager.GetString("ExchangeRateGreaterThanZero", resourceCulture);
             }
         }
-        
-        public static string GLSettings {
-            get {
+
+        public static string GLSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("GLSettings", resourceCulture);
             }
         }
-        
-        public static string DefaultCurrencyCannotBeDeleted {
-            get {
+
+        public static string DefaultCurrencyCannotBeDeleted
+        {
+            get
+            {
                 return ResourceManager.GetString("DefaultCurrencyCannotBeDeleted", resourceCulture);
             }
         }
-        
-        public static string NotFoundCurrentFinancialPeriod {
-            get {
+
+        public static string NotFoundCurrentFinancialPeriod
+        {
+            get
+            {
                 return ResourceManager.GetString("NotFoundCurrentFinancialPeriod", resourceCulture);
             }
         }
-        
-        public static string ColorCodeIsRequired {
-            get {
+
+        public static string ColorCodeIsRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("ColorCodeIsRequired", resourceCulture);
+            }
+        }
+        public static string UpdatedSuccessfully
+        {
+            get
+            {
+                return ResourceManager.GetString("UpdatedSuccessfully", resourceCulture);
+            }
+        }
+        public static string DeletedSuccessfully
+        {
+            get
+            {
+                return ResourceManager.GetString("DeletedSuccessfully", resourceCulture);
+            }
+        }
+        public static string CreatedSuccessfully
+        {
+            get
+            {
+                return ResourceManager.GetString("CreatedSuccessfully", resourceCulture);
+            }
+        }
+        public static string FinancialPeriodCurrentOrPastUpdateError
+        {
+            get
+            {
+                return ResourceManager.GetString("FinancialPeriodCurrentOrPastUpdateError", resourceCulture);
+            }
+        }
+        public static string FinancialTransactionIsUsedInEntriesCannotUpdateYearName
+        {
+            get
+            {
+                return ResourceManager.GetString("FinancialTransactionIsUsedInEntriesCannotUpdateYearName", resourceCulture);
+            }
+        }
+        public static string FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName
+        {
+            get
+            {
+                return ResourceManager.GetString("FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName", resourceCulture);
+            }
+        }
+        public static string ThereAreEntriesAfterNewEndDate
+        {
+            get
+            {
+                return ResourceManager.GetString("ThereAreEntriesAfterNewEndDate", resourceCulture);
+            }
+        }
+                public static string ThereAreInventoryTrasnsactionsAfterNewEndDate {
+            get {
+                return ResourceManager.GetString("ThereAreInventoryTrasnsactionsAfterNewEndDate", resourceCulture);
             }
         }
     }

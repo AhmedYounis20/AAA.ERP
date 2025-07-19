@@ -19,7 +19,7 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .ThenInclude(i => i.PackingUnit)
             .Include(e => e.TransactionParty)
             .Include(e => e.Branch)
-            .Include(e=>e.FinancialPeriod)
+            .Include(e => e.FinancialPeriod)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
@@ -49,5 +49,10 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .Where(e => e.TransactionType == transactionType)
             .OrderByDescending(e => e.TransactionDate)
             .ToListAsync();
+    }
+    
+    public  async Task<bool> TransactionAfterThisDateExist(DateTime date)
+    {
+        return await _dbSet.AnyAsync(e=>e.TransactionDate >= date);
     }
 } 

@@ -210,4 +210,29 @@
   <data name="ColorValueIsDuplicate" xml:space="preserve">
     <value>قيمة اللون موجودة بالفعل</value>
   </data>
+  <data name="CreatedSuccessfully" xml:space="preserve">
+    <value>تم الانشاء بنجاح</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>تم التعديل بنجاح</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="FinancialPeriodCurrentOrPastUpdateError" xml:space="preserve">
+    <value>لا يمكن تعديل فترة حالية او سابقة</value>
+  </data>
+
+  <data name="FinancialTransactionIsUsedInEntriesCannotUpdateYearName" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في القيود لايمكن تغيير اسم السنة</value>
+  </data>
+    <data name="FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في الحركات المخزنية لايمكن تغيير اسم السنة</value>
+  </data>
+  <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
+    <value>توجد قيود بعد تاريخ النهاية الجديد</value>
+  </data>
+  <data name="ThereAreInventoryTrasnsactionsAfterNewEndDate" xml:space="preserve">
+    <value>توجد حركات مخزنية بعد تاريخ النهاية الجديد</value>
+  </data>
 </root>

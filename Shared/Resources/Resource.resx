@@ -210,4 +210,31 @@
   <data name="ColorValueIsDuplicate" xml:space="preserve">
     <value>Color value already exists</value>
   </data>
+
+  <data name="CreatedSuccessfully" xml:space="preserve">
+  <value>Created Successfully</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Updated Successfully</value>
+  </data>
+    <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted Successfully</value>
+  </data>
+  <data name="FinancialPeriodCurrentOrPastUpdateError" xml:space="preserve">
+    <value>Not Allowed To Update Current or Past Period</value>
+  </data>
+
+  <data name="FinancialTransactionIsUsedInEntriesCannotUpdateYearName" xml:space="preserve">
+    <value>Financial Transaction Is Used In Entries Cannot Update YearName</value>
+  </data>
+    <data name="FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName" xml:space="preserve">
+    <value>Financial Transaction Is Used In InventoryTransactions Cannot Update YearName</value>
+  </data>
+
+  <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
+    <value>There Are Entries After New EndDate</value>
+  </data>
+  <data name="ThereAreInventoryTrasnsactionsAfterNewEndDate" xml:space="preserve">
+    <value>There Are Inventory Trasnsactions After New EndDate</value>
+  </data>
 </root>

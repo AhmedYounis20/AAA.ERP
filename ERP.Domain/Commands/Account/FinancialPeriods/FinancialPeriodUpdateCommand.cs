@@ -7,4 +7,6 @@ namespace ERP.Domain.Commands.Account.FinancialPeriods;
 public class FinancialPeriodUpdateCommand : BaseUpdateCommand<FinancialPeriod>
 {
     public string? YearNumber { get; set; }
+    public byte PeriodTypeByMonth { get; set; }
+
 }

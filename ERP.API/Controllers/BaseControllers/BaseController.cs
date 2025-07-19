@@ -33,6 +33,8 @@ namespace ERP.API.Controllers.BaseControllers
         {
             var result = await _sender.Send(input);
             result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.SuccessMessage = _localizer["CreatedSuccessfully"].Value;
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -53,12 +55,19 @@ namespace ERP.API.Controllers.BaseControllers
             input.Id = id;
             var result = await _sender.Send(input);
             result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+              if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.SuccessMessage = _localizer["UpdatedSuccessfully"].Value;
+
             return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> DeleteRecord(Guid id)
         {
             var result = await _service.Delete(id);
+            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+            result.SuccessMessage = _localizer["DeletedSuccessfully"].Value;
+
             return StatusCode((int)result.StatusCode, result);
         }
     }

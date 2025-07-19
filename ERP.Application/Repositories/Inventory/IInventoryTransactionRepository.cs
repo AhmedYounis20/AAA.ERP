@@ -8,4 +8,5 @@ public interface IInventoryTransactionRepository : IBaseRepository<InventoryTran
     Task<InventoryTransaction?> GetWithItems(Guid id);
     Task<IEnumerable<InventoryTransaction>> GetByBranch(Guid branchId);
     Task<IEnumerable<InventoryTransaction>> GetByTransactionType(InventoryTransactionType transactionType);
+    Task<bool> TransactionAfterThisDateExist(DateTime date);
 } 
