@@ -41,6 +41,13 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         var result = await _service.GetItemDtoById(id);
         return StatusCode((int)result.StatusCode, result);
     }
+
+    [HttpGet("variants")]
+    public virtual async Task<IActionResult> GetVariants()
+    {
+        var result = await _service.GetVariants();
+        return StatusCode((int)result.StatusCode, result);
+    }
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ItemUpdateCommand input)
     {

@@ -711,7 +711,17 @@ public class ItemService :
             Result = itemDtos
         };
     }
-
+    public async Task<ApiResponse<IEnumerable<ItemDto>>> GetVariants()
+    {
+        var items = await _repository.GetVariants();
+        
+        return new ApiResponse<IEnumerable<ItemDto>>
+        {
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = items
+        };
+    }
     // Transaction-based SubDomain creation method
     private async Task<ApiResponse<List<Item>>> CreateSubDomains(Guid domainItemId, List<ColorSizeCombinationDto> combinations)
     {

@@ -38,29 +38,12 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
 
         return items;
     }
+    
 
-    public async Task<ItemDto?> GetDtoById(Guid id)
+    public async Task<IEnumerable<ItemDto>> GetVariants()
     {
-        var result = await (from item in _context.Set<Item>()
-                            .Include(e=>e.ItemSuppliers)
-                            .Include(e=>e.ItemManufacturerCompanies)
-                            let itemPackingUnits = _context.Set<ItemPackingUnit>().Include(e=>e.ItemPackingUnitSellingPrices).Where(e=>e.ItemId == item.Id)
-                            .Select(e=> new ItemPackingUnitDto
-                            {
-                                PackingUnitId = e.PackingUnitId,
-                                AverageCostPrice = e.AverageCostPrice,
-                                IsDefaultPackingUnit = e.IsDefaultPackingUnit,
-                                IsDefaultPurchases = e.IsDefaultPurchases,
-                                IsDefaultSales = e.IsDefaultSales,
-                                LastCostPrice = e.LastCostPrice,
-                                PartsCount = e.PartsCount,
-                                OrderNumber = e.OrderNumber,
-                                SellingPrices = e.ItemPackingUnitSellingPrices.Select(price=> new ItemPackingUnitSellingPriceDto { 
-                                    SellingPriceId= price.SellingPriceId,
-                                    Amount = price.Amount,
-                                }).ToList(),
-                            }).OrderBy(e=>e.OrderNumber).ToList()
-
+        var items = await (from item in _context.Set<Item>()
+                           let hasSubDomains = _context.Set<Item>().Any(e => e.ParentId == item.Id && e.NodeType == NodeType.SubDomain)
                            select new ItemDto
                            {
                                Id = item.Id,
@@ -80,19 +63,68 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                MaxDiscount = item.MaxDiscount,
                                NodeType = item.NodeType,
                                Version = item.Version,
-                               SuppliersIds = item.ItemSuppliers.Select(e => e.SupplierId).ToList(),
-                               ManufacturerCompaniesIds = item.ItemManufacturerCompanies.Select(e => e.ManufacturerCompanyId).ToList(),
-                               SellingPriceDiscounts = _context.Set<ItemSellingPriceDiscount>()
-                               .Where(e => e.ItemId == item.Id).Select(e => new ItemSellingPriceDiscountDto
-                               {
-                                   SellingPriceId = e.SellingPriceId,
-                                   Discount = e.Discount,
-                                   DiscountType = e.DiscountType
-                               }).ToList(),
-                               PackingUnits = itemPackingUnits,
-                               ApplyDomainChanges = item.ApplyDomainChanges
+                               ApplyDomainChanges = item.ApplyDomainChanges,
+                               HasSubDomains=hasSubDomains
+                           }).Where(e=>e.NodeType == NodeType.SubDomain || (!e.HasSubDomains && e.NodeType == NodeType.Domain)).OrderBy(e=>e.CreatedAt).ToListAsync();
 
-                           }).FirstOrDefaultAsync(e=>e.Id == id);
+        return items;
+    }
+
+    public async Task<ItemDto?> GetDtoById(Guid id)
+    {
+        var result = await (from item in _context.Set<Item>()
+                            .Include(e => e.ItemSuppliers)
+                            .Include(e => e.ItemManufacturerCompanies)
+                            let itemPackingUnits = _context.Set<ItemPackingUnit>().Include(e => e.ItemPackingUnitSellingPrices).Where(e => e.ItemId == item.Id)
+                            .Select(e => new ItemPackingUnitDto
+                            {
+                                PackingUnitId = e.PackingUnitId,
+                                AverageCostPrice = e.AverageCostPrice,
+                                IsDefaultPackingUnit = e.IsDefaultPackingUnit,
+                                IsDefaultPurchases = e.IsDefaultPurchases,
+                                IsDefaultSales = e.IsDefaultSales,
+                                LastCostPrice = e.LastCostPrice,
+                                PartsCount = e.PartsCount,
+                                OrderNumber = e.OrderNumber,
+                                SellingPrices = e.ItemPackingUnitSellingPrices.Select(price => new ItemPackingUnitSellingPriceDto
+                                {
+                                    SellingPriceId = price.SellingPriceId,
+                                    Amount = price.Amount,
+                                }).ToList(),
+                            }).OrderBy(e => e.OrderNumber).ToList()
+
+                            select new ItemDto
+                            {
+                                Id = item.Id,
+                                ParentId = item.ParentId,
+                                ConditionalDiscount = item.ConditionalDiscount,
+                                CreatedAt = item.CreatedAt,
+                                CountryOfOrigin = item.CountryOfOrigin,
+                                DefaultDiscount = item.DefaultDiscount,
+                                ModifiedAt = item.ModifiedAt,
+                                ItemCodes = _context.Set<ItemCode>().Where(e => e.ItemId == item.Id).ToList(),
+                                DefaultDiscountType = item.DefaultDiscountType,
+                                Model = item.Model,
+                                Name = item.Name,
+                                NameSecondLanguage = item.NameSecondLanguage,
+                                IsDiscountBasedOnSellingPrice = item.IsDiscountBasedOnSellingPrice,
+                                ItemType = item.ItemType,
+                                MaxDiscount = item.MaxDiscount,
+                                NodeType = item.NodeType,
+                                Version = item.Version,
+                                SuppliersIds = item.ItemSuppliers.Select(e => e.SupplierId).ToList(),
+                                ManufacturerCompaniesIds = item.ItemManufacturerCompanies.Select(e => e.ManufacturerCompanyId).ToList(),
+                                SellingPriceDiscounts = _context.Set<ItemSellingPriceDiscount>()
+                                .Where(e => e.ItemId == item.Id).Select(e => new ItemSellingPriceDiscountDto
+                                {
+                                    SellingPriceId = e.SellingPriceId,
+                                    Discount = e.Discount,
+                                    DiscountType = e.DiscountType
+                                }).ToList(),
+                                PackingUnits = itemPackingUnits,
+                                ApplyDomainChanges = item.ApplyDomainChanges
+
+                            }).FirstOrDefaultAsync(e => e.Id == id);
 
         return result;
     }
