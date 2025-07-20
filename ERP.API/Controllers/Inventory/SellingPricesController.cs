@@ -8,10 +8,11 @@ namespace ERP.API.Controllers.Inventory;
 [ApiController]
 public class SellingPricesController : BaseSettingController<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>
 {
+    private readonly ISellingPriceService _service;
     public SellingPricesController(ISellingPriceService service,
         IStringLocalizer<Resource> localizer,
         ISender mapper) : base(service, localizer, mapper)
-    { }
+    => _service = service;
 
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] SellingPriceCreateCommand input)
@@ -21,7 +22,8 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetDtos();
+        return StatusCode((int)result.StatusCode,result);
     }
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)

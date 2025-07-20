@@ -4,4 +4,7 @@ using ERP.Domain.Models.Entities.Inventory.SellingPrices;
 
 namespace ERP.Application.Services.Inventory;
 
-public interface ISellingPriceService : IBaseSettingService<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand> { }
+public interface ISellingPriceService : IBaseSettingService<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>
+{
+    Task<ApiResponse<IEnumerable<SellingPriceDto>>> GetDtos();
+}
