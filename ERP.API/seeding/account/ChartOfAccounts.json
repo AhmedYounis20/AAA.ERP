@@ -1738,5 +1738,25 @@
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
     "IsSubLeadgerBaseAccount": false
+  },
+  {
+    "AccountGuidId": "0e9722ff-df3d-4937-8510-08dc3dfcb068",
+    "Code": "STOCK_UNDER_TRANSFER_ACCOUNT",
+    "AccountNature": "Debit",
+    "IsDepreciable": false,
+    "IsPostedAccount": true,
+    "IsStopDealing": false,
+    "IsActiveAccount": true,
+    "Name": "المخزون قيد التحويل",
+    "NameSecondLanguage": "Stock Under Transfer",
+    "Id": "00000000-0000-0000-0000-000000000001",
+    "ParentId": "0e9722ff-df3d-4937-8510-08dc3dfcb068",
+    "CreatedBy": null,
+    "ModifiedBy": null,
+    "CreatedAt": "2024-07-20T00:00:00.0000000",
+    "ModifiedAt": null,
+    "NodeType": 0,
+    "IsCreatedFromSubLeadger": false,
+    "IsSubLeadgerBaseAccount": true
   }
 ]

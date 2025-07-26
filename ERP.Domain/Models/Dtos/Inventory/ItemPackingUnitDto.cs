@@ -3,6 +3,7 @@
 public class ItemPackingUnitDto
 {
     public Guid PackingUnitId { get; set; }
+    public string? Name { get; set; } // Packing unit name
     public int PartsCount { get; set; }
     public bool IsDefaultPackingUnit { get; set; }
     public bool IsDefaultSales { get; set; }

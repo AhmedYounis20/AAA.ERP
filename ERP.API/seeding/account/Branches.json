@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "Id": "00000000-0000-0000-0000-000000000001",
+    "Name": "Stock Under Transfer",
+    "NameSecondLanguage": "المخزون قيد التحويل",
+    "NodeType": 0,
+    "Phone": null,
+    "Address": null,
+    "AttachmentId": null,
+    "ChartOfAccountId": "00000000-0000-0000-0000-000000000001",
+    "Notes": "System branch for inventory transfers."
+  }
+]

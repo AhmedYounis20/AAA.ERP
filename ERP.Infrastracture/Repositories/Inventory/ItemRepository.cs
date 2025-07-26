@@ -1,5 +1,8 @@
 ﻿using ERP.Application.Repositories.Inventory;
+using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using ERP.Domain.Models.Entities.Inventory.Sizes;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using Shared.BaseEntities.Identity;
 
@@ -44,6 +47,35 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
     {
         var items = await (from item in _context.Set<Item>()
                            let hasSubDomains = _context.Set<Item>().Any(e => e.ParentId == item.Id && e.NodeType == NodeType.SubDomain)
+                               let itemPackingUnits = _context.Set<ItemPackingUnit>()
+                                .Include(e => e.ItemPackingUnitSellingPrices)
+                                .Where(e => e.ItemId == item.Id)
+                                .Select(e => new ItemPackingUnitDto
+                                {
+                                    PackingUnitId = e.PackingUnitId,
+                                    Name = _context.Set<PackingUnit>().Where(pu => pu.Id == e.PackingUnitId).Select(pu => pu.Name).FirstOrDefault(),
+                                    AverageCostPrice = e.AverageCostPrice,
+                                    IsDefaultPackingUnit = e.IsDefaultPackingUnit,
+                                    IsDefaultPurchases = e.IsDefaultPurchases,
+                                    IsDefaultSales = e.IsDefaultSales,
+                                    LastCostPrice = e.LastCostPrice,
+                                    PartsCount = e.PartsCount,
+                                    OrderNumber = e.OrderNumber,
+                                    SellingPrices = e.ItemPackingUnitSellingPrices.Select(price => new ItemPackingUnitSellingPriceDto
+                                    {
+                                        SellingPriceId = price.SellingPriceId,
+                                        Amount = price.Amount,
+                                    }).ToList(),
+                                }).OrderBy(e => e.OrderNumber).ToList()
+                            let stockBalances = _context.Set<StockBalance>()
+                                .Where(sb => sb.ItemId == item.Id)
+                                .Select(sb => new ItemStockBalanceDto
+                                {
+                                    BranchId = sb.BranchId,
+                                    PackingUnitId = sb.PackingUnitId,
+                                    CurrentBalance = sb.CurrentBalance
+                                }).ToList()
+
                            select new ItemDto
                            {
                                Id = item.Id,
@@ -64,7 +96,9 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                NodeType = item.NodeType,
                                Version = item.Version,
                                ApplyDomainChanges = item.ApplyDomainChanges,
-                               HasSubDomains=hasSubDomains
+                               HasSubDomains = hasSubDomains,
+                                PackingUnits = itemPackingUnits,
+                                StockBalances = stockBalances,
                            }).Where(e=>e.NodeType == NodeType.SubDomain || (!e.HasSubDomains && e.NodeType == NodeType.Domain)).OrderBy(e=>e.CreatedAt).ToListAsync();
 
         return items;
@@ -75,23 +109,34 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
         var result = await (from item in _context.Set<Item>()
                             .Include(e => e.ItemSuppliers)
                             .Include(e => e.ItemManufacturerCompanies)
-                            let itemPackingUnits = _context.Set<ItemPackingUnit>().Include(e => e.ItemPackingUnitSellingPrices).Where(e => e.ItemId == item.Id)
-                            .Select(e => new ItemPackingUnitDto
-                            {
-                                PackingUnitId = e.PackingUnitId,
-                                AverageCostPrice = e.AverageCostPrice,
-                                IsDefaultPackingUnit = e.IsDefaultPackingUnit,
-                                IsDefaultPurchases = e.IsDefaultPurchases,
-                                IsDefaultSales = e.IsDefaultSales,
-                                LastCostPrice = e.LastCostPrice,
-                                PartsCount = e.PartsCount,
-                                OrderNumber = e.OrderNumber,
-                                SellingPrices = e.ItemPackingUnitSellingPrices.Select(price => new ItemPackingUnitSellingPriceDto
+                            let itemPackingUnits = _context.Set<ItemPackingUnit>()
+                                .Include(e => e.ItemPackingUnitSellingPrices)
+                                .Where(e => e.ItemId == item.Id)
+                                .Select(e => new ItemPackingUnitDto
                                 {
-                                    SellingPriceId = price.SellingPriceId,
-                                    Amount = price.Amount,
-                                }).ToList(),
-                            }).OrderBy(e => e.OrderNumber).ToList()
+                                    PackingUnitId = e.PackingUnitId,
+                                    Name = _context.Set<PackingUnit>().Where(pu => pu.Id == e.PackingUnitId).Select(pu => pu.Name).FirstOrDefault(),
+                                    AverageCostPrice = e.AverageCostPrice,
+                                    IsDefaultPackingUnit = e.IsDefaultPackingUnit,
+                                    IsDefaultPurchases = e.IsDefaultPurchases,
+                                    IsDefaultSales = e.IsDefaultSales,
+                                    LastCostPrice = e.LastCostPrice,
+                                    PartsCount = e.PartsCount,
+                                    OrderNumber = e.OrderNumber,
+                                    SellingPrices = e.ItemPackingUnitSellingPrices.Select(price => new ItemPackingUnitSellingPriceDto
+                                    {
+                                        SellingPriceId = price.SellingPriceId,
+                                        Amount = price.Amount,
+                                    }).ToList(),
+                                }).OrderBy(e => e.OrderNumber).ToList()
+                            let stockBalances = _context.Set<StockBalance>()
+                                .Where(sb => sb.ItemId == item.Id)
+                                .Select(sb => new ItemStockBalanceDto
+                                {
+                                    BranchId = sb.BranchId,
+                                    PackingUnitId = sb.PackingUnitId,
+                                    CurrentBalance = sb.CurrentBalance
+                                }).ToList()
 
                             select new ItemDto
                             {
@@ -122,6 +167,7 @@ public class ItemRepository : BaseTreeSettingRepository<Item>, IItemRepository
                                     DiscountType = e.DiscountType
                                 }).ToList(),
                                 PackingUnits = itemPackingUnits,
+                                StockBalances = stockBalances,
                                 ApplyDomainChanges = item.ApplyDomainChanges
 
                             }).FirstOrDefaultAsync(e => e.Id == id);

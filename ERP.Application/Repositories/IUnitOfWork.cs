@@ -29,6 +29,7 @@ public interface IUnitOfWork
     public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
     public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
     public IInventoryTransactionRepository InventoryTransactionRepository { get; }
+    public IInventoryTransferRepository InventoryTransferRepository { get; }
     public IStockBalanceRepository StockBalanceRepository { get; }
     public IEntryRepository EntryRepository { get; }
     public IBaseRepository<FinancialTransaction> FinancialTransactionRepository { get; }

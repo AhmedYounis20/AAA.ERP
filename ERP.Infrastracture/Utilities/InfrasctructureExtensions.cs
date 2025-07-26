@@ -68,6 +68,8 @@ public static class InfrasctructureExtensions
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IStockBalanceService, StockBalanceService>();
+        services.AddScoped<IInventoryTransferService, InventoryTransferService>();
+        services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
     public static void AddRepositories(this IServiceCollection services)

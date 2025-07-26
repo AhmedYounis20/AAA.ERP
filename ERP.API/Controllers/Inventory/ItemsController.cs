@@ -1,6 +1,7 @@
 ﻿using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Dtos.Inventory;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -47,6 +48,15 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
     {
         var result = await _service.GetVariants();
         return StatusCode((int)result.StatusCode, result);
+    }
+    [HttpGet("{id}/packingUnits")]
+    public async Task<IActionResult> GetPackingUnits(Guid id)
+    {
+        // Fetch packing units for the item
+        var item = await _service.GetItemDtoById(id);
+        if (item == null || item.Result == null)
+            return NotFound();
+        return Ok(item.Result.PackingUnits);
     }
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ItemUpdateCommand input)

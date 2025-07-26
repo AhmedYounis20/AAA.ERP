@@ -1,5 +1,4 @@
 ﻿using Shared.BaseEntities;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using ERP.Domain.Models.Dtos.Inventory;
 
@@ -35,6 +34,7 @@ public class ItemDto
     public bool ApplyDomainChanges { get; set; }
     [JsonIgnore]
     public bool HasSubDomains { get; set; }
+    public List<ItemStockBalanceDto> StockBalances { get; set; } = new();
 
     public string? CreatedByName { get; set; }
     public string? CreatedByNameSecondLanguage { get; set; }

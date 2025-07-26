@@ -36,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
     public IStockBalanceRepository StockBalanceRepository { get; }
     public IBaseRepository<EntryAttachment> EntryAttachmentRepository { get; }
     public IBaseRepository<FinancialTransaction> FinancialTransactionRepository { get; }
+    public IInventoryTransferRepository InventoryTransferRepository { get; }
 
     public UnitOfWork(
         IApplicationDbContext context,
@@ -62,7 +63,8 @@ public class UnitOfWork : IUnitOfWork
         IInventoryTransactionRepository inventoryTransactionRepository,
         IStockBalanceRepository stockBalanceRepository,
         IBaseRepository<EntryAttachment> entryAttachmentRepository,
-        IBaseRepository<FinancialTransaction> financialTransactionRepository
+        IBaseRepository<FinancialTransaction> financialTransactionRepository,
+        IInventoryTransferRepository inventoryTransferRepository
     )
     {
         _context = context;
@@ -90,6 +92,7 @@ public class UnitOfWork : IUnitOfWork
         StockBalanceRepository = stockBalanceRepository;
         EntryAttachmentRepository = entryAttachmentRepository;
         FinancialTransactionRepository = financialTransactionRepository;
+        InventoryTransferRepository = inventoryTransferRepository;
     }
 
     public async Task BeginTransactionAsync()
