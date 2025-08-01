@@ -1,10 +1,8 @@
 ﻿using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Items;
-using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Colors;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using ERP.Domain.Models.Entities.Inventory.Items;
 using System.Text.RegularExpressions;
 
 namespace ERP.Infrastracture.Services.Inventory;
@@ -87,7 +85,6 @@ public class ItemService :
                 item.Model = command.Model;
                 item.Version = command.Version;
                 item.CountryOfOrigin = command.CountryOfOrigin;
-                item.ItemSuppliers = [];
                 item.ItemType = command.ItemType;
                 item.ConditionalDiscount = command.ConditionalDiscount;
                 item.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
@@ -96,33 +93,15 @@ public class ItemService :
                 item.ApplyDomainChanges = command.ApplyDomainChanges;
                 if (command.IsDiscountBasedOnSellingPrice)
                 {
-                    List<ItemSellingPriceDiscount> discounts = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
-                    {
-                        SellingPriceId = e.SellingPriceId,
-                        Discount = e.Discount,
-                        DiscountType = e.DiscountType
-                    }).ToList();
-
-                    item.ItemSellingPriceDiscounts = discounts;
+                    HandleDicountBasedOnSellingPrice(command, item);
                 }
                 item.MaxDiscount = command.MaxDiscount;
 
                 if (item.IsDiscountBasedOnSellingPrice)
                     item.DefaultDiscountType = 0;
 
-                foreach (var supplierId in command.SuppliersIds)
-                    item.ItemSuppliers.Add(
-                        new ItemSupplier
-                        {
-                            SupplierId = supplierId,
-                        });
-                item.ItemManufacturerCompanies = [];
-                foreach (var companyId in command.ManufacturerCompaniesIds)
-                    item.ItemManufacturerCompanies.Add(
-                        new ItemManufacturerCompany
-                        {
-                            ManufacturerCompanyId = companyId,
-                        });
+                HandleItemSuppliers(command, item);
+                HandleItemManufacturerCompanies(command, item);
                 foreach (var barcode in command.BarCodes)
                     item.ItemCodes.Add(
                         new ItemCode
@@ -130,30 +109,8 @@ public class ItemService :
                             Code = barcode,
                             CodeType = ItemCodeType.BarCode
                         });
-                item.ItemPackingUnitPrices = [];
-                foreach (var itempackingUnit in command.PackingUnits)
-                    item.ItemPackingUnitPrices.Add(
-                        new ItemPackingUnit
-                        {
-                            PackingUnitId = itempackingUnit.PackingUnitId,
-                            AverageCostPrice = itempackingUnit.AverageCostPrice,
-                            IsDefaultPackingUnit = itempackingUnit.IsDefaultPackingUnit,
-                            LastCostPrice = itempackingUnit.LastCostPrice,
-                            PartsCount = itempackingUnit.PartsCount,
-                            ModifiedAt = DateTime.Now,
-                            CreatedAt = DateTime.Now,
-                            IsDefaultSales = itempackingUnit.IsDefaultSales,
-                            IsDefaultPurchases = itempackingUnit.IsDefaultPurchases,
-                            OrderNumber = itempackingUnit.OrderNumber,
-                            ItemPackingUnitSellingPrices = itempackingUnit.SellingPrices.Select(e => new ItemPackingUnitSellingPrice
-                            {
-                                Amount = e.Amount,
-                                SellingPriceId = e.SellingPriceId,
-                                CreatedAt = DateTime.Now,
-                                ModifiedAt = DateTime.Now,
 
-                            }).ToList()
-                        });
+                HandleItemPackingUnitsPrices(command, item);
             }
 
             item = await _repository.Add(item);
@@ -161,7 +118,7 @@ public class ItemService :
             // Create SubDomains if this is a Domain item with combinations
             if (command.NodeType == NodeType.Domain && command.SubDomainCombinations?.Any() == true)
             {
-                var subDomainResult = await CreateSubDomains(item.Id, command.SubDomainCombinations);
+                var subDomainResult = await CreateSubDomains(item.Id, command);
                 if (!subDomainResult.IsSuccess)
                 {
                     // Rollback transaction if SubDomain creation fails
@@ -188,6 +145,69 @@ public class ItemService :
             return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
         }
     }
+
+    private static void HandleItemPackingUnitsPrices(IItemCommand command, Item item)
+    {
+        item.ItemPackingUnitPrices = [];
+        foreach (var itempackingUnit in command.PackingUnits)
+            item.ItemPackingUnitPrices.Add(
+                new ItemPackingUnit
+                {
+                    PackingUnitId = itempackingUnit.PackingUnitId,
+                    AverageCostPrice = itempackingUnit.AverageCostPrice,
+                    IsDefaultPackingUnit = itempackingUnit.IsDefaultPackingUnit,
+                    LastCostPrice = itempackingUnit.LastCostPrice,
+                    PartsCount = itempackingUnit.PartsCount,
+                    ModifiedAt = DateTime.Now,
+                    CreatedAt = DateTime.Now,
+                    IsDefaultSales = itempackingUnit.IsDefaultSales,
+                    IsDefaultPurchases = itempackingUnit.IsDefaultPurchases,
+                    OrderNumber = itempackingUnit.OrderNumber,
+                    ItemPackingUnitSellingPrices = itempackingUnit.SellingPrices.Select(e => new ItemPackingUnitSellingPrice
+                    {
+                        Amount = e.Amount,
+                        SellingPriceId = e.SellingPriceId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now,
+
+                    }).ToList()
+                });
+    }
+
+    private static void HandleItemManufacturerCompanies(IItemCommand command, Item item)
+    {
+        item.ItemManufacturerCompanies = [];
+        foreach (var companyId in command.ManufacturerCompaniesIds)
+            item.ItemManufacturerCompanies.Add(
+                new ItemManufacturerCompany
+                {
+                    ManufacturerCompanyId = companyId,
+                });
+    }
+
+    private static void HandleItemSuppliers(IItemCommand command, Item item)
+    {
+        item.ItemSuppliers = [];
+        foreach (var supplierId in command.SuppliersIds)
+            item.ItemSuppliers.Add(
+                new ItemSupplier
+                {
+                    SupplierId = supplierId,
+                });
+    }
+
+    private static void HandleDicountBasedOnSellingPrice(IItemCommand command, Item item)
+    {
+        List<ItemSellingPriceDiscount> discounts = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
+        {
+            SellingPriceId = e.SellingPriceId,
+            Discount = e.Discount,
+            DiscountType = e.DiscountType
+        }).ToList();
+
+        item.ItemSellingPriceDiscounts = discounts;
+    }
+
     public override async Task<ApiResponse<Item>> Update(ItemUpdateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateUpdate(command);
@@ -236,6 +256,9 @@ public class ItemService :
                 item.NameSecondLanguage = command.NameSecondLanguage;
                 if (item.NodeType == NodeType.Domain)
                 {
+                    item.ApplyDomainChanges = command.ApplyDomainChanges;
+                    item.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
+
                     item.Model = command.Model;
                     item.Version = command.Version;
                     item.CountryOfOrigin = command.CountryOfOrigin;
@@ -251,7 +274,7 @@ public class ItemService :
                     await UpdateSellingPriceDiscounts(command, item);
                     await UpdateItemPackingUnits(command, item);
                     if (item.ApplyDomainChanges)
-                        await SyncDomainChangesToSubDomains(item);
+                        await SyncDomainChangesToSubDomains(item, command);
                 }
             }
             await _repository.Update(item);
@@ -259,7 +282,7 @@ public class ItemService :
             // Handle SubDomain combinations if this is a Domain item
             if (item.NodeType == NodeType.Domain && command.SubDomainCombinations?.Any() == true)
             {
-                var subDomainResult = await CreateSubDomains(item.Id, command.SubDomainCombinations);
+                var subDomainResult = await CreateSubDomains(item.Id, command);
                 if (!subDomainResult.IsSuccess)
                 {
                     // Rollback transaction if SubDomain creation fails
@@ -291,7 +314,7 @@ public class ItemService :
         }
     }
 
-    private async Task UpdateSuppliers(ItemUpdateCommand command, Item item)
+    private async Task UpdateSuppliers(IItemCommand command, Item item)
     {
         List<ItemSupplier> existedItemSuppliers = await _unitOfWork.ItemSupplierRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSupplier> itemSupplierToRemove = existedItemSuppliers.Where(e => !command.SuppliersIds.Contains(e.SupplierId)).ToList();
@@ -309,7 +332,7 @@ public class ItemService :
             await _unitOfWork.ItemSupplierRepository.Add(itemSuppliersToAdd);
     }
 
-    private async Task UpdateItemPackingUnits(ItemUpdateCommand command, Item item)
+    private async Task UpdateItemPackingUnits(IItemCommand command, Item item)
     {
         List<ItemPackingUnit> existedItemPackingUnits = await _unitOfWork.ItemPackingUnitRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemPackingUnit> itemPackingUnitsToRemove = existedItemPackingUnits.Where(e => !command.PackingUnits.Any(p => p.PackingUnitId == e.PackingUnitId)).ToList();
@@ -321,7 +344,7 @@ public class ItemService :
             {
                 itemPackingUnitsToAdd.Add(new ItemPackingUnit
                 {
-                    ItemId = command.Id,
+                    ItemId = item.Id,
                     PackingUnitId = itempackingUnit.PackingUnitId,
                     AverageCostPrice = itempackingUnit.AverageCostPrice,
                     IsDefaultPackingUnit = itempackingUnit.IsDefaultPackingUnit,
@@ -399,7 +422,7 @@ public class ItemService :
         await _unitOfWork.ItemPackingUnitSellingPriceRepository.Update(packingUnitPricesToUpdate);
     }
 
-    private async Task UpdateSellingPriceDiscounts(ItemUpdateCommand command, Item item)
+    private async Task UpdateSellingPriceDiscounts(IItemCommand command, Item item)
     {
         List<ItemSellingPriceDiscount> existedItemSuppliers = await _unitOfWork.ItemSellingPriceDiscountRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSellingPriceDiscount> itemSellingPriceDiscountsToAdd = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
@@ -438,7 +461,7 @@ public class ItemService :
     }
 
 
-    private async Task UpdateManufacturerCompanies(ItemUpdateCommand command, Item item)
+    private async Task UpdateManufacturerCompanies(IItemCommand command, Item item)
     {
         List<ItemManufacturerCompany> existedItemManufacturerCompanies = await _unitOfWork.ItemManufacturerCompanyRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemManufacturerCompany> itemManufacturerCompaniesToRemove = existedItemManufacturerCompanies.Where(e => !command.SuppliersIds.Contains(e.ManufacturerCompanyId)).ToList();
@@ -456,7 +479,7 @@ public class ItemService :
             await _unitOfWork.ItemManufacturerCompanyRepository.Add(itemManufacturerCompaniesToAdd);
     }
 
-    private async Task UpdateBarCodes(ItemUpdateCommand command, Item item)
+    private async Task UpdateBarCodes(IItemCommand command, Item item)
     {
         List<ItemCode> existedItemBarCodes = await _unitOfWork.ItemCodeRepository.GetQuery().Where(e => e.ItemId == item.Id && e.CodeType == ItemCodeType.BarCode).ToListAsync();
         List<ItemCode> itemBarCodesToRemove = existedItemBarCodes.Where(e => !command.BarCodes.Contains(e.Code)).ToList();
@@ -723,7 +746,7 @@ public class ItemService :
         };
     }
     // Transaction-based SubDomain creation method
-    private async Task<ApiResponse<List<Item>>> CreateSubDomains(Guid domainItemId, List<ColorSizeCombinationDto> combinations)
+    private async Task<ApiResponse<List<Item>>> CreateSubDomains(Guid domainItemId, IItemCommand command)
     {
         try
         {
@@ -740,7 +763,7 @@ public class ItemService :
 
             var createdSubDomains = new List<Item>();
             
-            foreach (var combination in combinations)
+            foreach (var combination in command.SubDomainCombinations)
             {
                 // Check if SubDomain already exists
                 var existingSubDomain = await _repository.GetQuery()
@@ -809,6 +832,14 @@ public class ItemService :
                     ItemPackingUnitPrices = []
                 };
 
+                if (command.IsDiscountBasedOnSellingPrice)
+                {
+                    HandleDicountBasedOnSellingPrice(command, subDomainItem);
+                }
+                HandleItemSuppliers(command, subDomainItem);
+                HandleItemManufacturerCompanies(command, subDomainItem);
+                HandleItemPackingUnitsPrices(command, subDomainItem);
+
                 var createdSubDomain = await _repository.Add(subDomainItem);
                 createdSubDomains.Add(createdSubDomain);
             }
@@ -831,7 +862,7 @@ public class ItemService :
         }
     }
 
-    public async Task<ApiResponse<bool>> SyncDomainChangesToSubDomains(Item domainItem)
+    public async Task<ApiResponse<bool>> SyncDomainChangesToSubDomains(Item domainItem, IItemCommand command)
     {
         // Start transaction for Domain-to-SubDomain synchronization        
         try
@@ -873,6 +904,15 @@ public class ItemService :
                     subDomain.Model = domainItem.Model;
                     subDomain.Version = domainItem.Version;
                     subDomain.CountryOfOrigin = domainItem.CountryOfOrigin;
+
+                    if (command.IsDiscountBasedOnSellingPrice)
+                    {
+                        await UpdateSellingPriceDiscounts(command, subDomain);
+                    }
+                    await UpdateBarCodes(command, subDomain);
+                    await UpdateSuppliers(command, subDomain);
+                    await UpdateManufacturerCompanies(command, subDomain);
+                    await UpdateItemPackingUnits(command, subDomain);
                 }
 
                 await _repository.Update(subDomain);
