@@ -1,21 +1,18 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.Items;
 
 namespace ERP.Domain.Commands.Inventory.Items;
 
-public class ItemCreateCommand : BaseTreeSettingCreateCommand<Item>
+public class ItemCreateCommand : BaseTreeSettingCreateCommand<Item>, IItemCommand
 {
-    // SubDomain Properties
-    public bool ApplyDomainChanges { get; set; } = true;
-    public Guid? ColorId { get; set; }
-    public Guid? SizeId { get; set; }    
-    // Domain Properties (for managing SubDomain combinations)
-    public List<ColorSizeCombinationDto> SubDomainCombinations { get; set; } = [];
-    
     public string Code { get; set; } = string.Empty;
     public string? Gs1Code { get; set; }
     public string? EGSCode { get; set; }
+    public bool ApplyDomainChanges { get; set; } = true;
+    public Guid? ColorId { get; set; }
+    public Guid? SizeId { get; set; }
+    public List<ColorSizeCombinationDto> SubDomainCombinations { get; set; } = [];
     public ItemType? ItemType { get; set; }
     public decimal MaxDiscount { get; set; }
     public decimal ConditionalDiscount { get; set; }

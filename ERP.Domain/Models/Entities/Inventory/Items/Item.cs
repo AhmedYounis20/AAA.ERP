@@ -15,7 +15,7 @@ public class Item : BaseTreeSettingEntity<Item>
     public List<ItemCode> BarCodes { get => ItemCodes.Where(e => e.CodeType == ItemCodeType.BarCode).ToList(); }
     
     // SubDomain Properties (only for NodeType.SubDomain)
-    public bool ApplyDomainChanges { get; set; } = true; // Whether changes in parent domain apply to this subdomain
+    public bool ApplyDomainChanges { get; set; }  // Whether changes in parent domain apply to this subdomain
     public Guid? ColorId { get; set; } // For SubDomain items
     public Guid? SizeId { get; set; } // For SubDomain items    
     
