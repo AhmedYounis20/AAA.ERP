@@ -7,6 +7,7 @@ using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.GLSettings;
 using ERP.Domain.Models.Entities.Account.Roles;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -46,19 +47,21 @@ public class ImportDataToSeed
 
     private async Task ImportBussinessData(string folder)
     {
-        await ImportTable<AccountGuide>(folder, "AccountGuides.json");
-        await ImportTable<Role>(folder, "Roles.json");
-        await ImportTable<ChartOfAccount>(folder, "ChartOfAccounts.json");
-        await ImportTable<GLSetting>(folder, "GLSettings.json");
-        await ImportTable<Currency>(folder, "Currencies.json");
-        await ImportTable<FinancialPeriod>(folder, "FinancialPeriods.json");
-        await ImportTable<Bank>(folder, "Banks.json");
-        await ImportTable<Customer>(folder, "Customers.json");
-        await ImportTable<Supplier>(folder, "Suppliers.json");
-        await ImportTable<CashInBox>(folder, "CashInBoxes.json");
+        await ImportTable<AttributeDefinition>(folder, "AttributeDefinitions.json");
+        await ImportTable<AttributeValue>(folder, "AttributeValues.json");
+        //await ImportTable<AccountGuide>(folder, "AccountGuides.json");
+        //await ImportTable<Role>(folder, "Roles.json");
+        //await ImportTable<ChartOfAccount>(folder, "ChartOfAccounts.json");
+        //await ImportTable<GLSetting>(folder, "GLSettings.json");
+        //await ImportTable<Currency>(folder, "Currencies.json");
+        //await ImportTable<FinancialPeriod>(folder, "FinancialPeriods.json");
+        //await ImportTable<Bank>(folder, "Banks.json");
+        //await ImportTable<Customer>(folder, "Customers.json");
+        //await ImportTable<Supplier>(folder, "Suppliers.json");
+        //await ImportTable<CashInBox>(folder, "CashInBoxes.json");
         // await ImportTable<FixedAsset>(folder, "FixedAssets.json");
-        await ImportTable<Attachment>(folder, "Attachments.json");
-        await ImportTable<Branch>(folder, "Branches.json");
+        //await ImportTable<Attachment>(folder, "Attachments.json");
+        //await ImportTable<Branch>(folder, "Branches.json");
     }
 
     private async Task ImportTable<TEntity>(string folder, string jsonFile) where TEntity : BaseEntity

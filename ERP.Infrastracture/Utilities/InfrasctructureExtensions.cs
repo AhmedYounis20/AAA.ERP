@@ -72,7 +72,10 @@ public static class InfrasctructureExtensions
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IStockBalanceService, StockBalanceService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
-        services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
+        services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
+        services.AddScoped<IAttributeValueService, AttributeValueService>();
+        services.AddScoped<IInventoryTransferService, InventoryTransferService>();
+
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
     public static void AddRepositories(this IServiceCollection services)
@@ -104,6 +107,9 @@ public static class InfrasctructureExtensions
         services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
         services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
+        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
+        services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
         services.AddHttpContextAccessor();
     }
 }
