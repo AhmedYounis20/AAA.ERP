@@ -171,8 +171,8 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
         {
             var attributeValue = new AttributeValue
             {
-                Name = command.Value,
-                NameSecondLanguage = command.ValueSecondLanguage,
+                Name = command.Name,
+                NameSecondLanguage = command.NameSecondLanguage,
                 SortOrder = command.SortOrder,
                 IsActive = command.IsActive,
                 AttributeDefinitionId = command.AttributeDefinitionId
@@ -215,8 +215,8 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
                 };
             }
 
-            attributeValue.Name = command.Value;
-            attributeValue.NameSecondLanguage = command.ValueSecondLanguage;
+            attributeValue.Name = command.Name;
+            attributeValue.NameSecondLanguage = command.NameSecondLanguage;
             attributeValue.SortOrder = command.SortOrder;
             attributeValue.IsActive = command.IsActive;
             attributeValue.AttributeDefinitionId = command.AttributeDefinitionId;
