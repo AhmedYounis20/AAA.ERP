@@ -17,6 +17,7 @@ global using Microsoft.AspNetCore.Authorization;
 global using ERP.API.Controllers.BaseControllers;
 global using ERP.Application.Services.Account;
 global using Shared.Responses;
-
-
-
+global using ERP.Application.Services.Account.SubLeadgers;
+global using ERP.Domain.Commands.Account.SubLeadgers.Suppliers;
+global using ERP.Domain.Models.Entities.Account.SubLeadgers;
+global using ERP.Domain.OutputDtos.Lookups;

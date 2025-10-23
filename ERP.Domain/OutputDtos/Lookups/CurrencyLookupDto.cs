@@ -1,8 +1,9 @@
 ﻿using AAA.ERP.OutputDtos.BaseDtos;
+using Shared.DTOs;
 
-namespace AAA.ERP.OutputDtos;
+namespace ERP.Domain.OutputDtos.Lookups;
 
-public class CurrencyDto : BaseSettingDto
+public class CurrencyLookupDto : LookupDto
 {
     public decimal ExchangeRate { get; set; }
     public string? Symbol { get; set; }

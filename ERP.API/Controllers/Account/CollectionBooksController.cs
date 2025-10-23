@@ -1,5 +1,7 @@
 ﻿using ERP.Domain.Commands.Account.CollectionBooks;
+using ERP.Domain.Models.Entities.Account.AccountGuides;
 using ERP.Domain.Models.Entities.Account.CollectionBooks;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;
 
@@ -7,10 +9,12 @@ namespace ERP.API.Controllers.Account;
 [ApiController]
 public class CollectionBooksController : BaseSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>
 {
-    public CollectionBooksController(ICollectionBookService service,
+    IBaseQueryService<CollectionBook, LookupDto> _baseQueryService;
+
+    public CollectionBooksController(ICollectionBookService service, IBaseQueryService<CollectionBook, LookupDto> baseQueryService,
         IStringLocalizer<Resource> localizer,
         ISender mapper) : base(service, localizer, mapper)
-    { }
+    => _baseQueryService = baseQueryService;
 
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] CollectionBookCreateCommand input)
@@ -26,6 +30,32 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
+    }
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<LookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<LookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<LookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+
+        }
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)

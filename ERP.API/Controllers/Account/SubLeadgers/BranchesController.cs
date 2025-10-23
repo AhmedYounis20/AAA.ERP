@@ -2,6 +2,7 @@ using ERP.API.Controllers.BaseControllers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.Branches;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using ERP.Domain.OutputDtos.Lookups;
 
 namespace ERP.API.Controllers.Account.SubLeadgers;
 
@@ -12,13 +13,15 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
     private IBranchService _service;
     private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
+    IBaseQueryService<Branch, SubLeadgerLookupDto> _baseQueryService;
 
-    public BranchesController(IStringLocalizer<Resource> localizer, IBranchService service, ISender sender)
+    public BranchesController(IStringLocalizer<Resource> localizer, IBranchService service, IBaseQueryService<Branch, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, localizer, sender)
     {
         _localizer = localizer;
         _service = service;
         _sender = sender;
+        _baseQueryService = baseQueryService;
     }
 
     [HttpPost]
@@ -32,6 +35,30 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     => await GetRecord(id);
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+        }
+        return StatusCode((int)result.StatusCode, result);
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, BranchUpdateCommand input)

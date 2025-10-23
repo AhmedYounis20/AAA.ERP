@@ -1,6 +1,8 @@
 ﻿using ERP.Application.Validators.Account.InputValidators;
 using ERP.Domain.Commands.Account.Currencies;
 using ERP.Domain.Models.Entities.Account.Currencies;
+using ERP.Domain.OutputDtos.Lookups;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;
 
@@ -8,11 +10,12 @@ namespace ERP.API.Controllers.Account;
 [ApiController]
 public class CurrenciesController : BaseSettingController<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>
 {
-    public CurrenciesController(ICurrencyService service,
+    IBaseQueryService<Currency, CurrencyLookupDto> _baseQueryService;
+    public CurrenciesController(ICurrencyService service, IBaseQueryService<Currency,CurrencyLookupDto>baseQueryService,
         CurrencyInputValidator validator,
         IStringLocalizer<Resource> localizer,
         ISender sender) : base(service, localizer, sender)
-    { }
+    => _baseQueryService = baseQueryService;
 
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] CurrencyCreateCommand input)
@@ -28,6 +31,31 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
+    }
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<LookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<LookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<LookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+
+        }
+        return StatusCode((int)result.StatusCode, result);
     }
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyUpdateCommand input)

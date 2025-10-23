@@ -1,5 +1,6 @@
 ﻿using ERP.Domain.Commands.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;
 
@@ -8,11 +9,16 @@ namespace ERP.API.Controllers.Account;
 public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>
 {
     IChartOfAccountService _service;
+    IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> _baseQueryService;
     public ChartOfAccountsController(IChartOfAccountService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
-    => _service = service;
+    IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> baseQueryService,
 
+    IStringLocalizer<Resource> localizer,
+        ISender sender) : base(service, localizer, sender)
+    {
+        _service = service;
+        _baseQueryService = baseQueryService;
+    }
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
     {
@@ -33,6 +39,31 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
     {
         return await UpdateRecord(id, input);
     }
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+        }
+        return StatusCode((int)result.StatusCode, result);
+    }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

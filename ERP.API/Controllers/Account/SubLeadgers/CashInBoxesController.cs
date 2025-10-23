@@ -1,6 +1,7 @@
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.CashInBoxes;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using ERP.Domain.OutputDtos.Lookups;
 
 namespace ERP.API.Controllers.Account.SubLeadgers;
 
@@ -11,13 +12,15 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
     private ICashInBoxService _service;
     private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
+    IBaseQueryService<CashInBox, SubLeadgerLookupDto> _baseQueryService;
 
-    public CashInBoxesController(IStringLocalizer<Resource> localizer, ICashInBoxService service, ISender sender)
+    public CashInBoxesController(IStringLocalizer<Resource> localizer, ICashInBoxService service, IBaseQueryService<CashInBox, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, localizer, sender)
     {
         _localizer = localizer;
         _service = service;
         _sender = sender;
+        _baseQueryService = baseQueryService;
     }
 
     [HttpPost]
@@ -31,6 +34,30 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     => await GetRecord(id);
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+        }
+        return StatusCode((int)result.StatusCode, result);
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, CashInBoxUpdateCommand input)

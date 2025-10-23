@@ -4,17 +4,19 @@ using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
+using ERP.Application.Services.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Application.Services.Identity;
 using ERP.Application.Services.Inventory;
+using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using ERP.Infrastracture.Repositories.Inventory;
-using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Services.Account;
 using ERP.Infrastracture.Services.Account.Entries;
+using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Inventory;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +38,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
 
+        services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
         services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
         services.AddScoped<ICurrencyService, CurrencyService>();

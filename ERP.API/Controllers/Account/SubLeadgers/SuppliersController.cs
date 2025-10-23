@@ -1,7 +1,3 @@
-using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Domain.Commands.Account.SubLeadgers.Suppliers;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
-
 namespace ERP.API.Controllers.Account.SubLeadgers;
 
 [Route("api/[controller]")]
@@ -11,13 +7,15 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
     private ISupplierService _service;
     private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
+    IBaseQueryService<Supplier, SubLeadgerLookupDto> _baseQueryService;
 
-    public SuppliersController(IStringLocalizer<Resource> localizer, ISupplierService service, ISender sender)
+    public SuppliersController(IStringLocalizer<Resource> localizer, ISupplierService service, IBaseQueryService<Supplier,SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, localizer, sender)
     {
         _localizer = localizer;
         _service = service;
         _sender = sender;
+        _baseQueryService = baseQueryService;
     }
 
     [HttpPost]
@@ -31,6 +29,30 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     => await GetRecord(id);
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+        }
+        return StatusCode((int)result.StatusCode, result);
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, SupplierUpdateCommand input)
