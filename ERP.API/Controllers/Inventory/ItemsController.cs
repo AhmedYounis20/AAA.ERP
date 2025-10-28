@@ -11,8 +11,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
 {
     IItemService _service;
     public ItemsController(IItemService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     {
         _service = service;
 

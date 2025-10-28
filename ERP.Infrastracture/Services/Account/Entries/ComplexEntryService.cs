@@ -39,7 +39,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -64,7 +64,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -106,7 +106,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.Found,
-                ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
             };
         }
 
@@ -177,7 +177,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

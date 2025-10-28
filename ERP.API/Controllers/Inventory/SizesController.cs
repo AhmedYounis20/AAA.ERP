@@ -10,8 +10,7 @@ public class SizesController : BaseSettingController<Size, SizeCreateCommand, Si
 {
     private readonly ISizeService _service;
     public SizesController(ISizeService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     {
         _service = service;
     }

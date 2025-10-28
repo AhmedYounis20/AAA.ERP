@@ -12,8 +12,7 @@ public class ExportTransactionsController : BaseController<InventoryTransaction,
     private IExportTransactionService _service;
 
     public ExportTransactionsController(IExportTransactionService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

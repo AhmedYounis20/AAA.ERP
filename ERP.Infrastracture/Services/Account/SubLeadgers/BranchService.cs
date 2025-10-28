@@ -94,7 +94,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -108,7 +108,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = validationResult.errors
+                Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
             };
         }
 
@@ -177,7 +177,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 return new ApiResponse<Branch>
                 {
                     IsSuccess = false,
-                    ErrorMessages = [ex.ToString()],
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } },
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -193,7 +193,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = validationResult.errors
+                Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
             };
         }
 
@@ -208,7 +208,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.errors
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -239,7 +239,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
             };
         }
     }

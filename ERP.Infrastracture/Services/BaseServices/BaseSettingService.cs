@@ -32,7 +32,7 @@ public class BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

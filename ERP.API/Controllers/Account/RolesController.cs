@@ -8,8 +8,7 @@ namespace ERP.API.Controllers.Account;
 public class RolesController : BaseSettingController<Role, RoleCreateCommand, RoleUpdateCommand>
 {
     public RolesController(IRoleService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     { }
 
     [HttpPost]

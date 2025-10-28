@@ -12,8 +12,7 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
     IBaseQueryService<CollectionBook, LookupDto> _baseQueryService;
 
     public CollectionBooksController(ICollectionBookService service, IBaseQueryService<CollectionBook, LookupDto> baseQueryService,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     => _baseQueryService = baseQueryService;
 
     [HttpPost]
@@ -41,8 +40,7 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
             result = new ApiResponse<IEnumerable<LookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

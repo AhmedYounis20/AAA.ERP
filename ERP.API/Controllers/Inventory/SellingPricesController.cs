@@ -10,8 +10,7 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
 {
     private readonly ISellingPriceService _service;
     public SellingPricesController(ISellingPriceService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     => _service = service;
 
     [HttpPost]

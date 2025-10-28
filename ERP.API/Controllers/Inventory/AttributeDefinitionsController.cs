@@ -11,8 +11,7 @@ public class AttributeDefinitionsController : BaseSettingController<AttributeDef
     private readonly IAttributeDefinitionService _attributeDefinitionService;
 
     public AttributeDefinitionsController(IAttributeDefinitionService attributeDefinitionService,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(attributeDefinitionService, localizer, sender)
+        ISender sender) : base(attributeDefinitionService, sender)
     {
         _attributeDefinitionService = attributeDefinitionService;
     }

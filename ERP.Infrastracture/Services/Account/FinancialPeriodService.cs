@@ -31,7 +31,7 @@ public class FinancialPeriodService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.errors
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -72,7 +72,7 @@ public class FinancialPeriodService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
             };
         }
         else
@@ -98,7 +98,7 @@ public class FinancialPeriodService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.errors
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -218,7 +218,7 @@ public class FinancialPeriodService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -242,7 +242,7 @@ public class FinancialPeriodService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -265,7 +265,7 @@ public class FinancialPeriodService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

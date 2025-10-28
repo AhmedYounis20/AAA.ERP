@@ -51,7 +51,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -74,7 +74,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -97,7 +97,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -117,7 +117,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.Found,
-                    ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
                 };
             }
 
@@ -159,7 +159,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [$"Failed to generate transaction number: {ex.Message}"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = $"Failed to generate transaction number: {ex.Message}" } }
             };
         }
     }
@@ -179,7 +179,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     {
                         IsSuccess = false,
                         StatusCode = System.Net.HttpStatusCode.BadRequest,
-                        ErrorMessages = validationResult.errors
+                        Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
             }
@@ -192,7 +192,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 {
                     IsSuccess = false,
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
-                    ErrorMessages = ["NotFoundCurrentFinancialPeriod"]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
                 };
             }
 
@@ -250,7 +250,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     {
                         IsSuccess = false,
                         StatusCode = System.Net.HttpStatusCode.BadRequest,
-                        ErrorMessages = ["InsufficientStockBalance"]
+                        Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InsufficientStockBalance" } }
                     };
                 }
             }
@@ -287,7 +287,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 {
                     IsSuccess = false,
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
-                    ErrorMessages = entryResult.ErrorMessages
+                    Errors = entryResult.Errors
                 };
             }
             // --- End Combined Entry Logic ---
@@ -308,7 +308,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = System.Net.HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -324,7 +324,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = System.Net.HttpStatusCode.BadRequest,
-                ErrorMessages = ["DefaultCurrencyNotFound"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DefaultCurrencyNotFound" } }
             },null);
         }
         var branch = await _dbContext.Set<Branch>().FirstOrDefaultAsync(b => b.Id == command.BranchId);
@@ -335,7 +335,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = System.Net.HttpStatusCode.BadRequest,
-                ErrorMessages = ["BranchOrBranchAccountNotFound"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" } }
             },null);
         }
         var branchAccountId = branch.ChartOfAccountId.Value;
@@ -347,7 +347,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             {
                 IsSuccess = false,
                 StatusCode = System.Net.HttpStatusCode.BadRequest,
-                ErrorMessages = ["PartyAccountNotFound"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "PartyAccountNotFound" } }
             },null);
         }
         var partyAccountId = partyAccount.Id;

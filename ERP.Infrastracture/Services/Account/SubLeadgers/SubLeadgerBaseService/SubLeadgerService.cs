@@ -95,7 +95,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             return new ApiResponse<TEntity>
             {
                 IsSuccess = false,
-                ErrorMessages = [ex.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
             };
         }
     }
@@ -133,7 +133,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             return new ApiResponse<TEntity>
             {
                 IsSuccess = false,
-                ErrorMessages = [ex.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
             };
         }
     }
@@ -173,7 +173,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = [ex.Message.Trim().ToString()]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message.Trim().ToString() } }
                 };
             }
         }
@@ -182,7 +182,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         {
             IsSuccess = false,
             StatusCode = HttpStatusCode.BadRequest,
-            ErrorMessages = validationResult.errors
+            Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
         };
     }
 

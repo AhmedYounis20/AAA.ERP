@@ -42,7 +42,7 @@ public class ItemService :
             return new ApiResponse<Item>
             {
                 IsSuccess = false,
-                ErrorMessages = validationResult.errors,
+                Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList(),
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
@@ -127,7 +127,7 @@ public class ItemService :
                     { 
                         IsSuccess = false, 
                         StatusCode = HttpStatusCode.InternalServerError, 
-                        ErrorMessages = subDomainResult.ErrorMessages 
+                        Errors = subDomainResult.Errors 
                     };
                 }
             }
@@ -142,7 +142,7 @@ public class ItemService :
             // Rollback transaction on any exception
             await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
-            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
+            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "OPERATION_FAILD" } } };
         }
     }
 
@@ -216,7 +216,7 @@ public class ItemService :
             return new ApiResponse<Item>
             {
                 IsSuccess = false,
-                ErrorMessages = validationResult.errors,
+                Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList(),
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
@@ -291,7 +291,7 @@ public class ItemService :
                     { 
                         IsSuccess = false, 
                         StatusCode = HttpStatusCode.InternalServerError, 
-                        ErrorMessages = subDomainResult.ErrorMessages 
+                        Errors = subDomainResult.Errors 
                     };
                 }
             }
@@ -310,7 +310,7 @@ public class ItemService :
             // Rollback transaction on any exception
             await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
-            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
+            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "OPERATION_FAILD" } } };
         }
     }
 
@@ -757,7 +757,7 @@ public class ItemService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = ["InvalidDomainItem"]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InvalidDomainItem" } }
                 };
             }
 
@@ -857,7 +857,7 @@ public class ItemService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -874,7 +874,7 @@ public class ItemService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = ["InvalidDomainItem"]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InvalidDomainItem" } }
                 };
             }
 
@@ -935,7 +935,7 @@ public class ItemService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

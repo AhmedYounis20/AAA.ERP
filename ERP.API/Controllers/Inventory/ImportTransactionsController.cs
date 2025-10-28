@@ -12,8 +12,7 @@ public class ImportTransactionsController : BaseController<InventoryTransaction,
     private IImportTransactionService _service;
 
     public ImportTransactionsController(IImportTransactionService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

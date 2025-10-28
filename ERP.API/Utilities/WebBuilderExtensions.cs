@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Shared.BaseEntities.Identity;
 using Shared.Behaviors;
+using Shared.Responses;
 
 namespace ERP.Api.Utilities;
 
@@ -123,6 +124,8 @@ public static class WebBuilderExtensions
         {
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
+        // Add controllers (localization handled by middleware now)
+        builder.Services.AddControllers();
         builder.Services.AddInfrastructureServices();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
@@ -147,6 +150,7 @@ public static class WebBuilderExtensions
         if (localizeOptions != null)
             app.UseRequestLocalization(localizeOptions.Value);
         app.UseCors(e => e.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        app.UseMiddleware<LocalizationResponseMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

@@ -15,12 +15,10 @@ public class BaseTreeSettingController<TEntity, TCreate, TUpdate>
     //[HttpGet]
     //public 
     private readonly IBaseTreeSettingService<TEntity, TCreate, TUpdate> _service;
-    private readonly IStringLocalizer<Resource> _localizer;
-    public BaseTreeSettingController(IBaseTreeSettingService<TEntity, TCreate, TUpdate> service, IStringLocalizer<Resource> localizer, ISender sender)
-        : base(service, localizer, sender)
+    public BaseTreeSettingController(IBaseTreeSettingService<TEntity, TCreate, TUpdate> service, ISender sender)
+        : base(service, sender)
     {
         _service = service;
-        _localizer = localizer;
     }
 
     [HttpGet("GetLevel")]

@@ -10,8 +10,7 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
 {
     IBaseQueryService<AccountGuide, LookupDto> _baseQueryService;
     public AccountGuidesController(IAccountGuideService service, IBaseQueryService<AccountGuide,LookupDto> baseQueryService,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     => _baseQueryService = baseQueryService;
 
     [HttpPost]
@@ -39,8 +38,7 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
              result = new ApiResponse<IEnumerable<LookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

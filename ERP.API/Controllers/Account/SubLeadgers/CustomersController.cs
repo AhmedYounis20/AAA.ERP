@@ -10,14 +10,12 @@ namespace ERP.API.Controllers.Account.SubLeadgers;
 public class CustomersController : BaseTreeSettingController<Customer, CustomerCreateCommand, CustomerUpdateCommand>
 {
     private ICustomerService _service;
-    private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
     IBaseQueryService<Customer, SubLeadgerLookupDto> _baseQueryService;
 
-    public CustomersController(IStringLocalizer<Resource> localizer, ICustomerService service, IBaseQueryService<Customer, SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, localizer, sender)
+    public CustomersController(ICustomerService service, IBaseQueryService<Customer, SubLeadgerLookupDto> baseQueryService, ISender sender)
+        : base(service, sender)
     {
-        _localizer = localizer;
         _service = service;
         _sender = sender;
         _baseQueryService = baseQueryService;

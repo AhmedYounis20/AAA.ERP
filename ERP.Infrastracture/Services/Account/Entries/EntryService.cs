@@ -29,7 +29,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = bussinessValidationResult.errors
+                    Errors = bussinessValidationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
             var entry = command.Adapt<Entry>();
@@ -64,7 +64,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -81,7 +81,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = bussinessValidationResult.errors
+                    Errors = bussinessValidationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -115,7 +115,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -348,7 +348,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.Found,
-                ErrorMessages = new List<string> { "NotFoundCurrentFinancialPeriod" }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
             };
         }
 

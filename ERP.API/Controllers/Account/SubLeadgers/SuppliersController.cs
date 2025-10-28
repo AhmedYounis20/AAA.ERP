@@ -5,14 +5,12 @@ namespace ERP.API.Controllers.Account.SubLeadgers;
 public class SuppliersController : BaseTreeSettingController<Supplier, SupplierCreateCommand, SupplierUpdateCommand>
 {
     private ISupplierService _service;
-    private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
     IBaseQueryService<Supplier, SubLeadgerLookupDto> _baseQueryService;
 
-    public SuppliersController(IStringLocalizer<Resource> localizer, ISupplierService service, IBaseQueryService<Supplier,SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, localizer, sender)
+    public SuppliersController(ISupplierService service, IBaseQueryService<Supplier,SubLeadgerLookupDto> baseQueryService, ISender sender)
+        : base(service, sender)
     {
-        _localizer = localizer;
         _service = service;
         _sender = sender;
         _baseQueryService = baseQueryService;
@@ -39,8 +37,7 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

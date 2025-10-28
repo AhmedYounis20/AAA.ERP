@@ -12,8 +12,7 @@ public class CompinedEntriesController : BaseController<Entry, CompinedEntryCrea
     private ICompinedEntryService _service;
 
     public CompinedEntriesController(ICompinedEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

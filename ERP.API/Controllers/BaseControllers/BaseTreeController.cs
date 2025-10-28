@@ -16,7 +16,6 @@ public class BaseTreeController<TEntity, TCreate, TUpdate>
     //public 
     private readonly IBaseTreeService<TEntity, TCreate, TUpdate> _service;
     public BaseTreeController(IBaseTreeService<TEntity, TCreate, TUpdate> service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
     => _service = service;
 }

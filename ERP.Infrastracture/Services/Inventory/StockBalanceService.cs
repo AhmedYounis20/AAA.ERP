@@ -40,7 +40,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -63,7 +63,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -86,7 +86,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -109,7 +109,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -132,7 +132,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -149,7 +149,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = ["ItemNotFound"]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "ItemNotFound" } }
                 };
             }
 
@@ -161,7 +161,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = ["DefaultPackingUnitNotFound"]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DefaultPackingUnitNotFound" } }
                 };
             }
 
@@ -217,7 +217,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

@@ -44,7 +44,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -67,7 +67,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -90,7 +90,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -113,7 +113,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -137,7 +137,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -160,7 +160,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -195,7 +195,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -211,7 +211,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
-                    ErrorMessages = new List<string> { "Attribute value not found" }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "AttributeValueNotFound" } }
                 };
             }
 
@@ -238,7 +238,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -254,7 +254,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
-                    ErrorMessages = new List<string> { "Attribute value not found" }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "AttributeValueNotFound" } }
                 };
             }
 
@@ -274,7 +274,7 @@ public class AttributeValueService : BaseSettingService<AttributeValue, Attribut
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

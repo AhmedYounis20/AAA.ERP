@@ -10,8 +10,7 @@ public class ColorsController : BaseSettingController<Color, ColorCreateCommand,
 {
     private readonly IColorService _service;
     public ColorsController(IColorService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     {
         _service = service;
     }

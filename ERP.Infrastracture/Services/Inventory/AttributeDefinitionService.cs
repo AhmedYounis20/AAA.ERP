@@ -78,7 +78,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { $"Failed to create attribute definition with values: {ex.Message}" }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = $"Failed to create attribute definition with values: {ex.Message}" } }
             };
         }
     }
@@ -194,7 +194,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { $"Failed to update attribute definition with values: {ex.Message}" }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = $"Failed to update attribute definition with values: {ex.Message}" } }
             };
         }
     }

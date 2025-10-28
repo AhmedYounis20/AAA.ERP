@@ -32,7 +32,7 @@ public class BaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>
             {
                 StatusCode = HttpStatusCode.BadRequest,
                 IsSuccess = false,
-                ErrorMessages = validationResult.errors
+                Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
             };
         }
 

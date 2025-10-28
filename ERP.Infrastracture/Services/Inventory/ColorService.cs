@@ -35,7 +35,7 @@ public class ColorService :
         {
             response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } };
         }
         return response;
     }
@@ -53,7 +53,7 @@ public class ColorService :
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = bussinessValidationResult.errors
+                        Errors = bussinessValidationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
             }
@@ -70,7 +70,7 @@ public class ColorService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.InternalServerError,
-                    ErrorMessages = nextCodeResponse.ErrorMessages
+                    Errors = nextCodeResponse.Errors
                 };
             }
 
@@ -88,7 +88,7 @@ public class ColorService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

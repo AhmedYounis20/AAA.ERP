@@ -10,14 +10,12 @@ namespace ERP.API.Controllers.Account.SubLeadgers;
 public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>
 {
     private ICashInBoxService _service;
-    private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
     IBaseQueryService<CashInBox, SubLeadgerLookupDto> _baseQueryService;
 
-    public CashInBoxesController(IStringLocalizer<Resource> localizer, ICashInBoxService service, IBaseQueryService<CashInBox, SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, localizer, sender)
+    public CashInBoxesController(ICashInBoxService service, IBaseQueryService<CashInBox, SubLeadgerLookupDto> baseQueryService, ISender sender)
+        : base(service, sender)
     {
-        _localizer = localizer;
         _service = service;
         _sender = sender;
         _baseQueryService = baseQueryService;
@@ -44,8 +42,7 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

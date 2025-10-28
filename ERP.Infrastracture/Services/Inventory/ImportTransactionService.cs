@@ -44,7 +44,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction,ImportT
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                ErrorMessages = ["Transaction not found"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionNotFound" } }
             };
         }
 
@@ -54,7 +54,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction,ImportT
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = ["Transaction is not an import transaction"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionIsNotImportTransaction" } }
             };
         }
 
@@ -82,7 +82,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction,ImportT
         {
             IsSuccess = false,
             StatusCode = result.StatusCode,
-            ErrorMessages = result.ErrorMessages
+            Errors = result.Errors
         };
     }
 

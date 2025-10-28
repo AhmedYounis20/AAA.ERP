@@ -12,8 +12,7 @@ public class JournalEntriesController : BaseController<Entry, JournalEntryCreate
     private IJournalEntryService _service;
 
     public JournalEntriesController(IJournalEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

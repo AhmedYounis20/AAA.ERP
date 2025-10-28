@@ -29,7 +29,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = bussinessValidationResult.errors
+                        Errors = bussinessValidationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
             }
@@ -49,7 +49,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -72,7 +72,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -95,7 +95,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -118,7 +118,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -137,7 +137,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = validationResult.errors
+                        Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
 
@@ -162,7 +162,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -185,7 +185,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -209,7 +209,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -228,7 +228,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = bussinessValidationResult.errors
+                        Errors = bussinessValidationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
 
@@ -257,7 +257,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }
@@ -280,7 +280,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = new List<string> { ex.Message }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
     }

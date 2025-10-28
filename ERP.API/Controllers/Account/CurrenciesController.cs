@@ -13,8 +13,7 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
     IBaseQueryService<Currency, CurrencyLookupDto> _baseQueryService;
     public CurrenciesController(ICurrencyService service, IBaseQueryService<Currency,CurrencyLookupDto>baseQueryService,
         CurrencyInputValidator validator,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
     => _baseQueryService = baseQueryService;
 
     [HttpPost]
@@ -41,8 +40,7 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
             result = new ApiResponse<IEnumerable<LookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

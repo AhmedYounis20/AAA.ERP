@@ -13,9 +13,8 @@ public class
     IFinancialPeriodService _service;
 
     public FinancialPeriodsController(IFinancialPeriodService service,
-        IStringLocalizer<Resource> localizer,
         ISender sender)
-        : base(service, localizer, sender)
+        : base(service, sender)
     {
         _service = service;
     }

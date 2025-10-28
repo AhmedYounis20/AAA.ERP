@@ -13,8 +13,7 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
     public ChartOfAccountsController(IChartOfAccountService service,
     IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> baseQueryService,
 
-    IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
     {
         _service = service;
         _baseQueryService = baseQueryService;
@@ -49,8 +48,7 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
             result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

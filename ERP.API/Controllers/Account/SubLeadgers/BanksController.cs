@@ -12,14 +12,12 @@ namespace ERP.API.Controllers.Account.SubLeadgers;
 public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand, BankUpdateCommand>
 {
     private IBankService _service;
-    private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
     IBaseQueryService<Bank, SubLeadgerLookupDto> _baseQueryService;
 
-    public BanksController(IStringLocalizer<Resource> localizer, IBankService service, IBaseQueryService<Bank,SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, localizer, sender)
+    public BanksController(IBankService service, IBaseQueryService<Bank,SubLeadgerLookupDto> baseQueryService, ISender sender)
+        : base(service, sender)
     {
-        _localizer = localizer;
         _service = service;
         _sender = sender;
         _baseQueryService = baseQueryService;
@@ -46,8 +44,7 @@ public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e=> e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

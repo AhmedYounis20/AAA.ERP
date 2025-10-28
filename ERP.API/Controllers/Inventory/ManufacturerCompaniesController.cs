@@ -9,8 +9,7 @@ namespace ERP.API.Controllers.Inventory;
 public class ManufacturerCompaniesController : BaseSettingController<ManufacturerCompany, ManufacturerCompanyCreateCommand, ManufacturerCompanyUpdateCommand>
 {
     public ManufacturerCompaniesController(IManufacturerCompanyService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     { }
 
     [HttpPost]

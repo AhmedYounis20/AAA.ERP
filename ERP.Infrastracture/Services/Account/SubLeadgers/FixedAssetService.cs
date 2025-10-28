@@ -133,7 +133,7 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
             return new ApiResponse<FixedAsset>
             {
                 IsSuccess = false,
-                ErrorMessages = [ex.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
             };
         }
     }
@@ -244,7 +244,7 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
             return new ApiResponse<FixedAsset>
             {
                 IsSuccess = false,
-                ErrorMessages = [ex.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
             };
         }
     }
@@ -290,7 +290,7 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = [ex.Message.Trim().ToString()]
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message.Trim().ToString() } }
                 };
             }
         }
@@ -299,7 +299,7 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
         {
             IsSuccess = false,
             StatusCode = HttpStatusCode.BadRequest,
-            ErrorMessages = validationResult.errors
+            Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
         };
     }
 }

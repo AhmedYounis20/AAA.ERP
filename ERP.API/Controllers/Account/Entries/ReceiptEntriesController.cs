@@ -12,8 +12,7 @@ public class ReceiptEntriesController : BaseController<Entry, ReceiptEntryCreate
     private IReceiptEntryService _service;
 
     public ReceiptEntriesController(IReceiptEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

@@ -33,7 +33,7 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.errors
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -78,7 +78,7 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message.ToString() } }
             };
         }
     }
@@ -109,7 +109,7 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.errors
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                 };
             }
 
@@ -160,7 +160,7 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = [ex.Message.ToString()]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message.ToString() } }
             };
         }
     }

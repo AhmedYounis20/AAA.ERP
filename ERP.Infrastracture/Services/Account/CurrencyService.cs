@@ -10,13 +10,11 @@ namespace ERP.Infrastracture.Services.Account;
 public class CurrencyService : BaseSettingService<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>, ICurrencyService
 {
     private readonly ICurrencyRepository _repository;
-    private readonly IStringLocalizer<Resource> _localizer;
     private readonly IHttpContextAccessor _accessor;
 
-    public CurrencyService(ICurrencyRepository repository, IStringLocalizer<Resource> localizer, IHttpContextAccessor accessor) : base(repository)
+    public CurrencyService(ICurrencyRepository repository, IHttpContextAccessor accessor) : base(repository)
     {
         _repository = repository;
-        _localizer = localizer;
         _accessor = accessor;
     }
 
@@ -42,7 +40,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
                                   _accessor.HttpContext.Request.Headers["Accept-Language"].Any(e => e.Contains("ar")) ||
                                           _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
                                            _accessor.HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar"));
-                result.errors.Add(_localizer["DefaultCurrencyIsAlreadyExistedWithName"].Value + " " + (isArabic ? defaultCurrency.Name : defaultCurrency.NameSecondLanguage));
+                result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
             }
         }
 
@@ -71,8 +69,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
                                       .Any(e => e.Contains("ar")) ||
                                  _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
                                   _accessor.HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar"));
-                result.errors.Add(_localizer["DefaultCurrencyIsAlreadyExistedWithName"].Value + " " +
-                                  (isArabic ? defaultCurrency.Name : defaultCurrency.NameSecondLanguage));
+                result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
             }
         }
 

@@ -11,8 +11,7 @@ public class AttributeValuesController : BaseSettingController<AttributeValue, A
     private readonly IAttributeValueService _service;
     
     public AttributeValuesController(IAttributeValueService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     {
         _service = service;
     }

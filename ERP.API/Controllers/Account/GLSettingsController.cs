@@ -13,7 +13,6 @@ namespace ERP.API.Controllers.Account;
 public class GLSettingsController : ControllerBase
 {
     GLSettingInputValidator _validator;
-    IStringLocalizer<Resource> _localizer;
     IGLSettingService _service;
 
     public string CurrentLanguage => HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
@@ -24,11 +23,9 @@ public class GLSettingsController : ControllerBase
         : "en";
 
     public GLSettingsController(IGLSettingService service,
-        GLSettingInputValidator validator,
-        IStringLocalizer<Resource> localizer)
+        GLSettingInputValidator validator)
     {
         _validator = validator;
-        _localizer = localizer;
         _service = service;
     }
 
@@ -53,17 +50,8 @@ public class GLSettingsController : ControllerBase
 
             if (result.IsSuccess)
             {
-                string operation = _localizer["Updated"].Value;
-                StringBuilder message = new StringBuilder(operation);
-                message.Append(' ');
-                message.Append(_localizer["GLSettings"]);
-                message.Append(' ');
-                message.Append(_localizer["Successfully"].Value);
-
-                result.SuccessMessage = message.ToString();
+                result.Success = new MessageTemplate { MessageKey = "UpdatedSuccessfully" };
             }
-
-            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
 
             return StatusCode((int)result.StatusCode, result);
         }
@@ -74,7 +62,7 @@ public class GLSettingsController : ControllerBase
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = validationResult.Errors.Select(e => _localizer[e.ErrorMessage].Value).ToList(),
+                    Errors = validationResult.Errors.Select(e => new MessageTemplate { MessageKey = e.ErrorMessage }).ToList(),
                 });
         }
     }

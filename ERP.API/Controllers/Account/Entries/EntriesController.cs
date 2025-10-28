@@ -12,8 +12,7 @@ public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand
     private IComplexEntryService _service;
 
     public EntriesController(IComplexEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

@@ -54,7 +54,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (sourceBranch == null || destBranch == null || sourceBranch.ChartOfAccountId == null || destBranch.ChartOfAccountId == null)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["BranchOrBranchAccountNotFound"] };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" } } };
             }
             var sourceAccountId = sourceBranch.ChartOfAccountId.Value;
             var destAccountId = command.TransferType == InventoryTransferType.Direct ?  destBranch.ChartOfAccountId.Value : Guid.Parse(SD.StockUnderTransfer_Branch);
@@ -66,7 +66,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse<InventoryTransfer>
                 {
                     IsSuccess = moveResult.IsSuccess,
-                    ErrorMessages = moveResult.ErrorMessages,
+                    Errors = moveResult.Errors,
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -80,7 +80,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (!entryResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = entryResult.ErrorMessages };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = entryResult.Errors };
             }
             await _unitOfWork.CommitAsync();
             return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };
@@ -88,7 +88,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Result = transfer,ErrorMessages=["Operation Faild"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Result = transfer, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "OperationFaild" } } };
         }
     }
 
@@ -103,7 +103,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse
                 {
                     IsSuccess = false,
-                    ErrorMessages = ["FaildToGetUsedPackingUnit"],
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "FaildToGetUsedPackingUnit" } },
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -115,7 +115,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse
                 {
                     IsSuccess = false,
-                    ErrorMessages = ["ItemWithNowStockBalance"],
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "ItemWithNowStockBalance" } },
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -134,7 +134,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                     return new ApiResponse
                     {
                         IsSuccess = false,
-                        ErrorMessages = ["DistinationBranchNotFound"],
+                        Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DistinationBranchNotFound" } },
                         StatusCode = HttpStatusCode.BadRequest
                     };
                 }
@@ -178,7 +178,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         if (defaultCurrency == null)
         {
             await _unitOfWork.RollbackAsync();
-            return (flowControl: false, value: new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["DefaultCurrencyNotFound"] }, null);
+            return (flowControl: false, value: new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DefaultCurrencyNotFound" } } }, null);
         }
         // Get financial period for today
         var now = DateTime.UtcNow;
@@ -186,7 +186,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         if (financialPeriod == null)
         {
             await _unitOfWork.RollbackAsync();
-            return (flowControl: false, value: new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["NotFoundCurrentFinancialPeriod"] }, command: null);
+            return (flowControl: false, value: new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } } }, command: null);
         }
         // Get source and destination branch accounts
 
@@ -225,7 +225,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(command.Id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer not found"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferNotFound" } } };
         transfer.SourceBranchId = command.SourceBranchId;
         transfer.DestinationBranchId = command.DestinationBranchId;
         transfer.Notes = command.Notes;
@@ -248,7 +248,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer not found"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferNotFound" } } };
         return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };
     }
 
@@ -262,9 +262,9 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.Get(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer not found"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferNotFound" } } };
         if (transfer.Status != InventoryTransferStatus.Pending)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer is not pending"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferIsNotPending" } } };
         await _unitOfWork.BeginTransactionAsync();
         try
         {
@@ -277,7 +277,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (sourceBranch == null || destBranch == null || sourceBranch.ChartOfAccountId == null || destBranch.ChartOfAccountId == null)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["BranchOrBranchAccountNotFound"] };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" } } };
             }
             var sourceAccountId = Guid.Parse(SD.StockUnderTransfer_Branch);
             var destAccountId =  destBranch.ChartOfAccountId.Value;
@@ -290,7 +290,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse<InventoryTransfer>
                 {
                     IsSuccess = moveResult.IsSuccess,
-                    ErrorMessages = moveResult.ErrorMessages,
+                    Errors = moveResult.Errors,
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -304,7 +304,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (!entryResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = entryResult.ErrorMessages };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = entryResult.Errors };
             }
             await _unitOfWork.CommitAsync();
             return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };          
@@ -325,9 +325,9 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer not found"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferNotFound" } } };
         if (transfer.Status != InventoryTransferStatus.Pending)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["Transfer is not pending"] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransferIsNotPending" } } };
                await _unitOfWork.BeginTransactionAsync();
         try
         {
@@ -340,7 +340,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (sourceBranch == null || destBranch == null || sourceBranch.ChartOfAccountId == null || destBranch.ChartOfAccountId == null)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = ["BranchOrBranchAccountNotFound"] };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" } } };
             }
             var sourceAccountId = Guid.Parse(SD.StockUnderTransfer_Branch);
             var destAccountId =  sourceBranch.ChartOfAccountId.Value;
@@ -353,7 +353,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse<InventoryTransfer>
                 {
                     IsSuccess = moveResult.IsSuccess,
-                    ErrorMessages = moveResult.ErrorMessages,
+                    Errors = moveResult.Errors,
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -367,7 +367,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             if (!entryResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
-                return new ApiResponse<InventoryTransfer> { IsSuccess = false, ErrorMessages = entryResult.ErrorMessages };
+                return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = entryResult.Errors };
             }
             await _unitOfWork.CommitAsync();
             return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };          

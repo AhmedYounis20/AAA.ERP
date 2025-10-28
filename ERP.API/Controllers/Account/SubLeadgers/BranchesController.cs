@@ -11,14 +11,12 @@ namespace ERP.API.Controllers.Account.SubLeadgers;
 public class BranchesController : BaseTreeSettingController<Branch, BranchCreateCommand, BranchUpdateCommand>
 {
     private IBranchService _service;
-    private readonly IStringLocalizer<Resource> _localizer;
     private ISender _sender;
     IBaseQueryService<Branch, SubLeadgerLookupDto> _baseQueryService;
 
-    public BranchesController(IStringLocalizer<Resource> localizer, IBranchService service, IBaseQueryService<Branch, SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, localizer, sender)
+    public BranchesController(IBranchService service, IBaseQueryService<Branch, SubLeadgerLookupDto> baseQueryService, ISender sender)
+        : base(service, sender)
     {
-        _localizer = localizer;
         _service = service;
         _sender = sender;
         _baseQueryService = baseQueryService;
@@ -45,8 +43,7 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

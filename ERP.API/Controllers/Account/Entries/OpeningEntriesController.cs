@@ -12,8 +12,7 @@ public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreate
     private IOpeningEntryService _service;
 
     public OpeningEntriesController(IOpeningEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

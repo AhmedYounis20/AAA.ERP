@@ -9,8 +9,7 @@ namespace ERP.API.Controllers.Inventory;
 public class PackingUnitsController : BaseSettingController<PackingUnit, PackingUnitCreateCommand, PackingUnitUpdateCommand>
 {
     public PackingUnitsController(IPackingUnitService service,
-        IStringLocalizer<Resource> localizer,
-        ISender mapper) : base(service, localizer, mapper)
+        ISender mapper) : base(service, mapper)
     { }
 
     [HttpPost]

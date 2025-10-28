@@ -12,8 +12,7 @@ public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreate
     private IPaymentEntryService _service;
 
     public PaymentEntriesController(IPaymentEntryService service,
-        IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]

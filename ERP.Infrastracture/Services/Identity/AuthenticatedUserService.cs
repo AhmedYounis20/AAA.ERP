@@ -78,7 +78,7 @@ namespace Domain.Account.Services.Identity
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
-                    _response.ErrorMessages = new() { "USER_NOT_FOUND" };
+                    _response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "USER_NOT_FOUND" } };
                     return _response;
                 }
 
@@ -87,7 +87,7 @@ namespace Domain.Account.Services.Identity
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    _response.ErrorMessages = new() { "INCORRENCT_EMAIL_OR_PASSWORD" };
+                    _response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INCORRENCT_EMAIL_OR_PASSWORD" } };
                     return _response;
                 }
 
@@ -123,7 +123,7 @@ namespace Domain.Account.Services.Identity
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new() { "Login failed.", ex.Message };
+                _response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "Login failed." }, new MessageTemplate { MessageKey = ex.Message } };
             }
 
             return _response;
@@ -133,7 +133,7 @@ namespace Domain.Account.Services.Identity
         {
             var _response = new ApiResponse
             {
-                ErrorMessages = new List<string>()
+                Errors = new List<MessageTemplate>()
             };
 
             // Check if user exists
@@ -144,7 +144,7 @@ namespace Domain.Account.Services.Identity
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.ErrorMessages.Add("Username already exists");
+                _response.Errors.Add(new MessageTemplate { MessageKey = "UsernameAlreadyExists" });
                 return _response;
             }
 
@@ -168,7 +168,7 @@ namespace Domain.Account.Services.Identity
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccess = false;
-                    _response.ErrorMessages.Add("User creation failed");
+                    _response.Errors.Add(new MessageTemplate { MessageKey = "UserCreationFailed" });
                     return _response;
                 }
 
@@ -193,7 +193,7 @@ namespace Domain.Account.Services.Identity
 
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages.Add($"Transaction failed: {ex.Message}");
+                _response.Errors.Add(new MessageTemplate { MessageKey = $"Transaction failed: {ex.Message}" });
                 return _response;
             }
         }
@@ -212,7 +212,7 @@ namespace Domain.Account.Services.Identity
             {
                 response.IsSuccess = false;
                 response.StatusCode = HttpStatusCode.BadRequest;
-                response.ErrorMessages = ["INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN"];
+                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN" } };
                 return response;
             }
 
@@ -223,7 +223,7 @@ namespace Domain.Account.Services.Identity
             {
                 response.IsSuccess = false;
                 response.StatusCode = HttpStatusCode.BadRequest;
-                response.ErrorMessages = ["INVALID_REFRESH_TOKEN"];
+                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INVALID_REFRESH_TOKEN" } };
                 return response;
             }
 

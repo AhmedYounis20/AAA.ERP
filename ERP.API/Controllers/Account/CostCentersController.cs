@@ -12,9 +12,7 @@ public class CostCentersController : BaseTreeSettingController<CostCenter, CostC
     IBaseQueryService<CostCenter, CostCenterLookupDto> _baseQueryService;
     public CostCentersController(ICostCenterService service,
             IBaseQueryService<CostCenter, CostCenterLookupDto> baseQueryService,
-
-    IStringLocalizer<Resource> localizer,
-        ISender sender) : base(service, localizer, sender)
+        ISender sender) : base(service, sender)
     => _baseQueryService = baseQueryService;
 
     [HttpPost]
@@ -43,8 +41,7 @@ public class CostCentersController : BaseTreeSettingController<CostCenter, CostC
             result = new ApiResponse<IEnumerable<CostCenterLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch

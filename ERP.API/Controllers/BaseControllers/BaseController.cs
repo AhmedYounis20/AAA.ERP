@@ -12,7 +12,6 @@ namespace ERP.API.Controllers.BaseControllers
         where TUpdate : BaseUpdateCommand<TEntity>
     {
         private readonly IBaseService<TEntity, TCreate, TUpdate> _service;
-        private readonly IStringLocalizer<Resource> _localizer;
         private readonly ISender _sender;
         public string CurrentLanguage => HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
             HttpContext.Request.Headers["Accept-Language"].Any(e => e.Contains("ar")) ||
@@ -21,20 +20,17 @@ namespace ERP.API.Controllers.BaseControllers
 
 
         public BaseController(IBaseService<TEntity, TCreate, TUpdate> service,
-            IStringLocalizer<Resource> localizer,
             ISender sender)
         {
             _service = service;
-            _localizer = localizer;
             _sender = sender;
         }
 
         protected virtual async Task<IActionResult> CreateRecord(TCreate input)
         {
             var result = await _sender.Send(input);
-            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.SuccessMessage = _localizer["CreatedSuccessfully"].Value;
+                result.Success = new MessageTemplate { MessageKey = "CreatedSuccessfully" };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -54,20 +50,16 @@ namespace ERP.API.Controllers.BaseControllers
         {
             input.Id = id;
             var result = await _sender.Send(input);
-            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
-              if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.SuccessMessage = _localizer["UpdatedSuccessfully"].Value;
-
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.Success = new MessageTemplate { MessageKey = "UpdatedSuccessfully" };
             return StatusCode((int)result.StatusCode, result);
         }
 
         protected virtual async Task<IActionResult> DeleteRecord(Guid id)
         {
             var result = await _service.Delete(id);
-            result.ErrorMessages = result.ErrorMessages?.Select(e => _localizer[e].Value).ToList();
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-            result.SuccessMessage = _localizer["DeletedSuccessfully"].Value;
-
+            result.Success = new MessageTemplate { MessageKey = "DeletedSuccessfully" };
             return StatusCode((int)result.StatusCode, result);
         }
     }

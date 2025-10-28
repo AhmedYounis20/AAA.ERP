@@ -44,7 +44,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                ErrorMessages = ["Transaction not found"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionNotFound" } }
             };
         }
 
@@ -54,7 +54,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = ["Transaction is not an export transaction"]
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionIsNotExportTransaction" } }
             };
         }
 
@@ -82,7 +82,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
         {
             IsSuccess = false,
             StatusCode = result.StatusCode,
-            ErrorMessages = result.ErrorMessages
+            Errors = result.Errors
         };
     }
 
