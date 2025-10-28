@@ -1,0 +1,35 @@
+global using Shared.Application.Repositories;
+global using Shared.Domain.BaseEntities;
+global using Shared.Infrastructure.Repositories;
+global using Microsoft.EntityFrameworkCore;
+global using Account.Infrastructure.Data;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using System.Linq.Expressions;
+global using Microsoft.Identity.Client;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Shared.Infrastructure.Data.DbConfig.BaseConfig;
+global using Shared.Domain.Attachments;
+global using Account.Application.Services;
+global using Shared;
+global using Shared.Domain.CQRS;
+global using Shared.Domain.Responses;
+global using Account.Application.Services.Entries;
+global using Account.Domain.Models.Entities.Entries;
+global using Account.Application.Data;
+global using Account.Application.Repositories.SubLeadgers;
+global using Account.Domain.Models.Entities.SubLeadgers;
+global using Account.Infrastructure.Repositories.BaseRepositories;
+global using Account.Application.Repositories;
+global using Shared.Infrastructure.BaseServices;
+global using Account.Domain.DTOs;
+global using Mapster;
+global using Account.Domain.Commands.Entries;
+global using Account.Domain.DTOs.Entry;
+global using Serilog;
+global using System.Net;
+global using Shared.Domain.Utility;
+global using Account.Application.Services.SubLeadgers;
+global using Account.Infrastructure.Services.SubLeadgers.SubLeadgerBaseService;
+global using Account.Domain;
+
+

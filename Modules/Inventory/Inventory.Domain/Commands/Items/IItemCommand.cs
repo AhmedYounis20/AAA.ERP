@@ -1,0 +1,29 @@
+﻿using Inventory.Domain.Models.DTOS;
+using Inventory.Domain.Models.Entities.Items;
+
+namespace Inventory.Domain.Commands.Items;
+
+public interface IItemCommand
+{
+    // SubDomain Properties
+    public bool ApplyDomainChanges { get; set; }
+    public Guid? ColorId { get; set; }
+    public Guid? SizeId { get; set; }
+
+    // Domain Properties (for managing SubDomain combinations)
+    public List<ColorSizeCombinationDto> SubDomainCombinations { get; set; }
+    public ItemType? ItemType { get; set; }
+    public decimal MaxDiscount { get; set; }
+    public decimal ConditionalDiscount { get; set; }
+    public decimal DefaultDiscount { get; set; }
+    public DiscountType DefaultDiscountType { get; set; }
+    public bool IsDiscountBasedOnSellingPrice { get; set; }
+    public string? Model { get; set; }
+    public string? Version { get; set; }
+    public string? CountryOfOrigin { get; set; }
+    public List<Guid> SuppliersIds { get; set; }
+    public List<string> BarCodes { get; set; }
+    public List<Guid> ManufacturerCompaniesIds { get; set; }
+    public List<ItemSellingPriceDiscountDto> SellingPriceDiscounts { get; set; }
+    public List<ItemPackingUnitDto> PackingUnits { get; set; }
+}

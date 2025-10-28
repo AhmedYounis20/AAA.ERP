@@ -1,0 +1,27 @@
+using ERP.Application.Data;
+using ERP.Application.Repositories.Inventory;
+using Inventory.Domain.Models.Entities;
+using Inventory.Infrastructure.Repositories.BaseRepositories;
+
+namespace Inventory.Infrastructure.Repositories;
+
+public class InventoryTransferRepository : BaseRepository<InventoryTransfer>, IInventoryTransferRepository
+{
+    public InventoryTransferRepository(IInventoryDbContext context) : base(context) { }
+
+    public async Task<InventoryTransfer?> GetWithDetails(Guid id)
+    {
+        return await _dbSet
+            //.Include(e => e.SourceBranch)
+            //.Include(e => e.DestinationBranch)
+            .Include(e => e.Items)
+            .ThenInclude(i => i.Item)
+            .Include(e => e.Items)
+            .ThenInclude(i => i.PackingUnit)
+            .FirstOrDefaultAsync(e => e.Id == id);
+    }   
+    public async Task<IEnumerable<InventoryTransfer>> GetByStatus(InventoryTransferStatus status)
+    {
+        return await _dbSet.Where(e => e.Status == status).ToListAsync();
+    }
+} 

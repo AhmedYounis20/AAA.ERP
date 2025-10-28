@@ -1,0 +1,12 @@
+﻿global using Shared.Application.BaseServices;
+global using Shared.Domain.Commands.BaseInputModels.BaseCreateCommands;
+global using Shared.Domain.Commands.BaseInputModels.BaseUpdateCommands;
+global using Shared.Application.Repositories;
+global using Shared.Domain.BaseEntities;
+global using Shared.Domain.Responses;
+global using Shared.Infrastructure.BaseServices;
+global using Mapster;
+global using System.Net;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.EntityFrameworkCore.ValueGeneration;

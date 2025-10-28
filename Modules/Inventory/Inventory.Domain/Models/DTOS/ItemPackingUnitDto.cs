@@ -1,0 +1,15 @@
+﻿namespace Inventory.Domain.Models.DTOS;
+
+public class ItemPackingUnitDto
+{
+    public Guid PackingUnitId { get; set; }
+    public string? Name { get; set; } // Packing unit name
+    public int PartsCount { get; set; }
+    public bool IsDefaultPackingUnit { get; set; }
+    public bool IsDefaultSales { get; set; }
+    public bool IsDefaultPurchases { get; set; }
+    public decimal LastCostPrice { get; set; }
+    public decimal AverageCostPrice { get; set; }
+    public int OrderNumber { get; set; }
+    public List<ItemPackingUnitSellingPriceDto> SellingPrices { get; set; } = [];
+}

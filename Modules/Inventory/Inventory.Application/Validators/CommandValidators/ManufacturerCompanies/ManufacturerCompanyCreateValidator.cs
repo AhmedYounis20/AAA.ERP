@@ -1,0 +1,8 @@
+using Inventory.Domain.Commands.ManufacturerCompanies;
+using Inventory.Domain.Models.Entities.ManufacturerCompanies;
+using Shared.Application.Validators.BaseCommandValidators.CreateCommandValidators;
+
+namespace Inventory.Application.Validators.CommandValidators.ManufacturerCompanies;
+
+public class ManufacturerCompanyCreateValidator : BaseSettingCreateValidator<ManufacturerCompanyCreateCommand, ManufacturerCompany>
+{ }

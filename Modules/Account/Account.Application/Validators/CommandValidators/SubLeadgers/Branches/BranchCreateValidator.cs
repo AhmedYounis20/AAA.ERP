@@ -1,0 +1,19 @@
+using Account.Domain.Commands.SubLeadgers.Branches;
+using Account.Domain.Models.Entities.SubLeadgers;
+using Account.Application.Validators.CommandValidators.SubLeadgers.BaseSubLeadgers;
+
+namespace Account.Application.Validators.CommandValidators.SubLeadgers.Branches;
+
+public class BranchCreateValidator : BaseSubLeadgerCreateValidator<BranchCreateCommand, Branch>
+{
+    public BranchCreateValidator() : base()
+    {
+        _ = RuleFor(e => e.Address).MaximumLength(300).When(e => e.NodeType.Equals(NodeType.Domain));
+        _ = RuleFor(e => e.Phone).MaximumLength(300).When(e => e.NodeType.Equals(NodeType.Domain));
+        _ = RuleFor(e => e.Logo.Length).LessThanOrEqualTo(10 * 1024 * 1024).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo != null);
+        _ = RuleFor(e => e.Logo.ContentType).Must(IsImage).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo != null);
+    }
+    private bool IsImage(string contentType)
+        => contentType.StartsWith("image/");
+
+}

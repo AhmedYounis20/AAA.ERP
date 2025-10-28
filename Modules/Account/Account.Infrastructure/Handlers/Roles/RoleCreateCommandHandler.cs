@@ -1,0 +1,13 @@
+using Account.Domain.Commands.Roles;
+using Account.Domain.Models.Entities.Roles;
+
+namespace Account.Infrastructure.Handlers.Roles;
+
+public class RoleCreateCommandHandler(IRoleService service) : ICommandHandler<RoleCreateCommand, ApiResponse<Role>>
+{
+    public async Task<ApiResponse<Role>> Handle(RoleCreateCommand request,
+        CancellationToken cancellationToken)
+    {
+        return await service.Create(request);
+    }
+}
