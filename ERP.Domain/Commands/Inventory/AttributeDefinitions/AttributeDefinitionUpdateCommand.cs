@@ -12,5 +12,5 @@ public class AttributeDefinitionUpdateCommand : BaseSettingUpdateCommand<Attribu
     public string NameSecondLanguage { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
     public int SortOrder { get; set; }
-    public List<AttributeValueUpdateCommand> PredefinedValues { get; set; } = new();
+    public List<AttributeValueInlineUpdateCommand> PredefinedValues { get; set; } = new();
 }
