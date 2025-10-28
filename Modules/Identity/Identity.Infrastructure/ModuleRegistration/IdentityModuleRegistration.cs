@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.DataProtection;
 using Identity.Domain.Models;
 using Shared.Application.ModuleRegistration;
+using Shared.Application.Seeding;
+using Identity.Infrastructure.Seeding;
 
 namespace Identity.Infrastructure.ModuleRegistration;
 
@@ -42,8 +44,13 @@ public class IdentityModuleRegistration : IModuleRegistration
     public void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<IdentityDbContext>(options =>
+        {
+
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Identity.Infrastructure")));
+                b => b.MigrationsAssembly("Identity.Infrastructure"));
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+        });
     }
 
     public void RegisterMediatR(IServiceCollection services)
@@ -58,5 +65,6 @@ public class IdentityModuleRegistration : IModuleRegistration
     {
         // Controllers will be registered automatically by ASP.NET Core
         // when they are in the same assembly or referenced assemblies
+        services.AddScoped<IModuleSeeder, IdentityModuleSeeder>();
     }
 }

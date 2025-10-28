@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.BaseServices;
 using Shared.Application.ModuleRegistration;
+using Shared.Application.Seeding;
+using Inventory.Infrastructure.Seeding;
 
 namespace Inventory.Infrastructure.ModuleRegistration;
 
@@ -55,8 +57,12 @@ public class InventoryModuleRegistration : IModuleRegistration
     public void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<InventoryDbContext>(options =>
+        {
+
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Inventory.Infrastructure")));
+                b => b.MigrationsAssembly("Inventory.Infrastructure"));
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        });
         services.AddScoped<IInventoryDbContext,InventoryDbContext>();
     }
 
@@ -72,5 +78,6 @@ public class InventoryModuleRegistration : IModuleRegistration
     {
         // Controllers will be registered automatically by ASP.NET Core
         // when they are in the same assembly or referenced assemblies
+        services.AddScoped<IModuleSeeder, InventoryModuleSeeder>();
     }
 }

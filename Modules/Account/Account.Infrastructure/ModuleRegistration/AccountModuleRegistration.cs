@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.BaseServices;
 using Shared.Application.ModuleRegistration;
+using Shared.Application.Seeding;
+using Account.Infrastructure.Seeding;
 
 namespace Account.Infrastructure.ModuleRegistration;
 
@@ -78,8 +80,11 @@ public class AccountModuleRegistration : IModuleRegistration
     public void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AccountDbContext>(options =>
+        {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Account.Infrastructure")));
+                b => b.MigrationsAssembly("Account.Infrastructure"));
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        });
 
         services.AddScoped<IAccountDbContext, AccountDbContext>();
     }
@@ -96,5 +101,6 @@ public class AccountModuleRegistration : IModuleRegistration
     {
         // Controllers will be registered automatically by ASP.NET Core
         // when they are in the same assembly or referenced assemblies
+        services.AddScoped<IModuleSeeder, AccountModuleSeeder>();
     }
 }

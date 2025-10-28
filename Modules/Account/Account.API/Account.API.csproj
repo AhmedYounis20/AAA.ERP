@@ -16,4 +16,12 @@
     <ProjectReference Include="..\..\Shared\Shared.API\Shared.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\..\ERP.API\seeding\account\**\*.*"
+             Exclude="..\..\..\ERP.API\seeding\account\AspNet*.json;..\..\..\ERP.API\seeding\account\AttributeDefinitions.json;..\..\..\ERP.API\seeding\account\AttributeValues.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Seeding\Data\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>

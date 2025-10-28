@@ -1,9 +1,10 @@
 using Account.Infrastructure.ModuleRegistration;
 using Identity.Infrastructure.ModuleRegistration;
 using Inventory.Infrastructure.ModuleRegistration;
-using Shared.Application.ModuleRegistration;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Shared.Application.ModuleRegistration;
 using System.Reflection;
+using ERP.MainAPI.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,23 +31,5 @@ foreach (var module in modules)
     module.RegisterControllers(builder.Services);
 }
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+// Configure application using WebBuilderExtensions
+builder.ConfigureApplication();

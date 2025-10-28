@@ -16,4 +16,11 @@
     <ProjectReference Include="..\..\Shared\Shared.API\Shared.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\..\ERP.API\seeding\account\AspNet*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Seeding\Data\%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>

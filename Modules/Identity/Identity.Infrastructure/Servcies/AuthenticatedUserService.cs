@@ -76,7 +76,7 @@ namespace Identity.Infrastructure.Servcies
             try
             {
                 var userFromDb = await _db.ApplicationUsers
-                    .FirstOrDefaultAsync(e => !string.IsNullOrEmpty(e.UserName) && e.UserName.ToLower() == loginRequestDTO.Email.ToLower());
+                    .FirstOrDefaultAsync(e => !string.IsNullOrEmpty(e.UserName) && e.UserName.ToLower() == loginRequestDTO.Username.ToLower());
 
                 if (userFromDb == null)
                 {

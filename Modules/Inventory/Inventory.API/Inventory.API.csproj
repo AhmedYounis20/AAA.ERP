@@ -15,4 +15,15 @@
     <ProjectReference Include="..\..\Shared\Shared.API\Shared.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\..\ERP.API\seeding\account\AttributeDefinitions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Seeding\Data\AttributeDefinitions.json</Link>
+    </Content>
+    <Content Include="..\..\..\ERP.API\seeding\account\AttributeValues.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Seeding\Data\AttributeValues.json</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>
