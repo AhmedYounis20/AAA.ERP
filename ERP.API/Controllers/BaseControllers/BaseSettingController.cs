@@ -29,46 +29,46 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         return StatusCode((int)result.StatusCode, result);
     }
 
-    protected override async Task<IActionResult> CreateRecord(TCreate input)
-    {
-        var result = await _sender.Send(input);
-        if (result.IsSuccess)
-        {
-            result.Success = new MessageTemplate
-            {
-                MessageKey = "AddedSuccessfullyWithName",
-                Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
-            };
-        }
-        return StatusCode((int)result.StatusCode, result);
-    }
+    //protected override async Task<IActionResult> CreateRecord(TCreate input)
+    //{
+    //    var result = await _sender.Send(input);
+    //    if (result.IsSuccess)
+    //    {
+    //        result.Success = new MessageTemplate
+    //        {
+    //            MessageKey = "AddedSuccessfullyWithName",
+    //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
+    //        };
+    //    }
+    //    return StatusCode((int)result.StatusCode, result);
+    //}
 
-    protected override async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
-    {
-        input.Id = id;
-        var result = await _sender.Send(input);
-        if (result.IsSuccess)
-        {
-            result.Success = new MessageTemplate
-            {
-                MessageKey = "UpdatedSuccessfullyWithName",
-                Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
-            };
-        }
-        return StatusCode((int)result.StatusCode, result);
-    }
+    //protected override async Task<IActionResult> UpdateRecord(Guid id, TUpdate input)
+    //{
+    //    input.Id = id;
+    //    var result = await _sender.Send(input);
+    //    if (result.IsSuccess)
+    //    {
+    //        result.Success = new MessageTemplate
+    //        {
+    //            MessageKey = "UpdatedSuccessfullyWithName",
+    //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
+    //        };
+    //    }
+    //    return StatusCode((int)result.StatusCode, result);
+    //}
 
-    protected override async Task<IActionResult> DeleteRecord(Guid id)
-    {
-        var result = await _service.Delete(id);
-        if (result.IsSuccess)
-        {
-            result.Success = new MessageTemplate
-            {
-                MessageKey = "DeletedSuccessfullyWithName",
-                Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
-            };
-        }
-        return StatusCode((int)result.StatusCode, result);
-    }
+    //protected override async Task<IActionResult> DeleteRecord(Guid id)
+    //{
+    //    var result = await _service.Delete(id);
+    //    if (result.IsSuccess)
+    //    {
+    //        result.Success = new MessageTemplate
+    //        {
+    //            MessageKey = "DeletedSuccessfullyWithName",
+    //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
+    //        };
+    //    }
+    //    return StatusCode((int)result.StatusCode, result);
+    //}
 }

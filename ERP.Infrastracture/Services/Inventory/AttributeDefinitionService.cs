@@ -27,10 +27,12 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
 
     public override async Task<ApiResponse<AttributeDefinition>> Create(AttributeDefinitionCreateCommand command, bool isValidate = true)
     {
+
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-
+            var predefinedValues = command.PredefinedValues;
+            command.PredefinedValues = [];
             // First, create the attribute definition using the base implementation
             var createDefinitionResponse = await base.Create(command, isValidate);
 
@@ -42,7 +44,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
             }
 
             // If no predefined values, commit and return
-            if (command.PredefinedValues is null || command.PredefinedValues.Count == 0)
+            if (predefinedValues is null || predefinedValues.Count == 0)
             {
                 await _unitOfWork.CommitAsync();
                 return createDefinitionResponse;
@@ -51,7 +53,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
             // Attach incoming predefined values to the newly created definition
             var definitionId = createDefinitionResponse.Result.Id;
 
-            var valuesToCreate = command.PredefinedValues
+            var valuesToCreate = predefinedValues
                 .Where(v => !string.IsNullOrWhiteSpace(v.Name) || !string.IsNullOrWhiteSpace(v.NameSecondLanguage))
                 .Select(v => new AttributeValue
                 {
@@ -114,7 +116,8 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-
+            var predefinedValues = command.PredefinedValues;
+            command.PredefinedValues = [];
             // Update the definition using base logic first
             var updateDefinitionResponse = await base.Update(command, isValidate);
             if (!updateDefinitionResponse.IsSuccess || updateDefinitionResponse.Result is null)
@@ -140,7 +143,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
             var toCreate = new List<AttributeValue>();
             var incomingIds = new HashSet<Guid>();
 
-            foreach (var v in command.PredefinedValues)
+            foreach (var v in predefinedValues)
             {
                 if (v.Id == Guid.Empty || !existingById.ContainsKey(v.Id))
                 {
