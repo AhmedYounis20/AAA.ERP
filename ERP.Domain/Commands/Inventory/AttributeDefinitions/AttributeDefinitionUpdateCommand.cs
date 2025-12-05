@@ -9,5 +9,5 @@ public class AttributeDefinitionUpdateCommand : BaseSettingUpdateCommand<Attribu
     public Guid Id { get; set; }
     public bool IsActive { get; set; } = true;
     public int SortOrder { get; set; }
-    public List<AttributeValueInlineUpdateCommand> PredefinedValues { get; set; } = new();
+    public List<AttributeValueInlineUpdateDto> PredefinedValues { get; set; } = new();
 }
