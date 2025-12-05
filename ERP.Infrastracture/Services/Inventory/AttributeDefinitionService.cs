@@ -145,7 +145,7 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
 
             foreach (var v in predefinedValues)
             {
-                if (v.Id == Guid.Empty || !existingById.ContainsKey(v.Id))
+                if (!v.Id.HasValue || !existingById.ContainsKey(v.Id.Value))
                 {
                     // New value
                     if (string.IsNullOrWhiteSpace(v.Name) && string.IsNullOrWhiteSpace(v.NameSecondLanguage))
@@ -163,8 +163,8 @@ public class AttributeDefinitionService : BaseSettingService<AttributeDefinition
                 else
                 {
                     // Update existing
-                    incomingIds.Add(v.Id);
-                    var ex = existingById[v.Id];
+                    incomingIds.Add(v.Id.Value);
+                    var ex = existingById[v.Id.Value];
                     ex.Name = v.Name;
                     ex.NameSecondLanguage = v.NameSecondLanguage;
                     ex.IsActive = v.IsActive;
