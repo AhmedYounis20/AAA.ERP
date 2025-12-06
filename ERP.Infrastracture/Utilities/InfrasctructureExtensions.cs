@@ -8,6 +8,7 @@ using ERP.Application.Services.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Application.Services.Audit;
+using ERP.Application.Services.Caching;
 using ERP.Application.Services.Identity;
 using ERP.Application.Services.Inventory;
 using ERP.Infrastracture.Repositories;
@@ -20,6 +21,7 @@ using ERP.Infrastracture.Services.Account.Entries;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Audit;
+using ERP.Infrastracture.Services.Caching;
 using ERP.Infrastracture.Services.Inventory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -80,6 +82,10 @@ public static class InfrasctructureExtensions
 
         // Audit Service
         services.AddScoped<IAuditService, AuditService>();
+
+        // Caching Service
+        services.AddMemoryCache();
+        services.AddSingleton<ICacheService, CacheService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
