@@ -122,6 +122,87 @@ public class BaseRepository<TEntity>
     public async Task<List<TEntity>> CheckIfInDatabase(IEnumerable<TEntity> entities)
     => await _dbSet.Where(x => entities.Select(e => e.Id).Contains(x.Id)).ToListAsync();
 
+    #region Bulk Operations
+
+    public virtual async Task BulkInsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    {
+        const int batchSize = 1000;
+        var entityList = entities.ToList();
+
+        for (int i = 0; i < entityList.Count; i += batchSize)
+        {
+            var batch = entityList.Skip(i).Take(batchSize);
+            await _dbSet.AddRangeAsync(batch, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public virtual async Task BulkUpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    {
+        const int batchSize = 1000;
+        var entityList = entities.ToList();
+
+        for (int i = 0; i < entityList.Count; i += batchSize)
+        {
+            var batch = entityList.Skip(i).Take(batchSize);
+            _dbSet.UpdateRange(batch);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public virtual async Task BulkDeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    {
+        const int batchSize = 1000;
+        var entityList = entities.ToList();
+
+        for (int i = 0; i < entityList.Count; i += batchSize)
+        {
+            var batch = entityList.Skip(i).Take(batchSize);
+            _dbSet.RemoveRange(batch);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public virtual async Task BulkDeleteByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        const int batchSize = 1000;
+        var idList = ids.ToList();
+
+        for (int i = 0; i < idList.Count; i += batchSize)
+        {
+            var batchIds = idList.Skip(i).Take(batchSize).ToList();
+            var entitiesToDelete = await _dbSet.Where(e => batchIds.Contains(e.Id)).ToListAsync(cancellationToken);
+            _dbSet.RemoveRange(entitiesToDelete);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+    }
+
+    public virtual async Task<int> ExecuteUpdateAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TEntity>> updateExpression,
+        CancellationToken cancellationToken = default)
+    {
+        // Note: EF Core 7+ supports ExecuteUpdateAsync with SetProperty
+        // For complex updates, we use the traditional approach
+        var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
+        var compiled = updateExpression.Compile();
+        
+        foreach (var entity in entities)
+        {
+            var updated = compiled(entity);
+            _dbSet.Entry(entity).CurrentValues.SetValues(updated);
+        }
+        
+        return await context.SaveChangesAsync(cancellationToken);
+    }
+
+    #endregion
+
     //public virtual async Task<TEntity> UpdateWithAllIncludes(TEntity entity, int levels = 0)
     //{
     //    CheckNullParameter(entity);

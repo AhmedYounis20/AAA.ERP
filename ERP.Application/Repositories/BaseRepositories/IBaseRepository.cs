@@ -48,5 +48,42 @@ namespace ERP.Application.Repositories.BaseRepositories
 
         public Task<bool> CheckIfInDatabase(Guid entityId);
         public Task<List<TEntity>> CheckIfInDatabase(IEnumerable<TEntity> entities);
+
+        #region Bulk Operations
+
+        /// <summary>
+        /// Bulk insert entities (optimized for large datasets)
+        /// </summary>
+        public Task BulkInsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Bulk update entities (optimized for large datasets)
+        /// </summary>
+        public Task BulkUpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Bulk delete entities (optimized for large datasets)
+        /// </summary>
+        public Task BulkDeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Bulk delete entities by IDs (optimized for large datasets)
+        /// </summary>
+        public Task BulkDeleteByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Execute delete operation based on a predicate
+        /// </summary>
+        public Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Execute update operation based on a predicate
+        /// </summary>
+        public Task<int> ExecuteUpdateAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, TEntity>> updateExpression,
+            CancellationToken cancellationToken = default);
+
+        #endregion
     }
 }

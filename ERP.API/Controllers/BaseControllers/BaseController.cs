@@ -72,5 +72,38 @@ namespace ERP.API.Controllers.BaseControllers
             result.Success = new MessageTemplate { MessageKey = "DeletedSuccessfully" };
             return StatusCode((int)result.StatusCode, result);
         }
+
+        /// <summary>
+        /// Bulk create multiple records
+        /// </summary>
+        protected virtual async Task<IActionResult> CreateBulkRecords(List<TEntity> entities)
+        {
+            var result = await _service.Create(entities);
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.Success = new MessageTemplate { MessageKey = "BulkCreatedSuccessfully" };
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        /// <summary>
+        /// Bulk update multiple records
+        /// </summary>
+        protected virtual async Task<IActionResult> UpdateBulkRecords(List<TEntity> entities)
+        {
+            var result = await _service.Update(entities);
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.Success = new MessageTemplate { MessageKey = "BulkUpdatedSuccessfully" };
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        /// <summary>
+        /// Bulk delete multiple records
+        /// </summary>
+        protected virtual async Task<IActionResult> DeleteBulkRecords(List<TEntity> entities)
+        {
+            var result = await _service.Delete(entities);
+            if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
+                result.Success = new MessageTemplate { MessageKey = "BulkDeletedSuccessfully" };
+            return StatusCode((int)result.StatusCode, result);
+        }
     }
 }
