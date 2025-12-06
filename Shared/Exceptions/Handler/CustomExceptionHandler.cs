@@ -1,9 +1,9 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using Shared.Responses;
+using System.Net;
 
 namespace Shared.Exceptions.Handler;
 
@@ -12,52 +12,49 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         logger.LogError(
-            "Error Message : {exceptionMessage}, Time of occurance {time}",
-            exception.Message, DateTime.UtcNow);
-        (string Details, string Title, int StatusCode) details = exception switch
+            exception,
+            "Error Message: {ExceptionMessage}, Time of occurrence: {Time}, Path: {Path}",
+            exception.Message, DateTime.UtcNow, httpContext.Request.Path);
+
+        var (statusCode, errors) = exception switch
         {
-            InternalServerException => (
-                exception.Message,
-                exception.GetType().Name,
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError
+            InternalServerException internalEx => (
+                HttpStatusCode.InternalServerError,
+                new List<MessageTemplate> { new() { MessageKey = "InternalServerError", Args = new[] { internalEx.Details ?? internalEx.Message } } }
             ),
-            ValidationException => (
-                exception.Message,
-                exception.GetType().Name,
-                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
+            ValidationException validationEx => (
+                HttpStatusCode.BadRequest,
+                validationEx.Errors.Select(e => new MessageTemplate { MessageKey = e.ErrorMessage }).ToList()
             ),
-            BadRequestException => (
-                exception.Message,
-                exception.GetType().Name,
-                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
+            BadRequestException badRequestEx => (
+                HttpStatusCode.BadRequest,
+                new List<MessageTemplate> { new() { MessageKey = badRequestEx.Message, Args = badRequestEx.Details != null ? new[] { badRequestEx.Details } : null } }
             ),
-            NotFoundException => (
-                exception.Message,
-                exception.GetType().Name,
-                httpContext.Response.StatusCode = StatusCodes.Status404NotFound
+            NotFoundException notFoundEx => (
+                HttpStatusCode.NotFound,
+                new List<MessageTemplate> { new() { MessageKey = "RecordNotFound", Args = new[] { notFoundEx.Message } } }
+            ),
+            UnauthorizedAccessException => (
+                HttpStatusCode.Unauthorized,
+                new List<MessageTemplate> { new() { MessageKey = "Unauthorized" } }
             ),
             _ => (
-                exception.Message,
-                exception.GetType().Name,
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError
+                HttpStatusCode.InternalServerError,
+                new List<MessageTemplate> { new() { MessageKey = "UnexpectedError" } }
             )
         };
 
-        var problemDetails = new ProblemDetails()
+        httpContext.Response.StatusCode = (int)statusCode;
+        httpContext.Response.ContentType = "application/json";
+
+        var response = new ApiResponse
         {
-            Title = details.Title,
-            Detail = details.Details,
-            Status = details.StatusCode,
-            Instance = httpContext.Request.Path,
+            IsSuccess = false,
+            StatusCode = statusCode,
+            Errors = errors
         };
-        problemDetails.Extensions.Add("traceId", httpContext.TraceIdentifier);
-        if (exception is ValidationException validationException)
-        {
-            problemDetails.Extensions.Add("ValidationErrors", validationException.Errors);
 
-        }
-
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(response, cancellationToken: cancellationToken);
         return true;
     }
 }

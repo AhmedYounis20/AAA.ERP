@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Shared.BaseEntities.Identity;
 using Shared.Behaviors;
+using Shared.Exceptions.Handler;
 using Shared.Responses;
 
 namespace ERP.Api.Utilities;
@@ -28,6 +29,11 @@ public static class WebBuilderExtensions
             config.RegisterServicesFromAssembly(typeof(ApplicationDbContext).Assembly);
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+        
+        // Register Global Exception Handler
+        services.AddExceptionHandler<CustomExceptionHandler>();
+        services.AddProblemDetails();
+        
         services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(
             opt =>
@@ -133,7 +139,11 @@ public static class WebBuilderExtensions
         builder.Services.AddAuthenticationConfiguration(builder.Configuration);
         builder.Services.AddCors();
         var app = builder.Build();
+        
         // Configure the HTTP request pipeline.
+        // Global exception handler - must be first in pipeline
+        app.UseExceptionHandler(options => { });
+        
         app.UseSwagger();
 
         app.UseSwaggerUI(e =>
