@@ -1,5 +1,6 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.BaseControllers
 {
@@ -37,6 +38,15 @@ namespace ERP.API.Controllers.BaseControllers
         protected virtual async Task<IActionResult> GetAllRecords()
         {
             var result = await _service.ReadAll();
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        /// <summary>
+        /// Gets paginated records with filtering support
+        /// </summary>
+        protected virtual async Task<IActionResult> GetAllRecordsPaginated(BaseFilterDto filter, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.ReadAllPaginated(filter, cancellationToken);
             return StatusCode((int)result.StatusCode, result);
         }
 

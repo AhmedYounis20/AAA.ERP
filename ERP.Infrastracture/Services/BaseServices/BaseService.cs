@@ -1,5 +1,7 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Shared.DTOs;
+using System.Linq.Expressions;
 
 namespace ERP.Infrastracture.Services.BaseServices;
 
@@ -188,6 +190,94 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
                 Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
+    }
+
+    public virtual async Task<ApiResponse<PaginatedResult<TEntity>>> ReadAllPaginated(
+        BaseFilterDto filter,
+        CancellationToken cancellationToken = default)
+    {
+        return await ReadAllPaginated(filter, null, cancellationToken);
+    }
+
+    public virtual async Task<ApiResponse<PaginatedResult<TEntity>>> ReadAllPaginated(
+        BaseFilterDto filter,
+        Expression<Func<TEntity, bool>>? additionalFilter = null,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Build filter expression
+            Expression<Func<TEntity, bool>>? filterExpression = additionalFilter;
+
+            // Add date range filter if specified
+            if (filter.CreatedFrom.HasValue || filter.CreatedTo.HasValue)
+            {
+                filterExpression = CombineFilters(filterExpression, e =>
+                    (!filter.CreatedFrom.HasValue || e.CreatedAt >= filter.CreatedFrom.Value) &&
+                    (!filter.CreatedTo.HasValue || e.CreatedAt <= filter.CreatedTo.Value));
+            }
+
+            // Determine sort expression
+            Expression<Func<TEntity, object>>? orderBy = GetOrderByExpression(filter.SortBy);
+
+            var result = await _repository.GetPaginated(
+                filter.PageNumber,
+                filter.PageSize,
+                filterExpression,
+                orderBy,
+                filter.SortDescending,
+                cancellationToken);
+
+            return new ApiResponse<PaginatedResult<TEntity>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = result
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<PaginatedResult<TEntity>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+            };
+        }
+    }
+
+    /// <summary>
+    /// Override this method to provide custom sorting for entity-specific properties
+    /// </summary>
+    protected virtual Expression<Func<TEntity, object>>? GetOrderByExpression(string? sortBy)
+    {
+        if (string.IsNullOrEmpty(sortBy))
+            return e => e.CreatedAt;
+
+        return sortBy.ToLower() switch
+        {
+            "createdat" => e => e.CreatedAt,
+            "modifiedat" => e => e.ModifiedAt,
+            _ => e => e.CreatedAt
+        };
+    }
+
+    /// <summary>
+    /// Combines two filter expressions with AND logic
+    /// </summary>
+    protected static Expression<Func<TEntity, bool>>? CombineFilters(
+        Expression<Func<TEntity, bool>>? first,
+        Expression<Func<TEntity, bool>> second)
+    {
+        if (first == null)
+            return second;
+
+        var parameter = Expression.Parameter(typeof(TEntity), "e");
+        var combined = Expression.AndAlso(
+            Expression.Invoke(first, parameter),
+            Expression.Invoke(second, parameter));
+
+        return Expression.Lambda<Func<TEntity, bool>>(combined, parameter);
     }
 
     public virtual async Task<ApiResponse<TEntity>> ReadById(Guid id)
