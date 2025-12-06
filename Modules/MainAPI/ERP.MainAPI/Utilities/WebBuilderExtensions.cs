@@ -107,7 +107,7 @@ public static class WebBuilderExtensions
             .AddJsonOptions(opts =>
             {
                 opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                // opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
     }
 
