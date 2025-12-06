@@ -7,6 +7,7 @@ using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
+using ERP.Application.Services.Audit;
 using ERP.Application.Services.Identity;
 using ERP.Application.Services.Inventory;
 using ERP.Infrastracture.Repositories;
@@ -18,6 +19,7 @@ using ERP.Infrastracture.Services.Account;
 using ERP.Infrastracture.Services.Account.Entries;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
+using ERP.Infrastracture.Services.Audit;
 using ERP.Infrastracture.Services.Inventory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -75,6 +77,9 @@ public static class InfrasctructureExtensions
         services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
         services.AddScoped<IAttributeValueService, AttributeValueService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
+
+        // Audit Service
+        services.AddScoped<IAuditService, AuditService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
