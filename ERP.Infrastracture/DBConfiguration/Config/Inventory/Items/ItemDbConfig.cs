@@ -13,6 +13,11 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Items
 
             _ = builder.Property(e => e.ItemType).HasConversion<string>();
             _ = builder.Property(e => e.DefaultDiscountType).HasConversion<string>();
+            
+            // Indexes for frequently queried columns
+            _ = builder.HasIndex(e => e.NodeType);
+            _ = builder.HasIndex(e => e.ParentId);
+            _ = builder.HasIndex(e => new { e.ParentId, e.NodeType });
 
             _ = builder.HasMany(e => e.ItemSuppliers)
             .WithOne(e => e.Item)

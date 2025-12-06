@@ -10,6 +10,10 @@ public class BaseEntityDbConfig<TEntity> : IEntityTypeConfiguration<TEntity> whe
     {
         builder.HasKey(e => e.Id);
         _ = builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().HasColumnOrder(columnNumber++);
+        
+        // Index on CreatedAt for default ordering in pagination
+        _ = builder.HasIndex(e => e.CreatedAt);
+        
         _ = ApplyConfiguration(builder);
     }
 

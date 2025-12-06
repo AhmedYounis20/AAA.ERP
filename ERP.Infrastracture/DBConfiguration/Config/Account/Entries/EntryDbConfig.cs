@@ -17,9 +17,15 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Account.Entries
 
             _ = builder.Property(e => e.EntryNumber).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryType).HasConversion<string>().HasColumnOrder(columnNumber++);
-            _ = builder.HasIndex(e => e.EntryType);
             _ = builder.Property(e => e.DocumentNumber).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
+            
+            // Indexes for frequently queried columns
+            _ = builder.HasIndex(e => e.EntryType);
+            _ = builder.HasIndex(e => e.EntryNumber);
+            _ = builder.HasIndex(e => e.EntryDate);
+            _ = builder.HasIndex(e => e.FinancialPeriodId);
+            _ = builder.HasIndex(e => new { e.FinancialPeriodId, e.EntryNumber }).IsUnique();
 
             _ = builder.Property(e => e.FinancialPeriodId).HasColumnOrder(columnNumber++);
             _ = builder.HasOne(e => e.FinancialPeriod).WithMany().HasForeignKey(e => e.FinancialPeriodId);
