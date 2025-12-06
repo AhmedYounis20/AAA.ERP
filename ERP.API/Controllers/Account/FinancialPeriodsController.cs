@@ -1,5 +1,6 @@
 ﻿using ERP.Domain.Commands.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using ERP.Domain.OutputDtos.Lookups;
 
 namespace ERP.API.Controllers.Account;
 
@@ -11,12 +12,15 @@ public class
     FinancialPeriodUpdateCommand>
 {
     IFinancialPeriodService _service;
+    IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> _baseQueryService;
 
     public FinancialPeriodsController(IFinancialPeriodService service,
+        IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> baseQueryService,
         ISender sender)
         : base(service, sender)
     {
         _service = service;
+        _baseQueryService = baseQueryService;
     }
 
     [HttpPost]
@@ -50,6 +54,29 @@ public class
     public virtual async Task<IActionResult> GetCurrentFinancialPeriod()
     {
         var result = await _service.GetCurrentFinancailPeriod();
+        return StatusCode((int)result.StatusCode, result);
+    }
+
+    [HttpGet("lookups")]
+    public virtual async Task<IActionResult> GetLookUps()
+    {
+        var result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>();
+        try
+        {
+            result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
+            {
+                Result = await _baseQueryService.GetLookUps(),
+                IsSuccess = true
+            };
+        }
+        catch
+        {
+            result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+        }
         return StatusCode((int)result.StatusCode, result);
     }
 
