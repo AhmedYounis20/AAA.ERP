@@ -1,4 +1,6 @@
-﻿namespace ERP.Infrastracture.Repositories.BaseRepositories;
+﻿using Shared.DTOs;
+
+namespace ERP.Infrastracture.Repositories.BaseRepositories;
 
 public class BaseRepository<TEntity>
     : IBaseRepository<TEntity> where TEntity : BaseEntity
@@ -32,6 +34,50 @@ public class BaseRepository<TEntity>
     => await _dbSet.Where(predicate).ToListAsync();
     public DbSet<TEntity> GetQuery()
      => _dbSet;
+
+    public virtual async Task<PaginatedResult<TEntity>> GetPaginated(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Expression<Func<TEntity, object>>? orderBy = null,
+        bool descending = false,
+        CancellationToken cancellationToken = default)
+    {
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        if (orderBy != null)
+            query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+        else
+            query = query.OrderByDescending(e => e.CreatedAt);
+
+        return await query.ToPaginatedResultAsync(pageNumber, pageSize, cancellationToken);
+    }
+
+    public virtual async Task<PaginatedResult<TDto>> GetPaginated<TDto>(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, TDto>> selector,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Expression<Func<TEntity, object>>? orderBy = null,
+        bool descending = false,
+        CancellationToken cancellationToken = default)
+    {
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        if (orderBy != null)
+            query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+        else
+            query = query.OrderByDescending(e => e.CreatedAt);
+
+        var projectedQuery = query.Select(selector);
+        return await projectedQuery.ToPaginatedResultAsync(pageNumber, pageSize, cancellationToken);
+    }
 
     public virtual async Task<TEntity?> Update(TEntity entity)
     {
