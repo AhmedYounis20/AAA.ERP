@@ -179,7 +179,9 @@ public class BaseRepository<TEntity>
 
     public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+        var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
+        _dbSet.RemoveRange(entities);
+        return await context.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task<int> ExecuteUpdateAsync(
@@ -187,15 +189,13 @@ public class BaseRepository<TEntity>
         Expression<Func<TEntity, TEntity>> updateExpression,
         CancellationToken cancellationToken = default)
     {
-        // Note: EF Core 7+ supports ExecuteUpdateAsync with SetProperty
-        // For complex updates, we use the traditional approach
         var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
         var compiled = updateExpression.Compile();
         
         foreach (var entity in entities)
         {
             var updated = compiled(entity);
-            _dbSet.Entry(entity).CurrentValues.SetValues(updated);
+            context.Entry(entity).CurrentValues.SetValues(updated);
         }
         
         return await context.SaveChangesAsync(cancellationToken);
