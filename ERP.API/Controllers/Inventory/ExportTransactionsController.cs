@@ -2,6 +2,7 @@ using ERP.API.Controllers.BaseControllers;
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -26,6 +27,12 @@ public class ExportTransactionsController : BaseController<InventoryTransaction,
     {
         var result = await _service.GetAll();
         return StatusCode((int)result.StatusCode, result);
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] InventoryTransactionFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("{id}")]
@@ -53,4 +60,4 @@ public class ExportTransactionsController : BaseController<InventoryTransaction,
         var result = await _service.GetTransactionNumber(dateTime);
         return StatusCode((int)result.StatusCode, result);
     }
-} 
+}

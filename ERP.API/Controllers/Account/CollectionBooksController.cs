@@ -20,11 +20,19 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
     {
         return await CreateRecord(input);
     }
+
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
@@ -50,16 +58,16 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-
-
         }
         return StatusCode((int)result.StatusCode, result);
     }
+
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

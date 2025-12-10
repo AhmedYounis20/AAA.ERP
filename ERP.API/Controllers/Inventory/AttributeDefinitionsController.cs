@@ -1,6 +1,7 @@
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.AttributeDefinitions;
 using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -20,6 +21,12 @@ public class AttributeDefinitionsController : BaseSettingController<AttributeDef
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("lookups/active")]

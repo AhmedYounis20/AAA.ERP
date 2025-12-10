@@ -1,3 +1,5 @@
+using Shared.DTOs.Filters;
+
 namespace ERP.API.Controllers.Account.SubLeadgers;
 
 [Route("api/[controller]")]
@@ -23,6 +25,10 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
     [HttpGet]
     public async Task<IActionResult> Get()
     => await GetAllRecords();
+
+    [HttpGet("paginated")]
+    public async Task<IActionResult> GetPaginated([FromQuery] SubLeadgerFilterDto filter, CancellationToken cancellationToken)
+    => await GetAllRecordsPaginated(filter, cancellationToken);
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)

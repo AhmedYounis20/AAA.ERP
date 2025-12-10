@@ -2,6 +2,7 @@ using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.CashInBoxes;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Domain.OutputDtos.Lookups;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account.SubLeadgers;
 
@@ -28,6 +29,10 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
     [HttpGet]
     public async Task<IActionResult> Get()
     => await GetAllRecords();
+
+    [HttpGet("paginated")]
+    public async Task<IActionResult> GetPaginated([FromQuery] SubLeadgerFilterDto filter, CancellationToken cancellationToken)
+    => await GetAllRecordsPaginated(filter, cancellationToken);
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)

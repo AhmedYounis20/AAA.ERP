@@ -2,6 +2,7 @@
 using ERP.Domain.Commands.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Dtos.Inventory;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -14,7 +15,6 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         ISender mapper) : base(service, mapper)
     {
         _service = service;
-
     }
 
     [HttpPost]
@@ -22,11 +22,26 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
     {
         return await CreateRecord(input);
     }
+
+    /// <summary>
+    /// Gets all items (no pagination - for backward compatibility)
+    /// </summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         var result = await _service.GetItemDtos();
         return StatusCode((int)result.StatusCode, result);
+    }
+
+    /// <summary>
+    /// Gets paginated items with entity-specific filtering
+    /// </summary>
+    /// <param name="filter">Filter parameters including ItemType, NodeType, SupplierId, ManufacturerCompanyId, etc.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] ItemFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("getNextCode")]
@@ -35,6 +50,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         var result = await _service.GeNextCode(parentId);
         return StatusCode((int)result.StatusCode,result);
     }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
@@ -48,6 +64,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         var result = await _service.GetVariants();
         return StatusCode((int)result.StatusCode, result);
     }
+
     [HttpGet("{id}/packingUnits")]
     public async Task<IActionResult> GetPackingUnits(Guid id)
     {
@@ -57,15 +74,16 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
             return NotFound();
         return Ok(item.Result.PackingUnits);
     }
+
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ItemUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
         return await DeleteRecord(id);
     }
-
 }

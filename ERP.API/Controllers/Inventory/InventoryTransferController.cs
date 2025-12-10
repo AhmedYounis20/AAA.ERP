@@ -1,6 +1,7 @@
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory;
 using ERP.Domain.Models.Entities.Inventory;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -45,6 +46,13 @@ public class InventoryTransferController : ControllerBase
         return StatusCode((int) result.StatusCode,result);
     }
 
+    [HttpGet("paginated")]
+    public async Task<IActionResult> GetPaginated([FromQuery] InventoryTransferFilterDto filter, CancellationToken cancellationToken)
+    {
+        var result = await _service.ReadAllPaginated(filter, cancellationToken);
+        return StatusCode((int) result.StatusCode,result);
+    }
+
     [HttpGet("status/{status}")]
     public async Task<IActionResult> GetByStatus(InventoryTransferStatus status)
     {
@@ -67,4 +75,4 @@ public class InventoryTransferController : ControllerBase
         if (!result.IsSuccess) return BadRequest(result);
         return StatusCode((int) result.StatusCode,result);
     }
-} 
+}

@@ -18,11 +18,27 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
     {
         return await CreateRecord(input);
     }
+
+    /// <summary>
+    /// Gets all account guides (no pagination - for backward compatibility)
+    /// </summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    /// <summary>
+    /// Gets paginated account guides with filtering support
+    /// </summary>
+    /// <param name="filter">Filter parameters including PageNumber, PageSize, SearchTerm, etc.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
@@ -48,8 +64,6 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-
-            
         }
         return StatusCode((int) result.StatusCode, result);
     }
@@ -59,6 +73,7 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
     {
         return await UpdateRecord(id, input);
     }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

@@ -1,6 +1,7 @@
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.StockBalances;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -27,6 +28,12 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] StockBalanceFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("{id}")]
@@ -98,4 +105,4 @@ public class UpdateStockBalanceRequest
     public decimal Quantity { get; set; }
     public decimal UnitCost { get; set; }
     public bool IsReceipt { get; set; }
-} 
+}

@@ -3,6 +3,7 @@ using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.SellingPrices;
 using ERP.Domain.Models.Entities.Inventory.SellingPrices;
 using ERP.Domain.OutputDtos.Lookups;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -32,6 +33,12 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
     {
         var result = await _service.GetDtos();
         return StatusCode((int)result.StatusCode, result);
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("{id}")]

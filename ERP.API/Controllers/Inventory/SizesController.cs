@@ -1,6 +1,7 @@
 ﻿using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Sizes;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -20,26 +21,37 @@ public class SizesController : BaseSettingController<Size, SizeCreateCommand, Si
     {
         return await CreateRecord(input);
     }
+
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
+
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] SizeUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
         return await DeleteRecord(id);
     }
+
     [HttpGet("nextCode")]
     public async Task<IActionResult> GetNextCode()
     {

@@ -1,6 +1,8 @@
 ﻿using ERP.Domain.Commands.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Domain.OutputDtos.Lookups;
+using Shared.DTOs;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account;
 
@@ -34,6 +36,12 @@ public class
     {
         var result = await _service.GetDtos();
         return StatusCode((int)result.StatusCode, result);
+    }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] FinancialPeriodFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
     [HttpGet("{id}")]

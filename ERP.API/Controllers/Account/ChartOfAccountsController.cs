@@ -1,6 +1,7 @@
 ﻿using ERP.Domain.Commands.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using Shared.DTOs;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account;
 
@@ -18,21 +19,39 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
         _service = service;
         _baseQueryService = baseQueryService;
     }
+
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
     {
         return await CreateRecord(input);
     }
+
+    /// <summary>
+    /// Gets all chart of accounts (no pagination - for backward compatibility)
+    /// </summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    /// <summary>
+    /// Gets paginated chart of accounts with entity-specific filtering
+    /// </summary>
+    /// <param name="filter">Filter parameters including AccountNature, IsActiveAccount, IsPostedAccount, etc.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] ChartOfAccountFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
+
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountUpdateCommand input)
     {
@@ -67,6 +86,7 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
     {
         return await DeleteRecord(id);
     }
+
     [HttpGet("generateNewChildCode")]
     public async Task<IActionResult> GenerateNewChildCode([FromQuery] Guid? parentId)
     {
@@ -78,5 +98,4 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
     {
         return Ok(await _service.NextAccountDefaultData(parentId));
     }
-
 }

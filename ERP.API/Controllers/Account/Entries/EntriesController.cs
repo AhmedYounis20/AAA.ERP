@@ -2,6 +2,7 @@
 using ERP.Application.Services.Account.Entries;
 using ERP.Domain.Commands.Account.Entries;
 using ERP.Domain.Models.Entities.Account.Entries;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account.Entries;
 
@@ -20,11 +21,19 @@ public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand
     {
         return await CreateRecord(input);
     }
+
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] EntryFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {

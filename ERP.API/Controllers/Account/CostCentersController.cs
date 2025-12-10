@@ -2,6 +2,7 @@
 using ERP.Domain.Models.Entities.Account.AccountGuides;
 using ERP.Domain.Models.Entities.Account.CostCenters;
 using Shared.DTOs;
+using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account;
 
@@ -26,6 +27,13 @@ public class CostCentersController : BaseTreeSettingController<CostCenter, CostC
     {
         return await GetAllRecords();
     }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] CostCenterFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {

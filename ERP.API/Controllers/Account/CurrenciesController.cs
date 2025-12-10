@@ -21,16 +21,33 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
     {
         return await CreateRecord(input);
     }
+
+    /// <summary>
+    /// Gets all currencies (no pagination - for backward compatibility)
+    /// </summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
+
+    /// <summary>
+    /// Gets paginated currencies with filtering support
+    /// </summary>
+    /// <param name="filter">Filter parameters including PageNumber, PageSize, SearchTerm, etc.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        return await GetAllRecordsPaginated(filter, cancellationToken);
+    }
+
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
+
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -50,16 +67,16 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-
-
         }
         return StatusCode((int)result.StatusCode, result);
     }
+
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
+
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
