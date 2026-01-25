@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.Attachments;
+using ERP.Shared.BaseEntities.Attachments;
 
 namespace ERP.Domain.Models.Entities.Account.SubLeadgers;
 

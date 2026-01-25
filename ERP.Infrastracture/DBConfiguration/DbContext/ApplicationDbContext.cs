@@ -1,10 +1,7 @@
-﻿using ERP.Application.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Shared.BaseEntities;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
 using System.Security.Claims;
+using ERP.Domain.Models.Entities.Inventory.Attributes;
 
 namespace Domain.Account.DBConfiguration.DbContext;
 
@@ -83,4 +80,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     }
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    
+    // Attribute system DbSets
+    public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
+    public DbSet<AttributeValue> AttributeValues { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductAttributeDefinition> ProductAttributeDefinitions { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.Variants.VariantAttributeValue> VariantAttributeValues { get; set; }
+    
+    // Product template system DbSets
+    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit> ProductPackingUnits { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; }
 }

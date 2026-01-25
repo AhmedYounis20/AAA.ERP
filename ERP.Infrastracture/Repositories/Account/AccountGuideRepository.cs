@@ -6,5 +6,5 @@ namespace ERP.Infrastracture.Repositories.Account;
 
 public class AccountGuideRepository : BaseSettingRepository<AccountGuide>, IAccountGuideRepository
 {
-    public AccountGuideRepository(ApplicationDbContext context) : base(context) { }
+    public AccountGuideRepository(IApplicationDbContext context) : base(context) { }
 }

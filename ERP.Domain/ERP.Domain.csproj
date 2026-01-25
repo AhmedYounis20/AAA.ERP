@@ -12,7 +12,7 @@
 
     <ItemGroup>
       <PackageReference Include="Mapster" Version="7.4.1-pre01" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.25">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>

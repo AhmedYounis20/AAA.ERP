@@ -6,7 +6,7 @@ namespace ERP.Infrastracture.Repositories.Account;
 
 public class EntryRepository : BaseRepository<Entry>, IEntryRepository
 {
-    public EntryRepository(ApplicationDbContext context) : base(context)
+    public EntryRepository(IApplicationDbContext context) : base(context)
     { }
 
     public override async Task<Entry?> Get(Guid? id)

@@ -5,5 +5,5 @@ namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
 
 public class SupplierRepository : BaseSubLeadgerRepository<Supplier>, ISupplierRepository
 {
-    public SupplierRepository(ApplicationDbContext context) : base(context) { }
+    public SupplierRepository(IApplicationDbContext context) : base(context) { }
 }

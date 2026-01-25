@@ -1,6 +1,6 @@
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Attachments;
+namespace ERP.Shared.BaseEntities.Attachments;
 
 public class Attachment : BaseEntity
 {

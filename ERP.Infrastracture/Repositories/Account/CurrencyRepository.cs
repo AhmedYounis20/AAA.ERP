@@ -6,7 +6,7 @@ namespace ERP.Infrastracture.Repositories.Account;
 
 public class CurrencyRepository : BaseSettingRepository<Currency>, ICurrencyRepository
 {
-    public CurrencyRepository(ApplicationDbContext context) : base(context) { }
+    public CurrencyRepository(IApplicationDbContext context) : base(context) { }
 
     public async Task<Currency?> GetDefaultCurrency()
     {

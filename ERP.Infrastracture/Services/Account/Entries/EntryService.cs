@@ -2,9 +2,9 @@
 using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Domain.Commands.Account.Entries;
-using ERP.Domain.Models.Entities.Account.Attachments;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using ERP.Shared.BaseEntities.Attachments;
 
 namespace ERP.Infrastracture.Services.Account.Entries;
 

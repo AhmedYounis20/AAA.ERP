@@ -1,5 +1,5 @@
 ﻿using ERP.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Account.Attachments;
+using ERP.Shared.BaseEntities.Attachments;
 
 namespace ERP.Application.Repositories.Account;
 

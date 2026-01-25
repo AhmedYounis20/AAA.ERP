@@ -4,7 +4,6 @@ using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
-using ERP.Application.Services.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Application.Services.Audit;
@@ -23,6 +22,9 @@ using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Audit;
 using ERP.Infrastracture.Services.Caching;
 using ERP.Infrastracture.Services.Inventory;
+using ERP.Domain.Models.Entities.Inventory.Variants;
+using ERP.Domain.Models.Entities.Inventory.Products;
+using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.Infrastracture.Utilities;
@@ -33,6 +35,7 @@ public static class InfrasctructureExtensions
     {
         services.AddRepositories();
         services.AddServices();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly));
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -69,6 +72,10 @@ public static class InfrasctructureExtensions
         services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
         services.AddScoped<IItemService, ItemService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IVariantService, VariantService>();
+        services.AddScoped<IAttributeValueService, AttributeValueService>();
+        services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
         services.AddScoped<ISizeService, SizeService>();
         services.AddScoped<IColorService, ColorService>();
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
@@ -76,6 +83,8 @@ public static class InfrasctructureExtensions
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IStockBalanceService, StockBalanceService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
+        // services.AddScoped<IProductVariantReportService, ProductVariantReportService>();
+        // services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
         services.AddScoped<IAttributeValueService, AttributeValueService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
@@ -113,9 +122,29 @@ public static class InfrasctructureExtensions
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IVariantRepository, VariantRepository>();
+        services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
+        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
         services.AddScoped<ISizeRepository, SizeRepository>();
         services.AddScoped<IColorRepository, ColorRepository>();
+        
+        // New Product/Variant related repositories
+        services.AddScoped<IBaseRepository<ProductCode>, BaseRepository<ProductCode>>();
+        services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();
+        services.AddScoped<IBaseRepository<ProductManufacturerCompany>, BaseRepository<ProductManufacturerCompany>>();
+        services.AddScoped<IBaseRepository<ProductAttachment>, BaseRepository<ProductAttachment>>();
+        services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
+        services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();
+        services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
+        services.AddScoped<IBaseRepository<VariantManufacturerCompany>, BaseRepository<VariantManufacturerCompany>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnit>, BaseRepository<VariantPackingUnit>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnitSellingPrice>, BaseRepository<VariantPackingUnitSellingPrice>>();
+        services.AddScoped<IBaseRepository<VariantSellingPriceDiscount>, BaseRepository<VariantSellingPriceDiscount>>();
+        services.AddScoped<IBaseRepository<VariantAttachment>, BaseRepository<VariantAttachment>>();
+        services.AddScoped<IVariantAttributeValueRepository, VariantAttributeValueRepository>();
         services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+        // services.AddScoped<IBaseRepository<InventoryTransactionVariant>, BaseRepository<InventoryTransactionVariant>>();
         services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();

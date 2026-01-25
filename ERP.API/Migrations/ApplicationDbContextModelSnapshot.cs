@@ -17,10 +17,10 @@ namespace AAA.ERP.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.25")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.AccountGuides.AccountGuide", b =>
                 {
@@ -64,42 +64,6 @@ namespace AAA.ERP.Migrations
                         .IsUnique();
 
                     b.ToTable("AccountGuides", (string)null);
-                });
-
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Attachments.Attachment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FileContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("FileData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.ToTable("Attachments", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", b =>
@@ -1369,7 +1333,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Suppliers", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.AttributeDefinitions.AttributeDefinition", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1414,7 +1378,7 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AttributeDefinitions", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.AttributeDefinitions.AttributeValue", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeValue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2171,6 +2135,420 @@ namespace AAA.ERP.Migrations
                     b.ToTable("PackingUnits", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<decimal>("ConditionalDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CountryOfOrigin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("DefaultDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DefaultDiscountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDiscountBasedOnSellingPrice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSales")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MaxDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("NodeType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("ProductType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TrackedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Products", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductAttachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("AttachmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AttachmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttachments", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductAttributeDefinition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttributeDefinitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsVariant")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeDefinitionId");
+
+                    b.HasIndex("ProductId", "AttributeDefinitionId")
+                        .IsUnique();
+
+                    b.ToTable("ProductAttributeDefinitions", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCodes", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductManufacturerCompany", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ManufacturerCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ManufacturerCompanyId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductManufacturerCompanies", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AverageCostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDefaultPackingUnit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefaultPurchases")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefaultSales")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("LastCostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PackingUnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PartsCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductPackingUnits");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductPackingUnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellingPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductPackingUnitId");
+
+                    b.ToTable("ProductPackingUnitSellingPrices");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellingPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductSellingPriceDiscounts");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSupplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductSuppliers", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.SellingPrices.SellingPrice", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2332,6 +2710,468 @@ namespace AAA.ERP.Migrations
                     b.ToTable("StockBalances", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<bool>("ApplyProductChanges")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(7);
+
+                    b.Property<decimal>("ConditionalDiscount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("CountryOfOrigin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("DefaultDiscount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("DefaultDiscountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(8);
+
+                    b.Property<bool>("IsDiscountBasedOnSellingPrice")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(6);
+
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSales")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(9);
+
+                    b.Property<decimal>("MaxDiscount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Version")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Variants", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantAttachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("AttachmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AttachmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantAttachments", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantAttributeValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttributeDefinitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttributeValueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeDefinitionId");
+
+                    b.HasIndex("AttributeValueId");
+
+                    b.HasIndex("VariantId", "AttributeDefinitionId")
+                        .IsUnique();
+
+                    b.ToTable("VariantAttributeValues", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantCodes", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantManufacturerCompany", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ManufacturerCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ManufacturerCompanyId");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantManufacturerCompanies", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("AverageCostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDefaultPackingUnit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefaultPurchases")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefaultSales")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("LastCostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PackingUnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("PartsCount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("PackingUnitId");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantPackingUnits", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnitSellingPrice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellingPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantPackingUnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("SellingPriceId");
+
+                    b.HasIndex("VariantPackingUnitId");
+
+                    b.ToTable("VariantPackingUnitSellingPrices", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSellingPriceDiscount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DiscountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellingPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("SellingPriceId");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantSellingPriceDiscounts", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSupplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("VariantSuppliers", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Shared.BaseEntities.Attachments.Attachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("FileData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.ToTable("Attachments", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -2365,7 +3205,7 @@ namespace AAA.ERP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -2390,7 +3230,7 @@ namespace AAA.ERP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -2679,7 +3519,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.Entries.EntryAttachment", b =>
                 {
-                    b.HasOne("ERP.Domain.Models.Entities.Account.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2759,7 +3599,7 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", b =>
                 {
-                    b.HasOne("ERP.Domain.Models.Entities.Account.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -2841,9 +3681,9 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.AttributeDefinitions.AttributeValue", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeValue", b =>
                 {
-                    b.HasOne("ERP.Domain.Models.Entities.Inventory.AttributeDefinitions.AttributeDefinition", "AttributeDefinition")
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", "AttributeDefinition")
                         .WithMany("PredefinedValues")
                         .HasForeignKey("AttributeDefinitionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3063,6 +3903,125 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Supplier");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.Product", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductAttachment", b =>
+                {
+                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                        .WithMany()
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductAttachments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductAttributeDefinition", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", "AttributeDefinition")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("AttributeDefinitionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductAttributeDefinitions")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttributeDefinition");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductCode", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductCodes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductManufacturerCompany", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies.ManufacturerCompany", "ManufacturerCompany")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerCompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductManufacturerCompanies")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ManufacturerCompany");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductPackingUnits")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit", "ProductPackingUnit")
+                        .WithMany("ProductPackingUnitSellingPrices")
+                        .HasForeignKey("ProductPackingUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductPackingUnit");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductSellingPriceDiscounts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSupplier", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductSuppliers")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Sizes.StockBalance", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", "Branch")
@@ -3088,6 +4047,161 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("PackingUnit");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("Variants")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantAttachment", b =>
+                {
+                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                        .WithMany()
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantAttachments")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantAttributeValue", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", "AttributeDefinition")
+                        .WithMany("VariantAttributeValues")
+                        .HasForeignKey("AttributeDefinitionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeValue", "AttributeValue")
+                        .WithMany("VariantAttributeValues")
+                        .HasForeignKey("AttributeValueId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantAttributeValues")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttributeDefinition");
+
+                    b.Navigation("AttributeValue");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantCode", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantCodes")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantManufacturerCompany", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies.ManufacturerCompany", "ManufacturerCompany")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerCompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantManufacturerCompanies")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ManufacturerCompany");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnit", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.PackingUnits.PackingUnit", "PackingUnit")
+                        .WithMany()
+                        .HasForeignKey("PackingUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantPackingUnitPrices")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PackingUnit");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnitSellingPrice", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.SellingPrices.SellingPrice", "SellingPrice")
+                        .WithMany()
+                        .HasForeignKey("SellingPriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnit", "VariantPackingUnit")
+                        .WithMany("VariantPackingUnitSellingPrices")
+                        .HasForeignKey("VariantPackingUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SellingPrice");
+
+                    b.Navigation("VariantPackingUnit");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSellingPriceDiscount", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.SellingPrices.SellingPrice", "SellingPrice")
+                        .WithMany()
+                        .HasForeignKey("SellingPriceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantSellingPriceDiscounts")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SellingPrice");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSupplier", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantSuppliers")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -3155,9 +4269,18 @@ namespace AAA.ERP.Migrations
                     b.Navigation("FinancialTransactions");
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.AttributeDefinitions.AttributeDefinition", b =>
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", b =>
                 {
                     b.Navigation("PredefinedValues");
+
+                    b.Navigation("ProductAttributes");
+
+                    b.Navigation("VariantAttributeValues");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeValue", b =>
+                {
+                    b.Navigation("VariantAttributeValues");
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryTransactions.InventoryTransaction", b =>
@@ -3186,6 +4309,52 @@ namespace AAA.ERP.Migrations
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Items.ItemPackingUnit", b =>
                 {
                     b.Navigation("ItemPackingUnitSellingPrices");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.Product", b =>
+                {
+                    b.Navigation("ProductAttachments");
+
+                    b.Navigation("ProductAttributeDefinitions");
+
+                    b.Navigation("ProductCodes");
+
+                    b.Navigation("ProductManufacturerCompanies");
+
+                    b.Navigation("ProductPackingUnits");
+
+                    b.Navigation("ProductSellingPriceDiscounts");
+
+                    b.Navigation("ProductSuppliers");
+
+                    b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit", b =>
+                {
+                    b.Navigation("ProductPackingUnitSellingPrices");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>
+                {
+                    b.Navigation("VariantAttachments");
+
+                    b.Navigation("VariantAttributeValues");
+
+                    b.Navigation("VariantCodes");
+
+                    b.Navigation("VariantManufacturerCompanies");
+
+                    b.Navigation("VariantPackingUnitPrices");
+
+                    b.Navigation("VariantSellingPriceDiscounts");
+
+                    b.Navigation("VariantSuppliers");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPackingUnit", b =>
+                {
+                    b.Navigation("VariantPackingUnitSellingPrices");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,8 @@ using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Entities.Inventory.Products;
+using ERP.Domain.Models.Entities.Inventory.Variants;
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;
 
@@ -28,6 +30,25 @@ public interface IUnitOfWork
     public IBaseRepository<ItemPackingUnit> ItemPackingUnitRepository { get; }
     public IBaseRepository<ItemPackingUnitSellingPrice> ItemPackingUnitSellingPriceRepository { get; }
     public IBaseRepository<ItemSellingPriceDiscount> ItemSellingPriceDiscountRepository { get; }
+    public IAttributeValueRepository AttributeValueRepository { get; }
+    public IProductRepository ProductRepository { get; }
+    public IBaseRepository<ProductSupplier> ProductSupplierRepository { get; }
+    public IBaseRepository<ProductCode> ProductCodeRepository { get; }
+    public IBaseRepository<ProductAttachment> ProductAttachmentRepository { get; }
+    public IBaseRepository<ProductManufacturerCompany> ProductManufacturerCompanyRepository { get; }
+    public IBaseRepository<ProductPackingUnit> ProductPackingUnitRepository { get; }
+    public IBaseRepository<ProductPackingUnitSellingPrice> ProductPackingUnitSellingPriceRepository { get; }
+    public IBaseRepository<ProductSellingPriceDiscount> ProductSellingPriceDiscountRepository { get; }
+    public IProductAttributeDefinitionRepository ProductAttributeDefinitionRepository { get; }
+    public IVariantRepository VariantRepository { get; }
+    public IBaseRepository<VariantSupplier> VariantSupplierRepository { get; }
+    public IBaseRepository<VariantCode> VariantCodeRepository { get; }
+    public IBaseRepository<VariantAttachment> VariantAttachmentRepository { get; }
+    public IBaseRepository<VariantManufacturerCompany> VariantManufacturerCompanyRepository { get; }
+    public IBaseRepository<VariantPackingUnit> VariantPackingUnitRepository { get; }
+    public IBaseRepository<VariantPackingUnitSellingPrice> VariantPackingUnitSellingPriceRepository { get; }
+    public IBaseRepository<VariantSellingPriceDiscount> VariantSellingPriceDiscountRepository { get; }
+    public IVariantAttributeValueRepository VariantAttributeValueRepository { get; }
     public IInventoryTransactionRepository InventoryTransactionRepository { get; }
     public IInventoryTransferRepository InventoryTransferRepository { get; }
     public IStockBalanceRepository StockBalanceRepository { get; }

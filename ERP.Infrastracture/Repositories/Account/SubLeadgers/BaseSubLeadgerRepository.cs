@@ -7,8 +7,8 @@ namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
 public class BaseSubLeadgerRepository<TEntity> : BaseTreeSettingRepository<TEntity>, IBaseSubLeadgerRepository<TEntity>
     where TEntity : SubLeadgerBaseEntity<TEntity>
 {
-    private ApplicationDbContext _context;
-    public BaseSubLeadgerRepository(ApplicationDbContext context) : base(context)
+    private IApplicationDbContext _context;
+    public BaseSubLeadgerRepository(IApplicationDbContext context) : base(context)
         => _context = context;
 
     public override async Task<IEnumerable<TEntity>> Get()
