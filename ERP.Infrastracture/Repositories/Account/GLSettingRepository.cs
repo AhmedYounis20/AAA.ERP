@@ -7,7 +7,7 @@ namespace ERP.Infrastracture.Repositories.Account;
 public class GLSettingRepository : BaseRepository<GLSetting>, IGLSettingRepository
 {
     DbSet<GLSetting> _dbSet;
-    public GLSettingRepository(ApplicationDbContext context) : base(context)
+    public GLSettingRepository(IApplicationDbContext context) : base(context)
     => _dbSet = context.Set<GLSetting>();
 
     public async Task<GLSetting?> GetGLSetting()

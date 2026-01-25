@@ -6,5 +6,5 @@ namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
 
 public class CashInBoxRepository : BaseSubLeadgerRepository<CashInBox>, ICashInBoxRepository
 {
-    public CashInBoxRepository(ApplicationDbContext context) : base(context) { }
+    public CashInBoxRepository(IApplicationDbContext context) : base(context) { }
 }

@@ -1,5 +1,5 @@
-﻿using ERP.Domain.Models.Entities.Account.Attachments;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+﻿using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Shared.BaseEntities.Attachments;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ERP.Infrastracture.DBConfiguration.Config.Account.Attachments

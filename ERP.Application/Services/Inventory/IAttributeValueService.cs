@@ -1,7 +1,7 @@
 using ERP.Application.Services.BaseServices;
 using ERP.Domain.Commands.Inventory.AttributeValues;
-using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.Attributes;
 
 namespace ERP.Application.Services.Inventory;
 

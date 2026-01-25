@@ -2,6 +2,7 @@
 using Shared.BaseEntities;
 using Shared.DTOs;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ERP.Application.Repositories.BaseRepositories
 {
@@ -82,6 +83,15 @@ namespace ERP.Application.Repositories.BaseRepositories
         public Task<int> ExecuteUpdateAsync(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TEntity>> updateExpression,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Native EF Core 8.0 ExecuteUpdateAsync method for simple property updates
+        /// Example usage: ExecuteUpdateAsync(x => x.Id == id, s => s.SetProperty(b => b.PropertyName, value))
+        /// </summary>
+        public Task<int> ExecuteUpdateAsync<TProperty>(
+            Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
             CancellationToken cancellationToken = default);
 
         #endregion

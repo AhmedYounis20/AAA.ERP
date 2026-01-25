@@ -1,4 +1,5 @@
-﻿using Shared.DTOs;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using Shared.DTOs;
 
 namespace ERP.Infrastracture.Repositories.BaseRepositories;
 
@@ -89,20 +90,20 @@ public class BaseRepository<TEntity>
     }
     public virtual async Task Update(IEnumerable<TEntity> entities)
     {
-        await Task.Run(() => { _dbSet.UpdateRange(entities); });
+        _dbSet.UpdateRange(entities);
         await SaveChangesAsync();
     }
 
     public virtual async Task<TEntity?> Delete(Guid entityId)
     {
         TEntity? entity = await Get(entityId);
-        await Task.Run(() => { _dbSet.Remove(entity); });
+        _dbSet.Remove(entity);
         await SaveChangesAsync();
         return entity;
     }
     public virtual async Task Delete(TEntity entity)
     {
-        _dbSet.Remove(entity);
+        _dbSet.Remove(entity);  
         await SaveChangesAsync();
     }
     public virtual async Task Delete(IEnumerable<TEntity> entities)
@@ -179,9 +180,10 @@ public class BaseRepository<TEntity>
 
     public virtual async Task<int> ExecuteDeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(entities);
-        return await context.SaveChangesAsync(cancellationToken);
+        // Use native EF Core 8.0 ExecuteDeleteAsync - no entity loading required
+        var res = await _dbSet.Where(predicate).ExecuteDeleteAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+        return res;
     }
 
     public virtual async Task<int> ExecuteUpdateAsync(
@@ -189,6 +191,9 @@ public class BaseRepository<TEntity>
         Expression<Func<TEntity, TEntity>> updateExpression,
         CancellationToken cancellationToken = default)
     {
+        // Note: For complex updates, EF Core 8.0 native ExecuteUpdateAsync requires SetProperty calls
+        // Keeping the current implementation for backward compatibility
+        // For simple property updates, consider using ExecuteUpdateAsync with SetProperty
         var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
         var compiled = updateExpression.Compile();
         
@@ -199,6 +204,18 @@ public class BaseRepository<TEntity>
         }
         
         return await context.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Native EF Core 8.0 ExecuteUpdateAsync method for simple property updates
+    /// Example usage: ExecuteUpdateAsync(x => x.Id == id, s => s.SetProperty(b => b.PropertyName, value))
+    /// </summary>
+    public virtual async Task<int> ExecuteUpdateAsync<TProperty>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<TEntity>>> setPropertyCalls,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.Where(predicate).ExecuteUpdateAsync(setPropertyCalls, cancellationToken);
     }
 
     #endregion

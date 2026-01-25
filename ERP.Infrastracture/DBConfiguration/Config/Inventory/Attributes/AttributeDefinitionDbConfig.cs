@@ -1,5 +1,4 @@
-using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
-using Microsoft.EntityFrameworkCore;
+using ERP.Domain.Models.Entities.Inventory.Attributes;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Attributes;

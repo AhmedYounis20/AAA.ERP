@@ -1,10 +1,10 @@
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.Branches;
-using ERP.Domain.Models.Entities.Account.Attachments;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+using ERP.Shared.BaseEntities.Attachments;
 
 namespace ERP.Infrastracture.Services.Account.SubLeadgers;
 
@@ -12,14 +12,12 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
     IBranchService
 {
     private IUnitOfWork _unitOfWork;
-    private IHttpContextAccessor _accessor;
     private IBranchRepository _repository;
 
     public BranchService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
         : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BranchChartOfAccountId, SubLeadgerType.Branch)
     {
         _unitOfWork = unitOfWork;
-        _accessor = accessor;
         _repository = unitOfWork.BranchRepository;
     }
 

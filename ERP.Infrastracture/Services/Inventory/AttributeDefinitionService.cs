@@ -3,8 +3,8 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.AttributeDefinitions;
 using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
+using ERP.Domain.Models.Entities.Inventory.Attributes;
 
 namespace ERP.Infrastracture.Services.Inventory;
 

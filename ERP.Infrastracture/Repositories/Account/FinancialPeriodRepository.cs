@@ -10,8 +10,8 @@ namespace ERP.Infrastracture.Repositories.Account;
 public class FinancialPeriodRepository : BaseRepository<FinancialPeriod>, IFinancialPeriodRepository
 {
     DbSet<FinancialPeriod> _dbset;
-    ApplicationDbContext _context;
-    public FinancialPeriodRepository(ApplicationDbContext context) : base(context)
+    IApplicationDbContext _context;
+    public FinancialPeriodRepository(IApplicationDbContext context) : base(context)
     {
         _dbset = context.Set<FinancialPeriod>();
         _context = context;

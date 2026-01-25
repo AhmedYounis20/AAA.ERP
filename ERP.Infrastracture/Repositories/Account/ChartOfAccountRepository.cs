@@ -8,7 +8,7 @@ namespace ERP.Infrastracture.Repositories.Account;
 public class ChartOfAccountRepository : BaseTreeSettingRepository<ChartOfAccount>, IChartOfAccountRepository
 {
 
-    public ChartOfAccountRepository(ApplicationDbContext context) : base(context) { }
+    public ChartOfAccountRepository(IApplicationDbContext context) : base(context) { }
 
 
     public async Task<string> GenerateNewCodeForChild(Guid? parentId)

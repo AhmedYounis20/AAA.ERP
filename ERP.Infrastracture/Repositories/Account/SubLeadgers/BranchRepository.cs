@@ -5,9 +5,9 @@ namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
 
 public class BranchRepository : BaseSubLeadgerRepository<Branch>, IBranchRepository
 {
-    private ApplicationDbContext _context;
+    private IApplicationDbContext _context;
 
-    public BranchRepository(ApplicationDbContext context) : base(context) { }
+    public BranchRepository(IApplicationDbContext context) : base(context) { }
     public override async Task<IEnumerable<Branch>> Get()
     {
         return await _dbSet.Include(e => e.Attachment).Include(e => e.ChartOfAccount).ToListAsync();

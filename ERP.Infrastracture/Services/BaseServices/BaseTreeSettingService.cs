@@ -49,4 +49,16 @@ public class BaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>
 
         return await base.ValidateDelete(id);
     }
+
+    protected override async Task<(bool isValid, List<string> errors, TEntity? entity)> ValidateUpdate(TUpdateCommand command)
+    {
+        var result = await  base.ValidateUpdate(command);
+        if (result.entity?.NodeType != command.NodeType)
+        {
+            result.isValid = false;
+            result.errors.Add("Node Type cannot be changed");
+        }
+        
+        return result;
+    }
 }
