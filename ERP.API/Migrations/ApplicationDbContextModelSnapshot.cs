@@ -55,6 +55,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -94,6 +96,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.ToTable("Attachments", (string)null);
                 });
@@ -186,6 +190,8 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -229,6 +235,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(2);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -285,6 +293,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -324,6 +334,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CostCenterId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("ChartOfAccountId", "CostCenterId")
                         .IsUnique();
@@ -384,6 +396,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -433,7 +447,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("EntryNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(1);
 
                     b.Property<string>("EntryType")
@@ -469,13 +483,22 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("BranchId1");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("CurrencyId");
 
                     b.HasIndex("CurrencyId1");
 
+                    b.HasIndex("EntryDate");
+
+                    b.HasIndex("EntryNumber");
+
                     b.HasIndex("EntryType");
 
                     b.HasIndex("FinancialPeriodId");
+
+                    b.HasIndex("FinancialPeriodId", "EntryNumber")
+                        .IsUnique();
 
                     b.ToTable("Entries", (string)null);
                 });
@@ -508,6 +531,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AttachmentId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("EntryId");
 
@@ -549,6 +574,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("CostCenterId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("EntryId");
 
                     b.ToTable("EntryCostCenters", (string)null);
@@ -563,7 +590,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("AccountNature")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(3);
 
                     b.Property<decimal>("Amount")
@@ -670,11 +697,15 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountNature");
+
                     b.HasIndex("ChartOfAccountId");
 
                     b.HasIndex("ChequeBankId");
 
                     b.HasIndex("CollectionBookId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("EntryId");
 
@@ -719,6 +750,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(1);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("YearNumber")
                         .IsUnique();
@@ -772,6 +805,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.ToTable("GLSettings", (string)null);
                 });
 
@@ -811,6 +846,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(3);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -892,6 +929,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("ChartOfAccountId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -965,6 +1004,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("ChartOfAccountId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -1026,6 +1067,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -1115,6 +1158,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -1218,6 +1263,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("ChartOfAccountId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("ExpensesAccountId");
 
                     b.HasIndex("Name")
@@ -1308,6 +1355,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -1459,6 +1508,8 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("ColorValue")
                         .IsUnique();
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -1528,6 +1579,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("FinancialPeriodId");
 
                     b.HasIndex("TransactionPartyId");
@@ -1575,6 +1628,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("InventoryTransactionId");
 
@@ -1751,13 +1806,19 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
                     b.HasIndex("NameSecondLanguage")
                         .IsUnique();
 
+                    b.HasIndex("NodeType");
+
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("ParentId", "NodeType");
 
                     b.ToTable("Items", (string)null);
                 });
@@ -1799,6 +1860,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("CodeType");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("ItemId");
 
                     b.ToTable("ItemCodes", (string)null);
@@ -1830,6 +1893,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("ManufacturerCompanyId");
 
@@ -1887,6 +1952,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("PackingUnitId");
 
                     b.HasIndex("ItemId", "PackingUnitId")
@@ -1924,6 +1991,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("SellingPriceId");
 
@@ -1967,6 +2036,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("SellingPriceId");
 
                     b.HasIndex("ItemId", "SellingPriceId")
@@ -2001,6 +2072,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("SupplierId");
 
@@ -2042,6 +2115,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(2);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -2085,6 +2160,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -2126,6 +2203,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(2);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -2176,6 +2255,8 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("Code")
                         .IsUnique();
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -2240,6 +2321,8 @@ namespace AAA.ERP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("PackingUnitId");
 
@@ -2380,6 +2463,73 @@ namespace AAA.ERP.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Shared.BaseEntities.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ChangedProperties")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("EntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Action");
+
+                    b.HasIndex("EntityId");
+
+                    b.HasIndex("EntityType");
+
+                    b.HasIndex("Timestamp");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EntityType", "EntityId");
+
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("Shared.BaseEntities.Identity.ApplicationUser", b =>
