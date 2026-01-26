@@ -5,7 +5,6 @@ using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using System.Text.RegularExpressions;
-using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Shared.BaseEntities.Attachments;
 
@@ -51,35 +50,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 NodeType = command.NodeType,
                 ParentId = command.ParentId,
             };
-            await _repository.Add(product);
-            await _unitOfWork.ProductCodeRepository.Add(new ProductCode
-            {
-                Code = command.Code,
-                CodeType = ProductCodeType.Code,
-                ProductId = product.Id,
-            });
 
+            // Prepare navigation properties using helper methods
+            product.ProductCodes = CreateProductCodes(command);
+            
             if (command.NodeType == NodeType.Domain)
             {
-
-                if (!string.IsNullOrEmpty(command.EGSCode))
-                {
-                    await _unitOfWork.ProductCodeRepository.Add(new ProductCode
-                    {
-                        Code = command.EGSCode,
-                        CodeType = ProductCodeType.EGS,
-                        ProductId = product.Id,
-                    });
-                }
-                if (!string.IsNullOrEmpty(command.Gs1Code))
-                {
-                    await _unitOfWork.ProductCodeRepository.Add(new ProductCode
-                    {
-                        Code = command.Gs1Code,
-                        CodeType = ProductCodeType.GS1,
-                        ProductId = product.Id
-                    });
-                }
                 product.Model = command.Model;
                 product.Version = command.Version;
                 product.CountryOfOrigin = command.CountryOfOrigin;
@@ -89,47 +65,35 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.DefaultDiscount = command.IsDiscountBasedOnSellingPrice ? 0 : command.DefaultDiscount;
                 product.DefaultDiscountType = command.DefaultDiscountType;
                 product.MaxDiscount = command.MaxDiscount;
-                product.IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice;
                 product.IsSales = command.IsSales;
                 product.IsPurchase = command.IsPurchase;
                 product.TrackedBy = command.TrackedBy;
-                await _repository.Update(product);
-                if (command.IsDiscountBasedOnSellingPrice)
-                { 
-                    await CreateProductSellingPriceDiscounts(command.SellingPriceDiscounts,product.Id);
-                }
-                await CreateProductSuppliers(command,product.Id);
-                await CreateProductManufacturerCompanies(command, product.Id);
-                await CreateProductBarcodes(command, product);
 
-                await CreateProductPackingUnits(product.Id,command.PackingUnits);
+                product.ProductSellingPriceDiscounts = CreatProductSellingPriceDiscounts(command);
+                product.ProductSuppliers = CreateProductSuppliers(command);
+                product.ProductManufacturerCompanies = CreateProductManufacturerCompanies(command);
+                product.ProductPackingUnits =  CreateProductPackingUnits(command);
 
-                // Create product attributes if provided
+                // Prepare product attributes if provided
                 if (command.ProductAttributeDefinitions?.Any() == true)
                 {
-                    await CreateProductAttributes(product.Id, command.ProductAttributeDefinitions);
+                    product.ProductAttributeDefinitions = CreateProductAttributes(command.ProductAttributeDefinitions);
                 }
             }
 
-            // Handle product attachments
+            // Handle product attachments (requires creating Attachment entities first)
             if (command.ProductAttachments != null && command.ProductAttachments.Any())
-                await UpdateProductAttachments(command.ProductAttachments.Where(e=> command.NodeType == NodeType.Domain ||(e.AttachmentType == AttachmentType.Picture && e.IsPrimary) ), product.Id);
-
-            // Create variants for Domain products
-            if (command.NodeType == NodeType.Domain)
             {
-                var variantCreationResult = await CreateProductVariants(product, command);
-                if (!variantCreationResult.IsSuccess)
-                {
-                    await _unitOfWork.RollbackAsync();
-                    return new ApiResponse<Product>
-                    {
-                        IsSuccess = false,
-                        StatusCode = HttpStatusCode.InternalServerError,
-                        ErrorMessages = variantCreationResult.ErrorMessages
-                    };
-                }
+                var filteredAttachments = command.ProductAttachments.Where(e => command.NodeType == NodeType.Domain || (e.AttachmentType == AttachmentType.Picture && e.IsPrimary));
+                product.ProductAttachments =  CreateProductAttachment(filteredAttachments);
             }
+
+            // Prepare variants for Domain products (no database hits - prepared in memory)
+            if (command.NodeType == NodeType.Domain)
+                product.Variants = _variantService.PrepareVariantsForProduct(command);
+
+            // Single database hit - EF will cascade insert all navigation properties including variants
+            await _repository.Add(product);
 
             // Commit transaction - everything succeeded
             await _unitOfWork.CommitAsync();
@@ -145,21 +109,200 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         }
     }
 
-    private async Task CreateProductBarcodes(ProductCreateCommand command, Product product)
-    {
-        var barCodes = new List<ProductCode>();
+    #region Helper Methods for Preparing Navigation Properties
 
-        foreach (var barcode in command.BarCodes)
-            barCodes.Add(
-                new ProductCode
+    private List<ProductCode> CreateProductCodes(ProductCreateCommand command)
+    {
+        var productCodes = new List<ProductCode>
+        {
+            new ProductCode
+            {
+                Code = command.Code,
+                CodeType = ProductCodeType.Code,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }
+        };
+
+        if (command.NodeType == NodeType.Domain)
+        {
+            if (!string.IsNullOrEmpty(command.EGSCode))
+            {
+                productCodes.Add(new ProductCode
+                {
+                    Code = command.EGSCode,
+                    CodeType = ProductCodeType.EGS,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                });
+            }
+
+            if (!string.IsNullOrEmpty(command.Gs1Code))
+            {
+                productCodes.Add(new ProductCode
+                {
+                    Code = command.Gs1Code,
+                    CodeType = ProductCodeType.GS1,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                });
+            }
+
+            // Prepare barcodes
+            foreach (var barcode in command.BarCodes)
+            {
+                productCodes.Add(new ProductCode
                 {
                     Code = barcode,
                     CodeType = ProductCodeType.BarCode,
-                    ProductId = product.Id
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
                 });
+            }
+        }
 
-        await _unitOfWork.ProductCodeRepository.Add(barCodes);
+        return  productCodes;
     }
+
+    private List<ProductSellingPriceDiscount> CreatProductSellingPriceDiscounts(ProductCreateCommand command)
+    {
+        if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
+        {
+            return  command.SellingPriceDiscounts.Select(e => new ProductSellingPriceDiscount
+            {
+                SellingPriceId = e.SellingPriceId,
+                Discount = e.Discount,
+                DiscountType = e.DiscountType,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductSellingPriceDiscount>();
+    }
+
+    private List<ProductSupplier> CreateProductSuppliers(ProductCreateCommand command)
+    {
+        if (command.SuppliersIds?.Any() == true)
+        {
+            return command.SuppliersIds.Select(supplierId => new ProductSupplier
+            {
+                SupplierId = supplierId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductSupplier>();
+    }
+
+    private List<ProductManufacturerCompany> CreateProductManufacturerCompanies(ProductCreateCommand command)
+    {
+        if (command.ManufacturerCompaniesIds?.Any() == true)
+        {
+           return command.ManufacturerCompaniesIds.Select(companyId => new ProductManufacturerCompany
+            {
+                ManufacturerCompanyId = companyId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductManufacturerCompany>();
+    }
+
+    private List<ProductPackingUnit> CreateProductPackingUnits(ProductCreateCommand command)
+    {
+        if (command.PackingUnits?.Any() == true)
+        {
+            return command.PackingUnits.Select(packingUnitDto => new ProductPackingUnit
+            {
+                PackingUnitId = packingUnitDto.PackingUnitId,
+                AverageCostPrice = packingUnitDto.AverageCostPrice,
+                IsDefaultPackingUnit = packingUnitDto.IsDefaultPackingUnit,
+                LastCostPrice = packingUnitDto.LastCostPrice,
+                PartsCount = packingUnitDto.PartsCount,
+                ModifiedAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
+                IsDefaultSales = packingUnitDto.IsDefaultSales,
+                IsDefaultPurchases = packingUnitDto.IsDefaultPurchases,
+                OrderNumber = packingUnitDto.OrderNumber,
+                ProductPackingUnitSellingPrices = packingUnitDto.SellingPrices.Select(e => new ProductPackingUnitSellingPrice
+                {
+                    Amount = e.Amount,
+                    SellingPriceId = e.SellingPriceId,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                }).ToList()
+            }).ToList();
+        }
+
+        return new List<ProductPackingUnit>();
+    }
+
+    private List<ProductAttributeDefinition> CreateProductAttributes(List<ProductAttributeDefinitionDto> productAttributeDefinitions)
+    {
+        if (productAttributeDefinitions?.Any() == true)
+        {
+            return productAttributeDefinitions.Select(attr => new ProductAttributeDefinition
+            { 
+                AttributeDefinitionId = attr.AttributeDefinitionId,
+                IsVariant = attr.IsVariant,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductAttributeDefinition>();
+    }
+
+    private List<ProductAttachment> CreateProductAttachment(IEnumerable<ProductAttachmentDto> productAttachmentDtos)
+    {
+        var attachmentData = new List<(Attachment attachment, ProductAttachmentDto dto)>();
+        var productAttachments = new List<ProductAttachment>();
+
+        // Prepare attachment entities and store their corresponding DTOs
+        foreach (var productAttachmentDto in productAttachmentDtos)
+        {
+            var attachmentDto = productAttachmentDto.Attachment;
+
+            if (attachmentDto != null)
+            {
+                // Create Attachment entity
+                var attachment = new Attachment
+                {
+                    FileName = attachmentDto.FileName,
+                    FileContentType = attachmentDto.ContentType,
+                    FileData = Convert.FromBase64String(attachmentDto.FileContent),
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                };
+
+                attachmentData.Add((attachment, productAttachmentDto));
+            }
+        }
+        
+        // Now create ProductAttachment entities with the attachment IDs
+        foreach (var (attachment, productAttachmentDto) in attachmentData)
+        {
+            var productAttachment = new ProductAttachment
+            {
+                Attachment = attachment,
+                AttachmentType = productAttachmentDto.AttachmentType,
+                Description = productAttachmentDto.Description,
+                IsPrimary = productAttachmentDto.IsPrimary,
+                DisplayOrder = productAttachmentDto.DisplayOrder,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            };
+
+            productAttachments.Add(productAttachment);
+        }
+
+        return productAttachments;
+    }
+
+    #endregion
 
     public override async Task<ApiResponse<Product>> Update(ProductUpdateCommand command, bool isValidate = true)
     {
@@ -211,8 +354,6 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 {
                     await UpdateProductAttributes(product.Id, command.ProductAttributeDefinitions);
                 }
-
-              
             }
             
             // Handle item attachments update
@@ -247,7 +388,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             // Rollback transaction on any exception
             await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
-            return new ApiResponse<Product> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
+            return new ApiResponse<Product> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILED"] };
         }
     }
 
@@ -274,11 +415,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 .Select(e=>e.AttachmentId).ToListAsync();
             // Delete Product first (this will cascade to ProductAttachments)
             await _repository.Delete(id);
-            
-            // Force SaveChanges to complete the cascade deletion of ProductAttachments
-            // This resolves the constraint conflict before deleting Attachments
-            // await _unitOfWork.SaveChanges();
-            
+
             // Now safely delete orphaned Attachments (no constraint conflicts)
 
             await _unitOfWork.AttachmentRepository.ExecuteDeleteAsync(e=> attachmentsIds.Contains(e.Id));
@@ -597,39 +734,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private async Task UpdateProductSellingPriceDiscounts(Guid productId, List<ProductSellingPriceDiscountDto> productSellingPriceDiscounts)
     {
         var productSellingPriceDiscountRepository = _unitOfWork.ProductSellingPriceDiscountRepository;
-        
-        // Remove existing discounts
-        var existingDiscounts = await productSellingPriceDiscountRepository.GetQuery()
-            .Where(psd => psd.ProductId == productId)
-            .ToListAsync();
-        
-        foreach (var discount in existingDiscounts)
-        {
-            await productSellingPriceDiscountRepository.Delete(discount);
-        }
+
+        await productSellingPriceDiscountRepository.ExecuteDeleteAsync(e=>e.ProductId == productId);
         
         // Add new discounts
         await CreateProductSellingPriceDiscounts(productSellingPriceDiscounts, productId);
     }
-
-
-    private async Task CreateProductManufacturerCompanies(ProductCreateCommand command,Guid productId)
-    {
-        var productManufacturerCompanies = new List<ProductManufacturerCompany>();
-        foreach (var companyId in command.ManufacturerCompaniesIds)
-            productManufacturerCompanies.Add(
-                new ProductManufacturerCompany
-                {
-                    ManufacturerCompanyId = companyId,
-                    ProductId = productId,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt= DateTime.Now,
-        
-                });
-        
-        await _unitOfWork.ProductManufacturerCompanyRepository.Add(productManufacturerCompanies);
-    }
-
 
     private async Task UpdateProductManufacturerCompanies(List<Guid> companiesIds, Guid productId)
     {
@@ -694,56 +804,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (addedCodes.Any())
             await _unitOfWork.ProductCodeRepository.Add(addedCodes);
     }
-
-
-    private async Task CreateProductPackingUnits(Guid productId,List<ProductPackingUnitDto> command)
-    {
-        List<ProductPackingUnit> packingUnits = [];
-        
-        foreach (var itempackingUnit in command)
-            packingUnits.Add(
-                new ProductPackingUnit
-                {
-                    PackingUnitId = itempackingUnit.PackingUnitId,
-                    ProductId=productId,
-                    AverageCostPrice = itempackingUnit.AverageCostPrice,
-                    IsDefaultPackingUnit = itempackingUnit.IsDefaultPackingUnit,
-                    LastCostPrice = itempackingUnit.LastCostPrice,
-                    PartsCount = itempackingUnit.PartsCount,
-                    ModifiedAt = DateTime.Now,
-                    CreatedAt = DateTime.Now,
-                    IsDefaultSales = itempackingUnit.IsDefaultSales,
-                    IsDefaultPurchases = itempackingUnit.IsDefaultPurchases,
-                    OrderNumber = itempackingUnit.OrderNumber,
-                    ProductPackingUnitSellingPrices = itempackingUnit.SellingPrices.Select(e => new ProductPackingUnitSellingPrice
-                    {
-                        Amount = e.Amount,
-                        SellingPriceId = e.SellingPriceId,
-                        CreatedAt = DateTime.Now,
-                        ModifiedAt = DateTime.Now,
-        
-                    }).ToList()
-                });
-        
-        await _unitOfWork.ProductPackingUnitRepository.Add(packingUnits);
-    }
-
-    private async Task  CreateProductSuppliers(ProductCreateCommand command,Guid productId)
-    {
-        var productSuppliers = new List<ProductSupplier>();
-        foreach (var supplierId in command.SuppliersIds)
-            productSuppliers.Add(
-                new ProductSupplier
-                {
-                    ProductId = productId,
-                    SupplierId = supplierId,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now,
-                });
-        
-        await _unitOfWork.ProductSupplierRepository.Add(productSuppliers);
-    }
-
+    
     private async Task UpdateProductSuppliers(List<Guid> suppliersIds, Guid productId)
     {
         var oldSuppliers = await _unitOfWork.ProductSupplierRepository.GetQuery().Where(e=>e.ProductId == productId).ToListAsync();
@@ -772,6 +833,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task AddNewProductAttachments(IEnumerable<ProductAttachmentDto> productAttachmentDtos, Guid productId)
     {
+        var productAttachments = new List<ProductAttachment>();
         foreach (var productAttachmentDto in productAttachmentDtos)
         {
         
@@ -779,21 +841,17 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         
             if (attachmentDto != null)
             {
-                var attachment = new Attachment
-                {
-                    FileName = attachmentDto.FileName,
-                    FileContentType = attachmentDto.ContentType,
-                    FileData = Convert.FromBase64String(attachmentDto.FileContent),
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now
-                };
-        
-                await _unitOfWork.AttachmentRepository.Add(attachment);
-        
                 var productAttachment = new ProductAttachment
                 {
                     ProductId = productId,
-                    AttachmentId = attachment.Id,
+                    Attachment= new Attachment
+                    {
+                        FileName = attachmentDto.FileName,
+                        FileContentType = attachmentDto.ContentType,
+                        FileData = Convert.FromBase64String(attachmentDto.FileContent),
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    },
                     AttachmentType = productAttachmentDto.AttachmentType,
                     Description = productAttachmentDto.Description,
                     IsPrimary = productAttachmentDto.IsPrimary,
@@ -802,9 +860,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     ModifiedAt = DateTime.Now
                 };
         
-                await _unitOfWork.ProductAttachmentRepository.Add(productAttachment);
+                productAttachments.Add(productAttachment);
             }
         }
+        
+        if(productAttachments.Any())
+            await _unitOfWork.ProductAttachmentRepository.Add(productAttachments);
     }
 
     private async Task DeleteOldProductAttachments(Guid productId)
@@ -813,136 +874,10 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var attachmentIds = productAttachments.Select(e => e.AttachmentId);
         if(productAttachments.Any())
             await _unitOfWork.ProductAttachmentRepository.Delete(productAttachments);
-        foreach (var attachmentId in attachmentIds)
-            await _unitOfWork.AttachmentRepository.Delete(attachmentId);
+        if(attachmentIds?.Any() == true)
+            await _unitOfWork.AttachmentRepository.ExecuteDeleteAsync(e=> attachmentIds.Contains(e.Id));
     }
-
-    private async Task<ApiResponse<bool>> CreateProductVariants(Product product, ProductCreateCommand command)
-    {
-        try
-        {
-            bool hasVariantCombinations = command.VariantCombinations?.Any() == true;
-
-            // Create default variant
-            // IsActive = false if there are variant combinations (default is archived), true otherwise
-            var defaultVariantCommand = new VariantCreateCommand
-            {
-                Name = product.Name ?? "Default Variant",
-                NameSecondLanguage = product.NameSecondLanguage,
-                Description = "Default variant",
-                ProductId = product.Id,
-                Code = command.Code, // Default variant gets the product code
-                Gs1Code = command.Gs1Code,
-                EGSCode = command.EGSCode,
-                BarCodes = command.BarCodes,
-                MaxDiscount = command.MaxDiscount,
-                ConditionalDiscount = command.ConditionalDiscount,
-                DefaultDiscount = command.IsDiscountBasedOnSellingPrice ? 0 : command.DefaultDiscount,
-                DefaultDiscountType = command.DefaultDiscountType,
-                IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice,
-                Model = command.Model,
-                Version = command.Version,
-                CountryOfOrigin = command.CountryOfOrigin,
-                SuppliersIds = command.SuppliersIds,
-                ManufacturerCompaniesIds = command.ManufacturerCompaniesIds,
-                IsPurchase = command.IsPurchase,
-                IsSales = command.IsSales,
-                SellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => e.Adapt<VariantSellingPriceDiscountDto>()).ToList(),
-                PackingUnits = command.PackingUnits.Select(e => e.Adapt<VariantPackingUnitDto>()).ToList(),
-                VariantAttachments = [],
-                VariantAttributeValues = [],
-                IsDefault = true,
-                IsArchived = hasVariantCombinations // Default variant is inactive (archived) if there are combination variants
-            };
-
-            var defaultVariantResult = await _variantService.Create(defaultVariantCommand, false);
-            if (!defaultVariantResult.IsSuccess)
-            {
-                return new ApiResponse<bool>
-                {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    ErrorMessages = defaultVariantResult.ErrorMessages
-                };
-            }
-
-            // Create combination variants if provided
-            if (hasVariantCombinations)
-            {
-                int variantNumber = 1;
-                foreach (var combination in command.VariantCombinations!)
-                {
-                    var variantCode = $"{command.Code}-{variantNumber}";
-                    
-                    var combinationVariantCommand = new VariantCreateCommand
-                    {
-                        Name = combination.Name,
-                        NameSecondLanguage = combination.Name,
-                        Description = $"Variant of {product.Name}",
-                        ProductId = product.Id,
-                        Code = variantCode,
-                        Gs1Code = null, // Combination variants don't inherit GS1/EGS codes
-                        EGSCode = null,
-                        BarCodes = [],
-                        MaxDiscount =  product.MaxDiscount ,
-                        ConditionalDiscount = product.ConditionalDiscount,
-                        DefaultDiscount = product.DefaultDiscount,
-                        DefaultDiscountType = product.DefaultDiscountType,
-                        IsDiscountBasedOnSellingPrice = product.IsDiscountBasedOnSellingPrice,
-                        IsPurchase = command.IsPurchase,
-                        IsSales = command.IsSales,
-                        ApplyProductChanges = combination.ApplyProductChanges,
-                        Model = product.Model,
-                        Version = product.Version,
-                        CountryOfOrigin = product.CountryOfOrigin,
-                        SuppliersIds =  command.SuppliersIds,
-                        ManufacturerCompaniesIds =command.ManufacturerCompaniesIds,
-                        SellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => e.Adapt<VariantSellingPriceDiscountDto>()).ToList(),
-                        PackingUnits = command.PackingUnits.Select(e => e.Adapt<VariantPackingUnitDto>()).ToList(),
-                        VariantAttachments = [],
-                        VariantAttributeValues = combination.AttributeValues.Select(kvp => new VariantAttributeValueDto
-                        {
-                            AttributeDefinitionId = kvp.Key,
-                            AttributeValueId = kvp.Value
-                        }).ToList(),
-                        IsDefault = false,
-                        IsArchived = false, // Combination variants are active
-                    };
-
-                    var combinationVariantResult = await _variantService.Create(combinationVariantCommand, false);
-                    if (!combinationVariantResult.IsSuccess)
-                    {
-                        return new ApiResponse<bool>
-                        {
-                            IsSuccess = false,
-                            StatusCode = HttpStatusCode.InternalServerError,
-                            ErrorMessages = combinationVariantResult.ErrorMessages
-                        };
-                    }
-
-                    variantNumber++;
-                }
-            }
-
-            return new ApiResponse<bool>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = true
-            };
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error creating product variants: {ex}");
-            return new ApiResponse<bool>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.InternalServerError,
-                ErrorMessages = new List<string> { "VARIANT_CREATION_FAILED" }
-            };
-        }
-    }
-
+    
     private async Task<ApiResponse<bool>> UpdateProductVariants(Product product, ProductUpdateCommand command)
     {
         try
