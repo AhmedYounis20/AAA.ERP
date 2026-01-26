@@ -1,6 +1,7 @@
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Variants;
+using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using System.Text.RegularExpressions;
@@ -1477,5 +1478,269 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                 {
                     SupplierId = supplierId,
                 });
+    }
+
+    public List<Variant> PrepareVariantsForProduct(ProductCreateCommand command)
+    {
+        var variants = new List<Variant>();
+        bool hasVariantCombinations = command.VariantCombinations?.Any() == true;
+
+        // Create default variant
+        var defaultVariant = new Variant
+        {
+            Description = "Default variant",
+            MaxDiscount = command.MaxDiscount,
+            ConditionalDiscount = command.ConditionalDiscount,
+            DefaultDiscount = command.IsDiscountBasedOnSellingPrice ? 0 : command.DefaultDiscount,
+            DefaultDiscountType = command.DefaultDiscountType,
+            IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice,
+            Model = command.Model,
+            Version = command.Version,
+            CountryOfOrigin = command.CountryOfOrigin,
+            IsPurchase = command.IsPurchase,
+            IsSales = command.IsSales,
+            IsDefault = true,
+            IsArchived = hasVariantCombinations, // Default variant is archived if there are combination variants
+            ApplyProductChanges = true,
+            CreatedAt = DateTime.Now,
+            ModifiedAt = DateTime.Now
+        };
+
+        // Prepare default variant codes
+        PrepareVariantCodes(defaultVariant, command.Code, command.Gs1Code, command.EGSCode, command.BarCodes);
+
+        // Prepare default variant suppliers
+        if (command.SuppliersIds?.Any() == true)
+        {
+            defaultVariant.VariantSuppliers = command.SuppliersIds.Select(supplierId => new VariantSupplier
+            {
+                SupplierId = supplierId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        // Prepare default variant manufacturer companies
+        if (command.ManufacturerCompaniesIds?.Any() == true)
+        {
+            defaultVariant.VariantManufacturerCompanies = command.ManufacturerCompaniesIds.Select(companyId => new VariantManufacturerCompany
+            {
+                ManufacturerCompanyId = companyId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        // Prepare default variant selling price discounts
+        if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
+        {
+            defaultVariant.VariantSellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => new VariantSellingPriceDiscount
+            {
+                SellingPriceId = e.SellingPriceId,
+                Discount = e.Discount,
+                DiscountType = e.DiscountType,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        // Prepare default variant packing units
+        if (command.PackingUnits?.Any() == true)
+        {
+            defaultVariant.VariantPackingUnitPrices = command.PackingUnits.Select(packingUnitDto =>
+            {
+                var packingUnit = new VariantPackingUnit
+                {
+                    PackingUnitId = packingUnitDto.PackingUnitId,
+                    AverageCostPrice = packingUnitDto.AverageCostPrice,
+                    IsDefaultPackingUnit = packingUnitDto.IsDefaultPackingUnit,
+                    LastCostPrice = packingUnitDto.LastCostPrice,
+                    PartsCount = packingUnitDto.PartsCount,
+                    IsDefaultSales = packingUnitDto.IsDefaultSales,
+                    IsDefaultPurchases = packingUnitDto.IsDefaultPurchases,
+                    OrderNumber = packingUnitDto.OrderNumber,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now,
+                    VariantPackingUnitSellingPrices = packingUnitDto.SellingPrices.Select(e => new VariantPackingUnitSellingPrice
+                    {
+                        Amount = e.Amount,
+                        SellingPriceId = e.SellingPriceId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList()
+                };
+                return packingUnit;
+            }).ToList();
+        }
+
+        variants.Add(defaultVariant);
+
+        // Create combination variants if provided
+        if (hasVariantCombinations)
+        {
+            int variantNumber = 1;
+            foreach (var combination in command.VariantCombinations!)
+            {
+                var variantCode = $"{command.Code}-{variantNumber}";
+                
+                var combinationVariant = new Variant
+                {
+                    Description = $"Variant of {command.Name}",
+                    MaxDiscount = command.MaxDiscount,
+                    ConditionalDiscount = command.ConditionalDiscount,
+                    DefaultDiscount = command.DefaultDiscount,
+                    DefaultDiscountType = command.DefaultDiscountType,
+                    IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice,
+                    IsPurchase = command.IsPurchase,
+                    IsSales = command.IsSales,
+                    ApplyProductChanges = combination.ApplyProductChanges,
+                    Model = command.Model,
+                    Version = command.Version,
+                    CountryOfOrigin = command.CountryOfOrigin,
+                    IsDefault = false,
+                    IsArchived = false, // Combination variants are active
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                };
+
+                // Prepare combination variant codes (no GS1/EGS codes for combination variants)
+                PrepareVariantCodes(combinationVariant, variantCode, null, null, []);
+
+                // Prepare combination variant suppliers
+                if (command.SuppliersIds?.Any() == true)
+                {
+                    combinationVariant.VariantSuppliers = command.SuppliersIds.Select(supplierId => new VariantSupplier
+                    {
+                        SupplierId = supplierId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant manufacturer companies
+                if (command.ManufacturerCompaniesIds?.Any() == true)
+                {
+                    combinationVariant.VariantManufacturerCompanies = command.ManufacturerCompaniesIds.Select(companyId => new VariantManufacturerCompany
+                    {
+                        ManufacturerCompanyId = companyId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant selling price discounts
+                if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
+                {
+                    combinationVariant.VariantSellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => new VariantSellingPriceDiscount
+                    {
+                        SellingPriceId = e.SellingPriceId,
+                        Discount = e.Discount,
+                        DiscountType = e.DiscountType,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant packing units
+                if (command.PackingUnits?.Any() == true)
+                {
+                    combinationVariant.VariantPackingUnitPrices = command.PackingUnits.Select(packingUnitDto =>
+                    {
+                        var packingUnit = new VariantPackingUnit
+                        {
+                            PackingUnitId = packingUnitDto.PackingUnitId,
+                            AverageCostPrice = packingUnitDto.AverageCostPrice,
+                            IsDefaultPackingUnit = packingUnitDto.IsDefaultPackingUnit,
+                            LastCostPrice = packingUnitDto.LastCostPrice,
+                            PartsCount = packingUnitDto.PartsCount,
+                            IsDefaultSales = packingUnitDto.IsDefaultSales,
+                            IsDefaultPurchases = packingUnitDto.IsDefaultPurchases,
+                            OrderNumber = packingUnitDto.OrderNumber,
+                            CreatedAt = DateTime.Now,
+                            ModifiedAt = DateTime.Now,
+                            VariantPackingUnitSellingPrices = packingUnitDto.SellingPrices.Select(e => new VariantPackingUnitSellingPrice
+                            {
+                                Amount = e.Amount,
+                                SellingPriceId = e.SellingPriceId,
+                                CreatedAt = DateTime.Now,
+                                ModifiedAt = DateTime.Now
+                            }).ToList()
+                        };
+                        return packingUnit;
+                    }).ToList();
+                }
+
+                // Prepare combination variant attribute values
+                if (combination.AttributeValues?.Any() == true)
+                {
+                    combinationVariant.VariantAttributeValues = combination.AttributeValues.Select(kvp => new VariantAttributeValue
+                    {
+                        AttributeDefinitionId = kvp.Key,
+                        AttributeValueId = kvp.Value,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                variants.Add(combinationVariant);
+                variantNumber++;
+            }
+        }
+
+        return variants;
+    }
+
+    private void PrepareVariantCodes(Variant variant, string code, string? gs1Code, string? egsCode, List<string> barCodes)
+    {
+        var variantCodes = new List<VariantCode>();
+
+        if (!string.IsNullOrEmpty(code))
+        {
+            variantCodes.Add(new VariantCode
+            {
+                Code = code,
+                CodeType = VariantCodeType.Code,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            });
+        }
+
+        if (!string.IsNullOrEmpty(gs1Code))
+        {
+            variantCodes.Add(new VariantCode
+            {
+                Code = gs1Code,
+                CodeType = VariantCodeType.GS1,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            });
+        }
+
+        if (!string.IsNullOrEmpty(egsCode))
+        {
+            variantCodes.Add(new VariantCode
+            {
+                Code = egsCode,
+                CodeType = VariantCodeType.EGS,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            });
+        }
+
+        if (barCodes != null && barCodes.Any())
+        {
+            foreach (var barcode in barCodes)
+            {
+                variantCodes.Add(new VariantCode
+                {
+                    Code = barcode,
+                    CodeType = VariantCodeType.BarCode,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                });
+            }
+        }
+
+        variant.VariantCodes = variantCodes;
     }
 }
