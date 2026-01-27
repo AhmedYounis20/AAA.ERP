@@ -13,4 +13,6 @@ public interface IVariantService : IBaseService<Variant, VariantCreateCommand, V
     Task<ApiResponse<IEnumerable<VariantDto>>> GetVariantsByProductId(Guid productId);
     Task<ApiResponse<IEnumerable<VariantDto>>> SearchVariants(string searchTerm);
     List<Variant> PrepareVariantsForProduct(ProductCreateCommand command);
+
+    Task<ApiResponse<bool>> CreateVariantsBulkForProductUpdate( List<VariantCreateCommand> commands, bool isValidate = true);
 }

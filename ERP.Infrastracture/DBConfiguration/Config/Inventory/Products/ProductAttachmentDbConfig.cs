@@ -13,6 +13,11 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Products
 
             _ = builder.Property(e => e.AttachmentType).HasConversion<string>();
 
+            // Indexes for frequently queried columns
+            // Note: ProductId index already exists from foreign key
+            _ = builder.HasIndex(e => e.IsPrimary); // For filtering primary attachments
+            _ = builder.HasIndex(e => new { e.ProductId, e.IsPrimary }); // Composite index for finding primary picture efficiently
+
             _ = builder.HasOne(e => e.Product)
             .WithMany(e => e.ProductAttachments)
             .HasForeignKey(e => e.ProductId)

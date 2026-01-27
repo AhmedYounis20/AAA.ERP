@@ -620,6 +620,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
         // Process each packing unit from command
         var packingUnitsToAdd = new List<ProductPackingUnit>();
+        var packingUnitsToUpdate = new List<ProductPackingUnit>();
 
         foreach (var packingUnitDto in productPackingUnits)
         {
@@ -662,8 +663,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 existingPackingUnit.IsDefaultPurchases = packingUnitDto.IsDefaultPurchases;
                 existingPackingUnit.OrderNumber = packingUnitDto.OrderNumber;
                 existingPackingUnit.ModifiedAt = DateTime.Now;
-
-                await productPackingUnitRepository.Update(existingPackingUnit);
+                packingUnitsToUpdate.Add(existingPackingUnit);
 
                 // Update selling prices
                 await UpdateProductPackingUnitSellingPrices(packingUnitDto, existingPackingUnit);
@@ -674,6 +674,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (packingUnitsToAdd.Any())
         {
             await productPackingUnitRepository.Add(packingUnitsToAdd);
+        }
+
+        // Batch update existing packing units
+        if (packingUnitsToUpdate.Any())
+        {
+            await productPackingUnitRepository.Update(packingUnitsToUpdate);
         }
     }
 
@@ -733,32 +739,126 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductSellingPriceDiscounts(Guid productId, List<ProductSellingPriceDiscountDto> productSellingPriceDiscounts)
     {
-        var productSellingPriceDiscountRepository = _unitOfWork.ProductSellingPriceDiscountRepository;
+        var repository = _unitOfWork.ProductSellingPriceDiscountRepository;
 
-        await productSellingPriceDiscountRepository.ExecuteDeleteAsync(e=>e.ProductId == productId);
-        
-        // Add new discounts
-        await CreateProductSellingPriceDiscounts(productSellingPriceDiscounts, productId);
+        // Load existing discounts for this product once
+        var existingDiscounts = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        // If no discounts provided, remove all existing
+        if (productSellingPriceDiscounts == null || !productSellingPriceDiscounts.Any())
+        {
+            if (existingDiscounts.Any())
+            {
+                await repository.Delete(existingDiscounts);
+            }
+            return;
+        }
+
+        var existingBySellingPrice = existingDiscounts
+            .ToDictionary(e => e.SellingPriceId, e => e);
+        var incomingIds = productSellingPriceDiscounts
+            .Select(d => d.SellingPriceId)
+            .ToHashSet();
+
+        // Discounts to remove (no longer present in the incoming list)
+        var toRemove = existingDiscounts
+            .Where(e => !incomingIds.Contains(e.SellingPriceId))
+            .ToList();
+        if (toRemove.Any())
+        {
+            await repository.Delete(toRemove);
+        }
+
+        var now = DateTime.Now;
+        var toAdd = new List<ProductSellingPriceDiscount>();
+        var toUpdate = new List<ProductSellingPriceDiscount>();
+
+        foreach (var dto in productSellingPriceDiscounts)
+        {
+            if (existingBySellingPrice.TryGetValue(dto.SellingPriceId, out var existing))
+            {
+                // Update existing row if values changed
+                existing.Discount = dto.Discount;
+                existing.DiscountType = dto.DiscountType;
+                existing.ModifiedAt = now;
+                toUpdate.Add(existing);
+            }
+            else
+            {
+                // New discount row
+                toAdd.Add(new ProductSellingPriceDiscount
+                {
+                    ProductId = productId,
+                    SellingPriceId = dto.SellingPriceId,
+                    Discount = dto.Discount,
+                    DiscountType = dto.DiscountType,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                });
+            }
+        }
+
+        if (toAdd.Any())
+        {
+            await repository.Add(toAdd);
+        }
+
+        if (toUpdate.Any())
+        {
+            await repository.Update(toUpdate);
+        }
     }
 
     private async Task UpdateProductManufacturerCompanies(List<Guid> companiesIds, Guid productId)
     {
-        var oldCompanies = await _unitOfWork.ProductManufacturerCompanyRepository.GetQuery().Where(e => e.ProductId == productId).ToListAsync();
-        await _unitOfWork.ProductManufacturerCompanyRepository.Delete(oldCompanies);
-        
-        var productManufacturerCompanies = new List<ProductManufacturerCompany>();
-        foreach (var companyId in companiesIds)
-            productManufacturerCompanies.Add(
-                new ProductManufacturerCompany
-                {
-                    ManufacturerCompanyId = companyId,
-                    ProductId = productId,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now,
-        
-                });
-        
-        await _unitOfWork.ProductManufacturerCompanyRepository.Add(productManufacturerCompanies);
+        var repository = _unitOfWork.ProductManufacturerCompanyRepository;
+        var existingCompanies = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        // If no new companies provided, remove all existing
+        if (companiesIds == null || !companiesIds.Any())
+        {
+            if (existingCompanies.Any())
+            {
+                await repository.Delete(existingCompanies);
+            }
+            return;
+        }
+
+        var existingCompanyIds = existingCompanies
+            .Select(e => e.ManufacturerCompanyId)
+            .ToHashSet();
+
+        // Companies to remove (no longer present in the incoming list)
+        var companiesToRemove = existingCompanies
+            .Where(e => !companiesIds.Contains(e.ManufacturerCompanyId))
+            .ToList();
+
+        if (companiesToRemove.Any())
+        {
+            await repository.Delete(companiesToRemove);
+        }
+
+        // Companies to add (new ids not already linked)
+        var now = DateTime.Now;
+        var companiesToAdd = companiesIds
+            .Where(id => !existingCompanyIds.Contains(id))
+            .Select(companyId => new ProductManufacturerCompany
+            {
+                ManufacturerCompanyId = companyId,
+                ProductId = productId,
+                CreatedAt = now,
+                ModifiedAt = now
+            })
+            .ToList();
+
+        if (companiesToAdd.Any())
+        {
+            await repository.Add(companiesToAdd);
+        }
     }
     private async Task UpdateProductBarCodes(List<string> barCodes, Guid productId)
     {
@@ -807,21 +907,52 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     
     private async Task UpdateProductSuppliers(List<Guid> suppliersIds, Guid productId)
     {
-        var oldSuppliers = await _unitOfWork.ProductSupplierRepository.GetQuery().Where(e=>e.ProductId == productId).ToListAsync();
-        await _unitOfWork.ProductSupplierRepository.Delete(oldSuppliers);
-        
-        var productSuppliers = new List<ProductSupplier>();
-        foreach (var supplierId in suppliersIds)
-            productSuppliers.Add(
-                new ProductSupplier
-                {
-                    ProductId = productId,
-                    SupplierId = supplierId,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now,
-                });
-        
-        await _unitOfWork.ProductSupplierRepository.Add(productSuppliers);
+        var repository = _unitOfWork.ProductSupplierRepository;
+        var existingSuppliers = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        // If no new suppliers provided, remove all existing
+        if (suppliersIds == null || !suppliersIds.Any())
+        {
+            if (existingSuppliers.Any())
+            {
+                await repository.Delete(existingSuppliers);
+            }
+            return;
+        }
+
+        var existingSupplierIds = existingSuppliers
+            .Select(e => e.SupplierId)
+            .ToHashSet();
+
+        // Suppliers to remove (no longer present in the incoming list)
+        var suppliersToRemove = existingSuppliers
+            .Where(e => !suppliersIds.Contains(e.SupplierId))
+            .ToList();
+
+        if (suppliersToRemove.Any())
+        {
+            await repository.Delete(suppliersToRemove);
+        }
+
+        // Suppliers to add (new ids not already linked)
+        var now = DateTime.Now;
+        var suppliersToAdd = suppliersIds
+            .Where(id => !existingSupplierIds.Contains(id))
+            .Select(supplierId => new ProductSupplier
+            {
+                ProductId = productId,
+                SupplierId = supplierId,
+                CreatedAt = now,
+                ModifiedAt = now,
+            })
+            .ToList();
+
+        if (suppliersToAdd.Any())
+        {
+            await repository.Add(suppliersToAdd);
+        }
     }
 
     private async Task UpdateProductAttachments(IEnumerable<ProductAttachmentDto> productAttachmentDtos, Guid productId)
@@ -884,16 +1015,28 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         {
             // Get all existing variants for this product
             var existingVariants = await _unitOfWork.VariantRepository.GetByProductIdAsync(product.Id);
-            
-            // Get variant attribute values for all existing variants (excluding default variant)
+
+            // Get variant attribute values for all existing non-default variants in a single batched query
             var variantAttributeValuesMap = new Dictionary<Guid, Dictionary<Guid, Guid>>();
-            foreach (var variant in existingVariants.Where(v => !v.IsDefault))
+            var nonDefaultVariantIds = existingVariants
+                .Where(v => !v.IsDefault)
+                .Select(v => v.Id)
+                .ToList();
+
+            if (nonDefaultVariantIds.Any())
             {
-                var attributeValues = await _unitOfWork.VariantAttributeValueRepository.GetByVariantIdAsync(variant.Id);
-                variantAttributeValuesMap[variant.Id] = attributeValues.ToDictionary(
-                    vav => vav.AttributeDefinitionId,
-                    vav => vav.AttributeValueId
-                );
+                var allVariantAttributeValues = await _unitOfWork.VariantAttributeValueRepository
+                    .GetQuery()
+                    .Where(vav => nonDefaultVariantIds.Contains(vav.VariantId))
+                    .ToListAsync();
+
+                foreach (var group in allVariantAttributeValues.GroupBy(vav => vav.VariantId))
+                {
+                    variantAttributeValuesMap[group.Key] = group.ToDictionary(
+                        vav => vav.AttributeDefinitionId,
+                        vav => vav.AttributeValueId
+                    );
+                }
             }
 
             // Create a set of new combinations from the command
@@ -1065,19 +1208,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             // Archive used variants
             if (variantsToArchive.Any())
             {
-                foreach (var variant in variantsToArchive)
-                {
-                    await _unitOfWork.VariantRepository.Update(variant);
-                }
+                await _unitOfWork.VariantRepository.Update(variantsToArchive);
             }
 
             // Update variants (includes unarchiving and applying product changes)
             if (variantsToUpdate.Any())
             {
-                foreach (var variant in variantsToUpdate)
-                {
-                    await _unitOfWork.VariantRepository.Update(variant);
-                }
+                await _unitOfWork.VariantRepository.Update(variantsToUpdate);
             }
 
             // Create new variants for combinations that don't exist
@@ -1100,6 +1237,8 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 variantNumber = maxNumber + 1;
             }
             
+            var newVariantCommands = new List<VariantCreateCommand>();
+
             foreach (var combination in command.VariantCombinations)
             {
                 var combinationKey = GetCombinationKey(combination.AttributeValues);
@@ -1148,18 +1287,22 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                         IsArchived = false
                     };
 
-                    var createResult = await _variantService.Create(variantCreateCommand, false);
-                    if (!createResult.IsSuccess)
-                    {
-                        return new ApiResponse<bool>
-                        {
-                            IsSuccess = false,
-                            StatusCode = HttpStatusCode.InternalServerError,
-                            ErrorMessages = createResult.ErrorMessages
-                        };
-                    }
-
+                    newVariantCommands.Add(variantCreateCommand);
                     variantNumber++;
+                }
+            }
+
+            if (newVariantCommands.Any())
+            {
+                var bulkCreateResult = await _variantService.CreateVariantsBulkForProductUpdate(newVariantCommands, false);
+                if (!bulkCreateResult.IsSuccess)
+                {
+                    return new ApiResponse<bool>
+                    {
+                        IsSuccess = false,
+                        StatusCode = bulkCreateResult.StatusCode,
+                        ErrorMessages = bulkCreateResult.ErrorMessages
+                    };
                 }
             }
 
@@ -1305,6 +1448,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
         // Process each packing unit from product
         var packingUnitsToAdd = new List<VariantPackingUnit>();
+        var packingUnitsToUpdate = new List<VariantPackingUnit>();
 
         foreach (var packingUnitDto in productPackingUnits)
         {
@@ -1347,8 +1491,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 existingPackingUnit.IsDefaultPurchases = packingUnitDto.IsDefaultPurchases;
                 existingPackingUnit.OrderNumber = packingUnitDto.OrderNumber;
                 existingPackingUnit.ModifiedAt = DateTime.Now;
-
-                await variantPackingUnitRepository.Update(existingPackingUnit);
+                packingUnitsToUpdate.Add(existingPackingUnit);
 
                 // Update selling prices
                 await UpdateVariantPackingUnitSellingPrices(packingUnitDto, existingPackingUnit);
@@ -1359,6 +1502,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (packingUnitsToAdd.Any())
         {
             await variantPackingUnitRepository.Add(packingUnitsToAdd);
+        }
+
+        // Batch update existing packing units
+        if (packingUnitsToUpdate.Any())
+        {
+            await variantPackingUnitRepository.Update(packingUnitsToUpdate);
         }
     }
 

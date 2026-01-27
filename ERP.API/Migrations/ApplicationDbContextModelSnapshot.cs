@@ -2202,7 +2202,7 @@ namespace AAA.ERP.Migrations
                         .HasColumnOrder(4);
 
                     b.Property<string>("ProductType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("TrackedBy")
                         .HasColumnType("int");
@@ -2220,7 +2220,11 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("NameSecondLanguage")
                         .IsUnique();
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("NodeType");
+
+                    b.HasIndex("ProductType");
+
+                    b.HasIndex("ParentId", "NodeType");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -2272,7 +2276,9 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("IsPrimary");
+
+                    b.HasIndex("ProductId", "IsPrimary");
 
                     b.ToTable("ProductAttachments", (string)null);
                 });
@@ -2327,7 +2333,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("CodeType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -2345,6 +2351,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CodeType");
 
                     b.HasIndex("CreatedAt");
 
@@ -2792,7 +2800,13 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("IsArchived");
+
+                    b.HasIndex("IsDefault");
+
+                    b.HasIndex("IsArchived", "ProductId");
+
+                    b.HasIndex("ProductId", "IsDefault");
 
                     b.ToTable("Variants", (string)null);
                 });
@@ -2844,7 +2858,9 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("VariantId");
+                    b.HasIndex("IsPrimary");
+
+                    b.HasIndex("VariantId", "IsPrimary");
 
                     b.ToTable("VariantAttachments", (string)null);
                 });
@@ -2901,7 +2917,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("CodeType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -2919,6 +2935,8 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CodeType");
 
                     b.HasIndex("CreatedAt");
 

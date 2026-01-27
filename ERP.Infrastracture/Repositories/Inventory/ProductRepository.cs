@@ -14,60 +14,61 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
 
     public async Task<IEnumerable<ProductDto>> GetDtos()
     {
+        // Load all products with all related data using proper Includes (single query)
         var products = await _context.Set<Product>()
-            .Include(e=>e.ProductCodes)
-            .Select(product => new
-            {
-                product,
-                picture = _context.Set<ProductAttachment>()
-                    .Include(e=>e.Attachment).FirstOrDefault(e=>e.IsPrimary && e.ProductId == product.Id),
-                Variants = _context.Set<Variant>()
-                    .Include(e=>e.VariantAttributeValues)
-                    .Where(v => v.ProductId == product.Id && !v.IsDefault)
-                    .Select(v => new
-                    {
-                        product.Name,//v.Name,
-                        v.ApplyProductChanges,
-                        AttributeValues = v.VariantAttributeValues
-                            .Select(av => new
-                            {
-                                av.AttributeDefinitionId,
-                                av.AttributeValueId
-                            })
-                    })
-                    .ToList()
-            })
+            .Include(e => e.ProductCodes)
+            .Include(e => e.ProductAttachments)
+                .ThenInclude(e => e.Attachment)
+            .Include(e => e.Variants)
+                .ThenInclude(v => v.VariantAttributeValues)
             .ToListAsync();
-        var result = products.Select(p => new ProductDto
+
+        if (!products.Any())
+            return Enumerable.Empty<ProductDto>();
+
+        // Build DTOs in memory (all data already loaded)
+        var result = products.Select(product =>
         {
-            Id = p.product.Id,
-            ParentId = p.product.ParentId,
-            CreatedAt = p.product.CreatedAt,
-            ModifiedAt = p.product.ModifiedAt,
-            NameSecondLanguage = p.product.NameSecondLanguage,
-            Name = p.product.Name,
-            ProductType = p.product.ProductType,
-            NodeType = p.product.NodeType,
-            Version = p.product.Version,
-            HasVariants = p.Variants.Any(),
-            VariantsCount = p.Variants.Count,
-            ProductCodes = p.product.ProductCodes,
-            ProductPicture = (p.picture != null && p.picture.Attachment != null)  ? new AttachmentDto()
+            // Filter variants in memory (already loaded)
+            var productVariants = product.Variants
+                .Where(v => !v.IsDefault)
+                .ToList();
+
+            // Get primary picture from loaded attachments
+            var primaryPicture = product.ProductAttachments
+                .FirstOrDefault(pa => pa.IsPrimary);
+
+            return new ProductDto
             {
-                FileContent = Convert.ToBase64String(p.picture.Attachment.FileData),
-                ContentType = p.picture.Attachment.FileContentType,
-                FileName = p.picture.Attachment.FileName,
-            } : null,
-            VariantCombinations = p.Variants.Select(v => new VariantCombinationDto
-            {
-                Name = v.Name,
-                ApplyProductChanges = v.ApplyProductChanges,
-                AttributeValues = v.AttributeValues
-                    .ToDictionary(
-                        x => x.AttributeDefinitionId,
-                        x => x.AttributeValueId
-                    )
-            }).ToList()
+                Id = product.Id,
+                ParentId = product.ParentId,
+                CreatedAt = product.CreatedAt,
+                ModifiedAt = product.ModifiedAt,
+                NameSecondLanguage = product.NameSecondLanguage,
+                Name = product.Name,
+                ProductType = product.ProductType,
+                NodeType = product.NodeType,
+                Version = product.Version,
+                HasVariants = productVariants.Any(),
+                VariantsCount = productVariants.Count,
+                ProductCodes = product.ProductCodes,
+                ProductPicture = (primaryPicture?.Attachment != null) ? new AttachmentDto()
+                {
+                    FileContent = Convert.ToBase64String(primaryPicture.Attachment.FileData),
+                    ContentType = primaryPicture.Attachment.FileContentType,
+                    FileName = primaryPicture.Attachment.FileName,
+                } : null,
+                VariantCombinations = productVariants.Select(v => new VariantCombinationDto
+                {
+                    Name = product.Name,
+                    ApplyProductChanges = v.ApplyProductChanges,
+                    AttributeValues = v.VariantAttributeValues
+                        .ToDictionary(
+                            av => av.AttributeDefinitionId,
+                            av => av.AttributeValueId
+                        )
+                }).ToList()
+            };
         });
 
         return result;
@@ -75,78 +76,31 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
 
     public async Task<ProductDto?> GetDtoById(Guid id)
     {
-        var data = await _context.Set<Product>()
-            .Include(e=>e.ProductPackingUnits)
-            .ThenInclude(e=>e.ProductPackingUnitSellingPrices)
+        // Load product with all related data using proper Includes (single query)
+        var product = await _context.Set<Product>()
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Include(e => e.ProductCodes)
+            .Include(e => e.ProductPackingUnits)
+                .ThenInclude(e => e.ProductPackingUnitSellingPrices)
+            .Include(e => e.ProductAttachments)
+                .ThenInclude(e => e.Attachment)
+            .Include(e => e.ProductAttributeDefinitions)
+            .Include(e => e.ProductSuppliers)
+            .Include(e => e.ProductManufacturerCompanies)
+            .Include(e => e.ProductSellingPriceDiscounts)
+            .Include(e => e.Variants)
+                .ThenInclude(v => v.VariantAttributeValues)
             .Where(p => p.Id == id)
-            .Select(product => new
-            {
-                Product = product,
-
-                Variants = _context.Set<Variant>()
-                    .Include(e=>e.VariantAttributeValues)
-                    .Where(v => v.ProductId == product.Id && !v.IsDefault)
-                    .Select(v => new
-                    {
-                        product.Name, // v.Name,
-                        v.ApplyProductChanges,
-                        AttributeValues = v.VariantAttributeValues
-                            .Select(av => new
-                            {
-                                av.AttributeDefinitionId,
-                                av.AttributeValueId
-                            })
-                    })
-                    .Where(v => v.AttributeValues.Any())
-                    .ToList(),
-
-                ProductCodes = _context.Set<ProductCode>()
-                    .Where(pc => pc.ProductId == product.Id)
-                    .ToList(),
-                SellingPricesDiscounts=  _context.Set<ProductSellingPriceDiscount>().Where(e=>e.ProductId==product.Id).Select(e=>e.Adapt<ProductSellingPriceDiscountDto>()).ToList(),
-                Attachments = _context.Set<ProductAttachment>()
-                    .Include(e=>e.Attachment)
-                    .Where(pa => pa.ProductId == product.Id)
-                    .Select(pa => new ProductAttachmentDto
-                    {
-                        Id = pa.Id,
-                        AttachmentType = pa.AttachmentType,
-                        Description = pa.Description,
-                        IsPrimary = pa.IsPrimary,
-                        DisplayOrder = pa.DisplayOrder,
-                        Attachment = pa.Attachment != null ? new AttachmentDto()
-                        {
-                            AttachmentId = pa.AttachmentId,
-                            FileContent = Convert.ToBase64String(pa.Attachment.FileData),
-                            ContentType = pa.Attachment.FileContentType,
-                            FileName = pa.Attachment.FileName,
-                        } : null
-                    })
-                    .ToList(),
-                AttributeDefinitions = _context.Set<ProductAttributeDefinition>()
-                    .Where(e=>e.ProductId == product.Id)
-                    .Select(e=> new ProductAttributeDefinitionDto()
-                    {
-                        AttributeDefinitionId = e.AttributeDefinitionId,
-                        IsVariant = e.IsVariant,
-                    }).ToList(),
-
-                SupplierIds = _context.Set<ProductSupplier>()
-                    .Where(ps => ps.ProductId == product.Id)
-                    .Select(ps => ps.SupplierId)
-                    .ToList(),
-
-                ManufacturerIds = _context.Set<ProductManufacturerCompany>()
-                    .Where(pmc => pmc.ProductId == product.Id)
-                    .Select(pmc => pmc.ManufacturerCompanyId)
-                    .ToList()
-            })
             .FirstOrDefaultAsync();
 
-        if (data == null)
+        if (product == null)
             return null;
 
-        var product = data.Product;
+        // Filter variants in memory (already loaded)
+        var variants = product.Variants
+            .Where(v => !v.IsDefault && v.VariantAttributeValues.Any())
+            .ToList();
 
         var dto = new ProductDto
         {
@@ -166,24 +120,54 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             ProductType = product.ProductType,
             NodeType = product.NodeType,
             Version = product.Version,
-            SellingPriceDiscounts = data.SellingPricesDiscounts,
-            ProductCodes = data.ProductCodes,
-            ProductAttachments = data.Attachments,
-            SuppliersIds = data.SupplierIds,
-            ManufacturerCompaniesIds = data.ManufacturerIds,
-            ProductAttributeDefinitions = data.AttributeDefinitions,
-            VariantCombinations = data.Variants.Select(v => new VariantCombinationDto
+            SellingPriceDiscounts = product.ProductSellingPriceDiscounts
+                .Select(e => e.Adapt<ProductSellingPriceDiscountDto>())
+                .ToList(),
+            ProductCodes = product.ProductCodes,
+            ProductAttachments = product.ProductAttachments
+                .Select(pa => new ProductAttachmentDto
+                {
+                    Id = pa.Id,
+                    AttachmentType = pa.AttachmentType,
+                    Description = pa.Description,
+                    IsPrimary = pa.IsPrimary,
+                    DisplayOrder = pa.DisplayOrder,
+                    Attachment = pa.Attachment != null ? new AttachmentDto()
+                    {
+                        AttachmentId = pa.AttachmentId,
+                        FileContent = Convert.ToBase64String(pa.Attachment.FileData),
+                        ContentType = pa.Attachment.FileContentType,
+                        FileName = pa.Attachment.FileName,
+                    } : null
+                })
+                .ToList(),
+            SuppliersIds = product.ProductSuppliers
+                .Select(ps => ps.SupplierId)
+                .ToList(),
+            ManufacturerCompaniesIds = product.ProductManufacturerCompanies
+                .Select(pmc => pmc.ManufacturerCompanyId)
+                .ToList(),
+            ProductAttributeDefinitions = product.ProductAttributeDefinitions
+                .Select(e => new ProductAttributeDefinitionDto()
+                {
+                    AttributeDefinitionId = e.AttributeDefinitionId,
+                    IsVariant = e.IsVariant,
+                })
+                .ToList(),
+            VariantCombinations = variants.Select(v => new VariantCombinationDto
             {
-                Name = v.Name,
+                Name = product.Name,
+                Id=v.Id,
                 ApplyProductChanges = v.ApplyProductChanges,
-                AttributeValues = v.AttributeValues.ToDictionary(
-                    x => x.AttributeDefinitionId,
-                    x => x.AttributeValueId
-                )
+                AttributeValues = v.VariantAttributeValues
+                    .ToDictionary(
+                        av => av.AttributeDefinitionId,
+                        av => av.AttributeValueId
+                    )
             }).ToList(),
-            HasVariants = data.Variants.Any(),
-            VariantsCount = data.Variants.Count,
-            PackingUnits = product.ProductPackingUnits.Select(e=> new ProductPackingUnitDto()
+            HasVariants = variants.Any(),
+            VariantsCount = variants.Count,
+            PackingUnits = product.ProductPackingUnits.Select(e => new ProductPackingUnitDto()
             {
                 PackingUnitId = e.PackingUnitId,
                 LastCostPrice = e.LastCostPrice,
@@ -194,7 +178,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                 Name = e.Name,
                 OrderNumber = e.OrderNumber,
                 PartsCount = e.PartsCount,
-                SellingPrices = e.ProductPackingUnitSellingPrices.Select(s=> new ProductPackingUnitSellingPriceDto()
+                SellingPrices = e.ProductPackingUnitSellingPrices.Select(s => new ProductPackingUnitSellingPriceDto()
                 {
                     Amount = s.Amount,
                     SellingPriceId = s.SellingPriceId
