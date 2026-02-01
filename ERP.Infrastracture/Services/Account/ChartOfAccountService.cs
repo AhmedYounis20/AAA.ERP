@@ -19,25 +19,38 @@ public class ChartOfAccountService :
 
     public async Task<ApiResponse<ChartOfAccountInputModel>> NextAccountDefaultData(Guid? parentId)
     {
-        ChartOfAccount? parent = parentId is not null ? await _repository.Get(parentId ?? Guid.Empty) : null;
-        ChartOfAccountInputModel inputModel = new ChartOfAccountInputModel
+        try
         {
-            parentId = parentId,
-            AccountNature = parent?.AccountNature ?? AccountNature.Debit,
-            AccountGuidId = parent?.AccountGuidId ?? Guid.Empty,
-            Code = await GenerateNewCodeForChild(parentId),
-            IsPostedAccount = parent?.IsPostedAccount ?? false,
-            IsStopDealing = parent?.IsStopDealing ?? false,
-            IsDepreciable = false,
-            IsActiveAccount = true,
-        };
 
-        return new ApiResponse<ChartOfAccountInputModel>
+            ChartOfAccount? parent = parentId is not null ? await _repository.Get(parentId ?? Guid.Empty) : null;
+            ChartOfAccountInputModel inputModel = new ChartOfAccountInputModel
+            {
+                parentId = parentId,
+                AccountNature = parent?.AccountNature ?? AccountNature.Debit,
+                AccountGuidId = parent?.AccountGuidId ?? Guid.Empty,
+                Code = await GenerateNewCodeForChild(parentId),
+                IsPostedAccount = parent?.IsPostedAccount ?? false,
+                IsStopDealing = parent?.IsStopDealing ?? false,
+                IsDepreciable = false,
+                IsActiveAccount = true,
+            };
+
+            return new ApiResponse<ChartOfAccountInputModel>
+            {
+                StatusCode = HttpStatusCode.OK,
+                IsSuccess = true,
+                Result = inputModel
+            };
+        }
+        catch (Exception ex)
         {
-            StatusCode = HttpStatusCode.OK,
-            IsSuccess = true,
-            Result = inputModel
-        };
+            Console.WriteLine(ex);
+            return new ApiResponse<ChartOfAccountInputModel>()
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                IsSuccess = false,
+            };
+        }
     }
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ChartOfAccountCreateCommand command)

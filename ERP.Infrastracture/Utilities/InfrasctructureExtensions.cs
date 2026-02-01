@@ -1,4 +1,4 @@
-﻿using AAA.ERP.Services.Impelementation;
+using AAA.ERP.Services.Impelementation;
 using Domain.Account.Services.Identity;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
@@ -53,6 +53,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBankService, BankService>();
+        services.AddScoped<ITaxService, TaxService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ISupplierService, SupplierService>();
@@ -109,6 +110,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
         services.AddScoped<IBankRepository, BankRepository>();
+        services.AddScoped<ITaxRepository, TaxRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();

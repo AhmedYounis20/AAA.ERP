@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+namespace ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 
 public enum SubLeadgerType
 {
@@ -8,4 +8,5 @@ public enum SubLeadgerType
     CashInBox,
     Bank,
     FixedAsset,
+    Tax,
 }

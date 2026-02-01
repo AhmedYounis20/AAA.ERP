@@ -1333,6 +1333,74 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Suppliers", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<Guid?>("ChartOfAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("NodeType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnOrder(7);
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnOrder(6);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Taxes", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3693,6 +3761,19 @@ namespace AAA.ERP.Migrations
                         .HasForeignKey("ChartOfAccountId");
 
                     b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Supplier", null)
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("ChartOfAccount");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartOfAccountId");
+
+                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
