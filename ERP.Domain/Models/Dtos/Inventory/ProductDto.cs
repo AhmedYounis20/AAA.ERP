@@ -31,6 +31,7 @@ public class ProductDto
         get => ProductCodes.FirstOrDefault(e => e.CodeType == ProductCodeType.EGS)?.Code ?? string.Empty;
         set { }
     }
+    public List<string> BarCodes { get => ProductCodes.Where(e => e.CodeType == ProductCodeType.BarCode).Select(e => e.Code).ToList(); }
 
     public ProductType? ProductType { get; set; }
     public decimal MaxDiscount { get; set; }

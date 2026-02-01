@@ -13,6 +13,11 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
 
             _ = builder.Property(e => e.AttachmentType).HasConversion<string>();
 
+            // Indexes for frequently queried columns
+            // Note: VariantId index already exists from foreign key
+            _ = builder.HasIndex(e => e.IsPrimary); // For filtering primary attachments
+            _ = builder.HasIndex(e => new { e.VariantId, e.IsPrimary }); // Composite index for finding primary picture efficiently
+
             _ = builder.HasOne(e => e.Variant)
             .WithMany(e => e.VariantAttachments)
             .HasForeignKey(e => e.VariantId)

@@ -528,6 +528,74 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         }
     }
 
+    /// <summary>
+    /// Bulk-create variants for product update scenarios.
+    /// This keeps the existing Create method untouched while allowing
+    /// UpdateProductVariants to insert many variants in a batched way.
+    /// </summary>
+    public async Task<ApiResponse<bool>> CreateVariantsBulkForProductUpdate(
+        List<VariantCreateCommand> commands,
+        bool isValidate = true)
+    {
+        if (commands == null || !commands.Any())
+        {
+            return new ApiResponse<bool>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = true
+            };
+        }
+
+        if (isValidate)
+        {
+            var allErrors = new List<string>();
+
+            foreach (var command in commands)
+            {
+                var validationResult = await ValidateCreate(command);
+                if (!validationResult.isValid)
+                {
+                    allErrors.AddRange(validationResult.errors);
+                }
+            }
+
+            if (allErrors.Any())
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = allErrors.Distinct().ToList()
+                };
+            }
+        }
+
+        try
+        {
+            var variants = BuildVariantsForBulkCreate(commands);
+
+            // Single batched insert for all variants with their navigation properties
+            await _repository.Add(variants);
+
+            return new ApiResponse<bool>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<bool>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = new List<string> { ex.Message }
+            };
+        }
+    }
+
     public async Task<ApiResponse<VariantDto>> UpdateVariantWithAttributes(VariantUpdateCommand command)
     {
         try
@@ -1740,7 +1808,148 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                 });
             }
         }
-
         variant.VariantCodes = variantCodes;
+    }
+
+    /// <summary>
+    /// Build Variant aggregates (with navigation collections) in memory for bulk creation.
+    /// Children are attached via navigation properties so EF can cascade-insert them.
+    /// </summary>
+    private List<Variant> BuildVariantsForBulkCreate(List<VariantCreateCommand> commands)
+    {
+        var now = DateTime.Now;
+        var variants = new List<Variant>();
+
+        foreach (var command in commands)
+        {
+            var variant = new Variant
+            {
+                Description = command.Description,
+                ProductId = command.ProductId,
+                MaxDiscount = command.MaxDiscount,
+                ConditionalDiscount = command.ConditionalDiscount,
+                DefaultDiscount = command.DefaultDiscount,
+                DefaultDiscountType = command.DefaultDiscountType,
+                IsDiscountBasedOnSellingPrice = command.IsDiscountBasedOnSellingPrice,
+                Model = command.Model,
+                Version = command.Version,
+                CountryOfOrigin = command.CountryOfOrigin,
+                IsArchived = command.IsArchived,
+                ApplyProductChanges = command.ApplyProductChanges,
+                IsDefault = command.IsDefault,
+                IsSales = command.IsSales,
+                IsPurchase = command.IsPurchase,
+                CreatedAt = now,
+                ModifiedAt = now
+            };
+
+            // Variant codes
+            PrepareVariantCodes(variant, command.Code, command.Gs1Code, command.EGSCode, command.BarCodes);
+
+            // Suppliers
+            if (command.SuppliersIds?.Any() == true)
+            {
+                variant.VariantSuppliers = command.SuppliersIds.Select(supplierId => new VariantSupplier
+                {
+                    SupplierId = supplierId,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                }).ToList();
+            }
+
+            // Manufacturer companies
+            if (command.ManufacturerCompaniesIds?.Any() == true)
+            {
+                variant.VariantManufacturerCompanies = command.ManufacturerCompaniesIds.Select(companyId => new VariantManufacturerCompany
+                {
+                    ManufacturerCompanyId = companyId,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                }).ToList();
+            }
+
+            // Selling price discounts
+            if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
+            {
+                variant.VariantSellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => new VariantSellingPriceDiscount
+                {
+                    SellingPriceId = e.SellingPriceId,
+                    Discount = e.Discount,
+                    DiscountType = e.DiscountType,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                }).ToList();
+            }
+
+            // Packing units
+            if (command.PackingUnits?.Any() == true)
+            {
+                variant.VariantPackingUnitPrices = command.PackingUnits.Select(packingUnitDto =>
+                {
+                    var packingUnit = new VariantPackingUnit
+                    {
+                        PackingUnitId = packingUnitDto.PackingUnitId,
+                        AverageCostPrice = packingUnitDto.AverageCostPrice,
+                        IsDefaultPackingUnit = packingUnitDto.IsDefaultPackingUnit,
+                        LastCostPrice = packingUnitDto.LastCostPrice,
+                        PartsCount = packingUnitDto.PartsCount,
+                        IsDefaultSales = packingUnitDto.IsDefaultSales,
+                        IsDefaultPurchases = packingUnitDto.IsDefaultPurchases,
+                        OrderNumber = packingUnitDto.OrderNumber,
+                        CreatedAt = now,
+                        ModifiedAt = now,
+                        VariantPackingUnitSellingPrices = packingUnitDto.SellingPrices.Select(sp => new VariantPackingUnitSellingPrice
+                        {
+                            Amount = sp.Amount,
+                            SellingPriceId = sp.SellingPriceId,
+                            CreatedAt = now,
+                            ModifiedAt = now
+                        }).ToList()
+                    };
+                    return packingUnit;
+                }).ToList();
+            }
+
+            // Variant attributes
+            if (command.VariantAttributeValues?.Any() == true)
+            {
+                variant.VariantAttributeValues = command.VariantAttributeValues.Select(attr => new VariantAttributeValue
+                {
+                    AttributeDefinitionId = attr.AttributeDefinitionId,
+                    AttributeValueId = attr.AttributeValueId,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                }).ToList();
+            }
+
+            // Attachments (if any are provided from other flows)
+            if (command.VariantAttachments?.Any() == true)
+            {
+                variant.VariantAttachments = command.VariantAttachments
+                    .Where(dto => dto.Attachment != null)
+                    .Select(dto => new VariantAttachment
+                    {
+                        Attachment = new Attachment
+                        {
+                            FileName = dto.Attachment!.FileName,
+                            FileContentType = dto.Attachment.ContentType,
+                            FileData = Convert.FromBase64String(dto.Attachment.FileContent),
+                            CreatedAt = now,
+                            ModifiedAt = now
+                        },
+                        AttachmentType = dto.AttachmentType,
+                        Description = dto.Description,
+                        IsPrimary = dto.IsPrimary,
+                        DisplayOrder = dto.DisplayOrder,
+                        CreatedAt = now,
+                        ModifiedAt = now
+                    })
+                    .ToList();
+            }
+
+            variants.Add(variant);
+        }
+
+        return variants;
     }
 }

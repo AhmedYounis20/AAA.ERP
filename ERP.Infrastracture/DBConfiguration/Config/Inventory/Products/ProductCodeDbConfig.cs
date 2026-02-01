@@ -13,6 +13,10 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Products
 
             _ = builder.Property(e => e.CodeType).HasConversion<string>();
 
+            // Indexes for frequently queried columns
+            // Note: ProductId index already exists from foreign key
+            _ = builder.HasIndex(e => e.CodeType); // For filtering by code type
+
             _ = builder.HasOne(e => e.Product)
             .WithMany(e => e.ProductCodes)
             .HasForeignKey(e => e.ProductId)

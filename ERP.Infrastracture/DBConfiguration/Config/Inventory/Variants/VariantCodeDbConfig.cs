@@ -13,6 +13,10 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
 
             _ = builder.Property(e => e.CodeType).HasConversion<string>();
 
+            // Indexes for frequently queried columns
+            // Note: VariantId index already exists from foreign key
+            _ = builder.HasIndex(e => e.CodeType); // For filtering by code type
+
             _ = builder.HasOne(e => e.Variant)
             .WithMany(e => e.VariantCodes)
             .HasForeignKey(e => e.VariantId)

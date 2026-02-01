@@ -23,6 +23,13 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
             _ = builder.Property(e => e.IsUsed).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsArchived).HasColumnOrder(columnNumber++);
 
+            // Indexes for frequently queried columns
+            // Note: ProductId index already exists from foreign key
+            _ = builder.HasIndex(e => e.IsArchived); // For filtering in GetDtos
+            _ = builder.HasIndex(e => e.IsDefault); // For filtering variants
+            _ = builder.HasIndex(e => new { e.ProductId, e.IsDefault }); // Composite for filtering variants by product and default status
+            _ = builder.HasIndex(e => new { e.IsArchived, e.ProductId }); // Composite for filtering archived variants by product
+
             _ = builder.HasOne(e => e.Product)
             .WithMany(e => e.Variants)
             .HasForeignKey(e => e.ProductId)
