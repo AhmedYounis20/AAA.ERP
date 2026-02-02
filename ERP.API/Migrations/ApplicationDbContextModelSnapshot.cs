@@ -2554,6 +2554,76 @@ namespace AAA.ERP.Migrations
                     b.ToTable("ProductPackingUnitSellingPrices");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPurchaseTax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaxId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId", "TaxId")
+                        .IsUnique();
+
+                    b.ToTable("ProductPurchaseTaxes", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSalesTax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaxId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId", "TaxId")
+                        .IsUnique();
+
+                    b.ToTable("ProductSalesTaxes", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3143,6 +3213,76 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("VariantPackingUnitId");
 
                     b.ToTable("VariantPackingUnitSellingPrices", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPurchaseTax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaxId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId", "TaxId")
+                        .IsUnique();
+
+                    b.ToTable("VariantPurchaseTaxes", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSalesTax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaxId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId", "TaxId")
+                        .IsUnique();
+
+                    b.ToTable("VariantSalesTaxes", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSellingPriceDiscount", b =>
@@ -4099,6 +4239,28 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ProductPackingUnit");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductPurchaseTax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductPurchaseTaxes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSalesTax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductSalesTaxes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
@@ -4273,6 +4435,28 @@ namespace AAA.ERP.Migrations
                     b.Navigation("VariantPackingUnit");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantPurchaseTax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantPurchaseTaxes")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSalesTax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantSalesTaxes")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantSellingPriceDiscount", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.SellingPrices.SellingPrice", "SellingPrice")
@@ -4422,6 +4606,10 @@ namespace AAA.ERP.Migrations
 
                     b.Navigation("ProductPackingUnits");
 
+                    b.Navigation("ProductPurchaseTaxes");
+
+                    b.Navigation("ProductSalesTaxes");
+
                     b.Navigation("ProductSellingPriceDiscounts");
 
                     b.Navigation("ProductSuppliers");
@@ -4445,6 +4633,10 @@ namespace AAA.ERP.Migrations
                     b.Navigation("VariantManufacturerCompanies");
 
                     b.Navigation("VariantPackingUnitPrices");
+
+                    b.Navigation("VariantPurchaseTaxes");
+
+                    b.Navigation("VariantSalesTaxes");
 
                     b.Navigation("VariantSellingPriceDiscounts");
 

@@ -26,6 +26,8 @@ public class ProductUpdateCommand : BaseTreeSettingUpdateCommand<Product>
     public string? CountryOfOrigin { get; set; }
     public List<string> BarCodes { get; set; } = [];
     public List<Guid> SuppliersIds { get; set; } = [];
+    public List<Guid> SalesTaxIds { get; set; } = [];
+    public List<Guid> PurchaseTaxIds { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ProductAttachmentDto> ProductAttachments { get; set; } = [];
     public List<ProductAttributeDefinitionDto> ProductAttributeDefinitions { get; set; } = [];

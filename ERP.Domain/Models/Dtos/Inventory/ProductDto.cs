@@ -43,6 +43,8 @@ public class ProductDto
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }
     public List<Guid> SuppliersIds { get; set; } = [];
+    public List<Guid> SalesTaxIds { get; set; } = [];
+    public List<Guid> PurchaseTaxIds { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ProductAttachmentDto> ProductAttachments { get; set; } = [];
     public AttachmentDto? ProductPicture { get; set; } 

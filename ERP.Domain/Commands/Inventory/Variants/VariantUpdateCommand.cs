@@ -24,6 +24,8 @@ public class VariantUpdateCommand : BaseSettingUpdateCommand<Variant>
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }
     public List<Guid> SuppliersIds { get; set; } = [];
+    public List<Guid> SalesTaxIds { get; set; } = [];
+    public List<Guid> PurchaseTaxIds { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<VariantSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<VariantPackingUnitDto> PackingUnits { get; set; } = [];

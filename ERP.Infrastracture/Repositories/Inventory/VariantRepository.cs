@@ -105,6 +105,8 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.VariantAttributeValues)
                 .ThenInclude(vav => vav.AttributeValue)
             .Include(v => v.VariantSuppliers)
+            .Include(v => v.VariantSalesTaxes)
+            .Include(v => v.VariantPurchaseTaxes)
             .Include(v => v.VariantManufacturerCompanies)
             .Include(v => v.VariantSellingPriceDiscounts)
             .Where(v => v.Id == id)
@@ -137,6 +139,12 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             VariantCodes = variant.VariantCodes,
             SuppliersIds = variant.VariantSuppliers
                 .Select(vs => vs.SupplierId)
+                .ToList(),
+            SalesTaxIds = variant.VariantSalesTaxes
+                .Select(vst => vst.TaxId)
+                .ToList(),
+            PurchaseTaxIds = variant.VariantPurchaseTaxes
+                .Select(vpt => vpt.TaxId)
                 .ToList(),
             ManufacturerCompaniesIds = variant.VariantManufacturerCompanies
                 .Select(vmc => vmc.ManufacturerCompanyId)

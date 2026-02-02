@@ -39,6 +39,8 @@ public class Variant : BaseEntity
     // Navigation properties
     public List<VariantCode> VariantCodes { get; set; } = [];
     public List<VariantSupplier> VariantSuppliers { get; set; } = [];
+    public List<VariantSalesTax> VariantSalesTaxes { get; set; } = [];
+    public List<VariantPurchaseTax> VariantPurchaseTaxes { get; set; } = [];
     public List<VariantManufacturerCompany> VariantManufacturerCompanies { get; set; } = [];
     public List<VariantSellingPriceDiscount> VariantSellingPriceDiscounts { get; set; } = [];
     public List<VariantPackingUnit> VariantPackingUnitPrices { get; set; } = [];

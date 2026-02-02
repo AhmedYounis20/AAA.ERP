@@ -14,9 +14,9 @@ public class TaxCreateValidator : BaseSubLeadgerCreateValidator<TaxCreateCommand
             .GreaterThanOrEqualTo(0)
             .LessThanOrEqualTo(100)
             .When(e => e.NodeType.Equals(NodeType.Domain));
-        _ = RuleFor(e => e.ParentId)
+        _ = RuleFor(e => e.ChartOfAccountId)
             .NotEmpty()
-            .WithMessage("ParentIdIsRequired")
+            .WithMessage("ChartOfAccountIdIsRequired")
             .When(e => e.NodeType.Equals(NodeType.Domain));
     }
 }

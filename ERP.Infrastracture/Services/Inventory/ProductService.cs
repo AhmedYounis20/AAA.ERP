@@ -71,6 +71,8 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
                 product.ProductSellingPriceDiscounts = CreatProductSellingPriceDiscounts(command);
                 product.ProductSuppliers = CreateProductSuppliers(command);
+                product.ProductSalesTaxes = CreateProductSalesTaxes(command);
+                product.ProductPurchaseTaxes = CreateProductPurchaseTaxes(command);
                 product.ProductManufacturerCompanies = CreateProductManufacturerCompanies(command);
                 product.ProductPackingUnits =  CreateProductPackingUnits(command);
 
@@ -194,6 +196,36 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         }
 
         return new List<ProductSupplier>();
+    }
+
+    private List<ProductSalesTax> CreateProductSalesTaxes(ProductCreateCommand command)
+    {
+        if (command.SalesTaxIds?.Any() == true)
+        {
+            return command.SalesTaxIds.Select(taxId => new ProductSalesTax
+            {
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductSalesTax>();
+    }
+
+    private List<ProductPurchaseTax> CreateProductPurchaseTaxes(ProductCreateCommand command)
+    {
+        if (command.PurchaseTaxIds?.Any() == true)
+        {
+            return command.PurchaseTaxIds.Select(taxId => new ProductPurchaseTax
+            {
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductPurchaseTax>();
     }
 
     private List<ProductManufacturerCompany> CreateProductManufacturerCompanies(ProductCreateCommand command)
@@ -345,6 +377,8 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.TrackedBy = command.TrackedBy;
                 await UpdateProductBarCodes(command.BarCodes, product.Id);
                 await UpdateProductSuppliers(command.SuppliersIds, product.Id);
+                await UpdateProductSalesTaxes(command.SalesTaxIds, product.Id);
+                await UpdateProductPurchaseTaxes(command.PurchaseTaxIds, product.Id);
                 await UpdateProductManufacturerCompanies(command.ManufacturerCompaniesIds, product.Id);
                 await UpdateProductSellingPriceDiscounts(product.Id,command.SellingPriceDiscounts);
                 await UpdateProductPackingUnits(product.Id,command.PackingUnits);
@@ -955,6 +989,76 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         }
     }
 
+    private async Task UpdateProductSalesTaxes(List<Guid> salesTaxIds, Guid productId)
+    {
+        var repository = _unitOfWork.ProductSalesTaxRepository;
+        var existingTaxes = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        if (salesTaxIds == null || !salesTaxIds.Any())
+        {
+            if (existingTaxes.Any())
+                await repository.Delete(existingTaxes);
+            return;
+        }
+
+        var existingTaxIds = existingTaxes.Select(e => e.TaxId).ToHashSet();
+        var taxesToRemove = existingTaxes.Where(e => !salesTaxIds.Contains(e.TaxId)).ToList();
+        if (taxesToRemove.Any())
+            await repository.Delete(taxesToRemove);
+
+        var now = DateTime.Now;
+        var taxesToAdd = salesTaxIds
+            .Where(id => !existingTaxIds.Contains(id))
+            .Select(taxId => new ProductSalesTax
+            {
+                ProductId = productId,
+                TaxId = taxId,
+                CreatedAt = now,
+                ModifiedAt = now,
+            })
+            .ToList();
+
+        if (taxesToAdd.Any())
+            await repository.Add(taxesToAdd);
+    }
+
+    private async Task UpdateProductPurchaseTaxes(List<Guid> purchaseTaxIds, Guid productId)
+    {
+        var repository = _unitOfWork.ProductPurchaseTaxRepository;
+        var existingTaxes = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        if (purchaseTaxIds == null || !purchaseTaxIds.Any())
+        {
+            if (existingTaxes.Any())
+                await repository.Delete(existingTaxes);
+            return;
+        }
+
+        var existingTaxIds = existingTaxes.Select(e => e.TaxId).ToHashSet();
+        var taxesToRemove = existingTaxes.Where(e => !purchaseTaxIds.Contains(e.TaxId)).ToList();
+        if (taxesToRemove.Any())
+            await repository.Delete(taxesToRemove);
+
+        var now = DateTime.Now;
+        var taxesToAdd = purchaseTaxIds
+            .Where(id => !existingTaxIds.Contains(id))
+            .Select(taxId => new ProductPurchaseTax
+            {
+                ProductId = productId,
+                TaxId = taxId,
+                CreatedAt = now,
+                ModifiedAt = now,
+            })
+            .ToList();
+
+        if (taxesToAdd.Any())
+            await repository.Add(taxesToAdd);
+    }
+
     private async Task UpdateProductAttachments(IEnumerable<ProductAttachmentDto> productAttachmentDtos, Guid productId)
     {
         await DeleteOldProductAttachments(productId);
@@ -1075,6 +1179,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 // Update suppliers
                 await UpdateVariantSuppliers(command.SuppliersIds, defaultVariant.Id);
 
+                // Update sales taxes
+                await UpdateVariantSalesTaxes(command.SalesTaxIds, defaultVariant.Id);
+
+                // Update purchase taxes
+                await UpdateVariantPurchaseTaxes(command.PurchaseTaxIds, defaultVariant.Id);
+
                 // Update manufacturer companies
                 await UpdateVariantManufacturerCompanies(command.ManufacturerCompaniesIds, defaultVariant.Id);
 
@@ -1146,6 +1256,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
                             // Update suppliers
                             await UpdateVariantSuppliers(command.SuppliersIds, variant.Id);
+
+                            // Update sales taxes
+                            await UpdateVariantSalesTaxes(command.SalesTaxIds, variant.Id);
+
+                            // Update purchase taxes
+                            await UpdateVariantPurchaseTaxes(command.PurchaseTaxIds, variant.Id);
 
                             // Update manufacturer companies
                             await UpdateVariantManufacturerCompanies(command.ManufacturerCompaniesIds, variant.Id);
@@ -1352,6 +1468,50 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (variantSuppliers.Any())
         {
             await _unitOfWork.VariantSupplierRepository.Add(variantSuppliers);
+        }
+    }
+
+    private async Task UpdateVariantSalesTaxes(List<Guid> salesTaxIds, Guid variantId)
+    {
+        var oldTaxes = await _unitOfWork.VariantSalesTaxRepository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+
+        if (oldTaxes.Any())
+            await _unitOfWork.VariantSalesTaxRepository.Delete(oldTaxes);
+
+        if (salesTaxIds?.Any() == true)
+        {
+            var variantSalesTaxes = salesTaxIds.Select(taxId => new VariantSalesTax
+            {
+                VariantId = variantId,
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+            }).ToList();
+            await _unitOfWork.VariantSalesTaxRepository.Add(variantSalesTaxes);
+        }
+    }
+
+    private async Task UpdateVariantPurchaseTaxes(List<Guid> purchaseTaxIds, Guid variantId)
+    {
+        var oldTaxes = await _unitOfWork.VariantPurchaseTaxRepository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+
+        if (oldTaxes.Any())
+            await _unitOfWork.VariantPurchaseTaxRepository.Delete(oldTaxes);
+
+        if (purchaseTaxIds?.Any() == true)
+        {
+            var variantPurchaseTaxes = purchaseTaxIds.Select(taxId => new VariantPurchaseTax
+            {
+                VariantId = variantId,
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+            }).ToList();
+            await _unitOfWork.VariantPurchaseTaxRepository.Add(variantPurchaseTaxes);
         }
     }
 

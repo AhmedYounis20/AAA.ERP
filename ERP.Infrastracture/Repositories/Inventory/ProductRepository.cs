@@ -87,6 +87,8 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                 .ThenInclude(e => e.Attachment)
             .Include(e => e.ProductAttributeDefinitions)
             .Include(e => e.ProductSuppliers)
+            .Include(e => e.ProductSalesTaxes)
+            .Include(e => e.ProductPurchaseTaxes)
             .Include(e => e.ProductManufacturerCompanies)
             .Include(e => e.ProductSellingPriceDiscounts)
             .Include(e => e.Variants)
@@ -143,6 +145,12 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                 .ToList(),
             SuppliersIds = product.ProductSuppliers
                 .Select(ps => ps.SupplierId)
+                .ToList(),
+            SalesTaxIds = product.ProductSalesTaxes
+                .Select(pst => pst.TaxId)
+                .ToList(),
+            PurchaseTaxIds = product.ProductPurchaseTaxes
+                .Select(ppt => ppt.TaxId)
                 .ToList(),
             ManufacturerCompaniesIds = product.ProductManufacturerCompanies
                 .Select(pmc => pmc.ManufacturerCompanyId)

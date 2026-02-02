@@ -34,6 +34,8 @@ public class Product : BaseTreeSettingEntity<Product>
     // Navigation properties
     public List<ProductCode> ProductCodes { get; set; } = [];
     public List<ProductSupplier> ProductSuppliers { get; set; } = [];
+    public List<ProductSalesTax> ProductSalesTaxes { get; set; } = [];
+    public List<ProductPurchaseTax> ProductPurchaseTaxes { get; set; } = [];
     public List<ProductManufacturerCompany> ProductManufacturerCompanies { get; set; } = [];
     public List<ProductAttachment> ProductAttachments { get; set; } = [];
     public List<Variant> Variants { get; set; } = [];

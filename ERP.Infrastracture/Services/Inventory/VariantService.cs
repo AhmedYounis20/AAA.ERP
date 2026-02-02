@@ -81,6 +81,18 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                 await CreateVariantSuppliers(command, variant.Id);
             }
 
+            // Handle variant sales taxes
+            if (command.SalesTaxIds?.Any() == true)
+            {
+                await CreateVariantSalesTaxes(command, variant.Id);
+            }
+
+            // Handle variant purchase taxes
+            if (command.PurchaseTaxIds?.Any() == true)
+            {
+                await CreateVariantPurchaseTaxes(command, variant.Id);
+            }
+
             // Handle variant manufacturer companies
             if (command.ManufacturerCompaniesIds?.Any() == true)
             {
@@ -169,6 +181,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
             // Update suppliers
             await UpdateVariantSuppliers(command, variant.Id);
+
+            // Update sales taxes
+            await UpdateVariantSalesTaxes(command, variant.Id);
+
+            // Update purchase taxes
+            await UpdateVariantPurchaseTaxes(command, variant.Id);
 
             // Update manufacturer companies
             await UpdateVariantManufacturerCompanies(command, variant.Id);
@@ -797,6 +815,88 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         {
             await _unitOfWork.VariantSupplierRepository.Add(suppliersToAdd);
         }
+    }
+
+    private async Task CreateVariantSalesTaxes(VariantCreateCommand command, Guid variantId)
+    {
+        var variantSalesTaxes = command.SalesTaxIds.Select(taxId => new VariantSalesTax
+        {
+            VariantId = variantId,
+            TaxId = taxId,
+            CreatedAt = DateTime.Now,
+            ModifiedAt = DateTime.Now
+        }).ToList();
+
+        if (variantSalesTaxes.Any())
+            await _unitOfWork.VariantSalesTaxRepository.Add(variantSalesTaxes);
+    }
+
+    private async Task CreateVariantPurchaseTaxes(VariantCreateCommand command, Guid variantId)
+    {
+        var variantPurchaseTaxes = command.PurchaseTaxIds.Select(taxId => new VariantPurchaseTax
+        {
+            VariantId = variantId,
+            TaxId = taxId,
+            CreatedAt = DateTime.Now,
+            ModifiedAt = DateTime.Now
+        }).ToList();
+
+        if (variantPurchaseTaxes.Any())
+            await _unitOfWork.VariantPurchaseTaxRepository.Add(variantPurchaseTaxes);
+    }
+
+    private async Task UpdateVariantSalesTaxes(VariantUpdateCommand command, Guid variantId)
+    {
+        var existingTaxIds = await _unitOfWork.VariantSalesTaxRepository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .Select(e => e.TaxId)
+            .ToListAsync();
+
+        if (existingTaxIds.Any())
+        {
+            await _unitOfWork.VariantSalesTaxRepository.ExecuteDeleteAsync(
+                vst => vst.VariantId == variantId && !command.SalesTaxIds.Contains(vst.TaxId));
+        }
+
+        var taxesToAdd = command.SalesTaxIds
+            .Where(taxId => !existingTaxIds.Contains(taxId))
+            .Select(taxId => new VariantSalesTax
+            {
+                VariantId = variantId,
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+
+        if (taxesToAdd.Any())
+            await _unitOfWork.VariantSalesTaxRepository.Add(taxesToAdd);
+    }
+
+    private async Task UpdateVariantPurchaseTaxes(VariantUpdateCommand command, Guid variantId)
+    {
+        var existingTaxIds = await _unitOfWork.VariantPurchaseTaxRepository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .Select(e => e.TaxId)
+            .ToListAsync();
+
+        if (existingTaxIds.Any())
+        {
+            await _unitOfWork.VariantPurchaseTaxRepository.ExecuteDeleteAsync(
+                vpt => vpt.VariantId == variantId && !command.PurchaseTaxIds.Contains(vpt.TaxId));
+        }
+
+        var taxesToAdd = command.PurchaseTaxIds
+            .Where(taxId => !existingTaxIds.Contains(taxId))
+            .Select(taxId => new VariantPurchaseTax
+            {
+                VariantId = variantId,
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+
+        if (taxesToAdd.Any())
+            await _unitOfWork.VariantPurchaseTaxRepository.Add(taxesToAdd);
     }
 
     private async Task CreateVariantManufacturerCompanies(VariantCreateCommand command, Guid variantId)
@@ -1588,6 +1688,28 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             }).ToList();
         }
 
+        // Prepare default variant sales taxes
+        if (command.SalesTaxIds?.Any() == true)
+        {
+            defaultVariant.VariantSalesTaxes = command.SalesTaxIds.Select(taxId => new VariantSalesTax
+            {
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        // Prepare default variant purchase taxes
+        if (command.PurchaseTaxIds?.Any() == true)
+        {
+            defaultVariant.VariantPurchaseTaxes = command.PurchaseTaxIds.Select(taxId => new VariantPurchaseTax
+            {
+                TaxId = taxId,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
         // Prepare default variant manufacturer companies
         if (command.ManufacturerCompaniesIds?.Any() == true)
         {
@@ -1680,6 +1802,28 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                     combinationVariant.VariantSuppliers = command.SuppliersIds.Select(supplierId => new VariantSupplier
                     {
                         SupplierId = supplierId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant sales taxes
+                if (command.SalesTaxIds?.Any() == true)
+                {
+                    combinationVariant.VariantSalesTaxes = command.SalesTaxIds.Select(taxId => new VariantSalesTax
+                    {
+                        TaxId = taxId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant purchase taxes
+                if (command.PurchaseTaxIds?.Any() == true)
+                {
+                    combinationVariant.VariantPurchaseTaxes = command.PurchaseTaxIds.Select(taxId => new VariantPurchaseTax
+                    {
+                        TaxId = taxId,
                         CreatedAt = DateTime.Now,
                         ModifiedAt = DateTime.Now
                     }).ToList();

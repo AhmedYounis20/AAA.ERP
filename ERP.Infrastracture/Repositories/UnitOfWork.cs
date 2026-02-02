@@ -31,6 +31,8 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<ItemPackingUnit> ItemPackingUnitRepository { get; }
     public IProductRepository ProductRepository { get; }
     public IBaseRepository<ProductSupplier> ProductSupplierRepository { get; }
+    public IBaseRepository<ProductSalesTax> ProductSalesTaxRepository { get; }
+    public IBaseRepository<ProductPurchaseTax> ProductPurchaseTaxRepository { get; }
     public IProductAttributeDefinitionRepository ProductAttributeDefinitionRepository { get; }
     public IBaseRepository<ProductCode> ProductCodeRepository { get; }
     public IBaseRepository<ProductAttachment> ProductAttachmentRepository { get; }
@@ -40,6 +42,8 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<ProductPackingUnitSellingPrice> ProductPackingUnitSellingPriceRepository { get; }
     public IVariantRepository VariantRepository { get; }
     public IBaseRepository<VariantSupplier> VariantSupplierRepository { get; }
+    public IBaseRepository<VariantSalesTax> VariantSalesTaxRepository { get; }
+    public IBaseRepository<VariantPurchaseTax> VariantPurchaseTaxRepository { get; }
     public IBaseRepository<VariantCode> VariantCodeRepository { get; }
     public IBaseRepository<VariantAttachment> VariantAttachmentRepository { get; }
     public IBaseRepository<VariantManufacturerCompany> VariantManufacturerCompanyRepository { get; }
@@ -80,6 +84,8 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,      
         IProductRepository productRepository,
         IBaseRepository<ProductSupplier> productSupplierRepository,
+        IBaseRepository<ProductSalesTax> productSalesTaxRepository,
+        IBaseRepository<ProductPurchaseTax> productPurchaseTaxRepository,
         IBaseRepository<ProductCode> productCodeRepository,
         IBaseRepository<ProductAttachment> productAttachmentRepository,
         IBaseRepository<ProductManufacturerCompany> productManufacturerCompanyRepository,
@@ -89,6 +95,8 @@ public class UnitOfWork : IUnitOfWork
         IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
         IVariantRepository variantRepository,
     IBaseRepository<VariantSupplier> variantSupplierRepository,
+    IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
+    IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
     IBaseRepository<VariantCode> variantCodeRepository,
     IBaseRepository<VariantAttachment> variantAttachmentRepository, 
     IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository, 
@@ -127,6 +135,8 @@ public class UnitOfWork : IUnitOfWork
         ItemSellingPriceDiscountRepository = itemSellingPriceDiscountRepository;
         ProductRepository = productRepository;
         ProductSupplierRepository = productSupplierRepository;
+        ProductSalesTaxRepository = productSalesTaxRepository;
+        ProductPurchaseTaxRepository = productPurchaseTaxRepository;
         ProductCodeRepository = productCodeRepository;
         ProductManufacturerCompanyRepository = productManufacturerCompanyRepository;
         ProductPackingUnitRepository = productPackingUnitRepository;
@@ -135,6 +145,8 @@ public class UnitOfWork : IUnitOfWork
         ProductAttachmentRepository = productAttachmentRepository;
         VariantRepository = variantRepository;
         VariantSupplierRepository = variantSupplierRepository;
+        VariantSalesTaxRepository = variantSalesTaxRepository;
+        VariantPurchaseTaxRepository = variantPurchaseTaxRepository;
         VariantCodeRepository = variantCodeRepository;
         VariantManufacturerCompanyRepository = variantManufacturerCompanyRepository;
         VariantPackingUnitRepository = variantPackingUnitRepository;

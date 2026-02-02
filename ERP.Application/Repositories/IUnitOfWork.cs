@@ -33,6 +33,8 @@ public interface IUnitOfWork
     public IAttributeValueRepository AttributeValueRepository { get; }
     public IProductRepository ProductRepository { get; }
     public IBaseRepository<ProductSupplier> ProductSupplierRepository { get; }
+    public IBaseRepository<ProductSalesTax> ProductSalesTaxRepository { get; }
+    public IBaseRepository<ProductPurchaseTax> ProductPurchaseTaxRepository { get; }
     public IBaseRepository<ProductCode> ProductCodeRepository { get; }
     public IBaseRepository<ProductAttachment> ProductAttachmentRepository { get; }
     public IBaseRepository<ProductManufacturerCompany> ProductManufacturerCompanyRepository { get; }
@@ -42,6 +44,8 @@ public interface IUnitOfWork
     public IProductAttributeDefinitionRepository ProductAttributeDefinitionRepository { get; }
     public IVariantRepository VariantRepository { get; }
     public IBaseRepository<VariantSupplier> VariantSupplierRepository { get; }
+    public IBaseRepository<VariantSalesTax> VariantSalesTaxRepository { get; }
+    public IBaseRepository<VariantPurchaseTax> VariantPurchaseTaxRepository { get; }
     public IBaseRepository<VariantCode> VariantCodeRepository { get; }
     public IBaseRepository<VariantAttachment> VariantAttachmentRepository { get; }
     public IBaseRepository<VariantManufacturerCompany> VariantManufacturerCompanyRepository { get; }

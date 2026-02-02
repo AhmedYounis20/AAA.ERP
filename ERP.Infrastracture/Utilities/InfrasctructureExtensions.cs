@@ -134,11 +134,15 @@ public static class InfrasctructureExtensions
         // New Product/Variant related repositories
         services.AddScoped<IBaseRepository<ProductCode>, BaseRepository<ProductCode>>();
         services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();
+        services.AddScoped<IBaseRepository<ProductSalesTax>, BaseRepository<ProductSalesTax>>();
+        services.AddScoped<IBaseRepository<ProductPurchaseTax>, BaseRepository<ProductPurchaseTax>>();
         services.AddScoped<IBaseRepository<ProductManufacturerCompany>, BaseRepository<ProductManufacturerCompany>>();
         services.AddScoped<IBaseRepository<ProductAttachment>, BaseRepository<ProductAttachment>>();
         services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
         services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();
         services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
+        services.AddScoped<IBaseRepository<VariantSalesTax>, BaseRepository<VariantSalesTax>>();
+        services.AddScoped<IBaseRepository<VariantPurchaseTax>, BaseRepository<VariantPurchaseTax>>();
         services.AddScoped<IBaseRepository<VariantManufacturerCompany>, BaseRepository<VariantManufacturerCompany>>();
         services.AddScoped<IBaseRepository<VariantPackingUnit>, BaseRepository<VariantPackingUnit>>();
         services.AddScoped<IBaseRepository<VariantPackingUnitSellingPrice>, BaseRepository<VariantPackingUnitSellingPrice>>();
