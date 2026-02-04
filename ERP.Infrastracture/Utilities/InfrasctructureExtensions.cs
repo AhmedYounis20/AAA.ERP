@@ -136,6 +136,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();
         services.AddScoped<IBaseRepository<ProductSalesTax>, BaseRepository<ProductSalesTax>>();
         services.AddScoped<IBaseRepository<ProductPurchaseTax>, BaseRepository<ProductPurchaseTax>>();
+        services.AddScoped<IBaseRepository<ProductCostCenter>, BaseRepository<ProductCostCenter>>();
         services.AddScoped<IBaseRepository<ProductManufacturerCompany>, BaseRepository<ProductManufacturerCompany>>();
         services.AddScoped<IBaseRepository<ProductAttachment>, BaseRepository<ProductAttachment>>();
         services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
@@ -143,6 +144,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
         services.AddScoped<IBaseRepository<VariantSalesTax>, BaseRepository<VariantSalesTax>>();
         services.AddScoped<IBaseRepository<VariantPurchaseTax>, BaseRepository<VariantPurchaseTax>>();
+        services.AddScoped<IBaseRepository<VariantCostCenter>, BaseRepository<VariantCostCenter>>();
         services.AddScoped<IBaseRepository<VariantManufacturerCompany>, BaseRepository<VariantManufacturerCompany>>();
         services.AddScoped<IBaseRepository<VariantPackingUnit>, BaseRepository<VariantPackingUnit>>();
         services.AddScoped<IBaseRepository<VariantPackingUnitSellingPrice>, BaseRepository<VariantPackingUnitSellingPrice>>();

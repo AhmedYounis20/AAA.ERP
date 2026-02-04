@@ -1,6 +1,7 @@
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Variants;
+using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;
 
@@ -20,6 +21,13 @@ public class VariantsController : BaseController<Variant, VariantCreateCommand, 
     public virtual async Task<IActionResult> Get()
     {
         var result = await _service.GetVariantDtos();
+        return StatusCode((int)result.StatusCode, result);
+    }
+    
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    {
+        var result = await _service.ReadAllDtosPaginated(filter, cancellationToken);
         return StatusCode((int)result.StatusCode, result);
     }
 

@@ -33,6 +33,7 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<ProductSupplier> ProductSupplierRepository { get; }
     public IBaseRepository<ProductSalesTax> ProductSalesTaxRepository { get; }
     public IBaseRepository<ProductPurchaseTax> ProductPurchaseTaxRepository { get; }
+    public IBaseRepository<ProductCostCenter> ProductCostCenterRepository { get; }
     public IProductAttributeDefinitionRepository ProductAttributeDefinitionRepository { get; }
     public IBaseRepository<ProductCode> ProductCodeRepository { get; }
     public IBaseRepository<ProductAttachment> ProductAttachmentRepository { get; }
@@ -44,6 +45,7 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<VariantSupplier> VariantSupplierRepository { get; }
     public IBaseRepository<VariantSalesTax> VariantSalesTaxRepository { get; }
     public IBaseRepository<VariantPurchaseTax> VariantPurchaseTaxRepository { get; }
+    public IBaseRepository<VariantCostCenter> VariantCostCenterRepository { get; }
     public IBaseRepository<VariantCode> VariantCodeRepository { get; }
     public IBaseRepository<VariantAttachment> VariantAttachmentRepository { get; }
     public IBaseRepository<VariantManufacturerCompany> VariantManufacturerCompanyRepository { get; }
@@ -86,6 +88,7 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ProductSupplier> productSupplierRepository,
         IBaseRepository<ProductSalesTax> productSalesTaxRepository,
         IBaseRepository<ProductPurchaseTax> productPurchaseTaxRepository,
+        IBaseRepository<ProductCostCenter> productCostCenterRepository,
         IBaseRepository<ProductCode> productCodeRepository,
         IBaseRepository<ProductAttachment> productAttachmentRepository,
         IBaseRepository<ProductManufacturerCompany> productManufacturerCompanyRepository,
@@ -97,6 +100,7 @@ public class UnitOfWork : IUnitOfWork
     IBaseRepository<VariantSupplier> variantSupplierRepository,
     IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
     IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
+    IBaseRepository<VariantCostCenter> variantCostCenterRepository,
     IBaseRepository<VariantCode> variantCodeRepository,
     IBaseRepository<VariantAttachment> variantAttachmentRepository, 
     IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository, 
@@ -137,6 +141,7 @@ public class UnitOfWork : IUnitOfWork
         ProductSupplierRepository = productSupplierRepository;
         ProductSalesTaxRepository = productSalesTaxRepository;
         ProductPurchaseTaxRepository = productPurchaseTaxRepository;
+        ProductCostCenterRepository = productCostCenterRepository;
         ProductCodeRepository = productCodeRepository;
         ProductManufacturerCompanyRepository = productManufacturerCompanyRepository;
         ProductPackingUnitRepository = productPackingUnitRepository;
@@ -147,6 +152,7 @@ public class UnitOfWork : IUnitOfWork
         VariantSupplierRepository = variantSupplierRepository;
         VariantSalesTaxRepository = variantSalesTaxRepository;
         VariantPurchaseTaxRepository = variantPurchaseTaxRepository;
+        VariantCostCenterRepository = variantCostCenterRepository;
         VariantCodeRepository = variantCodeRepository;
         VariantManufacturerCompanyRepository = variantManufacturerCompanyRepository;
         VariantPackingUnitRepository = variantPackingUnitRepository;

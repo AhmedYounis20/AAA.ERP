@@ -19,8 +19,6 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .Include(e => e.ProductCodes)
             .Include(e => e.ProductAttachments)
                 .ThenInclude(e => e.Attachment)
-            .Include(e => e.Variants)
-                .ThenInclude(v => v.VariantAttributeValues)
             .ToListAsync();
 
         if (!products.Any())
@@ -30,9 +28,9 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
         var result = products.Select(product =>
         {
             // Filter variants in memory (already loaded)
-            var productVariants = product.Variants
-                .Where(v => !v.IsDefault)
-                .ToList();
+            var variantsCount = _context
+                .Set<Variant>()
+                .Count(v => !v.IsDefault && v.ProductId==product.Id && !v.IsArchived);
 
             // Get primary picture from loaded attachments
             var primaryPicture = product.ProductAttachments
@@ -49,8 +47,8 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                 ProductType = product.ProductType,
                 NodeType = product.NodeType,
                 Version = product.Version,
-                HasVariants = productVariants.Any(),
-                VariantsCount = productVariants.Count,
+                HasVariants = variantsCount > 0,
+                VariantsCount = variantsCount,
                 ProductCodes = product.ProductCodes,
                 ProductPicture = (primaryPicture?.Attachment != null) ? new AttachmentDto()
                 {
@@ -58,16 +56,6 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                     ContentType = primaryPicture.Attachment.FileContentType,
                     FileName = primaryPicture.Attachment.FileName,
                 } : null,
-                VariantCombinations = productVariants.Select(v => new VariantCombinationDto
-                {
-                    Name = product.Name,
-                    ApplyProductChanges = v.ApplyProductChanges,
-                    AttributeValues = v.VariantAttributeValues
-                        .ToDictionary(
-                            av => av.AttributeDefinitionId,
-                            av => av.AttributeValueId
-                        )
-                }).ToList()
             };
         });
 
@@ -89,6 +77,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .Include(e => e.ProductSuppliers)
             .Include(e => e.ProductSalesTaxes)
             .Include(e => e.ProductPurchaseTaxes)
+            .Include(e => e.ProductCostCenters)
             .Include(e => e.ProductManufacturerCompanies)
             .Include(e => e.ProductSellingPriceDiscounts)
             .Include(e => e.Variants)
@@ -151,6 +140,13 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                 .ToList(),
             PurchaseTaxIds = product.ProductPurchaseTaxes
                 .Select(ppt => ppt.TaxId)
+                .ToList(),
+            CostCenters = product.ProductCostCenters
+                .Select(e => new ProductCostCenterDto
+                {
+                    CostCenterId = e.CostCenterId,
+                    Percent = e.Percent
+                })
                 .ToList(),
             ManufacturerCompaniesIds = product.ProductManufacturerCompanies
                 .Select(pmc => pmc.ManufacturerCompanyId)

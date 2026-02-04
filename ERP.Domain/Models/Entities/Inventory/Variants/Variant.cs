@@ -41,6 +41,7 @@ public class Variant : BaseEntity
     public List<VariantSupplier> VariantSuppliers { get; set; } = [];
     public List<VariantSalesTax> VariantSalesTaxes { get; set; } = [];
     public List<VariantPurchaseTax> VariantPurchaseTaxes { get; set; } = [];
+    public List<VariantCostCenter> VariantCostCenters { get; set; } = [];
     public List<VariantManufacturerCompany> VariantManufacturerCompanies { get; set; } = [];
     public List<VariantSellingPriceDiscount> VariantSellingPriceDiscounts { get; set; } = [];
     public List<VariantPackingUnit> VariantPackingUnitPrices { get; set; } = [];

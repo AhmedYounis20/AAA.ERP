@@ -73,6 +73,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.ProductSuppliers = CreateProductSuppliers(command);
                 product.ProductSalesTaxes = CreateProductSalesTaxes(command);
                 product.ProductPurchaseTaxes = CreateProductPurchaseTaxes(command);
+                product.ProductCostCenters = CreateProductCostCenters(command);
                 product.ProductManufacturerCompanies = CreateProductManufacturerCompanies(command);
                 product.ProductPackingUnits =  CreateProductPackingUnits(command);
 
@@ -228,6 +229,22 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         return new List<ProductPurchaseTax>();
     }
 
+    private List<ProductCostCenter> CreateProductCostCenters(ProductCreateCommand command)
+    {
+        if (command.CostCenters?.Any() == true)
+        {
+            return command.CostCenters.Select(e => new ProductCostCenter
+            {
+                CostCenterId = e.CostCenterId,
+                Percent = e.Percent,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
+        return new List<ProductCostCenter>();
+    }
+
     private List<ProductManufacturerCompany> CreateProductManufacturerCompanies(ProductCreateCommand command)
     {
         if (command.ManufacturerCompaniesIds?.Any() == true)
@@ -379,6 +396,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 await UpdateProductSuppliers(command.SuppliersIds, product.Id);
                 await UpdateProductSalesTaxes(command.SalesTaxIds, product.Id);
                 await UpdateProductPurchaseTaxes(command.PurchaseTaxIds, product.Id);
+                await UpdateProductCostCenters(product.Id, command.CostCenters);
                 await UpdateProductManufacturerCompanies(command.ManufacturerCompaniesIds, product.Id);
                 await UpdateProductSellingPriceDiscounts(product.Id,command.SellingPriceDiscounts);
                 await UpdateProductPackingUnits(product.Id,command.PackingUnits);
@@ -845,6 +863,73 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         }
     }
 
+    private async Task UpdateProductCostCenters(Guid productId, List<ProductCostCenterDto>? productCostCenters)
+    {
+        var repository = _unitOfWork.ProductCostCenterRepository;
+
+        var existingCostCenters = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+
+        if (productCostCenters == null || !productCostCenters.Any())
+        {
+            if (existingCostCenters.Any())
+            {
+                await repository.Delete(existingCostCenters);
+            }
+            return;
+        }
+
+        var existingByCostCenterId = existingCostCenters
+            .ToDictionary(e => e.CostCenterId, e => e);
+        var incomingIds = productCostCenters
+            .Select(d => d.CostCenterId)
+            .ToHashSet();
+
+        var toRemove = existingCostCenters
+            .Where(e => !incomingIds.Contains(e.CostCenterId))
+            .ToList();
+        if (toRemove.Any())
+        {
+            await repository.Delete(toRemove);
+        }
+
+        var now = DateTime.Now;
+        var toAdd = new List<ProductCostCenter>();
+        var toUpdate = new List<ProductCostCenter>();
+
+        foreach (var dto in productCostCenters)
+        {
+            if (existingByCostCenterId.TryGetValue(dto.CostCenterId, out var existing))
+            {
+                existing.Percent = dto.Percent;
+                existing.ModifiedAt = now;
+                toUpdate.Add(existing);
+            }
+            else
+            {
+                toAdd.Add(new ProductCostCenter
+                {
+                    ProductId = productId,
+                    CostCenterId = dto.CostCenterId,
+                    Percent = dto.Percent,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                });
+            }
+        }
+
+        if (toAdd.Any())
+        {
+            await repository.Add(toAdd);
+        }
+
+        if (toUpdate.Any())
+        {
+            await repository.Update(toUpdate);
+        }
+    }
+
     private async Task UpdateProductManufacturerCompanies(List<Guid> companiesIds, Guid productId)
     {
         var repository = _unitOfWork.ProductManufacturerCompanyRepository;
@@ -1188,6 +1273,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 // Update manufacturer companies
                 await UpdateVariantManufacturerCompanies(command.ManufacturerCompaniesIds, defaultVariant.Id);
 
+                // Update cost centers
+                await UpdateVariantCostCenters(command.CostCenters, defaultVariant.Id);
+
                 // Update selling price discounts
                 if (product.IsDiscountBasedOnSellingPrice)
                 {
@@ -1265,6 +1353,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
                             // Update manufacturer companies
                             await UpdateVariantManufacturerCompanies(command.ManufacturerCompaniesIds, variant.Id);
+
+                            // Update cost centers
+                            await UpdateVariantCostCenters(command.CostCenters, variant.Id);
 
                             // Update selling price discounts
                             if (product.IsDiscountBasedOnSellingPrice)
@@ -1386,7 +1477,14 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                         Version = product.Version,
                         CountryOfOrigin = product.CountryOfOrigin,
                         SuppliersIds = command.SuppliersIds,
+                        SalesTaxIds = command.SalesTaxIds,
+                        PurchaseTaxIds = command.PurchaseTaxIds,
                         ManufacturerCompaniesIds = command.ManufacturerCompaniesIds,
+                        CostCenters = command.CostCenters.Select(e => new VariantCostCenterDto
+                        {
+                            CostCenterId = e.CostCenterId,
+                            Percent = e.Percent
+                        }).ToList(),
                         SellingPriceDiscounts = command.SellingPriceDiscounts.Select(e => new VariantSellingPriceDiscountDto
                         {
                             SellingPriceId = e.SellingPriceId,
@@ -1542,6 +1640,73 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (variantManufacturerCompanies.Any())
         {
             await _unitOfWork.VariantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
+        }
+    }
+
+    private async Task UpdateVariantCostCenters(List<ProductCostCenterDto>? productCostCenters, Guid variantId)
+    {
+        var repository = _unitOfWork.VariantCostCenterRepository;
+
+        var existingCostCenters = await repository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+
+        if (productCostCenters == null || !productCostCenters.Any())
+        {
+            if (existingCostCenters.Any())
+            {
+                await repository.Delete(existingCostCenters);
+            }
+            return;
+        }
+
+        var existingByCostCenterId = existingCostCenters
+            .ToDictionary(e => e.CostCenterId, e => e);
+        var incomingIds = productCostCenters
+            .Select(d => d.CostCenterId)
+            .ToHashSet();
+
+        var toRemove = existingCostCenters
+            .Where(e => !incomingIds.Contains(e.CostCenterId))
+            .ToList();
+        if (toRemove.Any())
+        {
+            await repository.Delete(toRemove);
+        }
+
+        var now = DateTime.Now;
+        var toAdd = new List<VariantCostCenter>();
+        var toUpdate = new List<VariantCostCenter>();
+
+        foreach (var dto in productCostCenters)
+        {
+            if (existingByCostCenterId.TryGetValue(dto.CostCenterId, out var existing))
+            {
+                existing.Percent = dto.Percent;
+                existing.ModifiedAt = now;
+                toUpdate.Add(existing);
+            }
+            else
+            {
+                toAdd.Add(new VariantCostCenter
+                {
+                    VariantId = variantId,
+                    CostCenterId = dto.CostCenterId,
+                    Percent = dto.Percent,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                });
+            }
+        }
+
+        if (toAdd.Any())
+        {
+            await repository.Add(toAdd);
+        }
+
+        if (toUpdate.Any())
+        {
+            await repository.Update(toUpdate);
         }
     }
 

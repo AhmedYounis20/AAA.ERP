@@ -6,6 +6,7 @@ using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using System.Text.RegularExpressions;
 using ERP.Shared.BaseEntities.Attachments;
+using Shared.DTOs;
 
 namespace ERP.Infrastracture.Services.Inventory;
 
@@ -29,7 +30,58 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         _variantAttributeValueRepository = _unitOfWork.VariantAttributeValueRepository;
         _productRepository = _unitOfWork.ProductRepository;
     }
+    public virtual async Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
+        SettingFilterDto filter,
+        CancellationToken cancellationToken = default)
+    {
+        return await ReadAllDtosPaginated(filter,null,cancellationToken);
+    }
+    public virtual async Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
+        BaseFilterDto filter,
+        Expression<Func<Variant, bool>>? additionalFilter = null,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Build filter expression
+            Expression<Func<Variant, bool>>? filterExpression = additionalFilter;
 
+            // Add date range filter if specified
+            if (filter.CreatedFrom.HasValue || filter.CreatedTo.HasValue)
+            {
+                filterExpression = CombineFilters(filterExpression, e =>
+                    (!filter.CreatedFrom.HasValue || e.CreatedAt >= filter.CreatedFrom.Value) &&
+                    (!filter.CreatedTo.HasValue || e.CreatedAt <= filter.CreatedTo.Value));
+            }
+
+            // Determine sort expression
+            Expression<Func<Variant, object>>? orderBy = GetOrderByExpression(filter.SortBy);
+
+            var result = await _repository.GetPaginatedDtos(
+                filter.PageNumber,
+                filter.PageSize,
+                filterExpression,
+                orderBy,
+                filter.SortDescending,
+                cancellationToken);
+
+            return new ApiResponse<PaginatedResult<VariantDto>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = result
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<PaginatedResult<VariantDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+            };
+        }
+    }
     public override async Task<ApiResponse<Variant>> Create(VariantCreateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateCreate(command);
@@ -91,6 +143,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (command.PurchaseTaxIds?.Any() == true)
             {
                 await CreateVariantPurchaseTaxes(command, variant.Id);
+            }
+
+            // Handle variant cost centers
+            if (command.CostCenters?.Any() == true)
+            {
+                await CreateVariantCostCenters(command, variant.Id);
             }
 
             // Handle variant manufacturer companies
@@ -187,6 +245,9 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
             // Update purchase taxes
             await UpdateVariantPurchaseTaxes(command, variant.Id);
+
+            // Update cost centers
+            await UpdateVariantCostCenters(command, variant.Id);
 
             // Update manufacturer companies
             await UpdateVariantManufacturerCompanies(command, variant.Id);
@@ -843,6 +904,76 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
         if (variantPurchaseTaxes.Any())
             await _unitOfWork.VariantPurchaseTaxRepository.Add(variantPurchaseTaxes);
+    }
+
+    private async Task CreateVariantCostCenters(VariantCreateCommand command, Guid variantId)
+    {
+        var variantCostCenters = command.CostCenters.Select(e => new VariantCostCenter
+        {
+            VariantId = variantId,
+            CostCenterId = e.CostCenterId,
+            Percent = e.Percent,
+            CreatedAt = DateTime.Now,
+            ModifiedAt = DateTime.Now
+        }).ToList();
+
+        if (variantCostCenters.Any())
+        {
+            await _unitOfWork.VariantCostCenterRepository.Add(variantCostCenters);
+        }
+    }
+
+    private async Task UpdateVariantCostCenters(VariantUpdateCommand command, Guid variantId)
+    {
+        var existingCostCenters = await _unitOfWork.VariantCostCenterRepository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+
+        var costCenters = command.CostCenters ?? [];
+
+        var costCentersToRemove = existingCostCenters
+            .Where(e => !costCenters.Any(d => d.CostCenterId == e.CostCenterId))
+            .ToList();
+
+        var costCentersToUpdate = new List<VariantCostCenter>();
+        var costCentersToAdd = new List<VariantCostCenter>();
+
+        foreach (var costCenterDto in costCenters)
+        {
+            var existingCostCenter = existingCostCenters.FirstOrDefault(e => e.CostCenterId == costCenterDto.CostCenterId);
+            if (existingCostCenter != null)
+            {
+                existingCostCenter.Percent = costCenterDto.Percent;
+                existingCostCenter.ModifiedAt = DateTime.Now;
+                costCentersToUpdate.Add(existingCostCenter);
+            }
+            else
+            {
+                costCentersToAdd.Add(new VariantCostCenter
+                {
+                    VariantId = variantId,
+                    CostCenterId = costCenterDto.CostCenterId,
+                    Percent = costCenterDto.Percent,
+                    CreatedAt = DateTime.Now,
+                    ModifiedAt = DateTime.Now
+                });
+            }
+        }
+
+        if (costCentersToRemove.Any())
+        {
+            await _unitOfWork.VariantCostCenterRepository.Delete(costCentersToRemove);
+        }
+
+        if (costCentersToUpdate.Any())
+        {
+            await _unitOfWork.VariantCostCenterRepository.Update(costCentersToUpdate);
+        }
+
+        if (costCentersToAdd.Any())
+        {
+            await _unitOfWork.VariantCostCenterRepository.Add(costCentersToAdd);
+        }
     }
 
     private async Task UpdateVariantSalesTaxes(VariantUpdateCommand command, Guid variantId)
@@ -1721,6 +1852,18 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             }).ToList();
         }
 
+        // Prepare default variant cost centers
+        if (command.CostCenters?.Any() == true)
+        {
+            defaultVariant.VariantCostCenters = command.CostCenters.Select(e => new VariantCostCenter
+            {
+                CostCenterId = e.CostCenterId,
+                Percent = e.Percent,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            }).ToList();
+        }
+
         // Prepare default variant selling price discounts
         if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
         {
@@ -1835,6 +1978,18 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                     combinationVariant.VariantManufacturerCompanies = command.ManufacturerCompaniesIds.Select(companyId => new VariantManufacturerCompany
                     {
                         ManufacturerCompanyId = companyId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant cost centers
+                if (command.CostCenters?.Any() == true)
+                {
+                    combinationVariant.VariantCostCenters = command.CostCenters.Select(e => new VariantCostCenter
+                    {
+                        CostCenterId = e.CostCenterId,
+                        Percent = e.Percent,
                         CreatedAt = DateTime.Now,
                         ModifiedAt = DateTime.Now
                     }).ToList();
@@ -2007,6 +2162,18 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                 variant.VariantManufacturerCompanies = command.ManufacturerCompaniesIds.Select(companyId => new VariantManufacturerCompany
                 {
                     ManufacturerCompanyId = companyId,
+                    CreatedAt = now,
+                    ModifiedAt = now
+                }).ToList();
+            }
+
+            // Cost centers
+            if (command.CostCenters?.Any() == true)
+            {
+                variant.VariantCostCenters = command.CostCenters.Select(e => new VariantCostCenter
+                {
+                    CostCenterId = e.CostCenterId,
+                    Percent = e.Percent,
                     CreatedAt = now,
                     ModifiedAt = now
                 }).ToList();

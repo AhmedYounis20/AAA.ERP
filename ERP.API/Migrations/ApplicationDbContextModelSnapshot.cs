@@ -2429,6 +2429,46 @@ namespace AAA.ERP.Migrations
                     b.ToTable("ProductCodes", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductCostCenter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CostCenterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostCenterId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId", "CostCenterId")
+                        .IsUnique();
+
+                    b.ToTable("ProductCostCenters", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductManufacturerCompany", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3081,6 +3121,46 @@ namespace AAA.ERP.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("VariantCodes", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantCostCenter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CostCenterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostCenterId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("VariantId", "CostCenterId")
+                        .IsUnique();
+
+                    b.ToTable("VariantCostCenters", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantManufacturerCompany", b =>
@@ -4198,6 +4278,25 @@ namespace AAA.ERP.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductCostCenter", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", "CostCenter")
+                        .WithMany()
+                        .HasForeignKey("CostCenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ProductCostCenters")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CostCenter");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.ProductManufacturerCompany", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies.ManufacturerCompany", "ManufacturerCompany")
@@ -4374,6 +4473,25 @@ namespace AAA.ERP.Migrations
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.VariantCostCenter", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Account.CostCenters.CostCenter", "CostCenter")
+                        .WithMany()
+                        .HasForeignKey("CostCenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("VariantCostCenters")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CostCenter");
 
                     b.Navigation("Variant");
                 });
@@ -4602,6 +4720,8 @@ namespace AAA.ERP.Migrations
 
                     b.Navigation("ProductCodes");
 
+                    b.Navigation("ProductCostCenters");
+
                     b.Navigation("ProductManufacturerCompanies");
 
                     b.Navigation("ProductPackingUnits");
@@ -4629,6 +4749,8 @@ namespace AAA.ERP.Migrations
                     b.Navigation("VariantAttributeValues");
 
                     b.Navigation("VariantCodes");
+
+                    b.Navigation("VariantCostCenters");
 
                     b.Navigation("VariantManufacturerCompanies");
 

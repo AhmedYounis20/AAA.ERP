@@ -45,6 +45,7 @@ public class ProductDto
     public List<Guid> SuppliersIds { get; set; } = [];
     public List<Guid> SalesTaxIds { get; set; } = [];
     public List<Guid> PurchaseTaxIds { get; set; } = [];
+    public List<ProductCostCenterDto> CostCenters { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ProductAttachmentDto> ProductAttachments { get; set; } = [];
     public AttachmentDto? ProductPicture { get; set; } 

@@ -4,6 +4,8 @@ using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Infrastracture.Repositories.BaseRepositories;
+using Shared.DTOs;
+using System.Linq.Expressions;
 
 namespace ERP.Infrastracture.Repositories.Inventory;
 
@@ -14,8 +16,26 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
 
     public async Task<IEnumerable<VariantDto>> GetDtos()
     {
-        // Load all variants with all related data using proper Includes (single query)
-        var variants = await _context.Set<Variant>()
+        // Reuse the same mapping logic as pagination but without paging
+        var paginated = await GetPaginatedDtos(
+            pageNumber: 1,
+            pageSize: int.MaxValue,
+            filter: e => !e.IsArchived);
+
+        return paginated.Items;
+    }
+
+    public async Task<PaginatedResult<VariantDto>> GetPaginatedDtos(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<Variant, bool>>? filter = null,
+        Expression<Func<Variant, object>>? orderBy = null,
+        bool descending = false,
+        CancellationToken cancellationToken = default)
+    {
+        IQueryable<Variant> query = _context.Set<Variant>()
+            .AsNoTracking()
+            .AsSplitQuery()
             .Include(v => v.Product)
                 .ThenInclude(p => p.ProductAttachments)
                     .ThenInclude(pa => pa.Attachment)
@@ -25,26 +45,31 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.VariantAttributeValues)
                 .ThenInclude(vav => vav.AttributeDefinition)
             .Include(v => v.VariantAttributeValues)
-                .ThenInclude(vav => vav.AttributeValue)
-            .Where(e => !e.IsArchived)
-            .ToListAsync();
+                .ThenInclude(vav => vav.AttributeValue);
 
-        if (!variants.Any())
-            return Enumerable.Empty<VariantDto>();
+        if (filter != null)
+            query = query.Where(filter);
 
-        // Build DTOs in memory (all data already loaded)
-        var result = variants.Select(variant =>
+        if (orderBy != null)
+            query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+        else
+            query = query.OrderByDescending(e => e.CreatedAt);
+
+        var paginatedVariants = await query.ToPaginatedResultAsync(pageNumber, pageSize, cancellationToken);
+
+        // Build DTOs in memory (all data already loaded for the current page)
+        return paginatedVariants.Map(variant =>
         {
             var product = variant.Product;
-            
+
             // Get primary variant picture from loaded attachments
             var variantPicture = variant.VariantAttachments
                 .FirstOrDefault(va => va.IsPrimary);
-            
+
             // Get primary product picture from loaded product attachments
             var productPicture = product?.ProductAttachments
                 .FirstOrDefault(pa => pa.IsPrimary);
-            
+
             var vPic = variantPicture?.Attachment;
             var pPic = productPicture?.Attachment;
 
@@ -84,8 +109,6 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
                     }).ToList()
             };
         });
-
-        return result;
     }
 
     public async Task<VariantDto?> GetDtoById(Guid id)
@@ -107,6 +130,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.VariantSuppliers)
             .Include(v => v.VariantSalesTaxes)
             .Include(v => v.VariantPurchaseTaxes)
+            .Include(v => v.VariantCostCenters)
             .Include(v => v.VariantManufacturerCompanies)
             .Include(v => v.VariantSellingPriceDiscounts)
             .Where(v => v.Id == id)
@@ -145,6 +169,13 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
                 .ToList(),
             PurchaseTaxIds = variant.VariantPurchaseTaxes
                 .Select(vpt => vpt.TaxId)
+                .ToList(),
+            CostCenters = variant.VariantCostCenters
+                .Select(vcc => new VariantCostCenterDto
+                {
+                    CostCenterId = vcc.CostCenterId,
+                    Percent = vcc.Percent
+                })
                 .ToList(),
             ManufacturerCompaniesIds = variant.VariantManufacturerCompanies
                 .Select(vmc => vmc.ManufacturerCompanyId)
