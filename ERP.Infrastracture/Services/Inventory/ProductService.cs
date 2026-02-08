@@ -3,6 +3,7 @@ using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using System.Text.RegularExpressions;
 using ERP.Domain.Models.Entities.Inventory.Variants;
@@ -76,6 +77,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.ProductCostCenters = CreateProductCostCenters(command);
                 product.ProductManufacturerCompanies = CreateProductManufacturerCompanies(command);
                 product.ProductPackingUnits =  CreateProductPackingUnits(command);
+                product.InventoryThresholdScope = command.InventoryThresholdScope;
+                product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
+                product.InventoryThresholds = CreateProductInventoryThresholds(command);
 
                 // Prepare product attributes if provided
                 if (command.ProductAttributeDefinitions?.Any() == true)
@@ -400,7 +404,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 await UpdateProductManufacturerCompanies(command.ManufacturerCompaniesIds, product.Id);
                 await UpdateProductSellingPriceDiscounts(product.Id,command.SellingPriceDiscounts);
                 await UpdateProductPackingUnits(product.Id,command.PackingUnits);
-
+                product.InventoryThresholdScope = command.InventoryThresholdScope;
+                product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
+                await UpdateProductInventoryThresholds(product.Id, command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
                 // Update product attributes if provided
                 if (command.ProductAttributeDefinitions?.Any() == true)
                 {
@@ -463,9 +469,17 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         await _unitOfWork.BeginTransactionAsync();
         try
         {
+            await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t => t.ProductId == id);
+            var variantIds = await _unitOfWork.VariantRepository.GetQuery()
+                .Where(v => v.ProductId == id)
+                .Select(v => v.Id)
+                .ToListAsync();
+            if (variantIds.Count > 0)
+                await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
+                    t.VariantId != null && variantIds.Contains(t.VariantId.Value));
             var attachmentsIds = await _unitOfWork.ProductAttachmentRepository.GetQuery().Where(e => e.ProductId == id)
                 .Select(e=>e.AttachmentId).ToListAsync();
-            // Delete Product first (this will cascade to ProductAttachments)
+            // Delete Product (cascades to ProductAttachments, Variants, etc.)
             await _repository.Delete(id);
 
             // Now safely delete orphaned Attachments (no constraint conflicts)
@@ -1282,6 +1296,11 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     await UpdateVariantSellingPriceDiscounts(command.SellingPriceDiscounts, defaultVariant.Id);
                 }
 
+                // Update inventory thresholds (default variant always applies product thresholds)
+                defaultVariant.InventoryThresholdScope = product.InventoryThresholdScope;
+                defaultVariant.InventoryThresholdBranchId = product.InventoryThresholdBranchId;
+                await UpdateVariantInventoryThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId, defaultVariant.Id);
+
                 // Update packing units (default variant always applies product changes)
                 await UpdateVariantPackingUnitsFromProduct(command.PackingUnits, defaultVariant.Id);
 
@@ -1363,6 +1382,11 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                                 await UpdateVariantSellingPriceDiscounts(command.SellingPriceDiscounts, variant.Id);
                             }
 
+                            // Update inventory thresholds (same as product when ApplyProductChanges)
+                            variant.InventoryThresholdScope = product.InventoryThresholdScope;
+                            variant.InventoryThresholdBranchId = product.InventoryThresholdBranchId;
+                            await UpdateVariantInventoryThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId, variant.Id);
+
                             // Update packing units
                             await UpdateVariantPackingUnitsFromProduct(command.PackingUnits, variant.Id);
                         }
@@ -1406,9 +1430,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 }
             }
 
-            // Delete unused variants
+            // Delete unused variants (delete their thresholds first due to FK Restrict)
             if (variantsToDelete.Any())
             {
+                var variantIdsToDelete = variantsToDelete.Select(v => v.Id).ToList();
+                await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
+                    t.VariantId != null && variantIdsToDelete.Contains(t.VariantId.Value));
                 await _unitOfWork.VariantRepository.Delete(variantsToDelete);
             }
 
@@ -1930,6 +1957,10 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             result.errors.Add("One of barcodes  already exists");
             result.isValid = false;
         }
+        var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
+        if (!thresholdsValid)
+            result.errors.AddRange(thresholdErrors);
+        result.isValid = result.isValid && thresholdsValid;
         return result;
         
     }
@@ -1944,8 +1975,88 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             result.errors.Add("One of barcodes is associated with another product");
             result.isValid = false;
         }
+        var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
+        if (!thresholdsValid)
+            result.errors.AddRange(thresholdErrors);
+        result.isValid = result.isValid && thresholdsValid;
         return result;
     }
 
+    private List<InventoryThreshold> CreateProductInventoryThresholds(ProductCreateCommand command)
+    {
+        if (command.InventoryThresholds == null || !command.InventoryThresholds.Any())
+            return new List<InventoryThreshold>();
+        var scope = command.InventoryThresholdScope ?? InventoryThresholdScope.All;
+        var branchId = command.InventoryThresholdBranchId;
+        var now = DateTime.Now;
+        return command.InventoryThresholds.Select((dto, index) => new InventoryThreshold
+        {
+            OwnerType = OwnerType.Product,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            MinQuantity = dto.MinQuantity,
+            MaxQuantity = dto.MaxQuantity,
+            Scope = scope,
+            BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+    }
+
+    private async Task UpdateProductInventoryThresholds(Guid productId, List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId)
+    {
+        var repository = _unitOfWork.InventoryThresholdRepository;
+        var existing = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+        if (existing.Any())
+            await repository.Delete(existing);
+        if (inventoryThresholds == null || !inventoryThresholds.Any())
+            return;
+        var scopeValue = scope ?? InventoryThresholdScope.All;
+        var now = DateTime.Now;
+        var toAdd = inventoryThresholds.Select((dto, index) => new InventoryThreshold
+        {
+            ProductId = productId,
+            OwnerType = OwnerType.Product,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            MinQuantity = dto.MinQuantity,
+            MaxQuantity = dto.MaxQuantity,
+            Scope = scopeValue,
+            BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await repository.Add(toAdd);
+    }
+
+    private async Task UpdateVariantInventoryThresholds(List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId, Guid variantId)
+    {
+        var repository = _unitOfWork.InventoryThresholdRepository;
+        var existing = await repository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+        if (existing.Any())
+            await repository.Delete(existing);
+        if (inventoryThresholds == null || !inventoryThresholds.Any())
+            return;
+        var scopeValue = scope ?? InventoryThresholdScope.All;
+        var now = DateTime.Now;
+        var toAdd = inventoryThresholds.Select((dto, index) => new InventoryThreshold
+        {
+            VariantId = variantId,
+            OwnerType = OwnerType.Variant,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            MinQuantity = dto.MinQuantity,
+            MaxQuantity = dto.MaxQuantity,
+            Scope = scopeValue,
+            BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await repository.Add(toAdd);
+    }
     #endregion
 }

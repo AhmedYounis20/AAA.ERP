@@ -4,6 +4,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 
@@ -64,6 +65,7 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<FinancialTransaction> FinancialTransactionRepository { get; }
     public IInventoryTransferRepository InventoryTransferRepository { get; }
     public IAttributeValueRepository AttributeValueRepository { get; }
+    public IBaseRepository<InventoryThreshold> InventoryThresholdRepository { get; }
 
     public UnitOfWork(
         IApplicationDbContext context,
@@ -116,7 +118,8 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<EntryAttachment> entryAttachmentRepository,
         IBaseRepository<FinancialTransaction> financialTransactionRepository,
         IInventoryTransferRepository inventoryTransferRepository,
-        IAttributeValueRepository attributeValueRepository
+        IAttributeValueRepository attributeValueRepository,
+        IBaseRepository<InventoryThreshold> inventoryThresholdRepository
     )
     {
         _context = context;
@@ -170,6 +173,7 @@ public class UnitOfWork : IUnitOfWork
         InventoryTransferRepository = inventoryTransferRepository;
         ProductAttributeDefinitionRepository = productAttributeDefinitionRepository;
         AttributeValueRepository = attributeValueRepository;
+        InventoryThresholdRepository = inventoryThresholdRepository;
     }
 
     public async Task BeginTransactionAsync()

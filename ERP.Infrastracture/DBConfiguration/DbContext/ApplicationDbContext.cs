@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
 using System.Security.Claims;
 using ERP.Domain.Models.Entities.Inventory.Attributes;
@@ -91,4 +91,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; }
     public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit> ProductPackingUnits { get; set; }
     public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold> InventoryThresholds { get; set; }
 }

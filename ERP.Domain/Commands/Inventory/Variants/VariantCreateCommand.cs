@@ -1,5 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
@@ -35,4 +36,7 @@ public class VariantCreateCommand : BaseSettingCreateCommand<Variant>
     public bool IsDefault { get; set; } 
     public bool IsArchived { get; set; } 
     public bool ApplyProductChanges { get; set; }
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
 }

@@ -1,3 +1,4 @@
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 using ERP.Domain.Models.Entities.Inventory.Items;
@@ -45,4 +46,11 @@ public class Product : BaseTreeSettingEntity<Product>
     // Template properties for variants
     public List<ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnit> ProductPackingUnits { get; set; } = [];
+
+    /// <summary>Inventory threshold scope applied to all inventory thresholds for this product.</summary>
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    /// <summary>Branch applied to all inventory thresholds when scope is Branch; required when InventoryThresholdScope = Branch.</summary>
+    public Guid? InventoryThresholdBranchId { get; set; }
+
+    public List<InventoryThreshold> InventoryThresholds { get; set; } = [];
 }

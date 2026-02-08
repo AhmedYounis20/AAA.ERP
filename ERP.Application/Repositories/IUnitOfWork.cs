@@ -1,6 +1,7 @@
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
@@ -61,6 +62,7 @@ public interface IUnitOfWork
     public IEntryRepository EntryRepository { get; }
     public IBaseRepository<FinancialTransaction> FinancialTransactionRepository { get; }
     public IBaseRepository<EntryAttachment> EntryAttachmentRepository { get; }
+    public IBaseRepository<InventoryThreshold> InventoryThresholdRepository { get; }
     public DbSet<T> Set<T>() where T : BaseEntity;
     public Task BeginTransactionAsync();
     public Task CommitAsync();

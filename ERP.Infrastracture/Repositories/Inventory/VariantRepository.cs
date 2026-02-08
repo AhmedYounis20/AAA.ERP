@@ -113,10 +113,9 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
 
     public async Task<VariantDto?> GetDtoById(Guid id)
     {
-        // Load variant with all related data using proper Includes (single query)
+        // Load variant with all related data in one database trip
         var variant = await _context.Set<Variant>()
             .AsNoTracking()
-            .AsSplitQuery()
             .Include(v => v.Product)
             .Include(v => v.VariantCodes)
             .Include(v => v.VariantPackingUnitPrices)
@@ -133,6 +132,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.VariantCostCenters)
             .Include(v => v.VariantManufacturerCompanies)
             .Include(v => v.VariantSellingPriceDiscounts)
+            .Include(v => v.InventoryThresholds)
             .Where(v => v.Id == id)
             .FirstOrDefaultAsync();
 
@@ -149,6 +149,8 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             Description = variant.Description,
             ProductId = variant.ProductId,
             ProductName = product?.Name ?? string.Empty,
+            InventoryThresholdScope = variant.InventoryThresholdScope,
+            InventoryThresholdBranchId = variant.InventoryThresholdBranchId,
             MaxDiscount = variant.MaxDiscount,
             ConditionalDiscount = variant.ConditionalDiscount,
             DefaultDiscount = variant.DefaultDiscount,
@@ -240,6 +242,18 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
                     AttributeDefinition = va.AttributeDefinition == null ? null : va.AttributeDefinition.Adapt<AttributeDefinitionDto>(),
                     CreatedAt = va.CreatedAt,
                     ModifiedAt = va.ModifiedAt
+                })
+                .ToList(),
+            InventoryThresholds = variant.InventoryThresholds
+                .OrderBy(t => t.Level)
+                .Select(t => new InventoryThresholdDto
+                {
+                    Level = t.Level,
+                    MinQuantity = t.MinQuantity,
+                    MaxQuantity = t.MaxQuantity,
+                    Scope = t.Scope,
+                    BranchId = t.BranchId,
+                    EnableNotification = t.EnableNotification
                 })
                 .ToList()
         };

@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
@@ -32,4 +33,7 @@ public class VariantUpdateCommand : BaseSettingUpdateCommand<Variant>
     public List<VariantPackingUnitDto> PackingUnits { get; set; } = [];
     public List<VariantAttachmentDto> VariantAttachments { get; set; } = [];
     public bool ApplyProductChanges { get; set; }
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
 }

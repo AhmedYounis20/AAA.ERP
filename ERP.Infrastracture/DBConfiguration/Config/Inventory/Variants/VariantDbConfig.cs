@@ -1,7 +1,6 @@
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Domain.Account.DBConfiguration.Config.BaseConfig;
 
 namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
 {
@@ -22,6 +21,9 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
             _ = builder.Property(e => e.IsDefault).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsUsed).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.IsArchived).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.InventoryThresholdScope)
+                .HasConversion<string>()
+                .HasMaxLength(16);
 
             // Indexes for frequently queried columns
             // Note: ProductId index already exists from foreign key

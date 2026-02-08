@@ -1,3 +1,4 @@
+using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,7 +14,10 @@ namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Products
 
             _ = builder.Property(e => e.ProductType).HasConversion<string>();
             _ = builder.Property(e => e.DefaultDiscountType).HasConversion<string>();
-
+            _ = builder.Property(e => e.InventoryThresholdScope)
+                .HasConversion<string>()
+                .HasMaxLength(16);
+            
             // Indexes for frequently queried columns
             // Note: ParentId index already exists from foreign key
             _ = builder.HasIndex(e => e.ProductType);

@@ -3,6 +3,7 @@ using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using System.Text.RegularExpressions;
 using ERP.Shared.BaseEntities.Attachments;
@@ -118,7 +119,9 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                 ApplyProductChanges = command.ApplyProductChanges,
                 IsDefault = command.IsDefault,
                 IsSales =  command.IsSales,
-                IsPurchase = command.IsPurchase
+                IsPurchase = command.IsPurchase,
+                InventoryThresholdScope = command.InventoryThresholdScope,
+                InventoryThresholdBranchId = command.InventoryThresholdBranchId
             };
 
             // Add the variant first to get the ID
@@ -179,6 +182,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (command.VariantAttributeValues?.Any() == true)
             {
                 await CreateVariantAttributes(variant.Id, command.VariantAttributeValues);
+            }
+
+            // Create inventory thresholds if provided
+            if (command.InventoryThresholds?.Any() == true)
+            {
+                await CreateVariantInventoryThresholds(variant.Id, command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
             }
 
             // Commit transaction - everything succeeded
@@ -261,7 +270,9 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             // Update variant attachments
 
             await UpdateVariantAttachmentsMethod(command.VariantAttachments, variant.Id);
-            
+
+            // Update inventory thresholds
+            await UpdateVariantInventoryThresholds(variant.Id, command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
 
             // Commit transaction - everything succeeded
             await _unitOfWork.CommitAsync();
@@ -275,6 +286,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             Console.WriteLine($"{ex}");
             return new ApiResponse<Variant> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, ErrorMessages = ["OPERATION_FAILD"] };
         }
+    }
+
+    public override async Task<ApiResponse<Variant>> Delete(Guid id, bool isValidate = true)
+    {
+        await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t => t.VariantId == id);
+        return await base.Delete(id, isValidate);
     }
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(VariantCreateCommand command)
@@ -365,6 +382,11 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             validationResult.errors.Add("PRODUCT_NOT_FOUND");
         }
 
+        var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
+        if (!thresholdsValid)
+            validationResult.errors.AddRange(thresholdErrors);
+        validationResult.isValid = validationResult.isValid && thresholdsValid;
+
         return validationResult;
     }
 
@@ -427,9 +449,62 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             validationResult.errors.Add("PRODUCT_NOT_FOUND");
         }
 
+        var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
+        if (!thresholdsValid)
+            validationResult.errors.AddRange(thresholdErrors);
+        validationResult.isValid = validationResult.isValid && thresholdsValid;
+
         return validationResult;
     }
 
+    private async Task CreateVariantInventoryThresholds(Guid variantId, List<InventoryThresholdDto> thresholds, InventoryThresholdScope? scope, Guid? branchId)
+    {
+        if (thresholds == null || !thresholds.Any()) return;
+        var scopeValue = scope ?? InventoryThresholdScope.All;
+        var now = DateTime.Now;
+        var entities = thresholds.Select((dto, index) => new InventoryThreshold
+        {
+            VariantId = variantId,
+            OwnerType = OwnerType.Variant,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            MinQuantity = dto.MinQuantity,
+            MaxQuantity = dto.MaxQuantity,
+            Scope = scopeValue,
+            BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await _unitOfWork.InventoryThresholdRepository.Add(entities);
+    }
+
+    private async Task UpdateVariantInventoryThresholds(Guid variantId, List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId)
+    {
+        var repository = _unitOfWork.InventoryThresholdRepository;
+        var existing = await repository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+        if (existing.Any())
+            await repository.Delete(existing);
+        if (inventoryThresholds == null || !inventoryThresholds.Any())
+            return;
+        var scopeValue = scope ?? InventoryThresholdScope.All;
+        var now = DateTime.Now;
+        var toAdd = inventoryThresholds.Select((dto, index) => new InventoryThreshold
+        {
+            VariantId = variantId,
+            OwnerType = OwnerType.Variant,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            MinQuantity = dto.MinQuantity,
+            MaxQuantity = dto.MaxQuantity,
+            Scope = scopeValue,
+            BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await repository.Add(toAdd);
+    }
 
     public async Task<ApiResponse<List<VariantDto>>> GetVariantDtos()
     {
@@ -1906,6 +1981,27 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             }).ToList();
         }
 
+        // Prepare default variant inventory thresholds
+        defaultVariant.InventoryThresholdScope = command.InventoryThresholdScope ?? InventoryThresholdScope.All;
+        defaultVariant.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
+        if (command.InventoryThresholds?.Any() == true)
+        {
+            var scopeValue = defaultVariant.InventoryThresholdScope ?? InventoryThresholdScope.All;
+            var now = DateTime.Now;
+            defaultVariant.InventoryThresholds = command.InventoryThresholds.Select((dto, index) => new InventoryThreshold
+            {
+                OwnerType = OwnerType.Variant,
+                Level = dto.Level > 0 ? dto.Level : index + 1,
+                MinQuantity = dto.MinQuantity,
+                MaxQuantity = dto.MaxQuantity,
+                Scope = scopeValue,
+                BranchId = defaultVariant.InventoryThresholdBranchId,
+                EnableNotification = dto.EnableNotification,
+                CreatedAt = now,
+                ModifiedAt = now
+            }).ToList();
+        }
+
         variants.Add(defaultVariant);
 
         // Create combination variants if provided
@@ -2046,6 +2142,27 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
                         AttributeValueId = kvp.Value,
                         CreatedAt = DateTime.Now,
                         ModifiedAt = DateTime.Now
+                    }).ToList();
+                }
+
+                // Prepare combination variant inventory thresholds
+                combinationVariant.InventoryThresholdScope = command.InventoryThresholdScope ?? InventoryThresholdScope.All;
+                combinationVariant.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
+                if (command.InventoryThresholds?.Any() == true)
+                {
+                    var scopeValue = combinationVariant.InventoryThresholdScope ?? InventoryThresholdScope.All;
+                    var now = DateTime.Now;
+                    combinationVariant.InventoryThresholds = command.InventoryThresholds.Select((dto, index) => new InventoryThreshold
+                    {
+                        OwnerType = OwnerType.Variant,
+                        Level = dto.Level > 0 ? dto.Level : index + 1,
+                        MinQuantity = dto.MinQuantity,
+                        MaxQuantity = dto.MaxQuantity,
+                        Scope = scopeValue,
+                        BranchId = combinationVariant.InventoryThresholdBranchId,
+                        EnableNotification = dto.EnableNotification,
+                        CreatedAt = now,
+                        ModifiedAt = now
                     }).ToList();
                 }
 

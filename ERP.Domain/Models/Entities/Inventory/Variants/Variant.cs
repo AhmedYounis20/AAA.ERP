@@ -1,3 +1,4 @@
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 using ERP.Domain.Models.Entities.Inventory.Items;
@@ -47,4 +48,11 @@ public class Variant : BaseEntity
     public List<VariantPackingUnit> VariantPackingUnitPrices { get; set; } = [];
     public List<VariantAttachment> VariantAttachments { get; set; } = [];
     public List<VariantAttributeValue> VariantAttributeValues { get; set; } = [];
+
+    /// <summary>Inventory threshold scope applied to all inventory thresholds for this variant.</summary>
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    /// <summary>Branch applied to all inventory thresholds when scope is Branch; required when InventoryThresholdScope = Branch.</summary>
+    public Guid? InventoryThresholdBranchId { get; set; }
+
+    public List<InventoryThreshold> InventoryThresholds { get; set; } = [];
 }

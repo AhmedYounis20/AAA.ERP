@@ -1,6 +1,7 @@
 using Shared.BaseEntities;
 using System.Text.Json.Serialization;
 using Domain.Account.Models.Dtos.Attachments;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
@@ -52,6 +53,11 @@ public class ProductDto
     public List<ProductAttributeDefinitionDto> ProductAttributeDefinitions { get; set; } = [];
     public List<ProductSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnitDto> PackingUnits { get; set; } = [];
+    /// <summary>Inventory threshold scope for all inventory thresholds; user chooses once per product.</summary>
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    /// <summary>Branch for all inventory thresholds when scope is Branch; user chooses once per product.</summary>
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
 
     public Dictionary<Guid, HashSet<Guid>> ProductDefinitionsValues
     {

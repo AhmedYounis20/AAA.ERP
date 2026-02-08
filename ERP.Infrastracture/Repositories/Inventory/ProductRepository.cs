@@ -64,7 +64,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
 
     public async Task<ProductDto?> GetDtoById(Guid id)
     {
-        // Load product with all related data using proper Includes (single query)
+        // Load product with all related data in one database trip
         var product = await _context.Set<Product>()
             .AsNoTracking()
             .AsSplitQuery()
@@ -80,6 +80,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .Include(e => e.ProductCostCenters)
             .Include(e => e.ProductManufacturerCompanies)
             .Include(e => e.ProductSellingPriceDiscounts)
+            .Include(e => e.InventoryThresholds)
             .Include(e => e.Variants)
                 .ThenInclude(v => v.VariantAttributeValues)
             .Where(p => p.Id == id)
@@ -97,6 +98,8 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
         {
             Id = product.Id,
             ParentId = product.ParentId,
+            InventoryThresholdScope = product.InventoryThresholdScope,
+            InventoryThresholdBranchId = product.InventoryThresholdBranchId,
             ConditionalDiscount = product.ConditionalDiscount,
             CreatedAt = product.CreatedAt,
             ModifiedAt = product.ModifiedAt,
@@ -187,7 +190,19 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                     Amount = s.Amount,
                     SellingPriceId = s.SellingPriceId
                 }).ToList()
-            }).ToList()
+            }).ToList(),
+            InventoryThresholds = product.InventoryThresholds
+                .OrderBy(t => t.Level)
+                .Select(t => new InventoryThresholdDto
+                {
+                    Level = t.Level,
+                    MinQuantity = t.MinQuantity,
+                    MaxQuantity = t.MaxQuantity,
+                    Scope = t.Scope,
+                    BranchId = t.BranchId,
+                    EnableNotification = t.EnableNotification
+                })
+                .ToList()
         };
 
         return dto;

@@ -1,5 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Commands.Inventory.Variants;
@@ -35,4 +36,7 @@ public class ProductUpdateCommand : BaseTreeSettingUpdateCommand<Product>
     public List<ProductSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnitDto> PackingUnits { get; set; } = [];
     public List<VariantCombinationDto> VariantCombinations { get; set; } = [];
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
 }

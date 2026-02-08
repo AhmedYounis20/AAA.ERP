@@ -1,5 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
@@ -33,4 +34,8 @@ public class ProductCreateCommand : BaseTreeSettingCreateCommand<Product>
     public List<ProductSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnitDto> PackingUnits { get; set; } = [];
     public List<VariantCombinationDto> VariantCombinations { get; set; } = [];
+    /// <summary>Inventory threshold scope for all thresholds; when Branch, user chooses branch once.</summary>
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
 }

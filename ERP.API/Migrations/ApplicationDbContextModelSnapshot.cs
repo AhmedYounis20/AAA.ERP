@@ -1551,6 +1551,67 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Colors", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("EnableNotification")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MaxQuantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("MinQuantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OwnerType")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Scope")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<Guid?>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId", "Scope", "BranchId");
+
+                    b.HasIndex("VariantId", "Scope", "BranchId");
+
+                    b.ToTable("InventoryThresholds", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryTransactions.InventoryTransaction", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2228,6 +2289,13 @@ namespace AAA.ERP.Migrations
                     b.Property<string>("DefaultDiscountType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("InventoryThresholdBranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InventoryThresholdScope")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<bool>("IsDiscountBasedOnSellingPrice")
                         .HasColumnType("bit");
@@ -2931,6 +2999,13 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("InventoryThresholdBranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InventoryThresholdScope")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit")
@@ -4011,6 +4086,23 @@ namespace AAA.ERP.Migrations
                     b.Navigation("AttributeDefinition");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("InventoryThresholds")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("InventoryThresholds")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Variant");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryTransactions.InventoryTransaction", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Branch", "Branch")
@@ -4714,6 +4806,8 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.Product", b =>
                 {
+                    b.Navigation("InventoryThresholds");
+
                     b.Navigation("ProductAttachments");
 
                     b.Navigation("ProductAttributeDefinitions");
@@ -4744,6 +4838,8 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>
                 {
+                    b.Navigation("InventoryThresholds");
+
                     b.Navigation("VariantAttachments");
 
                     b.Navigation("VariantAttributeValues");

@@ -1,6 +1,7 @@
 using Shared.BaseEntities;
 using System.Text.Json.Serialization;
 using Domain.Account.Models.Dtos.Attachments;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.Products;
@@ -36,6 +37,11 @@ public class VariantDto
     public List<VariantSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<VariantPackingUnitDto> PackingUnits { get; set; } = [];
     public List<VariantAttachmentDto> VariantAttachments { get; set; } = [];
+    /// <summary>Inventory threshold scope for all inventory thresholds; user chooses once per variant.</summary>
+    public InventoryThresholdScope? InventoryThresholdScope { get; set; }
+    /// <summary>Branch for all inventory thresholds when scope is Branch; user chooses once per variant.</summary>
+    public Guid? InventoryThresholdBranchId { get; set; }
+    public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
     public AttachmentDto? VariantPicture { get; set; }
     public ProductType? ProductType { get; set; }
 
