@@ -42,6 +42,7 @@ public class VariantDto
     /// <summary>Branch for all inventory thresholds when scope is Branch; user chooses once per variant.</summary>
     public Guid? InventoryThresholdBranchId { get; set; }
     public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
+    public List<ExpiryLevelDto> ExpiryLevels { get; set; } = [];
     public AttachmentDto? VariantPicture { get; set; }
     public ProductType? ProductType { get; set; }
 

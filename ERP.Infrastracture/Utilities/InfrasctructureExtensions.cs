@@ -22,6 +22,7 @@ using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Audit;
 using ERP.Infrastracture.Services.Caching;
 using ERP.Infrastracture.Services.Inventory;
+using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Products;
@@ -155,6 +156,7 @@ public static class InfrasctructureExtensions
         // services.AddScoped<IBaseRepository<InventoryTransactionVariant>, BaseRepository<InventoryTransactionVariant>>();
         services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
         services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
+        services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();

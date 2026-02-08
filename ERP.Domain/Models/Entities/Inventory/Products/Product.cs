@@ -1,3 +1,4 @@
+using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -53,4 +54,5 @@ public class Product : BaseTreeSettingEntity<Product>
     public Guid? InventoryThresholdBranchId { get; set; }
 
     public List<InventoryThreshold> InventoryThresholds { get; set; } = [];
+    public List<ExpiryLevel> ExpiryLevels { get; set; } = [];
 }

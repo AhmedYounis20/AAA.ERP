@@ -36,4 +36,5 @@ public class VariantUpdateCommand : BaseSettingUpdateCommand<Variant>
     public InventoryThresholdScope? InventoryThresholdScope { get; set; }
     public Guid? InventoryThresholdBranchId { get; set; }
     public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
+    public List<ExpiryLevelDto> ExpiryLevels { get; set; } = [];
 }

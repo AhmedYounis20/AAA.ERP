@@ -81,6 +81,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .Include(e => e.ProductManufacturerCompanies)
             .Include(e => e.ProductSellingPriceDiscounts)
             .Include(e => e.InventoryThresholds)
+            .Include(e => e.ExpiryLevels)
             .Include(e => e.Variants)
                 .ThenInclude(v => v.VariantAttributeValues)
             .Where(p => p.Id == id)
@@ -201,6 +202,16 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                     Scope = t.Scope,
                     BranchId = t.BranchId,
                     EnableNotification = t.EnableNotification
+                })
+                .ToList(),
+            ExpiryLevels = product.ExpiryLevels
+                .OrderBy(e => e.Level)
+                .Select(e => new ExpiryLevelDto
+                {
+                    Level = e.Level,
+                    DaysFrom = e.DaysFrom,
+                    DaysTo = e.DaysTo,
+                    EnableNotification = e.EnableNotification
                 })
                 .ToList()
         };

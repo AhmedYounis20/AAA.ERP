@@ -133,6 +133,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.VariantManufacturerCompanies)
             .Include(v => v.VariantSellingPriceDiscounts)
             .Include(v => v.InventoryThresholds)
+            .Include(v => v.ExpiryLevels)
             .Where(v => v.Id == id)
             .FirstOrDefaultAsync();
 
@@ -254,6 +255,16 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
                     Scope = t.Scope,
                     BranchId = t.BranchId,
                     EnableNotification = t.EnableNotification
+                })
+                .ToList(),
+            ExpiryLevels = variant.ExpiryLevels
+                .OrderBy(e => e.Level)
+                .Select(e => new ExpiryLevelDto
+                {
+                    Level = e.Level,
+                    DaysFrom = e.DaysFrom,
+                    DaysTo = e.DaysTo,
+                    EnableNotification = e.EnableNotification
                 })
                 .ToList()
         };

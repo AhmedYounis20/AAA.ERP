@@ -92,4 +92,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit> ProductPackingUnits { get; set; }
     public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; }
     public DbSet<ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold> InventoryThresholds { get; set; }
+    public DbSet<ERP.Domain.Models.Entities.Inventory.ExpiryLevels.ExpiryLevel> ExpiryLevels { get; set; }
 }

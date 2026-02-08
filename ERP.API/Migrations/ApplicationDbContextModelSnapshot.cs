@@ -1551,6 +1551,59 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Colors", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.ExpiryLevels.ExpiryLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DaysFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DaysTo")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("EnableNotification")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OwnerType")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("ExpiryLevels", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold", b =>
                 {
                     b.Property<Guid>("Id")
@@ -4086,6 +4139,23 @@ namespace AAA.ERP.Migrations
                     b.Navigation("AttributeDefinition");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.ExpiryLevels.ExpiryLevel", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
+                        .WithMany("ExpiryLevels")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany("ExpiryLevels")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Variant");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.Products.Product", "Product")
@@ -4806,6 +4876,8 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Products.Product", b =>
                 {
+                    b.Navigation("ExpiryLevels");
+
                     b.Navigation("InventoryThresholds");
 
                     b.Navigation("ProductAttachments");
@@ -4838,6 +4910,8 @@ namespace AAA.ERP.Migrations
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>
                 {
+                    b.Navigation("ExpiryLevels");
+
                     b.Navigation("InventoryThresholds");
 
                     b.Navigation("VariantAttachments");

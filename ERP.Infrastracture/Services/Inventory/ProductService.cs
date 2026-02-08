@@ -3,6 +3,7 @@ using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
+using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using System.Text.RegularExpressions;
@@ -80,6 +81,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.InventoryThresholdScope = command.InventoryThresholdScope;
                 product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
                 product.InventoryThresholds = CreateProductInventoryThresholds(command);
+                product.ExpiryLevels = CreateProductExpiryLevels(command);
 
                 // Prepare product attributes if provided
                 if (command.ProductAttributeDefinitions?.Any() == true)
@@ -407,6 +409,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.InventoryThresholdScope = command.InventoryThresholdScope;
                 product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
                 await UpdateProductInventoryThresholds(product.Id, command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
+                await UpdateProductExpiryLevels(product.Id, command.ExpiryLevels);
                 // Update product attributes if provided
                 if (command.ProductAttributeDefinitions?.Any() == true)
                 {
@@ -470,13 +473,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         try
         {
             await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t => t.ProductId == id);
+            await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t => t.ProductId == id);
             var variantIds = await _unitOfWork.VariantRepository.GetQuery()
                 .Where(v => v.ProductId == id)
                 .Select(v => v.Id)
                 .ToListAsync();
             if (variantIds.Count > 0)
+            {
                 await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIds.Contains(t.VariantId.Value));
+                await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t =>
+                    t.VariantId != null && variantIds.Contains(t.VariantId.Value));
+            }
             var attachmentsIds = await _unitOfWork.ProductAttachmentRepository.GetQuery().Where(e => e.ProductId == id)
                 .Select(e=>e.AttachmentId).ToListAsync();
             // Delete Product (cascades to ProductAttachments, Variants, etc.)
@@ -1300,6 +1308,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 defaultVariant.InventoryThresholdScope = product.InventoryThresholdScope;
                 defaultVariant.InventoryThresholdBranchId = product.InventoryThresholdBranchId;
                 await UpdateVariantInventoryThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId, defaultVariant.Id);
+                await UpdateVariantExpiryLevels(command.ExpiryLevels, defaultVariant.Id);
 
                 // Update packing units (default variant always applies product changes)
                 await UpdateVariantPackingUnitsFromProduct(command.PackingUnits, defaultVariant.Id);
@@ -1386,6 +1395,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                             variant.InventoryThresholdScope = product.InventoryThresholdScope;
                             variant.InventoryThresholdBranchId = product.InventoryThresholdBranchId;
                             await UpdateVariantInventoryThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId, variant.Id);
+                            await UpdateVariantExpiryLevels(command.ExpiryLevels, variant.Id);
 
                             // Update packing units
                             await UpdateVariantPackingUnitsFromProduct(command.PackingUnits, variant.Id);
@@ -1430,11 +1440,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 }
             }
 
-            // Delete unused variants (delete their thresholds first due to FK Restrict)
+            // Delete unused variants (delete their thresholds and expiry levels first due to FK Restrict)
             if (variantsToDelete.Any())
             {
                 var variantIdsToDelete = variantsToDelete.Select(v => v.Id).ToList();
                 await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
+                    t.VariantId != null && variantIdsToDelete.Contains(t.VariantId.Value));
+                await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIdsToDelete.Contains(t.VariantId.Value));
                 await _unitOfWork.VariantRepository.Delete(variantsToDelete);
             }
@@ -1961,6 +1973,10 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (!thresholdsValid)
             result.errors.AddRange(thresholdErrors);
         result.isValid = result.isValid && thresholdsValid;
+        var (expiryLevelsValid, expiryLevelErrors) = ExpiryLevelValidationHelper.ValidateExpiryLevels(command.ExpiryLevels);
+        if (!expiryLevelsValid)
+            result.errors.AddRange(expiryLevelErrors);
+        result.isValid = result.isValid && expiryLevelsValid;
         return result;
         
     }
@@ -1979,6 +1995,10 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (!thresholdsValid)
             result.errors.AddRange(thresholdErrors);
         result.isValid = result.isValid && thresholdsValid;
+        var (expiryLevelsValid, expiryLevelErrors) = ExpiryLevelValidationHelper.ValidateExpiryLevels(command.ExpiryLevels);
+        if (!expiryLevelsValid)
+            result.errors.AddRange(expiryLevelErrors);
+        result.isValid = result.isValid && expiryLevelsValid;
         return result;
     }
 
@@ -2024,6 +2044,73 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             MaxQuantity = dto.MaxQuantity,
             Scope = scopeValue,
             BranchId = branchId,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await repository.Add(toAdd);
+    }
+
+    private List<ExpiryLevel> CreateProductExpiryLevels(ProductCreateCommand command)
+    {
+        if (command.ExpiryLevels == null || !command.ExpiryLevels.Any())
+            return new List<ExpiryLevel>();
+        var now = DateTime.Now;
+        return command.ExpiryLevels.Select((dto, index) => new ExpiryLevel
+        {
+            OwnerType = OwnerType.Product,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            DaysFrom = dto.DaysFrom,
+            DaysTo = dto.DaysTo,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+    }
+
+    private async Task UpdateProductExpiryLevels(Guid productId, List<ExpiryLevelDto>? expiryLevels)
+    {
+        var repository = _unitOfWork.ExpiryLevelRepository;
+        var existing = await repository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+        if (existing.Any())
+            await repository.Delete(existing);
+        if (expiryLevels == null || !expiryLevels.Any())
+            return;
+        var now = DateTime.Now;
+        var toAdd = expiryLevels.Select((dto, index) => new ExpiryLevel
+        {
+            ProductId = productId,
+            OwnerType = OwnerType.Product,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            DaysFrom = dto.DaysFrom,
+            DaysTo = dto.DaysTo,
+            EnableNotification = dto.EnableNotification,
+            CreatedAt = now,
+            ModifiedAt = now
+        }).ToList();
+        await repository.Add(toAdd);
+    }
+
+    private async Task UpdateVariantExpiryLevels(List<ExpiryLevelDto>? expiryLevels, Guid variantId)
+    {
+        var repository = _unitOfWork.ExpiryLevelRepository;
+        var existing = await repository.GetQuery()
+            .Where(e => e.VariantId == variantId)
+            .ToListAsync();
+        if (existing.Any())
+            await repository.Delete(existing);
+        if (expiryLevels == null || !expiryLevels.Any())
+            return;
+        var now = DateTime.Now;
+        var toAdd = expiryLevels.Select((dto, index) => new ExpiryLevel
+        {
+            VariantId = variantId,
+            OwnerType = OwnerType.Variant,
+            Level = dto.Level > 0 ? dto.Level : index + 1,
+            DaysFrom = dto.DaysFrom,
+            DaysTo = dto.DaysTo,
             EnableNotification = dto.EnableNotification,
             CreatedAt = now,
             ModifiedAt = now

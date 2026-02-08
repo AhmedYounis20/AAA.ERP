@@ -4,6 +4,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
@@ -66,6 +67,7 @@ public class UnitOfWork : IUnitOfWork
     public IInventoryTransferRepository InventoryTransferRepository { get; }
     public IAttributeValueRepository AttributeValueRepository { get; }
     public IBaseRepository<InventoryThreshold> InventoryThresholdRepository { get; }
+    public IBaseRepository<ExpiryLevel> ExpiryLevelRepository { get; }
 
     public UnitOfWork(
         IApplicationDbContext context,
@@ -119,7 +121,8 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<FinancialTransaction> financialTransactionRepository,
         IInventoryTransferRepository inventoryTransferRepository,
         IAttributeValueRepository attributeValueRepository,
-        IBaseRepository<InventoryThreshold> inventoryThresholdRepository
+        IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
+        IBaseRepository<ExpiryLevel> expiryLevelRepository
     )
     {
         _context = context;
@@ -174,6 +177,7 @@ public class UnitOfWork : IUnitOfWork
         ProductAttributeDefinitionRepository = productAttributeDefinitionRepository;
         AttributeValueRepository = attributeValueRepository;
         InventoryThresholdRepository = inventoryThresholdRepository;
+        ExpiryLevelRepository = expiryLevelRepository;
     }
 
     public async Task BeginTransactionAsync()

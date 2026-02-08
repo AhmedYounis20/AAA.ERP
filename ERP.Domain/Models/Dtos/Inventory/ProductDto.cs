@@ -58,6 +58,7 @@ public class ProductDto
     /// <summary>Branch for all inventory thresholds when scope is Branch; user chooses once per product.</summary>
     public Guid? InventoryThresholdBranchId { get; set; }
     public List<InventoryThresholdDto> InventoryThresholds { get; set; } = [];
+    public List<ExpiryLevelDto> ExpiryLevels { get; set; } = [];
 
     public Dictionary<Guid, HashSet<Guid>> ProductDefinitionsValues
     {
