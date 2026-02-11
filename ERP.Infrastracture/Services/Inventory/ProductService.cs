@@ -389,7 +389,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.Model = command.Model;
                 product.Version = command.Version;
                 product.CountryOfOrigin = command.CountryOfOrigin;
-                product.ProductType = command.ProductType;
+                // ProductType is not updatable
                 product.MaxDiscount = command.MaxDiscount;
                 product.ConditionalDiscount = command.ConditionalDiscount;
                 product.DefaultDiscount = command.DefaultDiscount;
@@ -1224,6 +1224,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     {
         try
         {
+            // Only products of type Stock can have combination variants; others only have the default variant
+            var effectiveVariantCombinations = product.ProductType == ProductType.Stock ? command.VariantCombinations : null;
+
             // Get all existing variants for this product
             var existingVariants = await _unitOfWork.VariantRepository.GetByProductIdAsync(product.Id);
 
@@ -1252,9 +1255,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             // Create a set of new combinations from the command
             var newCombinations = new HashSet<string>();
-            if (command.VariantCombinations?.Any() == true)
+            if (effectiveVariantCombinations?.Any() == true)
             {
-                foreach (var combination in command.VariantCombinations)
+                foreach (var combination in effectiveVariantCombinations)
                 {
                     var combinationKey = GetCombinationKey(combination.AttributeValues);
                     newCombinations.Add(combinationKey);
@@ -1281,7 +1284,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 defaultVariant.CountryOfOrigin = product.CountryOfOrigin;
                 defaultVariant.IsSales = product.IsSales;
                 defaultVariant.IsPurchase = product.IsPurchase;
-                defaultVariant.IsArchived = command.VariantCombinations?.Any() == true;
+                defaultVariant.IsArchived = effectiveVariantCombinations?.Any() == true;
                 
                 // Update suppliers
                 await UpdateVariantSuppliers(command.SuppliersIds, defaultVariant.Id);
@@ -1341,7 +1344,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     }
 
                     // Find the matching combination from command to check ApplyProductChanges
-                    var matchingCombination = command.VariantCombinations.FirstOrDefault(c => 
+                    var matchingCombination = effectiveVariantCombinations?.FirstOrDefault(c => 
                         GetCombinationKey(c.AttributeValues) == variantKey);
                     
                     if (matchingCombination != null)
@@ -1485,7 +1488,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             
             var newVariantCommands = new List<VariantCreateCommand>();
 
-            foreach (var combination in command.VariantCombinations)
+            foreach (var combination in effectiveVariantCombinations ?? [])
             {
                 var combinationKey = GetCombinationKey(combination.AttributeValues);
                 
@@ -1944,6 +1947,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (!result.isValid)
             return result;
         
+        // Only products of type Stock can have combination variants
+        if (command.ProductType != ProductType.Stock && command.VariantCombinations?.Any() == true)
+        {
+            result.errors.Add("Variant combinations are only allowed for products of type Stock");
+            result.isValid = false;
+        }
+
         var isCodeExist = await _codeRepository.GetQuery().AnyAsync(e=>e.Code==command.Code);
         if (isCodeExist)
         {

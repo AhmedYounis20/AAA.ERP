@@ -3,7 +3,6 @@ using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
-using ERP.Domain.Commands.Inventory.Variants;
 
 namespace ERP.Domain.Commands.Inventory.Products;
 
@@ -13,7 +12,6 @@ public class ProductUpdateCommand : BaseTreeSettingUpdateCommand<Product>
     public ProductAttachmentDto? ProductImage { get; set; }
     public string? Gs1Code { get; set; }
     public string? EGSCode { get; set; }
-    public ProductType? ProductType { get; set; }
     public InventoryTrackingType? TrackedBy { get; set; }
     public decimal MaxDiscount { get; set; }
     public decimal ConditionalDiscount { get; set; }

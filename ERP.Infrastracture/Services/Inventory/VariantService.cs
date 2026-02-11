@@ -5,6 +5,7 @@ using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using System.Text.RegularExpressions;
 using ERP.Shared.BaseEntities.Attachments;
@@ -1919,7 +1920,8 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
     public List<Variant> PrepareVariantsForProduct(ProductCreateCommand command)
     {
         var variants = new List<Variant>();
-        bool hasVariantCombinations = command.VariantCombinations?.Any() == true;
+        // Only products of type Stock can have combination variants; others only have the default variant
+        bool hasVariantCombinations = command.ProductType == ProductType.Stock && command.VariantCombinations?.Any() == true;
 
         // Create default variant
         var defaultVariant = new Variant
