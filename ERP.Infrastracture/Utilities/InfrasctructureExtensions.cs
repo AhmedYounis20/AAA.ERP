@@ -1,4 +1,6 @@
+using Accounting.Contracts.Integration;
 using AAA.ERP.Services.Impelementation;
+using ERP.Infrastracture.Services.Accounting;
 using Domain.Account.Services.Identity;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
@@ -42,6 +44,7 @@ public static class InfrasctructureExtensions
     {
         services.AddScoped(typeof(IBaseSettingService<,,>), typeof(BaseSettingService<,,>));
         services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>));
+        services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
 

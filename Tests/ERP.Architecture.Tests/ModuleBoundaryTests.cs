@@ -8,8 +8,23 @@ namespace ERP.Architecture.Tests;
 /// </summary>
 public class ModuleBoundaryTests
 {
-    [Fact(Skip = "Enable after Phase 1 — see docs/architecture/MODULAR_MONOLITH.md §10.3")]
-    public void Inventory_services_should_not_reference_Account_domain_entities()
+    [Fact]
+    public void Inventory_transaction_services_should_not_reference_Account_domain_entities()
+    {
+        var result = Types.InAssembly(typeof(ERP.Infrastracture.Services.Inventory.ProductService).Assembly)
+            .That()
+            .HaveNameEndingWith("TransactionService")
+            .Or()
+            .HaveName("InventoryTransferService")
+            .Should()
+            .NotHaveDependencyOn("ERP.Domain.Models.Entities.Account")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
+    public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {
         var result = Types.InAssembly(typeof(ERP.Infrastracture.Services.Inventory.ProductService).Assembly)
             .That()

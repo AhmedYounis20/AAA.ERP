@@ -8,6 +8,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\ERP.Application\ERP.Application.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
     <ProjectReference Include="..\Shared\ERP.Shared.csproj" />
   </ItemGroup>
 

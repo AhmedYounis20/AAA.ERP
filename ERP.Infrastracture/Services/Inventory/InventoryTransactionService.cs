@@ -1,15 +1,9 @@
+using Accounting.Contracts.Integration;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
 using ERP.Domain.Commands.Inventory.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using MediatR;
-using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Commands.Account.Entries.CompinedEntries;
-using Domain.Account.Models.Dtos.Entry;
-using ERP.Application.Services.Account.Entries;
+
 namespace ERP.Infrastracture.Services.Inventory;
 
 public class InventoryTransactionService : BaseService<InventoryTransaction, InventoryTransactionCreateCommand, InventoryTransactionUpdateCommand>, IInventoryTransactionService
@@ -17,20 +11,18 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
     private readonly IInventoryTransactionRepository _repository;
     private readonly IStockBalanceService _stockBalanceService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ApplicationDbContext _dbContext;
-    private readonly IMediator _mediator;
+    private readonly IAccountingIntegrationService _accountingIntegration;
+
     public InventoryTransactionService(
         IInventoryTransactionRepository repository,
         IStockBalanceService stockBalanceService,
         IUnitOfWork unitOfWork,
-        ApplicationDbContext dbContext,
-        IMediator mediator) : base(repository)
+        IAccountingIntegrationService accountingIntegration) : base(repository)
     {
         _repository = repository;
         _stockBalanceService = stockBalanceService;
         _unitOfWork = unitOfWork;
-        _dbContext = dbContext;
-        _mediator = mediator;
+        _accountingIntegration = accountingIntegration;
     }
 
     public async Task<ApiResponse<InventoryTransaction>> GetWithItems(Guid id)
@@ -106,25 +98,24 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
     {
         try
         {
-            var result = new TransactionNumberDto();
-
-            // Get financial period for the given date (same logic as entry services)
-            var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-                .FirstOrDefaultAsync(e => e.StartDate <= dateTime && e.EndDate > dateTime);
-            if (financialPeriod == null)
+            var periodResult = await _accountingIntegration.GetOpenPeriodForDateAsync(dateTime);
+            if (!periodResult.IsSuccess || periodResult.Result is null)
             {
                 return new ApiResponse<TransactionNumberDto>
                 {
                     IsSuccess = false,
-                    StatusCode = HttpStatusCode.Found,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
+                    StatusCode = periodResult.StatusCode,
+                    Errors = periodResult.Errors
                 };
             }
 
-            result.FinancialPeriodId = financialPeriod.Id;
-            result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
+            var financialPeriod = periodResult.Result;
+            var result = new TransactionNumberDto
+            {
+                FinancialPeriodId = financialPeriod.Id,
+                FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty
+            };
 
-            // Generate transaction number following the same pattern as Entry number generation
             var lastTransactionNumber = _repository.GetQuery()
                 .Where(e => e.FinancialPeriodId == financialPeriod.Id)
                 .ToList()
@@ -132,19 +123,9 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 .Select(e => BigInteger.Parse(e.TransactionNumber))
                 .FirstOrDefault();
 
-            string transactionNumber;
-            if (lastTransactionNumber == 0)
-            {
-                // First transaction for this financial period
-                transactionNumber = "1";
-            }
-            else
-            {
-                // Increment the last transaction number
-                transactionNumber = (lastTransactionNumber + 1).ToString();
-            }
-
-            result.TransactionNumber = transactionNumber;
+            result.TransactionNumber = lastTransactionNumber == 0
+                ? "1"
+                : (lastTransactionNumber + 1).ToString();
 
             return new ApiResponse<TransactionNumberDto>
             {
@@ -169,7 +150,6 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            // Validate first
             if (isValidate)
             {
                 var validationResult = await ValidateCreate(command);
@@ -178,26 +158,25 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     return new ApiResponse<InventoryTransaction>
                     {
                         IsSuccess = false,
-                        StatusCode = System.Net.HttpStatusCode.BadRequest,
+                        StatusCode = HttpStatusCode.BadRequest,
                         Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
                     };
                 }
             }
-            // Get financial period for the transaction date
-            var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-                .FirstOrDefaultAsync(e => e.StartDate <= command.TransactionDate && e.EndDate > command.TransactionDate);
-            if (financialPeriod == null)
+
+            var periodResult = await _accountingIntegration.GetOpenPeriodForDateAsync(command.TransactionDate);
+            if (!periodResult.IsSuccess || periodResult.Result is null)
             {
                 return new ApiResponse<InventoryTransaction>
                 {
                     IsSuccess = false,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
+                    StatusCode = periodResult.StatusCode,
+                    Errors = periodResult.Errors
                 };
             }
 
+            var financialPeriod = periodResult.Result;
 
-            // Generate transaction number following the same pattern as Entry number generation
             var lastTransactionNumber = _repository.GetQuery()
                 .Where(e => e.FinancialPeriodId == financialPeriod.Id)
                 .ToList()
@@ -205,19 +184,10 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 .Select(e => BigInteger.Parse(e.TransactionNumber))
                 .FirstOrDefault();
 
-            string transactionNumber;
-            if (lastTransactionNumber == 0)
-            {
-                // First transaction for this financial period
-                transactionNumber = "1";
-            }
-            else
-            {
-                // Increment the last transaction number
-                transactionNumber = (lastTransactionNumber + 1).ToString();
-            }
+            var transactionNumber = lastTransactionNumber == 0
+                ? "1"
+                : (lastTransactionNumber + 1).ToString();
 
-            // Create the transaction
             var transaction = command.Adapt<InventoryTransaction>();
             transaction.TransactionNumber = transactionNumber;
             transaction.FinancialPeriodId = financialPeriod.Id;
@@ -229,13 +199,11 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 TotalCost = item.TotalCost
             }).ToList();
 
-            // --- Handle Export (Issue) validation ---
             if (command.TransactionType == InventoryTransactionType.Issue)
             {
                 var insufficientItems = new List<string>();
                 foreach (var item in command.Items)
                 {
-                    // Get current balance using default packing unit
                     var stockBalanceResp = await _stockBalanceService.GetCurrentBalance(item.VariantId, item.PackingUnitId, command.BranchId);
                     var currentBalance = stockBalanceResp.Result;
                     if (currentBalance < item.Quantity)
@@ -243,13 +211,14 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                         insufficientItems.Add($"VariantId: {item.VariantId}, PackingUnitId: {item.PackingUnitId}, Requested: {item.Quantity}, Available: {currentBalance}");
                     }
                 }
+
                 if (insufficientItems.Any())
                 {
                     await _unitOfWork.RollbackAsync();
                     return new ApiResponse<InventoryTransaction>
                     {
                         IsSuccess = false,
-                        StatusCode = System.Net.HttpStatusCode.BadRequest,
+                        StatusCode = HttpStatusCode.BadRequest,
                         Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InsufficientStockBalance" } }
                     };
                 }
@@ -257,11 +226,10 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
 
             var createdTransaction = await _repository.Add(transaction);
 
-            // Update stock balances
             foreach (var item in command.Items)
             {
                 var unitCost = item.TotalCost / item.Quantity;
-                bool isReceipt = command.TransactionType == InventoryTransactionType.Receipt;
+                var isReceipt = command.TransactionType == InventoryTransactionType.Receipt;
                 var updateResult = await _stockBalanceService.UpdateStockBalance(
                     item.VariantId,
                     item.PackingUnitId,
@@ -273,31 +241,37 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     throw new Exception("Failed To Add Stock Balance");
             }
 
-            // --- Combined Entry Logic ---
-            var creatingEntryCommandResult = await CreateCompinedEntryCreateCommand(command, financialPeriod);
-            if (!creatingEntryCommandResult.isSuccess || creatingEntryCommandResult.compinedEntryCommand == null)
-            {
-                return creatingEntryCommandResult.validationResult;
-            }
-            var entryResult = await _mediator.Send(creatingEntryCommandResult.compinedEntryCommand);
+            var totalAmount = command.Items.Sum(i => i.TotalCost);
+            var glDirection = command.TransactionType == InventoryTransactionType.Receipt
+                ? InventoryGlDirection.Receipt
+                : InventoryGlDirection.Issue;
+
+            var entryResult = await _accountingIntegration.PostInventoryTransactionEntryAsync(
+                new InventoryTransactionPostingRequest(
+                    command.BranchId,
+                    command.TransactionPartyId,
+                    command.TransactionDate,
+                    financialPeriod.Id,
+                    totalAmount,
+                    glDirection));
+
             if (!entryResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
                 return new ApiResponse<InventoryTransaction>
                 {
                     IsSuccess = false,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                    StatusCode = entryResult.StatusCode,
                     Errors = entryResult.Errors
                 };
             }
-            // --- End Combined Entry Logic ---
 
             await _unitOfWork.CommitAsync();
 
             return new ApiResponse<InventoryTransaction>
             {
                 IsSuccess = true,
-                StatusCode = System.Net.HttpStatusCode.Created,
+                StatusCode = HttpStatusCode.Created,
                 Result = createdTransaction
             };
         }
@@ -307,80 +281,18 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             return new ApiResponse<InventoryTransaction>
             {
                 IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                StatusCode = HttpStatusCode.BadRequest,
                 Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
             };
         }
-    }
-
-    private async Task<(bool isSuccess, ApiResponse<InventoryTransaction> validationResult,CompinedEntryCreateCommand? compinedEntryCommand)> CreateCompinedEntryCreateCommand(InventoryTransactionCreateCommand command, FinancialPeriod financialPeriod)
-    {
-        var totalAmount = command.Items.Sum(i => i.TotalCost);
-        var defaultCurrency = await _dbContext.Set<Currency>().FirstOrDefaultAsync(e => e.IsDefault);
-        if (defaultCurrency == null)
-        {
-            await _unitOfWork.RollbackAsync();
-            return (false,new ApiResponse<InventoryTransaction>
-            {
-                IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DefaultCurrencyNotFound" } }
-            },null);
-        }
-        var branch = await _dbContext.Set<Branch>().FirstOrDefaultAsync(b => b.Id == command.BranchId);
-        if (branch == null || branch.ChartOfAccountId == null)
-        {
-            await _unitOfWork.RollbackAsync();
-            return ( false,  new ApiResponse<InventoryTransaction>
-            {
-                IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" } }
-            },null);
-        }
-        var branchAccountId = branch.ChartOfAccountId.Value;
-        var partyAccount = await _dbContext.Set<ChartOfAccount>().FirstOrDefaultAsync(a => a.Id == command.TransactionPartyId);
-        if (partyAccount == null)
-        {
-            await _unitOfWork.RollbackAsync();
-            return (false, new ApiResponse<InventoryTransaction>
-            {
-                IsSuccess = false,
-                StatusCode = System.Net.HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "PartyAccountNotFound" } }
-            },null);
-        }
-        var partyAccountId = partyAccount.Id;
-        CompinedEntryCreateCommand compinedEntryCommand = new CompinedEntryCreateCommand
-        {
-            BranchId = command.BranchId,
-            CurrencyId = defaultCurrency.Id,
-            ExchangeRate = defaultCurrency.ExchangeRate,
-            EntryDate = command.TransactionDate,
-            FinancialPeriodId = financialPeriod.Id,
-            FinancialTransactions = new List<ComplexFinancialTransactionDto>
-                {
-                    new ComplexFinancialTransactionDto
-                    {
-                        DebitAccountId = command.TransactionType == InventoryTransactionType.Receipt ? branchAccountId : partyAccountId,
-                        CreditAccountId = command.TransactionType == InventoryTransactionType.Receipt ? partyAccountId : branchAccountId,
-                        Amount = totalAmount,
-                        PaymentType = PaymentType.None
-                    }
-                }
-        };
-        
-        return (true, null, compinedEntryCommand);
     }
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(InventoryTransactionCreateCommand command)
     {
         var validationResult = await base.ValidateCreate(command);
 
-        // Validate financial period exists and matches the transaction date
-        var financialPeriod = await _dbContext.Set<FinancialPeriod>()
-            .FirstOrDefaultAsync(e => e.StartDate <= command.TransactionDate && e.EndDate > command.TransactionDate);
-        if (financialPeriod == null)
+        var periodResult = await _accountingIntegration.GetOpenPeriodForDateAsync(command.TransactionDate);
+        if (!periodResult.IsSuccess)
         {
             validationResult.isValid = false;
             validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
@@ -388,4 +300,4 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
 
         return validationResult;
     }
-} 
+}
