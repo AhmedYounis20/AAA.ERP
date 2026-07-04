@@ -1,9 +1,9 @@
+using Accounting.Application.Commands.GLSettings;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Commands.Account.GLSettings;
 using ERP.Domain.Models.Entities.Account.GLSettings;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.ComandValidators.GlSettings;
+namespace Accounting.Application.Validators.GLSettings;
 
 public class GlSettingUpdateValidator : BaseUpdateValidator<GlSettingUpdateCommand, GLSetting>
 {

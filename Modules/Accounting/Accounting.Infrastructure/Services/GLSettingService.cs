@@ -1,15 +1,16 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account;
-using ERP.Domain.Commands.Account.GLSettings;
+using Accounting.Application.Commands.GLSettings;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.GLSettings;
 
-namespace ERP.Infrastracture.Services.Account;
+namespace Accounting.Infrastructure.Services;
 
 public class GLSettingService : IGLSettingService
 {
-    IGLSettingRepository _repository;
+    private readonly IGLSettingRepository _repository;
+
     public GLSettingService(IGLSettingRepository repository)
-    => _repository = repository;
+        => _repository = repository;
 
     public async Task<ApiResponse<GLSetting>> Get()
     {

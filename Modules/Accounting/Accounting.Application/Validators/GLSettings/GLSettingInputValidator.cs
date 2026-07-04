@@ -1,9 +1,9 @@
-﻿using ERP.Application.Validators.Account.InputValidators.BaseValidators;
+using ERP.Application.Validators.Account.InputValidators.BaseValidators;
 using ERP.Domain.Commands.Account;
 using ERP.Domain.Models.Entities.Account.GLSettings;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.InputValidators;
+namespace Accounting.Application.Validators.GLSettings;
 
 public class GLSettingInputValidator : BaseInputValidator<GLSettingInputModel>
 {

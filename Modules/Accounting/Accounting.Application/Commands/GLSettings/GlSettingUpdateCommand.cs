@@ -1,8 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Entities.Account.GLSettings;
-using Shared.Responses;
 
-namespace ERP.Domain.Commands.Account.GLSettings;
+namespace Accounting.Application.Commands.GLSettings;
 
 public class GlSettingUpdateCommand : BaseUpdateCommand<GLSetting>
 {

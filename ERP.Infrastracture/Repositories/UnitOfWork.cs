@@ -18,7 +18,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IAccountGuideRepository AccountGuideRepository { get; }
     public IChartOfAccountRepository ChartOfAccountRepository { get; }
-    public IGLSettingRepository GlSettingRepository { get; }
     public IEntryRepository EntryRepository { get; }
     public IFinancialPeriodRepository FinancialPeriodRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
@@ -72,7 +71,6 @@ public class UnitOfWork : IUnitOfWork
         IApplicationDbContext context,
         IAccountGuideRepository accountGuideRepository,
         IChartOfAccountRepository chartOfAccountRepository,
-        IGLSettingRepository glSettingRepository,
         IEntryRepository entryRepository,
         IFinancialPeriodRepository financialPeriodRepository,
         IAttachmentRepository attachmentRepository,
@@ -126,7 +124,6 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         AccountGuideRepository = accountGuideRepository;
         ChartOfAccountRepository = chartOfAccountRepository;
-        GlSettingRepository = glSettingRepository;
         EntryRepository = entryRepository;
         FinancialPeriodRepository = financialPeriodRepository   ;
         AttachmentRepository = attachmentRepository;
