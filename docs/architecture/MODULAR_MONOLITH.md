@@ -958,17 +958,19 @@ See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 | 3A.8 | Update all project references from `Shared` → BuildingBlocks | L | Dev A+B | Shared project thinned | Done |
 | 3A.9 | Delete moved files from `Shared`; remove or deprecate project | M | Dev A | Shared deprecated | Done (thin shim: Identity + filter DTOs) |
 
-**Wave 3A exit:** `Shared` thinned to Wave 3B deferrals (`ApplicationUser`, filter DTOs, `ErrorMessages`); Platform modules registered via `AddPlatformModules()` in `WebBuilderExtensions`.
+**Wave 3A exit:** `Shared` thinned to filter DTOs and `ErrorMessages`; Platform modules registered via `AddPlatformModules()` in `WebBuilderExtensions`.
 
-#### Wave 3B — Identity (Weeks 5–6)
+#### Wave 3B — Identity (Weeks 5–6) — **COMPLETE (pending review)**
 
-| ID | Task | Effort | Owner | Deliverable |
-|----|------|--------|-------|-------------|
-| 3B.1 | Create `Identity.Domain` — `ApplicationUser` (or keep in BuildingBlocks if shared) | M | Dev A | Identity domain |
-| 3B.2 | Create `Identity.Application` — `IAuthenticationService`, commands | M | Dev A | Auth contracts |
-| 3B.3 | Create `Identity.Infrastructure` — auth service, JWT helpers | L | Dev A | Auth impl |
-| 3B.4 | Introduce `ICurrentUser`; replace direct `IHttpContextAccessor` in audit | M | Dev A | Abstraction |
-| 3B.5 | `AddIdentityModule()` + smoke test `AuthController` | S | Dev A | Auth works |
+| ID | Task | Effort | Owner | Deliverable | Status |
+|----|------|--------|-------|-------------|--------|
+| 3B.1 | Create `Identity.Domain` — `ApplicationUser` (namespace `Shared.BaseEntities.Identity` retained) | M | Dev A | Identity domain | Done |
+| 3B.2 | Create `Identity.Application` — `IAuthenticationService`, auth DTOs, `ICurrentUser` | M | Dev A | Auth contracts | Done |
+| 3B.3 | Create `Identity.Infrastructure` — auth service, JWT helpers | L | Dev A | Auth impl | Done |
+| 3B.4 | Introduce `ICurrentUser`; replace direct `IHttpContextAccessor` in audit + DbContext audit fields | M | Dev A | Abstraction | Done |
+| 3B.5 | `AddIdentityModule()` + smoke test `AuthController` | S | Dev A | Auth works | Done |
+
+**Wave 3B exit:** `ApplicationUser` out of `Shared/`; auth DI removed from `InfrasctructureExtensions`; `AddIdentityModule()` in host; login/register/refresh routes unchanged.
 
 #### Wave 3C — Accounting extraction (Weeks 7–14)
 
@@ -1243,7 +1245,21 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3B — Identity. See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3C — Accounting aggregate extraction. See [§10.5](#105-phase-3--module-extraction).
+
+### Phase 3 Wave 3B — **COMPLETE (pending review)**
+
+Identity module extracted from horizontal layers. `ApplicationUser` namespace kept as `Shared.BaseEntities.Identity` to avoid EF migration drift; auth DTO namespaces kept as `Domain.Account.Models.Dtos`.
+
+| Done | Notes |
+|------|-------|
+| 3B.1 | `Modules/Identity/Identity.Domain` — `ApplicationUser` |
+| 3B.2 | `Identity.Application` — `IAuthenticationService`, `ICurrentUser`, auth DTOs |
+| 3B.3 | `Identity.Infrastructure` — `AuthenticationService`, `CurrentUserService`, `AddIdentityModule()` |
+| 3B.4 | `ICurrentUser` in `ApplicationDbContext` audit fields + `Platform.Audit` `AuditService` |
+| 3B.5 | Host: `AddIdentityModule()` after `AddPlatformModules()`; JWT/`AddIdentity<>` remain in host |
+| Arch tests | Identity module dependency rules added |
+| `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
 ### Phase 3 Wave 3A — **COMPLETE (pending commit)**
 

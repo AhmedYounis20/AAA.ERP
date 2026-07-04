@@ -1,5 +1,6 @@
 using ERP.Application.Data;
 using ERP.Application.Services.Audit;
+using ERP.Application.Services.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;
@@ -17,12 +18,17 @@ namespace Platform.Audit.Infrastructure.Services;
 public class AuditService : IAuditService
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly ICurrentUser _currentUser;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public AuditService(IApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public AuditService(
+        IApplicationDbContext dbContext,
+        ICurrentUser currentUser,
+        IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
+        _currentUser = currentUser;
         _httpContextAccessor = httpContextAccessor;
         _jsonOptions = new JsonSerializerOptions
         {
@@ -36,8 +42,11 @@ public class AuditService : IAuditService
     {
         auditLog.Id = Guid.NewGuid();
         auditLog.Timestamp = DateTime.UtcNow;
-        
-        // Add request context if available
+
+        auditLog.UserId ??= _currentUser.UserId;
+        auditLog.UserName ??= _currentUser.UserName;
+
+        // IP and User-Agent still come from HTTP context
         if (_httpContextAccessor.HttpContext != null)
         {
             auditLog.IpAddress ??= GetIpAddress();

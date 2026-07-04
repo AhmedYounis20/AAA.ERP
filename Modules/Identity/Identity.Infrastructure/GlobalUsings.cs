@@ -1,0 +1,10 @@
+global using System.Linq.Expressions;
+global using ERP.Application.Data;
+global using Domain.Account.DBConfiguration.DbContext;
+global using Domain.Account.Utility;
+global using Shared.Responses;
+global using System.Net;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Http;
+global using ERP.Application.Services.Identity;
+global using Shared.BaseEntities.Identity;

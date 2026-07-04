@@ -1,4 +1,4 @@
-﻿namespace Domain.Account.Models.Dtos;
+namespace Domain.Account.Models.Dtos;
 
 public class RegisterRequestDTO
 {

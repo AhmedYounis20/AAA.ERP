@@ -72,6 +72,21 @@ public class LayerDependencyTests
     [Fact]
     public void Shared_should_not_reference_Application_Domain_or_Infrastructure()
     {
+        var result = Types.InAssembly(typeof(global::Shared.Constants.ErrorMessages).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Application")
+            .And()
+            .NotHaveDependencyOn("ERP.Domain")
+            .And()
+            .NotHaveDependencyOn(InfrastructureAssembly)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Identity_Domain_should_not_reference_Application_Domain_or_Infrastructure()
+    {
         var result = Types.InAssembly(typeof(global::Shared.BaseEntities.Identity.ApplicationUser).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
@@ -79,6 +94,32 @@ public class LayerDependencyTests
             .NotHaveDependencyOn("ERP.Domain")
             .And()
             .NotHaveDependencyOn(InfrastructureAssembly)
+            .And()
+            .NotHaveDependencyOn(ApiAssembly)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Identity_Application_should_not_reference_Infrastructure_or_API()
+    {
+        var result = Types.InAssembly(typeof(global::ERP.Application.Services.Identity.IAuthenticationService).Assembly)
+            .Should()
+            .NotHaveDependencyOn(InfrastructureAssembly)
+            .And()
+            .NotHaveDependencyOn(ApiAssembly)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Identity_Infrastructure_should_not_reference_API()
+    {
+        var result = Types.InAssembly(typeof(global::Identity.Infrastructure.IdentityModuleExtensions).Assembly)
+            .Should()
+            .NotHaveDependencyOn(ApiAssembly)
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));

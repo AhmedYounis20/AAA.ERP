@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Shared.BaseEntities;
-using Shared.BaseEntities.Identity;
 
 namespace ERP.Application.Data;
 

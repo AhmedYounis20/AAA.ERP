@@ -19,7 +19,11 @@ Modules/Platform/  → Cross-cutting platform services
   Platform.Caching.*       → In-memory cache (ICacheService)
   Platform.Localization    → en/ar resources, response localization middleware
   Platform.Infrastructure  → AddPlatformModules() composition
-Shared/            → Thin shim until Wave 3B (ApplicationUser, filter DTOs, ErrorMessages)
+Modules/Identity/  → Authentication and current-user abstraction (Wave 3B)
+  Identity.Domain          → ApplicationUser
+  Identity.Application     → IAuthenticationService, ICurrentUser, auth DTOs
+  Identity.Infrastructure  → AuthenticationService, AddIdentityModule()
+Shared/            → Thin shim (filter DTOs, ErrorMessages)
 ```
 
 ## Where to put new code
@@ -43,9 +47,10 @@ Shared/            → Thin shim until Wave 3B (ApplicationUser, filter DTOs, Er
 
 | Project | Owns | Do not put here |
 |---------|------|-----------------|
-| **BuildingBlocks.Domain** | `BaseEntity`, tree bases, `Attachment` | Business entities, Identity (`ApplicationUser` → Shared until 3B) |
+| **BuildingBlocks.Domain** | `BaseEntity`, tree bases, `Attachment` | Business entities, Identity |
 | **BuildingBlocks.Application** | `ApiResponse`, `PaginatedResult`, CQRS markers, `ValidationBehavior`, exceptions | Module-specific DTOs |
-| **Shared** (thin) | `ApplicationUser`, filter DTOs, message key constants | Anything moved to BuildingBlocks or Platform |
+| **Shared** (thin) | Filter DTOs, message key constants | Anything moved to BuildingBlocks, Platform, or Identity |
+| **Identity.*** | `ApplicationUser`, auth services, `ICurrentUser` | Accounting/Inventory business logic |
 | **Platform.*** | Audit, caching, localization infrastructure | Accounting/Inventory business logic |
 
 Namespaces in BuildingBlocks still use `Shared.*` during transition to avoid mass import churn.

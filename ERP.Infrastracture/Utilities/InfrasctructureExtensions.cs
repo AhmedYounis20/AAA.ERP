@@ -1,14 +1,12 @@
 using Accounting.Contracts.Integration;
 using AAA.ERP.Services.Impelementation;
 using ERP.Infrastracture.Services.Accounting;
-using Domain.Account.Services.Identity;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Application.Services.Identity;
 using ERP.Application.Services.Inventory;
 using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Repositories.Account;
@@ -67,7 +65,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ICompinedEntryService, CompinedEntryService>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IPackingUnitService, PackingUnitService>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
         services.AddScoped<IItemService, ItemService>();

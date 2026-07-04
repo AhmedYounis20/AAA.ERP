@@ -29,6 +29,9 @@
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\..\Shared\ERP.Shared.csproj" />

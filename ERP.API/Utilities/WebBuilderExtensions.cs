@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Accounting.Application.Validators.Taxes;
 using Accounting.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
+using Identity.Infrastructure;
 using ERP.Application.Data;
 using ERP.Infrastracture.Utilities;
 using FluentValidation;
@@ -141,6 +142,7 @@ public static class WebBuilderExtensions
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();
         builder.Services.AddPlatformModules();
+        builder.Services.AddIdentityModule();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSwaggerConfiguration();

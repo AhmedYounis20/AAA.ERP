@@ -1,19 +1,19 @@
+using ERP.Application.Services.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
-using System.Security.Claims;
 using ERP.Domain.Models.Entities.Inventory.Attributes;
 
 namespace Domain.Account.DBConfiguration.DbContext;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplicationDbContext
 {
-    private readonly IHttpContextAccessor? _httpContextAccessor;
+    private readonly ICurrentUser? _currentUser;
 
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
-    public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
+    public ApplicationDbContext(DbContextOptions options, ICurrentUser currentUser) : base(options)
     {
-        _httpContextAccessor = httpContextAccessor;
+        _currentUser = currentUser;
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -26,11 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
             configure(builder);
     }
 
-    private Guid? GetCurrentUserId()
-    {
-        var userIdClaim = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        return Guid.TryParse(userIdClaim, out var userId) ? userId : null;
-    }
+    private Guid? GetCurrentUserId() => _currentUser?.UserId;
 
     protected void ApplyAuditInfo()
     {
