@@ -4,6 +4,7 @@ using ERP.Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Platform.Audit.Infrastructure;
 
 namespace ERP.API.Persistence;
 
@@ -13,6 +14,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     {
         ModuleModelConfigurationRegistry.Clear();
         ModuleModelConfigurationRegistry.Register(AccountingModuleExtensions.ApplyAccountingModuleConfigurations);
+        ModuleModelConfigurationRegistry.Register(PlatformAuditModuleExtensions.ApplyPlatformAuditConfigurations);
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())

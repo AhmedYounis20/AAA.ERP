@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Platform.Audit.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

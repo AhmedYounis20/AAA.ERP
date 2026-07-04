@@ -4,7 +4,7 @@ using ERP.Shared.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 
-namespace Shared.Responses;
+namespace Platform.Localization;
 
 public class LocalizationResponseMiddleware
 {

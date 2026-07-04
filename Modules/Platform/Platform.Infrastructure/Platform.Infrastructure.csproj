@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Platform.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Platform.Audit\Platform.Audit.Infrastructure\Platform.Audit.Infrastructure.csproj" />
+    <ProjectReference Include="..\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj" />
+    <ProjectReference Include="..\Platform.Localization\Platform.Localization.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 
-namespace ERP.Infrastracture.Services.Caching;
+namespace Platform.Caching.Infrastructure.Services;
 
 /// <summary>
 /// In-memory cache service implementation

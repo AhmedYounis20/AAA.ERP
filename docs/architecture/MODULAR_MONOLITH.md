@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
-> **Status:** Proposed  
-> **Last updated:** July 2026 — **Phase 0 complete (M0)**  
+> **Status:** In progress — **Phase 3 Wave 3A complete (pending review)**  
+> **Last updated:** July 2026 — **Phase 0 complete (M0)**, **Phase 1 complete (M1)**, **Phase 2 complete (M2)**, **Wave 3A complete**  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -944,21 +944,21 @@ See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 **Goal:** Move all code from horizontal layers into modules; retire `ERP.Application`, `ERP.Domain`, `ERP.Infrastracture`.  
 **Strategy:** One aggregate (or aggregate group) per PR; 2–3 migrations per week at steady state.
 
-#### Wave 3A — BuildingBlocks + Platform (Weeks 1–4)
+#### Wave 3A — BuildingBlocks + Platform (Weeks 1–4) — **COMPLETE**
 
-| ID | Task | Effort | Owner | Deliverable |
-|----|------|--------|-------|-------------|
-| 3A.1 | Create `ERP.BuildingBlocks.Domain` — move `BaseEntity`, tree entities | M | Dev B | Domain primitives |
-| 3A.2 | Create `ERP.BuildingBlocks.Application` — `PaginatedResult`, `BaseFilterDto`, behaviors | M | Dev B | App primitives |
-| 3A.3 | Move `ApiResponse`, `MessageTemplate` to BuildingBlocks.Application | M | Dev B | Response types |
-| 3A.4 | Move `CustomExceptionHandler`, `NotFoundException`, etc. | M | Dev B | Exception types |
-| 3A.5 | Create `Platform.Audit` — move `AuditService`, `AuditLog` | M | Dev B | Audit module |
-| 3A.6 | Create `Platform.Caching` — move `CacheService` | M | Dev B | Cache module |
-| 3A.7 | Create `Platform.Localization` — move resources, middleware | L | Dev B | Localization module |
-| 3A.8 | Update all project references from `Shared` → BuildingBlocks | L | Dev A+B | Shared project thinned |
-| 3A.9 | Delete moved files from `Shared`; remove or deprecate project | M | Dev A | Shared deprecated |
+| ID | Task | Effort | Owner | Deliverable | Status |
+|----|------|--------|-------|-------------|--------|
+| 3A.1 | Create `ERP.BuildingBlocks.Domain` — move `BaseEntity`, tree entities | M | Dev B | Domain primitives | Done |
+| 3A.2 | Create `ERP.BuildingBlocks.Application` — `PaginatedResult`, `BaseFilterDto`, behaviors | M | Dev B | App primitives | Done |
+| 3A.3 | Move `ApiResponse`, `MessageTemplate` to BuildingBlocks.Application | M | Dev B | Response types | Done |
+| 3A.4 | Move `CustomExceptionHandler`, `NotFoundException`, etc. | M | Dev B | Exception types | Done |
+| 3A.5 | Create `Platform.Audit` — move `AuditService`, `AuditLog` | M | Dev B | Audit module | Done |
+| 3A.6 | Create `Platform.Caching` — move `CacheService` | M | Dev B | Cache module | Done |
+| 3A.7 | Create `Platform.Localization` — move resources, middleware | L | Dev B | Localization module | Done |
+| 3A.8 | Update all project references from `Shared` → BuildingBlocks | L | Dev A+B | Shared project thinned | Done |
+| 3A.9 | Delete moved files from `Shared`; remove or deprecate project | M | Dev A | Shared deprecated | Done (thin shim: Identity + filter DTOs) |
 
-**Wave 3A exit:** `Shared` project empty or removed; Platform modules registered via `AddPlatformModules()`.
+**Wave 3A exit:** `Shared` thinned to Wave 3B deferrals (`ApplicationUser`, filter DTOs, `ErrorMessages`); Platform modules registered via `AddPlatformModules()` in `WebBuilderExtensions`.
 
 #### Wave 3B — Identity (Weeks 5–6)
 
@@ -1243,7 +1243,21 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 — module extraction. See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3B — Identity. See [§10.5](#105-phase-3--module-extraction).
+
+### Phase 3 Wave 3A — **COMPLETE (pending commit)**
+
+BuildingBlocks + Platform kernel split from `Shared/`. Namespaces kept as `Shared.*` in BuildingBlocks to limit churn; Platform uses `AddPlatformModules()`.
+
+| Done | Notes |
+|------|-------|
+| 3A.1–3A.4 | `BuildingBlocks/ERP.BuildingBlocks.{Domain,Application}` — base entities, DTOs, CQRS, responses, exceptions |
+| 3A.5 | `Modules/Platform/Platform.Audit.*` — `IAuditService`, `AuditService`, `AuditLogDbConfig` via `ModuleModelConfigurationRegistry` |
+| 3A.6 | `Modules/Platform/Platform.Caching.*` — `ICacheService`, `CacheService`, `CachedQueryService` |
+| 3A.7 | `Modules/Platform/Platform.Localization` — `Resource.resx`, `LocalizationResponseMiddleware` |
+| 3A.8–3A.9 | Project refs updated; `Shared/` thinned (`ApplicationUser`, filter DTOs, `ErrorMessages` for Wave 3B) |
+| Arch tests | `BuildingBlocks_*` dependency rules added |
+| Host | `AddPlatformModules()` after `AddAccountingModule()` in `WebBuilderExtensions` |
 
 ```bash
 dotnet test AAA.ERP.sln

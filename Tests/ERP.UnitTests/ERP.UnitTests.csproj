@@ -23,9 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\Shared\ERP.Shared.csproj" />
     <ProjectReference Include="..\..\ERP.Application\ERP.Application.csproj" />
-    <ProjectReference Include="..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\Modules\Platform\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

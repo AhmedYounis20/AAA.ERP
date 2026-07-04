@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;
 using System.Linq.Expressions;
 
-namespace ERP.Infrastracture.Services.Caching;
+namespace Platform.Caching.Infrastructure.Services;
 
 /// <summary>
 /// Query service with caching support for lookups

@@ -11,7 +11,15 @@ ERP.API            → HTTP, composition root, migrations
 ERP.Application    → Interfaces, validators
 ERP.Domain         → Entities, commands, DTOs
 ERP.Infrastracture → Repositories, services, MediatR handlers
-Shared             → Cross-cutting primitives (being split in Phase 3)
+BuildingBlocks/    → Technical kernel (Phase 3 Wave 3A)
+  ERP.BuildingBlocks.Domain      → BaseEntity, tree entities, Attachment
+  ERP.BuildingBlocks.Application → ApiResponse, PaginatedResult, CQRS, behaviors, exceptions
+Modules/Platform/  → Cross-cutting platform services
+  Platform.Audit.*       → Audit trail (IAuditService, AuditLog)
+  Platform.Caching.*       → In-memory cache (ICacheService)
+  Platform.Localization    → en/ar resources, response localization middleware
+  Platform.Infrastructure  → AddPlatformModules() composition
+Shared/            → Thin shim until Wave 3B (ApplicationUser, filter DTOs, ErrorMessages)
 ```
 
 ## Where to put new code
@@ -24,15 +32,28 @@ Shared             → Cross-cutting primitives (being split in Phase 3)
 | New MediatR handler | `ERP.Infrastracture/Handlers/...` |
 | New repository interface | `ERP.Application/Repositories/...` |
 | New repository implementation | `ERP.Infrastracture/Repositories/...` |
-| New service interface | `ERP.Application/Services/...` |
-| New service implementation | `ERP.Infrastracture/Services/...` |
+| New service interface | `ERP.Application/Services/...` (or `Platform.*.Application` for platform) |
+| New service implementation | `ERP.Infrastracture/Services/...` (or `Platform.*.Infrastructure`) |
 | New API endpoint | `ERP.API/Controllers/...` |
 | EF configuration | `ERP.Infrastracture/DBConfiguration/Config/...` (legacy) or `{Module}.Infrastructure/Persistence/` (modules) |
+| Base entity / API envelope | `BuildingBlocks/ERP.BuildingBlocks.{Domain,Application}` |
+| Audit / cache / localization | `Modules/Platform/Platform.{Audit,Caching,Localization}/` |
+
+## BuildingBlocks vs Shared vs Platform
+
+| Project | Owns | Do not put here |
+|---------|------|-----------------|
+| **BuildingBlocks.Domain** | `BaseEntity`, tree bases, `Attachment` | Business entities, Identity (`ApplicationUser` → Shared until 3B) |
+| **BuildingBlocks.Application** | `ApiResponse`, `PaginatedResult`, CQRS markers, `ValidationBehavior`, exceptions | Module-specific DTOs |
+| **Shared** (thin) | `ApplicationUser`, filter DTOs, message key constants | Anything moved to BuildingBlocks or Platform |
+| **Platform.*** | Audit, caching, localization infrastructure | Accounting/Inventory business logic |
+
+Namespaces in BuildingBlocks still use `Shared.*` during transition to avoid mass import churn.
 
 ## Module EF and migrations (Phase 2+)
 
 - **Module owns** `IEntityTypeConfiguration<>` classes (e.g. `Accounting.Infrastructure/Persistence/TaxDbConfig.cs`).
-- **Module registers** configs via `ModuleModelConfigurationRegistry.Register(...)` inside `Add{Module}Module()`.
+- **Module registers** configs via `ModuleModelConfigurationRegistry.Register(...)` inside `Add{Module}Module()` or `AddPlatformModules()`.
 - **Host owns** migrations in `ERP.API/Migrations/` until `ERP.Persistence` exists.
 - **Design-time:** `ERP.API/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI startup (required for `dotnet ef`).
 
@@ -43,6 +64,15 @@ dotnet ef migrations add <Name> --project ERP.API --startup-project ERP.API
 
 After adding a module aggregate, run a dry-run migration and confirm existing tables are not dropped (entity CLR type may change while table name stays the same).
 
+## Host composition (Phase 3+)
+
+```csharp
+builder.Services.AddInfrastructureServices();
+builder.Services.AddAccountingModule();
+builder.Services.AddPlatformModules();   // Audit, Caching, Localization
+builder.Services.AddProjectUtilities();
+```
+
 ## Dependency rules (enforced by `ERP.Architecture.Tests`)
 
 | Layer | Must NOT reference |
@@ -51,6 +81,8 @@ After adding a module aggregate, run a dry-run migration and confirm existing ta
 | `ERP.Application` | `ERP.Infrastracture`, `ERP.API` |
 | `ERP.Infrastracture` | `ERP.API` |
 | `Shared` | `ERP.Domain`, `ERP.Application`, `ERP.Infrastracture` |
+| `ERP.BuildingBlocks.Domain` | `ERP.Domain`, `ERP.Application`, `ERP.Infrastracture` |
+| `ERP.BuildingBlocks.Application` | `ERP.Domain`, `ERP.Infrastracture` |
 
 Run architecture tests before opening a PR:
 
@@ -78,11 +110,3 @@ Until module extraction (Phase 3):
 ## Module owners
 
 See [MODULE_OWNERS.md](./MODULE_OWNERS.md).
-
-| Module | Owner |
-|--------|-------|
-| Accounting | Ahmed Younis |
-| Inventory | Ahmed Younis |
-| Platform | Ahmed Younis |
-| Identity | Ahmed Younis |
-| Host / API | Ahmed Younis |

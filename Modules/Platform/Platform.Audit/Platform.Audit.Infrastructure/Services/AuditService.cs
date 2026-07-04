@@ -9,7 +9,7 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ERP.Infrastracture.Services.Audit;
+namespace Platform.Audit.Infrastructure.Services;
 
 /// <summary>
 /// Implementation of the audit service

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.BaseEntities;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Audit;
+namespace Platform.Audit.Infrastructure.Persistence;
 
 public class AuditLogDbConfig : IEntityTypeConfiguration<AuditLog>
 {

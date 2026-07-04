@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Platform.Infrastructure;
+using Platform.Localization;
 using Shared.BaseEntities.Identity;
 using Shared.Behaviors;
 using Shared.Exceptions.Handler;
-using Shared.Responses;
 
 namespace ERP.Api.Utilities;
 
@@ -139,6 +140,7 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();
+        builder.Services.AddPlatformModules();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSwaggerConfiguration();
