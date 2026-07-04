@@ -1,4 +1,5 @@
 using ERP.Application.Data;
+using ERP.Application.Services.Caching;
 using ERP.Domain.Models.Entities.Account.Currencies;
 using FluentAssertions;
 using NetArchTest.Rules;
@@ -71,10 +72,38 @@ public class LayerDependencyTests
     [Fact]
     public void Shared_should_not_reference_Application_Domain_or_Infrastructure()
     {
+        var result = Types.InAssembly(typeof(global::Shared.BaseEntities.Identity.ApplicationUser).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Application")
+            .And()
+            .NotHaveDependencyOn("ERP.Domain")
+            .And()
+            .NotHaveDependencyOn(InfrastructureAssembly)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void BuildingBlocks_Domain_should_not_reference_Application_Domain_or_Infrastructure()
+    {
         var result = Types.InAssembly(typeof(global::Shared.BaseEntities.BaseEntity).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
             .And()
+            .NotHaveDependencyOn("ERP.Domain")
+            .And()
+            .NotHaveDependencyOn(InfrastructureAssembly)
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void BuildingBlocks_Application_should_not_reference_Domain_or_Infrastructure()
+    {
+        var result = Types.InAssembly(typeof(global::Shared.DTOs.PaginatedResult<>).Assembly)
+            .Should()
             .NotHaveDependencyOn("ERP.Domain")
             .And()
             .NotHaveDependencyOn(InfrastructureAssembly)
