@@ -134,7 +134,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
 
             decimal quantity = item.Quantity / variantUsedPackingUnit.PartsCount;
 
-            var sourceStock = await _dbContext.Set<StockBalance>().AsNoTracking()
+            var sourceStock = await _dbContext.Set<StockBalance>()
                 .FirstOrDefaultAsync(e => e.VariantId == item.VariantId && e.BranchId == sourceId);
             if (sourceStock == null || sourceStock.CurrentBalance < quantity)
             {
@@ -152,7 +152,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             await _unitOfWork.StockBalanceRepository.Update(sourceStock);
 
             var destinationBranchResult = await _accountingIntegration.GetBranchAccountAsync(destinationId);
-            var destinationStock = await _dbContext.Set<StockBalance>().AsNoTracking()
+            var destinationStock = await _dbContext.Set<StockBalance>()
                 .FirstOrDefaultAsync(e => e.VariantId == item.VariantId && e.BranchId == destinationId);
 
             if (destinationStock == null)

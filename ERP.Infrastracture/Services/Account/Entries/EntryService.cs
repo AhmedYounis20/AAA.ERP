@@ -356,12 +356,16 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
 
 
-    var lastEntryNumber = await _unitOfWork.Set<Entry>()
-        .Where(e => e.FinancialPeriodId == financialPeriod.Id)
-        .OrderByDescending(e => Convert.ToInt64(e.EntryNumber))
-        .Select(e => Convert.ToInt64(e.EntryNumber))
-        .FirstOrDefaultAsync();
-        result.EntryNumber = (lastEntryNumber + 1).ToString();
+        var lastEntryNumber = _unitOfWork.Set<Entry>()
+            .Where(e => e.FinancialPeriodId == financialPeriod.Id)
+            .ToList()
+            .OrderByDescending(e => BigInteger.Parse(e.EntryNumber))
+            .Select(e => BigInteger.Parse(e.EntryNumber))
+            .FirstOrDefault();
+
+        result.EntryNumber = lastEntryNumber == 0
+            ? "1"
+            : (lastEntryNumber + 1).ToString();
 
         return new ApiResponse<EntryNumberDto>
         {
