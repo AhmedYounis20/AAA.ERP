@@ -23,6 +23,17 @@ public class ModuleBoundaryTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
     }
 
+    [Fact]
+    public void Accounting_Domain_should_not_reference_Inventory_entities()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Domain.Models.Entities.Inventory")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
     [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {

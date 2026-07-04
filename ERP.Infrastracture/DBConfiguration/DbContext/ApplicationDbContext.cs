@@ -21,6 +21,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        foreach (var configure in ModuleModelConfigurationRegistry.Configurators)
+            configure(builder);
     }
 
     private Guid? GetCurrentUserId()

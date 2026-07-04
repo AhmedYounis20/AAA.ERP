@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json.Serialization;
+using Accounting.Application.Validators.Taxes;
+using Accounting.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
 using ERP.Application.Data;
 using ERP.Infrastracture.Utilities;
@@ -23,10 +25,12 @@ public static class WebBuilderExtensions
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
         services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
+        services.AddValidatorsFromAssembly(typeof(TaxCreateValidator).Assembly);
         services.AddMediatR(config =>
         {
             // Single registration point for all command handlers (Phase 0 — MODULAR_MONOLITH.md §10.2).
             config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly);
+            config.RegisterServicesFromAssembly(typeof(AccountingModuleExtensions).Assembly);
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
@@ -134,6 +138,7 @@ public static class WebBuilderExtensions
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
         builder.Services.AddInfrastructureServices();
+        builder.Services.AddAccountingModule();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSwaggerConfiguration();

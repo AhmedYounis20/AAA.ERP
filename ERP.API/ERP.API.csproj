@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="seeding\attributes\" />

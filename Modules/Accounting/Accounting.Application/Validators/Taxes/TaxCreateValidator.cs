@@ -1,10 +1,10 @@
+using Accounting.Application.Commands.Taxes;
+using Accounting.Domain.Entities;
 using ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
-using ERP.Domain.Commands.Account.SubLeadgers.Taxes;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using FluentValidation;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Validators.Account.ComandValidators.SubLeadgers.Taxes;
+namespace Accounting.Application.Validators.Taxes;
 
 public class TaxCreateValidator : BaseSubLeadgerCreateValidator<TaxCreateCommand, Tax>
 {

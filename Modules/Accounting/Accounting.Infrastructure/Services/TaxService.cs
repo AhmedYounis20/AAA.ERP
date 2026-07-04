@@ -1,14 +1,16 @@
-using ERP.Application.Repositories.Account.SubLeadgers;
-using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Domain.Commands.Account.SubLeadgers.Taxes;
+using Accounting.Application.Commands.Taxes;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
+using Accounting.Domain.Entities;
+using ERP.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+using Shared.BaseEntities;
 
-namespace ERP.Infrastracture.Services.Account.SubLeadgers;
+namespace Accounting.Infrastructure.Services;
 
-public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateCommand>,
-    ITaxService
+public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateCommand>, ITaxService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITaxRepository _repository;
@@ -28,12 +30,12 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "ParentIdIsRequired" } }
+                Errors = [new MessageTemplate { MessageKey = "ParentIdIsRequired" }]
             };
         }
 
-        string? code = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentId);
-        TaxCreateCommand inputModel = new TaxCreateCommand
+        var code = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentId);
+        var inputModel = new TaxCreateCommand
         {
             Code = code,
             NodeType = NodeType.Domain,
@@ -52,18 +54,13 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
     {
         try
         {
-            bool isDomain = command.NodeType.Equals(NodeType.Domain);
-            Guid parentAccountId = command.ChartOfAccountId;
+            var isDomain = command.NodeType.Equals(NodeType.Domain);
+            var parentAccountId = command.ChartOfAccountId;
 
+            var chartOfAccountParent = await _unitOfWork.ChartOfAccountRepository.Get(parentAccountId);
+            var newCode = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentAccountId);
 
-
-            ChartOfAccount? chartOfAccountParent = await _unitOfWork.ChartOfAccountRepository.Get(parentAccountId);
-
-
-            string newCode = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentAccountId);
-            
-
-            Tax entity = command.Adapt<Tax>();
+            var entity = command.Adapt<Tax>();
             entity.ChartOfAccountId = null;
             if (isDomain)
             {
@@ -103,7 +100,7 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
             return new ApiResponse<Tax>
             {
                 IsSuccess = false,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.ToString() } }
+                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
             };
         }
     }

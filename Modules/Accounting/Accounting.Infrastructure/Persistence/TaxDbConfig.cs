@@ -1,8 +1,7 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Entities;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Account.SubLeadgers;
+namespace Accounting.Infrastructure.Persistence;
 
 public class TaxDbConfig : BaseTreeSettingEntityDbConfig<Tax>
 {

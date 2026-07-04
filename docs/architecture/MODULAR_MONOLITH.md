@@ -857,31 +857,51 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 **Duration:** 4 weeks (1 FTE) · 7 weeks (0.5 FTE)  
 **Goal:** Prove module project structure end-to-end with one feature.  
 **Pilot feature:** **Taxes** (Accounting module — small, clear boundary)  
-**Owner:** Accounting module owner
+**Owner:** Accounting module owner  
+**Status:** **Sprint 1 complete** · Week 2 composition largely done · Weeks 3–4 pending
+
+#### Progress summary
+
+| Sprint / week | Status | Notes |
+|---------------|--------|-------|
+| Week 1 — Scaffold | **Done** | `Accounting.Domain`, `.Application`, `.Infrastructure` |
+| Week 2 — Composition | **Mostly done** | `AddAccountingModule()`, MediatR + validators wired |
+| Week 3 — EF & migrations | **Partial** | `TaxDbConfig` via `ModuleModelConfigurationRegistry` |
+| Week 4 — Template | **Not started** | |
 
 #### Week 1 — Scaffold module projects
 
-| ID | Task | Effort | Depends on | Owner | Deliverable |
-|----|------|--------|------------|-------|-------------|
-| 2.1.1 | Create solution folder `src/Modules/Accounting/` | S | M1 | Dev A | Solution structure |
-| 2.1.2 | Create `Accounting.Domain` project; move `Tax` entity | M | 2.1.1 | Dev A | Entity compiles |
-| 2.1.3 | Create `Accounting.Application`; move `TaxCreate/UpdateCommand`, validators | M | 2.1.2 | Dev A | Commands compile |
-| 2.1.4 | Create `Accounting.Infrastructure`; move handler, repo, `TaxDbConfig` | L | 2.1.3 | Dev A | Handler compiles |
-| 2.1.5 | Create `Accounting.Contracts` (may already exist from Phase 1) | S | 2.1.1 | Dev A | Contracts project |
-| 2.1.6 | Add arch test: `Accounting.Domain` must not reference `Inventory.*` | S | 2.1.2 | Dev B | Test passes |
+| ID | Task | Status | Deliverable |
+|----|------|--------|-------------|
+| 2.1.1 | Create solution folder `Modules/Accounting/` | **Done** | 4 projects under Accounting solution folder |
+| 2.1.2 | Create `Accounting.Domain`; move `Tax` entity | **Done** | `Accounting.Domain/Entities/Tax.cs` |
+| 2.1.3 | Create `Accounting.Application`; move commands + validators | **Done** | `Commands/Taxes/`, `Validators/Taxes/` |
+| 2.1.4 | Create `Accounting.Infrastructure`; move handler, repo, `TaxDbConfig` | **Done** | Handlers, `TaxService`, `TaxRepository`, `TaxDbConfig` |
+| 2.1.5 | `Accounting.Contracts` (from Phase 1) | **Done** | Integration facade contracts |
+| 2.1.6 | Arch test: `Accounting.Domain` must not reference `Inventory.*` | **Done** | `ModuleBoundaryTests.Accounting_Domain_should_not_reference_Inventory_entities` |
 
 #### Week 2 — Composition and DI
 
-| ID | Task | Effort | Depends on | Owner | Deliverable |
-|----|------|--------|------------|-------|-------------|
-| 2.2.1 | Implement `AddAccountingModule(IServiceCollection)` extension | M | 2.1.4 | Dev A | DI extension |
-| 2.2.2 | Register Tax repo, handler, validator inside module extension | M | 2.2.1 | Dev A | Tax CRUD via module DI |
-| 2.2.3 | Call `AddAccountingModule()` from `WebBuilderExtensions` / Host | S | 2.2.2 | Dev A | Host composes module |
-| 2.2.4 | Remove old Tax registrations from `InfrasctructureExtensions` | S | 2.2.3 | Dev A | No duplicate DI |
-| 2.2.5 | Remove old Tax files from horizontal projects | M | 2.2.4 | Dev A | Dead files deleted |
-| 2.2.6 | Verify `TaxesController` still works (no route changes) | S | 2.2.5 | Dev B | Smoke test |
+| ID | Task | Status | Notes |
+|----|------|--------|-------|
+| 2.2.1 | Implement `AddAccountingModule(IServiceCollection)` | **Done** | `AccountingModuleExtensions.cs` |
+| 2.2.2 | Register Tax repo, handler, validator inside module | **Done** | DI + MediatR + FluentValidation assemblies |
+| 2.2.3 | Call `AddAccountingModule()` from Host | **Done** | `WebBuilderExtensions.BuildApplication` |
+| 2.2.4 | Remove old Tax registrations from `InfrasctructureExtensions` | **Done** | |
+| 2.2.5 | Remove old Tax files from horizontal projects | **Done** | Deleted from `ERP.Domain`, `.Application`, `.Infrastracture` |
+| 2.2.6 | Verify `TaxesController` still works | **Partial** | Smoke test hits `/api/Taxes` (401); no authenticated CRUD test yet |
 
-#### Week 3 — EF and migrations
+**Key files (Phase 2 Sprint 1):**
+
+| File | Role |
+|------|------|
+| `Modules/Accounting/Accounting.Domain/Entities/Tax.cs` | Tax aggregate root |
+| `Modules/Accounting/Accounting.Application/` | Commands, validators, `ITaxService` / `ITaxRepository` |
+| `Modules/Accounting/Accounting.Infrastructure/AccountingModuleExtensions.cs` | `AddAccountingModule()` composition |
+| `ERP.Application/Data/ModuleModelConfigurationRegistry.cs` | EF module config hook (avoids circular refs) |
+| `ERP.API/Utilities/WebBuilderExtensions.cs` | Host wires module + second MediatR/validator assembly |
+
+#### Week 3 — EF and migrations (next)
 
 | ID | Task | Effort | Depends on | Owner | Deliverable |
 |----|------|--------|------------|-------|-------------|
@@ -1065,7 +1085,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 |-----------|------------------|----------------|------------|
 | **M0** Phase 0 complete | 24 Jul 2026 | 17 Jul 2026 | Arch tests in CI; MediatR consolidated |
 | **M1** Phase 1 complete | 28 Aug 2026 | 7 Aug 2026 | **Done** — integration tests in CI |
-| **M2** Phase 2 complete | 16 Oct 2026 | 4 Sep 2026 | Taxes in module projects; template published |
+| **M2** Phase 2 complete | 16 Oct 2026 | 4 Sep 2026 | **In progress** — Taxes in `Accounting.*`; template pending |
 | **M3** Phase 3 complete | 9 Apr 2027 | 12 Dec 2026 | Horizontal layers retired |
 | **M4** Phase 4 baseline | 4 Jun 2027 | 6 Feb 2027 | Logging, debt, docs complete |
 
@@ -1209,9 +1229,23 @@ Sprints 1–4 complete. Integration tests in `Tests/ERP.IntegrationTests/`.
 | 1.1.6 Stub | Skipped — implemented facade directly |
 | Facade unit tests (1.2.x) | Optional; covered by integration tests |
 
-**Next:** Phase 2 — vertical slice pilot (Taxes). See [§10.4](#104-phase-2--vertical-slice-pilot).
+### Phase 2 — **IN PROGRESS (M2)**
 
-Run verification:
+Week 1 scaffold complete; Week 2 composition mostly done ahead of schedule.
+
+| Done | Notes |
+|------|-------|
+| 2.1.1–2.1.6 Accounting module projects + Tax move + arch test | |
+| 2.2.1–2.2.5 `AddAccountingModule()`, old Tax code removed | |
+| `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
+
+| Remaining | |
+|-----------|---|
+| 2.2.6 Authenticated Taxes CRUD smoke test | |
+| 2.3.x Migration drift check, CONTRIBUTING pattern, more arch rules | |
+| 2.4.x `MODULE_TEMPLATE.md`, M2 sign-off | |
+
+**Next:** Phase 2 — vertical slice pilot (Taxes). See [§10.4](#104-phase-2--vertical-slice-pilot).
 
 ```bash
 dotnet test AAA.ERP.sln
