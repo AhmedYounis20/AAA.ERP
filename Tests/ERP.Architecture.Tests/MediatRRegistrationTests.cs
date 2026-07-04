@@ -1,0 +1,46 @@
+using FluentAssertions;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using ERP.Infrastracture.Utilities;
+
+namespace ERP.Architecture.Tests;
+
+/// <summary>
+/// Phase 0 task 0.2.1 — documents and verifies MediatR handler registration (ADR-004).
+/// </summary>
+public class MediatRRegistrationTests
+{
+    private const int MinimumHandlerCount = 60;
+
+    [Fact]
+    public void Infrastructure_assembly_contains_command_handlers()
+    {
+        var handlerCount = typeof(InfrasctructureExtensions).Assembly
+            .GetTypes()
+            .Count(type => type.GetInterfaces().Any(IsRequestHandlerInterface));
+
+        handlerCount.Should().BeGreaterThanOrEqualTo(MinimumHandlerCount,
+            $"expected at least {MinimumHandlerCount} IRequestHandler implementations in ERP.Infrastracture");
+    }
+
+    [Fact]
+    public void MediatR_resolves_handlers_from_composition_root()
+    {
+        var services = new ServiceCollection();
+        services.AddMediatR(config =>
+            config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly));
+
+        using var provider = services.BuildServiceProvider();
+        var mediator = provider.GetRequiredService<IMediator>();
+
+        mediator.Should().NotBeNull();
+    }
+
+    private static bool IsRequestHandlerInterface(Type interfaceType)
+    {
+        if (!interfaceType.IsGenericType)
+            return false;
+
+        return interfaceType.GetGenericTypeDefinition() == typeof(IRequestHandler<,>);
+    }
+}

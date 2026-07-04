@@ -36,7 +36,6 @@ public static class InfrasctructureExtensions
     {
         services.AddRepositories();
         services.AddServices();
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly));
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -84,11 +83,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IStockBalanceService, StockBalanceService>();
-        services.AddScoped<IInventoryTransferService, InventoryTransferService>();
-        // services.AddScoped<IProductVariantReportService, ProductVariantReportService>();
-        // services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
-        services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
-        services.AddScoped<IAttributeValueService, AttributeValueService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
 
         // Audit Service
@@ -159,8 +153,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
-        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
-        services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
         services.AddHttpContextAccessor();
     }
 }

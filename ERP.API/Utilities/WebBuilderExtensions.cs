@@ -23,10 +23,10 @@ public static class WebBuilderExtensions
         services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
         services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddMediatR(config =>
         {
-            config.RegisterServicesFromAssembly(typeof(ApplicationDbContext).Assembly);
+            // Single registration point for all command handlers (Phase 0 — MODULAR_MONOLITH.md §10.2).
+            config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly);
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
@@ -109,6 +109,11 @@ public static class WebBuilderExtensions
     }
     public static void ConfigureApplication(this WebApplicationBuilder builder)
     {
+        BuildApplication(builder).Run();
+    }
+
+    public static WebApplication BuildApplication(this WebApplicationBuilder builder)
+    {
         builder.Services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequireDigit = false;
@@ -124,14 +129,10 @@ public static class WebBuilderExtensions
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         });
-        //.AddJsonOptions(options =>
-        //        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         builder.Services.AddControllers().AddJsonOptions(opts =>
         {
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-        // Add controllers (localization handled by middleware now)
-        builder.Services.AddControllers();
         builder.Services.AddInfrastructureServices();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
@@ -139,21 +140,19 @@ public static class WebBuilderExtensions
         builder.Services.AddAuthenticationConfiguration(builder.Configuration);
         builder.Services.AddCors();
         var app = builder.Build();
-        
-        // Configure the HTTP request pipeline.
-        // Global exception handler - must be first in pipeline
+
         app.UseExceptionHandler(options => { });
-        
+
         app.UseSwagger();
 
         app.UseSwaggerUI(e =>
         {
             e.SwaggerEndpoint("/swagger/v1/swagger.json", "AAA ERP Api V1");
             e.RoutePrefix = string.Empty;
-            e.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None); // Collapse all
+            e.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
 
         });
-        
+
         app.UseHttpsRedirection();
 
         var localizeOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
@@ -164,6 +163,6 @@ public static class WebBuilderExtensions
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        app.Run();
+        return app;
     }
 }
