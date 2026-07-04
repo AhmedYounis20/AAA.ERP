@@ -1,6 +1,6 @@
 using ERP.Application.Data;
 using ERP.Application.Services.Caching;
-using ERP.Domain.Models.Entities.Account.Currencies;
+using ERP.Domain.Models.Entities.Account.Entries;
 using FluentAssertions;
 using NetArchTest.Rules;
 
@@ -17,7 +17,7 @@ public class LayerDependencyTests
     [Fact]
     public void Domain_should_not_reference_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(Currency).Assembly)
+        var result = Types.InAssembly(typeof(Entry).Assembly)
             .Should()
             .NotHaveDependencyOn(InfrastructureAssembly)
             .GetResult();
@@ -39,7 +39,7 @@ public class LayerDependencyTests
     [Fact]
     public void Domain_should_not_reference_API()
     {
-        var result = Types.InAssembly(typeof(Currency).Assembly)
+        var result = Types.InAssembly(typeof(Entry).Assembly)
             .Should()
             .NotHaveDependencyOn(ApiAssembly)
             .GetResult();

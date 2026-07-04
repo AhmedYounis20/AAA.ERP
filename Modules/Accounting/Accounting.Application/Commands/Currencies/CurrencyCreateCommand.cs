@@ -1,8 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Entities.Account.Currencies;
-using Shared.Responses;
 
-namespace ERP.Domain.Commands.Account.Currencies;
+namespace Accounting.Application.Commands.Currencies;
 
 public class CurrencyCreateCommand : BaseSettingCreateCommand<Currency>
 {

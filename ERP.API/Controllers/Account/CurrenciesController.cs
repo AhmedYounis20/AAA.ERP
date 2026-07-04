@@ -1,5 +1,6 @@
-﻿using ERP.Application.Validators.Account.InputValidators;
-using ERP.Domain.Commands.Account.Currencies;
+﻿using Accounting.Application.Commands.Currencies;
+using Accounting.Application.Services;
+using Accounting.Application.Validators.Currencies;
 using ERP.Domain.Models.Entities.Account.Currencies;
 using ERP.Domain.OutputDtos.Lookups;
 using Shared.DTOs;

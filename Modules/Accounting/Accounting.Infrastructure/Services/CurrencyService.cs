@@ -1,11 +1,10 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account;
-using ERP.Domain.Commands.Account.Currencies;
+using Accounting.Application.Commands.Currencies;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Shared.Resources;
-using Microsoft.Extensions.Localization;
+using ERP.Infrastracture.Services.BaseServices;
 
-namespace ERP.Infrastracture.Services.Account;
+namespace Accounting.Infrastructure.Services;
 
 public class CurrencyService : BaseSettingService<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>, ICurrencyService
 {
@@ -20,26 +19,20 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(CurrencyCreateCommand command)
     {
-
         var result = await base.ValidateCreate(command);
 
-        var isExistedSymbol = await _repository.IsExitedCurrencySymbol(command.Symbol);
-        if (isExistedSymbol)
+        if (await _repository.IsExitedCurrencySymbol(command.Symbol))
         {
             result.isValid = false;
             result.errors.Add("CurrencySymbolIsExisted");
-
         }
+
         if (command.IsDefault)
         {
-            Currency? defaultCurrency = await _repository.GetDefaultCurrency();
+            var defaultCurrency = await _repository.GetDefaultCurrency();
             if (defaultCurrency != null)
             {
                 result.isValid = false;
-                bool isArabic = _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
-                                  _accessor.HttpContext.Request.Headers["Accept-Language"].Any(e => e.Contains("ar")) ||
-                                          _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
-                                           _accessor.HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar"));
                 result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
             }
         }
@@ -50,8 +43,11 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
     protected override async Task<(bool isValid, List<string> errors, Currency? entity)> ValidateUpdate(CurrencyUpdateCommand command)
     {
         var result = await base.ValidateUpdate(command);
-        Currency? currencyWithSameSymbol =
-            await _repository.GetQuery().Where(e => e.Symbol == command.Symbol).FirstOrDefaultAsync();
+
+        var currencyWithSameSymbol = await _repository.GetQuery()
+            .Where(e => e.Symbol == command.Symbol)
+            .FirstOrDefaultAsync();
+
         if (currencyWithSameSymbol is not null && currencyWithSameSymbol.Id != command.Id)
         {
             result.isValid = false;
@@ -60,15 +56,10 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
 
         if (command.IsDefault)
         {
-            Currency? defaultCurrency = await _repository.GetDefaultCurrency();
+            var defaultCurrency = await _repository.GetDefaultCurrency();
             if (defaultCurrency != null && defaultCurrency.Id != command.Id)
             {
                 result.isValid = false;
-                bool isArabic = _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Language") &&
-                                  _accessor.HttpContext.Request.Headers["Accept-Language"]
-                                      .Any(e => e.Contains("ar")) ||
-                                 _accessor.HttpContext.Request.Headers.ContainsKey("Accept-Culture") &&
-                                  _accessor.HttpContext.Request.Headers["Accept-Culture"].Any(e => e.Contains("ar"));
                 result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
             }
         }

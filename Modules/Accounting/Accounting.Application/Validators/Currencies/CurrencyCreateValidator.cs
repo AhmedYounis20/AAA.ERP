@@ -1,15 +1,14 @@
+using Accounting.Application.Commands.Currencies;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Commands.Account.Currencies;
 using ERP.Domain.Models.Entities.Account.Currencies;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.ComandValidators.Currencies;
+namespace Accounting.Application.Validators.Currencies;
 
 public class CurrencyCreateValidator : BaseSettingCreateValidator<CurrencyCreateCommand, Currency>
 {
     public CurrencyCreateValidator() : base()
     {
-
         _ = RuleFor(e => e.ExchangeRate).GreaterThan(0).WithMessage("ExchangeRateGreaterThanZero");
         _ = RuleFor(e => e.ExchangeRate).Equal(1).When(e => e.IsDefault).WithMessage("ExchangeRateOnDefaultCurrency");
         _ = RuleFor(e => e.IsActive).Equal(true).When(e => e.IsDefault).WithMessage("CurrencyActiveOnDefault");

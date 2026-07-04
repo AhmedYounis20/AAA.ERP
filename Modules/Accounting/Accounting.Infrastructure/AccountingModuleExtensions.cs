@@ -17,6 +17,8 @@ public static class AccountingModuleExtensions
 
         services.AddScoped<ITaxRepository, TaxRepository>();
         services.AddScoped<ITaxService, TaxService>();
+        services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        services.AddScoped<ICurrencyService, CurrencyService>();
 
         return services;
     }
@@ -24,5 +26,6 @@ public static class AccountingModuleExtensions
     public static void ApplyAccountingModuleConfigurations(this ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new TaxDbConfig());
+        modelBuilder.ApplyConfiguration(new CurrencyDbConfig());
     }
 }

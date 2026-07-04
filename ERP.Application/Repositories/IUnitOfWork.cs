@@ -17,7 +17,6 @@ public interface IUnitOfWork
     public ISizeRepository SizeRepository { get; }
     public IColorRepository ColorRepository { get; }
     public IChartOfAccountRepository ChartOfAccountRepository { get; }
-    public ICurrencyRepository CurrencyRepository { get; }
     public IGLSettingRepository GlSettingRepository { get; }
     public IFinancialPeriodRepository FinancialPeriodRepository { get; }
     public ICashInBoxRepository CashInBoxRepository { get; }
