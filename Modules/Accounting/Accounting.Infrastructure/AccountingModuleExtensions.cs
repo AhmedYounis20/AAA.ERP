@@ -21,6 +21,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();
         services.AddScoped<IGLSettingService, GLSettingService>();
+        services.AddScoped<IAccountGuideRepository, AccountGuideRepository>();
+        services.AddScoped<IAccountGuideService, AccountGuideService>();
 
         return services;
     }
@@ -30,5 +32,6 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new TaxDbConfig());
         modelBuilder.ApplyConfiguration(new CurrencyDbConfig());
         modelBuilder.ApplyConfiguration(new GLSettingDbConfig());
+        modelBuilder.ApplyConfiguration(new AccountGuideDbConfig());
     }
 }

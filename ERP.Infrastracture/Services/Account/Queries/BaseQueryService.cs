@@ -1,7 +1,4 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account;
-using ERP.Domain.Commands.Account.AccountGuides;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+﻿using ERP.Application.Services.Account;
 using System.Linq;
 
 namespace ERP.Infrastracture.Services.Account.Queries;

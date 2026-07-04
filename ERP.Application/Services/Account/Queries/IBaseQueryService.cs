@@ -1,6 +1,4 @@
 ﻿using ERP.Application.Services.BaseServices;
-using ERP.Domain.Commands.Account.AccountGuides;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
 using Shared.BaseEntities;
 using System.Linq.Expressions;
 

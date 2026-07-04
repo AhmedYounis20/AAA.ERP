@@ -16,7 +16,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly IApplicationDbContext _context;
     private IDbContextTransaction? _sqlTransaction;
 
-    public IAccountGuideRepository AccountGuideRepository { get; }
     public IChartOfAccountRepository ChartOfAccountRepository { get; }
     public IEntryRepository EntryRepository { get; }
     public IFinancialPeriodRepository FinancialPeriodRepository { get; }
@@ -69,7 +68,6 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         IApplicationDbContext context,
-        IAccountGuideRepository accountGuideRepository,
         IChartOfAccountRepository chartOfAccountRepository,
         IEntryRepository entryRepository,
         IFinancialPeriodRepository financialPeriodRepository,
@@ -122,7 +120,6 @@ public class UnitOfWork : IUnitOfWork
     )
     {
         _context = context;
-        AccountGuideRepository = accountGuideRepository;
         ChartOfAccountRepository = chartOfAccountRepository;
         EntryRepository = entryRepository;
         FinancialPeriodRepository = financialPeriodRepository   ;

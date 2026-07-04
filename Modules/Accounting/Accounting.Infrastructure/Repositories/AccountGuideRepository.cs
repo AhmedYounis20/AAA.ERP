@@ -1,8 +1,8 @@
-﻿using ERP.Application.Repositories.Account;
+using Accounting.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.AccountGuides;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace Accounting.Infrastructure.Repositories;
 
 public class AccountGuideRepository : BaseSettingRepository<AccountGuide>, IAccountGuideRepository
 {

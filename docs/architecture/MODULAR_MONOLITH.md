@@ -960,7 +960,7 @@ See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 
 **Wave 3A exit:** `Shared` thinned to filter DTOs and `ErrorMessages`; Platform modules registered via `AddPlatformModules()` in `WebBuilderExtensions`.
 
-#### Wave 3B — Identity (Weeks 5–6) — **COMPLETE (pending review)**
+#### Wave 3B — Identity (Weeks 5–6) — **COMPLETE**
 
 | ID | Task | Effort | Owner | Deliverable | Status |
 |----|------|--------|-------|-------------|--------|
@@ -970,15 +970,15 @@ See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 | 3B.4 | Introduce `ICurrentUser`; replace direct `IHttpContextAccessor` in audit + DbContext audit fields | M | Dev A | Abstraction | Done |
 | 3B.5 | `AddIdentityModule()` + smoke test `AuthController` | S | Dev A | Auth works | Done |
 
-**Wave 3B exit:** `ApplicationUser` out of `Shared/`; auth DI removed from `InfrasctructureExtensions`; `AddIdentityModule()` in host; login/register/refresh routes unchanged.
+**Wave 3B exit:** Commit `d8a16e3`.
 
-#### Wave 3C — Accounting extraction (Weeks 7–14)
+#### Wave 3C — Accounting extraction (Weeks 7–14) — **IN PROGRESS**
 
 Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 pd for Entries cluster.**
 
-| Week | Aggregates to migrate | PRs | Owner |
-|------|----------------------|-----|-------|
-| 7 | Currencies, GLSettings, AccountGuides | 2–3 | Dev A |
+| Week | Aggregates to migrate | PRs | Owner | Status |
+|------|----------------------|-----|-------|--------|
+| 7 | Currencies, GLSettings, AccountGuides | 2–3 | Dev A | Done |
 | 8 | FinancialPeriods, CostCenters, CollectionBooks | 2–3 | Dev A |
 | 9 | ChartOfAccounts (tree) | 1–2 | Dev A |
 | 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A |
@@ -1245,11 +1245,11 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3C — Accounting aggregate extraction. See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3C — Accounting aggregate extraction (Currencies first). See [§10.5](#105-phase-3--module-extraction).
 
-### Phase 3 Wave 3B — **COMPLETE (pending review)**
+### Phase 3 Wave 3B — **COMPLETE**
 
-Identity module extracted from horizontal layers. `ApplicationUser` namespace kept as `Shared.BaseEntities.Identity` to avoid EF migration drift; auth DTO namespaces kept as `Domain.Account.Models.Dtos`.
+Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 
 | Done | Notes |
 |------|-------|
@@ -1261,7 +1261,18 @@ Identity module extracted from horizontal layers. `ApplicationUser` namespace ke
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3A — **COMPLETE (pending commit)**
+### Phase 3 Wave 3C — **IN PROGRESS** (Week 7 complete)
+
+Week 7 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters — e.g. `Entry` → `Currency`, `ChartOfAccount` → `AccountGuide`).
+
+| Done | Notes |
+|------|-------|
+| Currencies | Commands, validators, handlers, repo, service, `CurrencyDbConfig` |
+| GLSettings | Update-only slice: command, validators, handler, repo, service, `GLSettingDbConfig` |
+| AccountGuides | Commands, validators, handlers, repo, service, `AccountGuideDbConfig` |
+| Next (Week 8) | FinancialPeriods, CostCenters, CollectionBooks |
+
+### Phase 3 Wave 3A — **COMPLETE**
 
 BuildingBlocks + Platform kernel split from `Shared/`. Namespaces kept as `Shared.*` in BuildingBlocks to limit churn; Platform uses `AddPlatformModules()`.
 
