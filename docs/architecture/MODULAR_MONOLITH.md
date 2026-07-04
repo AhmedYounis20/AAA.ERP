@@ -858,16 +858,16 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 **Goal:** Prove module project structure end-to-end with one feature.  
 **Pilot feature:** **Taxes** (Accounting module — small, clear boundary)  
 **Owner:** Accounting module owner  
-**Status:** **Sprint 1 complete** · Week 2 composition largely done · Weeks 3–4 pending
+**Status:** **Week 4 complete (M2)** · Taxes pilot signed off · Phase 3 ready
 
 #### Progress summary
 
 | Sprint / week | Status | Notes |
 |---------------|--------|-------|
 | Week 1 — Scaffold | **Done** | `Accounting.Domain`, `.Application`, `.Infrastructure` |
-| Week 2 — Composition | **Mostly done** | `AddAccountingModule()`, MediatR + validators wired |
+| Week 2 — Composition | **Done** | `AddAccountingModule()`, MediatR + validators wired |
 | Week 3 — EF & migrations | **Done** | Design-time factory, drift check, arch rules |
-| Week 4 — Template | **Not started** | |
+| Week 4 — Template | **Done** | [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md), [M2_SIGNOFF.md](./M2_SIGNOFF.md) |
 
 #### Week 1 — Scaffold module projects
 
@@ -910,14 +910,14 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 | 2.3.3 | Document pattern: module owns configs, Host owns migrations | **Done** | `CONTRIBUTING.md` + §10.4 |
 | 2.3.4 | Add arch test: module dependency rules for Accounting projects | **Done** | 5 rules in `ModuleBoundaryTests` |
 
-#### Week 4 — Template and second micro-pilot (optional)
+#### Week 4 — Template and M2 sign-off
 
-| ID | Task | Effort | Depends on | Owner | Deliverable |
-|----|------|--------|------------|-------|-------------|
-| 2.4.1 | Write `docs/architecture/MODULE_TEMPLATE.md` — step-by-step for next aggregate | M | 2.2.6 | Tech lead | Reusable playbook |
-| 2.4.2 | Optional: migrate **ExpiryLevels** (Inventory) using template | L | 2.4.1 | Dev B | Second proof point |
-| 2.4.3 | Team review — validate structure, naming, build time | S | 2.4.1 | Team | Sign-off |
-| 2.4.4 | Measure build/test time before vs after | S | 2.4.3 | Dev B | Metrics recorded |
+| ID | Task | Status | Deliverable |
+|----|------|--------|-------------|
+| 2.4.1 | Write `MODULE_TEMPLATE.md` — step-by-step for next aggregate | **Done** | [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) |
+| 2.4.2 | Optional: migrate **ExpiryLevels** (Inventory) | **Deferred** | Child entity — extract with Product/Variant in Phase 3 |
+| 2.4.3 | Team review — validate structure, naming, build time | **Done** | [M2_SIGNOFF.md](./M2_SIGNOFF.md) checklist |
+| 2.4.4 | Measure build/test time before vs after | **Done** | ~28 s build (warm), ~14 s test — see M2 sign-off |
 
 #### Weeks 5–7 — buffer (0.5 FTE)
 
@@ -928,11 +928,13 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 
 **Phase 2 exit criteria (M2):**
 
-- [ ] Taxes fully lives in `Accounting.*` projects
-- [ ] `AddAccountingModule()` is the composition pattern for all future Accounting work
-- [ ] `MODULE_TEMPLATE.md` published
-- [ ] Arch tests cover Accounting module dependency rules
-- [ ] No API breaking changes
+- [x] Taxes fully lives in `Accounting.*` projects
+- [x] `AddAccountingModule()` is the composition pattern for all future Accounting work
+- [x] `MODULE_TEMPLATE.md` published
+- [x] Arch tests cover Accounting module dependency rules
+- [x] No API breaking changes
+
+See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 
 ---
 
@@ -1229,22 +1231,19 @@ Sprints 1–4 complete. Integration tests in `Tests/ERP.IntegrationTests/`.
 | 1.1.6 Stub | Skipped — implemented facade directly |
 | Facade unit tests (1.2.x) | Optional; covered by integration tests |
 
-### Phase 2 — **IN PROGRESS (M2)**
+### Phase 2 — **COMPLETE (M2)**
 
-Week 1 scaffold complete; Week 2 composition mostly done ahead of schedule.
+Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) · Sign-off: [M2_SIGNOFF.md](./M2_SIGNOFF.md)
 
 | Done | Notes |
 |------|-------|
 | 2.1.1–2.1.6 Accounting module projects + Tax move + arch test | |
 | 2.2.1–2.2.6 `AddAccountingModule()`, old Tax code removed, Tax CRUD test | |
 | 2.3.1–2.3.4 EF design-time factory, migration drift check, arch rules | |
+| 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-| Remaining | |
-|-----------|---|
-| 2.4.x `MODULE_TEMPLATE.md`, M2 sign-off | |
-
-**Next:** Phase 2 — vertical slice pilot (Taxes). See [§10.4](#104-phase-2--vertical-slice-pilot).
+**Next:** Phase 3 — module extraction. See [§10.5](#105-phase-3--module-extraction).
 
 ```bash
 dotnet test AAA.ERP.sln

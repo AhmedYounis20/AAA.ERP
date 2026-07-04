@@ -1,7 +1,8 @@
 # Architecture contributing guide
 
 Guidelines for adding code during the **modular monolith** migration.  
-Full plan: [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)
+Full plan: [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)  
+**Extracting an aggregate?** Follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md).
 
 ## Current structure (transitional)
 
