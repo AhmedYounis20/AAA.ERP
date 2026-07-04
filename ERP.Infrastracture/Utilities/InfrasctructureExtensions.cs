@@ -124,7 +124,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
-        services.AddScoped<IItemRepository, ItemRepository>();
+        // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IVariantRepository, VariantRepository>();
         services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();

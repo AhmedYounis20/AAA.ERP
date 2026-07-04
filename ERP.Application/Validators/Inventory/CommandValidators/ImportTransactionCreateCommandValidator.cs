@@ -31,7 +31,7 @@ public class InventoryTransactionItemCreateDtoValidator : AbstractValidator<Inve
 {
     public InventoryTransactionItemCreateDtoValidator()
     {
-        RuleFor(x => x.ItemId)
+        RuleFor(x => x.VariantId)
             .NotEmpty()
             .WithMessage("Item is required");
 

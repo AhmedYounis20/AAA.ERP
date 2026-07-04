@@ -14,7 +14,7 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
     {
         return await _dbSet
             .Include(e => e.Items)
-            .ThenInclude(i => i.Item)
+            .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
             .Include(e => e.TransactionParty)
@@ -27,7 +27,7 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
     {
         return await _dbSet
             .Include(e => e.Items)
-            .ThenInclude(i => i.Item)
+            .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
             .Include(e => e.TransactionParty)
@@ -41,7 +41,7 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
     {
         return await _dbSet
             .Include(e => e.Items)
-            .ThenInclude(i => i.Item)
+            .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
             .Include(e => e.TransactionParty)

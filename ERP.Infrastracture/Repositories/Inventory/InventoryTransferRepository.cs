@@ -14,7 +14,7 @@ public class InventoryTransferRepository : BaseRepository<InventoryTransfer>, II
             .Include(e => e.SourceBranch)
             .Include(e => e.DestinationBranch)
             .Include(e => e.Items)
-            .ThenInclude(i => i.Item)
+            .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
             .FirstOrDefaultAsync(e => e.Id == id);

@@ -9,7 +9,7 @@ public class StockBalanceUpdateValidator : BaseUpdateValidator<StockBalanceUpdat
 {
     public StockBalanceUpdateValidator()
     {
-        _ = RuleFor(e => e.ItemId).NotEmpty().WithMessage("ItemIdIsRequired");
+        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage("ItemIdIsRequired");
         _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage("PackingUnitIdIsRequired");
         _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage("BranchIdIsRequired");
         _ = RuleFor(e => e.CurrentBalance).GreaterThanOrEqualTo(0).WithMessage("CurrentBalanceMustBeGreaterThanOrEqualToZero");
