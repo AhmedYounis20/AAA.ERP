@@ -866,7 +866,7 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 |---------------|--------|-------|
 | Week 1 — Scaffold | **Done** | `Accounting.Domain`, `.Application`, `.Infrastructure` |
 | Week 2 — Composition | **Mostly done** | `AddAccountingModule()`, MediatR + validators wired |
-| Week 3 — EF & migrations | **Partial** | `TaxDbConfig` via `ModuleModelConfigurationRegistry` |
+| Week 3 — EF & migrations | **Done** | Design-time factory, drift check, arch rules |
 | Week 4 — Template | **Not started** | |
 
 #### Week 1 — Scaffold module projects
@@ -889,7 +889,7 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 | 2.2.3 | Call `AddAccountingModule()` from Host | **Done** | `WebBuilderExtensions.BuildApplication` |
 | 2.2.4 | Remove old Tax registrations from `InfrasctructureExtensions` | **Done** | |
 | 2.2.5 | Remove old Tax files from horizontal projects | **Done** | Deleted from `ERP.Domain`, `.Application`, `.Infrastracture` |
-| 2.2.6 | Verify `TaxesController` still works | **Partial** | Smoke test hits `/api/Taxes` (401); no authenticated CRUD test yet |
+| 2.2.6 | Verify `TaxesController` still works | **Done** | MediatR integration test creates/reads Tax |
 
 **Key files (Phase 2 Sprint 1):**
 
@@ -901,14 +901,14 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 | `ERP.Application/Data/ModuleModelConfigurationRegistry.cs` | EF module config hook (avoids circular refs) |
 | `ERP.API/Utilities/WebBuilderExtensions.cs` | Host wires module + second MediatR/validator assembly |
 
-#### Week 3 — EF and migrations (next)
+#### Week 3 — EF and migrations
 
-| ID | Task | Effort | Depends on | Owner | Deliverable |
-|----|------|--------|------------|-------|-------------|
-| 2.3.1 | Ensure `TaxDbConfig` picked up via `ApplyConfigurationsFromAssembly` | M | 2.1.4 | Dev A | Model builds |
-| 2.3.2 | Run existing migrations — confirm no schema drift | S | 2.3.1 | Dev A | Migration OK |
-| 2.3.3 | Document pattern: module owns configs, Host owns migrations | S | 2.3.2 | Tech lead | Section in CONTRIBUTING.md |
-| 2.3.4 | Add arch test: module dependency rules for Accounting projects | M | 2.1.6 | Dev B | 4–5 rules in CI |
+| ID | Task | Status | Deliverable |
+|----|------|--------|-------------|
+| 2.3.1 | Ensure `TaxDbConfig` picked up via module registry | **Done** | `ModuleModelConfigurationRegistry` + `ApplicationDbContextFactory` |
+| 2.3.2 | Run existing migrations — confirm no schema drift | **Done** | Dry-run migration; `Taxes` table retained |
+| 2.3.3 | Document pattern: module owns configs, Host owns migrations | **Done** | `CONTRIBUTING.md` + §10.4 |
+| 2.3.4 | Add arch test: module dependency rules for Accounting projects | **Done** | 5 rules in `ModuleBoundaryTests` |
 
 #### Week 4 — Template and second micro-pilot (optional)
 
@@ -1236,13 +1236,12 @@ Week 1 scaffold complete; Week 2 composition mostly done ahead of schedule.
 | Done | Notes |
 |------|-------|
 | 2.1.1–2.1.6 Accounting module projects + Tax move + arch test | |
-| 2.2.1–2.2.5 `AddAccountingModule()`, old Tax code removed | |
+| 2.2.1–2.2.6 `AddAccountingModule()`, old Tax code removed, Tax CRUD test | |
+| 2.3.1–2.3.4 EF design-time factory, migration drift check, arch rules | |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
 | Remaining | |
 |-----------|---|
-| 2.2.6 Authenticated Taxes CRUD smoke test | |
-| 2.3.x Migration drift check, CONTRIBUTING pattern, more arch rules | |
 | 2.4.x `MODULE_TEMPLATE.md`, M2 sign-off | |
 
 **Next:** Phase 2 — vertical slice pilot (Taxes). See [§10.4](#104-phase-2--vertical-slice-pilot).

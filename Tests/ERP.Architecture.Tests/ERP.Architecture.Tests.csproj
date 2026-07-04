@@ -26,7 +26,9 @@
     <ProjectReference Include="..\..\ERP.Application\ERP.Application.csproj" />
     <ProjectReference Include="..\..\ERP.Domain\ERP.Domain.csproj" />
     <ProjectReference Include="..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\ERP.Shared.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,9 @@ public static class ModuleModelConfigurationRegistry
 
     public static void Register(Action<ModelBuilder> configure)
     {
+        if (_configurators.Contains(configure))
+            return;
+
         _configurators.Add(configure);
     }
 

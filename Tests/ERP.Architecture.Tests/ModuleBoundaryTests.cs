@@ -34,6 +34,56 @@ public class ModuleBoundaryTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
     }
 
+    [Fact]
+    public void Accounting_Domain_should_not_reference_Infrastructure()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Infrastracture")
+            .And()
+            .NotHaveDependencyOn("Accounting.Infrastructure")
+            .And()
+            .NotHaveDependencyOn("Microsoft.EntityFrameworkCore")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Accounting_Application_should_not_reference_Infrastructure()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Application.Commands.Taxes.TaxCreateCommand).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Infrastracture")
+            .And()
+            .NotHaveDependencyOn("Accounting.Infrastructure")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Accounting_Infrastructure_should_not_reference_Inventory_entities()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Domain.Models.Entities.Inventory")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Accounting_Infrastructure_should_not_reference_API()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.API")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
     [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {

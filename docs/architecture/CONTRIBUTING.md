@@ -26,7 +26,21 @@ Shared             → Cross-cutting primitives (being split in Phase 3)
 | New service interface | `ERP.Application/Services/...` |
 | New service implementation | `ERP.Infrastracture/Services/...` |
 | New API endpoint | `ERP.API/Controllers/...` |
-| EF configuration | `ERP.Infrastracture/DBConfiguration/Config/...` |
+| EF configuration | `ERP.Infrastracture/DBConfiguration/Config/...` (legacy) or `{Module}.Infrastructure/Persistence/` (modules) |
+
+## Module EF and migrations (Phase 2+)
+
+- **Module owns** `IEntityTypeConfiguration<>` classes (e.g. `Accounting.Infrastructure/Persistence/TaxDbConfig.cs`).
+- **Module registers** configs via `ModuleModelConfigurationRegistry.Register(...)` inside `Add{Module}Module()`.
+- **Host owns** migrations in `ERP.API/Migrations/` until `ERP.Persistence` exists.
+- **Design-time:** `ERP.API/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI startup (required for `dotnet ef`).
+
+```bash
+dotnet ef dbcontext info --project ERP.API --startup-project ERP.API
+dotnet ef migrations add <Name> --project ERP.API --startup-project ERP.API
+```
+
+After adding a module aggregate, run a dry-run migration and confirm existing tables are not dropped (entity CLR type may change while table name stays the same).
 
 ## Dependency rules (enforced by `ERP.Architecture.Tests`)
 
