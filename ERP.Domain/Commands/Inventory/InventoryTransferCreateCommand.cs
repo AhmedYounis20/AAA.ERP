@@ -5,7 +5,7 @@ namespace ERP.Domain.Commands.Inventory;
 
 public class InventoryTransferItemCreateCommand
 {
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public string? Notes { get; set; }

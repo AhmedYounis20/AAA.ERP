@@ -10,58 +10,59 @@ public class StockBalanceRepository : BaseRepository<StockBalance>, IStockBalanc
     {
     }
 
-    public async Task<StockBalance?> GetByItemAndBranch(Guid itemId, Guid branchId)
+    public async Task<StockBalance?> GetByVariantAndBranch(Guid variantId, Guid branchId)
     {
         return await _dbSet
-            .Include(e => e.Item)
+            .Include(e => e.Variant)
             .Include(e => e.PackingUnit)
             .Include(e => e.Branch)
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.ItemId == itemId && e.BranchId == branchId);
+            .FirstOrDefaultAsync(e => e.VariantId == variantId && e.BranchId == branchId);
     }
 
-    public async Task<StockBalance?> GetByItemPackingUnitAndBranch(Guid itemId, Guid packingUnitId, Guid branchId)
+    public async Task<StockBalance?> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         return await _dbSet
-            .Include(e => e.Item)
+            .Include(e => e.Variant)
             .Include(e => e.PackingUnit)
             .Include(e => e.Branch)
-            .FirstOrDefaultAsync(e => e.ItemId == itemId && e.PackingUnitId == packingUnitId && e.BranchId == branchId);
+            .FirstOrDefaultAsync(e => e.VariantId == variantId && e.PackingUnitId == packingUnitId && e.BranchId == branchId);
     }
-    public async Task<StockBalance?> GetByItemPackingUnitAndBranchWithoutInclues(Guid itemId, Guid packingUnitId, Guid branchId)
+    public async Task<StockBalance?> GetByVariantPackingUnitAndBranchWithoutInclues(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         return await _dbSet
-            .FirstOrDefaultAsync(e => e.ItemId == itemId && e.PackingUnitId == packingUnitId && e.BranchId == branchId);
+            .FirstOrDefaultAsync(e => e.VariantId == variantId && e.PackingUnitId == packingUnitId && e.BranchId == branchId);
     }
 
     public async Task<IEnumerable<StockBalance>> GetByBranch(Guid branchId)
     {
         return await _dbSet
-            .Include(e => e.Item)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v.Product)
             .Include(e => e.PackingUnit)
             .Include(e => e.Branch)
             .AsNoTracking()
             .Where(e => e.BranchId == branchId)
-            .OrderBy(e => e.Item.Name)
+            .OrderBy(e => e.Variant.Product != null ? e.Variant.Product.Name : string.Empty)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<StockBalance>> GetByItem(Guid itemId)
+    public async Task<IEnumerable<StockBalance>> GetByVariant(Guid variantId)
     {
         return await _dbSet
-            .Include(e => e.Item)
+            .Include(e => e.Variant)
             .Include(e => e.PackingUnit)
             .Include(e => e.Branch)
             .AsNoTracking()
-            .Where(e => e.ItemId == itemId)
+            .Where(e => e.VariantId == variantId)
             .OrderBy(e => e.Branch.Name)
             .ToListAsync();
     }
 
-    public async Task<decimal> GetCurrentBalance(Guid itemId, Guid packingUnitId, Guid branchId)
+    public async Task<decimal> GetCurrentBalance(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         var stockBalance = await _dbSet
-            .Where(e => e.ItemId == itemId && e.PackingUnitId == packingUnitId && e.BranchId == branchId)
+            .Where(e => e.VariantId == variantId && e.PackingUnitId == packingUnitId && e.BranchId == branchId)
             .FirstOrDefaultAsync();
 
         return stockBalance?.CurrentBalance ?? 0;

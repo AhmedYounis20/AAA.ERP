@@ -10,23 +10,24 @@ namespace ERP.Infrastracture.Services.Inventory;
 public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>, IStockBalanceService
 {
     private readonly IStockBalanceRepository _repository;
-    private readonly IItemRepository _itemRepository;
+    private readonly IVariantRepository _variantRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public StockBalanceService(
         IStockBalanceRepository repository,
-        IItemRepository itemRepository, IUnitOfWork unitOfWork) : base(repository)
+        IVariantRepository variantRepository,
+        IUnitOfWork unitOfWork) : base(repository)
     {
         _repository = repository;
-        _itemRepository = itemRepository;
+        _variantRepository = variantRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ApiResponse<StockBalance>> GetByItemAndBranch(Guid itemId, Guid branchId)
+    public async Task<ApiResponse<StockBalance>> GetByVariantAndBranch(Guid variantId, Guid branchId)
     {
         try
         {
-            var stockBalance = await _repository.GetByItemAndBranch(itemId, branchId);
+            var stockBalance = await _repository.GetByVariantAndBranch(variantId, branchId);
             return new ApiResponse<StockBalance>
             {
                 IsSuccess = true,
@@ -45,11 +46,11 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
         }
     }
 
-    public async Task<ApiResponse<StockBalance>> GetByItemPackingUnitAndBranch(Guid itemId, Guid packingUnitId, Guid branchId)
+    public async Task<ApiResponse<StockBalance>> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         try
         {
-            var stockBalance = await _repository.GetByItemPackingUnitAndBranch(itemId, packingUnitId, branchId);
+            var stockBalance = await _repository.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId);
             return new ApiResponse<StockBalance>
             {
                 IsSuccess = true,
@@ -91,11 +92,11 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
         }
     }
 
-    public async Task<ApiResponse<IEnumerable<StockBalance>>> GetByItem(Guid itemId)
+    public async Task<ApiResponse<IEnumerable<StockBalance>>> GetByVariant(Guid variantId)
     {
         try
         {
-            var stockBalances = await _repository.GetByItem(itemId);
+            var stockBalances = await _repository.GetByVariant(variantId);
             return new ApiResponse<IEnumerable<StockBalance>>
             {
                 IsSuccess = true,
@@ -114,11 +115,11 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
         }
     }
 
-    public async Task<ApiResponse<decimal>> GetCurrentBalance(Guid itemId, Guid packingUnitId, Guid branchId)
+    public async Task<ApiResponse<decimal>> GetCurrentBalance(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         try
         {
-            var currentBalance = await _repository.GetCurrentBalance(itemId, packingUnitId, branchId);
+            var currentBalance = await _repository.GetCurrentBalance(variantId, packingUnitId, branchId);
             return new ApiResponse<decimal>
             {
                 IsSuccess = true,
@@ -137,24 +138,27 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
         }
     }
 
-    public async Task<ApiResponse<bool>> UpdateStockBalance(Guid itemId, Guid packingUnitId, Guid branchId, decimal quantity, decimal unitCost, bool isReceipt)
+    public async Task<ApiResponse<bool>> UpdateStockBalance(Guid variantId, Guid packingUnitId, Guid branchId, decimal quantity, decimal unitCost, bool isReceipt)
     {
         try
         {
-            // Get the item to find its default packing unit
-            var item = await _itemRepository.Get(itemId);
-            if (item == null)
+            // Get the variant to find its default packing unit
+            var variant = await _variantRepository.Get(variantId);
+            if (variant == null)
             {
                 return new ApiResponse<bool>
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "ItemNotFound" } }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "VariantNotFound" } }
                 };
             }
 
-            // Get the default packing unit for the item
-            var defaultPackingUnit = await _unitOfWork.ItemPackingUnitRepository.GetQuery().AsNoTracking().Where(e => e.ItemId == itemId && e.IsDefaultPackingUnit).FirstOrDefaultAsync();
+            // Get the default packing unit for the variant
+            var defaultPackingUnit = await _unitOfWork.VariantPackingUnitRepository.GetQuery()
+                .AsNoTracking()
+                .Where(e => e.VariantId == variantId && e.IsDefaultPackingUnit)
+                .FirstOrDefaultAsync();
             if(defaultPackingUnit == null)
             {
                 return new ApiResponse<bool>
@@ -169,14 +173,14 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             var defaultPackingUnitId = defaultPackingUnit.PackingUnitId;
 
             // Get existing stock balance
-            var existingStockBalance = await _repository.GetByItemPackingUnitAndBranchWithoutInclues(itemId, defaultPackingUnitId, branchId);
+            var existingStockBalance = await _repository.GetByVariantPackingUnitAndBranchWithoutInclues(variantId, defaultPackingUnitId, branchId);
 
             if (existingStockBalance == null)
             {
                 // Create new stock balance record
                 var newStockBalance = new StockBalance
                 {
-                    ItemId = itemId,
+                    VariantId = variantId,
                     PackingUnitId = defaultPackingUnitId, // Use default packing unit
                     BranchId = branchId,
                     CurrentBalance = isReceipt ? quantity : -quantity,

@@ -25,7 +25,7 @@ public class InventoryTransactionItemUpdateValidator : AbstractValidator<Invento
     public InventoryTransactionItemUpdateValidator()
     {
         _ = RuleFor(e => e.Id).NotEmpty().WithMessage("IdIsRequired");
-        _ = RuleFor(e => e.ItemId).NotEmpty().WithMessage("ItemIdIsRequired");
+        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage("VariantIdIsRequired");
         _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage("PackingUnitIdIsRequired");
         _ = RuleFor(e => e.Quantity).GreaterThan(0).WithMessage("QuantityMustBeGreaterThanZero");
         _ = RuleFor(e => e.TotalCost).GreaterThanOrEqualTo(0).WithMessage("TotalCostMustBeGreaterThanOrEqualToZero");

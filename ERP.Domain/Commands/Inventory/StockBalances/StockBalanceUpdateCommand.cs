@@ -5,7 +5,7 @@ namespace ERP.Domain.Commands.Inventory.StockBalances;
 
 public class StockBalanceUpdateCommand : BaseUpdateCommand<StockBalance>
 {
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public Guid BranchId { get; set; }
     public decimal CurrentBalance { get; set; }

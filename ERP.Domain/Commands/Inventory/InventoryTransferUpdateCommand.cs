@@ -6,7 +6,7 @@ namespace ERP.Domain.Commands.Inventory;
 public class InventoryTransferItemUpdateCommand
 {
     public Guid? Id { get; set; } // Null for new items
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public string? Notes { get; set; }

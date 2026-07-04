@@ -7,10 +7,10 @@ namespace ERP.Application.Services.Inventory;
 
 public interface IStockBalanceService : IBaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
 {
-    Task<ApiResponse<StockBalance>> GetByItemAndBranch(Guid itemId, Guid branchId);
-    Task<ApiResponse<StockBalance>> GetByItemPackingUnitAndBranch(Guid itemId, Guid packingUnitId, Guid branchId);
+    Task<ApiResponse<StockBalance>> GetByVariantAndBranch(Guid variantId, Guid branchId);
+    Task<ApiResponse<StockBalance>> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId);
     Task<ApiResponse<IEnumerable<StockBalance>>> GetByBranch(Guid branchId);
-    Task<ApiResponse<IEnumerable<StockBalance>>> GetByItem(Guid itemId);
-    Task<ApiResponse<decimal>> GetCurrentBalance(Guid itemId, Guid packingUnitId, Guid branchId);
-    Task<ApiResponse<bool>> UpdateStockBalance(Guid itemId, Guid packingUnitId, Guid branchId, decimal quantity, decimal unitCost, bool isReceipt);
+    Task<ApiResponse<IEnumerable<StockBalance>>> GetByVariant(Guid variantId);
+    Task<ApiResponse<decimal>> GetCurrentBalance(Guid variantId, Guid packingUnitId, Guid branchId);
+    Task<ApiResponse<bool>> UpdateStockBalance(Guid variantId, Guid packingUnitId, Guid branchId, decimal quantity, decimal unitCost, bool isReceipt);
 } 

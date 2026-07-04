@@ -16,7 +16,7 @@ public class InventoryTransactionUpdateCommand : BaseUpdateCommand<InventoryTran
 public class InventoryTransactionItemUpdateDto
 {
     public Guid Id { get; set; }
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public decimal TotalCost { get; set; }

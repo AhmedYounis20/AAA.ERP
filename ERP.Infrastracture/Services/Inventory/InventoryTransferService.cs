@@ -10,7 +10,7 @@ using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Commands.Account.Entries.CompinedEntries;
 using Domain.Account.Models.Dtos.Entry;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using ERP.Domain.Models.Entities.Inventory.Variants;
 
 namespace ERP.Infrastracture.Services.Inventory;
 
@@ -40,7 +40,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             ApprovedAt = command.TransferType == InventoryTransferType.Direct ? DateTime.Now : null,
             Items = command.Items.Select(i => new InventoryTransferItem
             {
-                ItemId = i.ItemId,
+                VariantId = i.VariantId,
                 PackingUnitId = i.PackingUnitId,
                 Quantity = i.Quantity,
             }).ToList()
@@ -97,8 +97,8 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         foreach (var item in items)
         {
-            var itemUsedPackingUnit = await _dbContext.Set<ItemPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.ItemId == item.ItemId && item.PackingUnitId == e.PackingUnitId);
-            if (itemUsedPackingUnit == null)
+            var variantUsedPackingUnit = await _dbContext.Set<VariantPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.VariantId == item.VariantId && item.PackingUnitId == e.PackingUnitId);
+            if (variantUsedPackingUnit == null)
             {
                 return new ApiResponse
                 {
@@ -107,15 +107,15 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
-            decimal quantity = item.Quantity / itemUsedPackingUnit.PartsCount;
+            decimal quantity = item.Quantity / variantUsedPackingUnit.PartsCount;
 
-            var sourceStock = await _dbContext.Set<StockBalance>().AsNoTracking().FirstOrDefaultAsync(e=>e.ItemId == item.ItemId && e.BranchId == SourceId);
+            var sourceStock = await _dbContext.Set<StockBalance>().AsNoTracking().FirstOrDefaultAsync(e=>e.VariantId == item.VariantId && e.BranchId == SourceId);
             if (sourceStock == null || sourceStock.CurrentBalance < quantity)
             {
                 return new ApiResponse
                 {
                     IsSuccess = false,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "ItemWithNowStockBalance" } },
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "VariantWithNowStockBalance" } },
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -125,7 +125,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             sourceStock.ModifiedAt = DateTime.Now;
             await _unitOfWork.StockBalanceRepository.Update(sourceStock);
 
-            var distinationStock = await _dbContext.Set<StockBalance>().AsNoTracking().FirstOrDefaultAsync(e=>e.ItemId == item.ItemId && e.BranchId == DistinationId);
+            var distinationStock = await _dbContext.Set<StockBalance>().AsNoTracking().FirstOrDefaultAsync(e=>e.VariantId == item.VariantId && e.BranchId == DistinationId);
             if (distinationStock == null)
             {
                 var distinationBranch = await _dbContext.Set<Branch>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == DistinationId);
@@ -138,11 +138,11 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                         StatusCode = HttpStatusCode.BadRequest
                     };
                 }
-                var defaultPackingUnit = await _dbContext.Set<ItemPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.IsDefaultPackingUnit && e.ItemId == item.ItemId);
-                var usedPackingUnit = await _dbContext.Set<ItemPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.PackingUnitId == item.PackingUnitId && e.ItemId == item.ItemId);
+                var defaultPackingUnit = await _dbContext.Set<VariantPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.IsDefaultPackingUnit && e.VariantId == item.VariantId);
+                var usedPackingUnit = await _dbContext.Set<VariantPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.PackingUnitId == item.PackingUnitId && e.VariantId == item.VariantId);
                 distinationStock = new StockBalance
                 {
-                    ItemId = item.ItemId,
+                    VariantId = item.VariantId,
                     BranchId = DistinationId,
                     CreatedAt = DateTime.Now,
                     PackingUnitId = defaultPackingUnit?.PackingUnitId ?? Guid.Empty,
@@ -155,7 +155,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             }
             else
             {
-                var defaultPackingUnit = await _dbContext.Set<ItemPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.IsDefaultPackingUnit && e.ItemId == item.ItemId);
+                var defaultPackingUnit = await _dbContext.Set<VariantPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.IsDefaultPackingUnit && e.VariantId == item.VariantId);
 
                 distinationStock.CurrentBalance += quantity;
                 distinationStock.ModifiedAt = DateTime.Now;
@@ -193,9 +193,9 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         decimal totalPrice = 0;
         foreach (var item in items)
         {
-            var itemUsedpackingUnit = await _dbContext.Set<ItemPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.PackingUnitId == item.PackingUnitId && e.ItemId == item.ItemId);
+            var variantUsedpackingUnit = await _dbContext.Set<VariantPackingUnit>().AsNoTracking().FirstOrDefaultAsync(e => e.PackingUnitId == item.PackingUnitId && e.VariantId == item.VariantId);
 
-            totalPrice += (item.Quantity * (itemUsedpackingUnit?.AverageCostPrice??0));
+            totalPrice += (item.Quantity * (variantUsedpackingUnit?.AverageCostPrice??0));
         }
 
         // 
@@ -235,7 +235,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         {
             transfer.Items.Add(new InventoryTransferItem
             {
-                ItemId = i.ItemId,
+                VariantId = i.VariantId,
                 PackingUnitId = i.PackingUnitId,
                 Quantity = i.Quantity,
             });

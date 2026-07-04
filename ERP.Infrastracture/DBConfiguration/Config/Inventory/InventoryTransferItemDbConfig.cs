@@ -10,9 +10,9 @@ public class InventoryTransferItemDbConfig : IEntityTypeConfiguration<InventoryT
         builder.ToTable("InventoryTransferItems");
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Quantity).IsRequired();
-        builder.HasOne(e => e.Item)
+        builder.HasOne(e => e.Variant)
             .WithMany()
-            .HasForeignKey(e => e.ItemId)
+            .HasForeignKey(e => e.VariantId)
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(e => e.PackingUnit)
             .WithMany()

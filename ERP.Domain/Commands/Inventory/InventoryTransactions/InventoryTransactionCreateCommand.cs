@@ -15,7 +15,7 @@ public class InventoryTransactionCreateCommand : BaseCreateCommand<InventoryTran
 
 public class InventoryTransactionItemCreateDto
 {
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public decimal TotalCost { get; set; }

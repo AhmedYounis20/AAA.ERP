@@ -5,11 +5,11 @@ namespace ERP.Application.Repositories.Inventory;
 
 public interface IStockBalanceRepository : IBaseRepository<StockBalance>
 {
-    Task<StockBalance?> GetByItemAndBranch(Guid itemId, Guid branchId);
-    Task<StockBalance?> GetByItemPackingUnitAndBranch(Guid itemId, Guid packingUnitId, Guid branchId);
+    Task<StockBalance?> GetByVariantAndBranch(Guid variantId, Guid branchId);
+    Task<StockBalance?> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId);
     Task<IEnumerable<StockBalance>> GetByBranch(Guid branchId);
-    Task<IEnumerable<StockBalance>> GetByItem(Guid itemId);
-    Task<decimal> GetCurrentBalance(Guid itemId, Guid packingUnitId, Guid branchId);
-    Task<StockBalance?> GetByItemPackingUnitAndBranchWithoutInclues(Guid itemId, Guid packingUnitId, Guid branchId);
+    Task<IEnumerable<StockBalance>> GetByVariant(Guid variantId);
+    Task<decimal> GetCurrentBalance(Guid variantId, Guid packingUnitId, Guid branchId);
+    Task<StockBalance?> GetByVariantPackingUnitAndBranchWithoutInclues(Guid variantId, Guid packingUnitId, Guid branchId);
 
 } 

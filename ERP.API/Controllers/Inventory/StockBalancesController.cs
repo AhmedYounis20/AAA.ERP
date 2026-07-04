@@ -54,17 +54,17 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return await DeleteRecord(id);
     }
 
-    [HttpGet("byItemAndBranch")]
-    public virtual async Task<IActionResult> GetByItemAndBranch([FromQuery] Guid itemId, [FromQuery] Guid branchId)
+    [HttpGet("byVariantAndBranch")]
+    public virtual async Task<IActionResult> GetByVariantAndBranch([FromQuery] Guid variantId, [FromQuery] Guid branchId)
     {
-        var result = await _service.GetByItemAndBranch(itemId, branchId);
+        var result = await _service.GetByVariantAndBranch(variantId, branchId);
         return StatusCode((int)result.StatusCode, result);
     }
 
-    [HttpGet("byItemPackingUnitAndBranch")]
-    public virtual async Task<IActionResult> GetByItemPackingUnitAndBranch([FromQuery] Guid itemId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
+    [HttpGet("byVariantPackingUnitAndBranch")]
+    public virtual async Task<IActionResult> GetByVariantPackingUnitAndBranch([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
     {
-        var result = await _service.GetByItemPackingUnitAndBranch(itemId, packingUnitId, branchId);
+        var result = await _service.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId);
         return StatusCode((int)result.StatusCode, result);
     }
 
@@ -75,31 +75,31 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
-    [HttpGet("byItem/{itemId}")]
-    public virtual async Task<IActionResult> GetByItem(Guid itemId)
+    [HttpGet("byVariant/{variantId}")]
+    public virtual async Task<IActionResult> GetByVariant(Guid variantId)
     {
-        var result = await _service.GetByItem(itemId);
+        var result = await _service.GetByVariant(variantId);
         return StatusCode((int)result.StatusCode, result);
     }
 
     [HttpGet("currentBalance")]
-    public virtual async Task<IActionResult> GetCurrentBalance([FromQuery] Guid itemId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
+    public virtual async Task<IActionResult> GetCurrentBalance([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
     {
-        var result = await _service.GetCurrentBalance(itemId, packingUnitId, branchId);
+        var result = await _service.GetCurrentBalance(variantId, packingUnitId, branchId);
         return StatusCode((int)result.StatusCode, result);
     }
 
     [HttpPost("updateStockBalance")]
     public virtual async Task<IActionResult> UpdateStockBalance([FromBody] UpdateStockBalanceRequest request)
     {
-        var result = await _service.UpdateStockBalance(request.ItemId, request.PackingUnitId, request.BranchId, request.Quantity, request.UnitCost, request.IsReceipt);
+        var result = await _service.UpdateStockBalance(request.VariantId, request.PackingUnitId, request.BranchId, request.Quantity, request.UnitCost, request.IsReceipt);
         return StatusCode((int)result.StatusCode, result);
     }
 }
 
 public class UpdateStockBalanceRequest
 {
-    public Guid ItemId { get; set; }
+    public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public Guid BranchId { get; set; }
     public decimal Quantity { get; set; }

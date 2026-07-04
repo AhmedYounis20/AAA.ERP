@@ -54,8 +54,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
         else
             query = query.OrderByDescending(e => e.CreatedAt);
-        query = query.Where(v =>
-            !v.IsDefault || !_context.Set<Variant>().Any(e => e.ProductId == v.ProductId && !e.IsDefault));
+        query = query.Where(v => !v.IsArchived));
         
         var paginatedVariants = await query.ToPaginatedResultAsync(pageNumber, pageSize, cancellationToken);
 

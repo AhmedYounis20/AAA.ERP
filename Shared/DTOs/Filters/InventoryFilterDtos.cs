@@ -64,9 +64,9 @@ public class InventoryTransactionFilterDto : BaseFilterDto
     public Guid? BranchId { get; set; }
     
     /// <summary>
-    /// Filter by item
+    /// Filter by variant
     /// </summary>
-    public Guid? ItemId { get; set; }
+    public Guid? VariantId { get; set; }
     
     /// <summary>
     /// Filter by transaction date from
@@ -95,9 +95,9 @@ public class StockBalanceFilterDto : BaseFilterDto
     public Guid? BranchId { get; set; }
     
     /// <summary>
-    /// Filter by item
+    /// Filter by variant
     /// </summary>
-    public Guid? ItemId { get; set; }
+    public Guid? VariantId { get; set; }
     
     /// <summary>
     /// Filter by packing unit

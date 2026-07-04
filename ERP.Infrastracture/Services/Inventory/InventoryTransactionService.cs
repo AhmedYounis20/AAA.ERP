@@ -223,7 +223,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
             transaction.FinancialPeriodId = financialPeriod.Id;
             transaction.Items = command.Items.Select(item => new InventoryTransactionItem
             {
-                ItemId = item.ItemId,
+                VariantId = item.VariantId,
                 PackingUnitId = item.PackingUnitId,
                 Quantity = item.Quantity,
                 TotalCost = item.TotalCost
@@ -236,11 +236,11 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 foreach (var item in command.Items)
                 {
                     // Get current balance using default packing unit
-                    var stockBalanceResp = await _stockBalanceService.GetCurrentBalance(item.ItemId, item.PackingUnitId, command.BranchId);
+                    var stockBalanceResp = await _stockBalanceService.GetCurrentBalance(item.VariantId, item.PackingUnitId, command.BranchId);
                     var currentBalance = stockBalanceResp.Result;
                     if (currentBalance < item.Quantity)
                     {
-                        insufficientItems.Add($"ItemId: {item.ItemId}, PackingUnitId: {item.PackingUnitId}, Requested: {item.Quantity}, Available: {currentBalance}");
+                        insufficientItems.Add($"VariantId: {item.VariantId}, PackingUnitId: {item.PackingUnitId}, Requested: {item.Quantity}, Available: {currentBalance}");
                     }
                 }
                 if (insufficientItems.Any())
@@ -263,7 +263,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 var unitCost = item.TotalCost / item.Quantity;
                 bool isReceipt = command.TransactionType == InventoryTransactionType.Receipt;
                 var updateResult = await _stockBalanceService.UpdateStockBalance(
-                    item.ItemId,
+                    item.VariantId,
                     item.PackingUnitId,
                     command.BranchId,
                     item.Quantity,
