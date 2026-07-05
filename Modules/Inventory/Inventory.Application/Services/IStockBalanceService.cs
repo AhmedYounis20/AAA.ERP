@@ -4,6 +4,9 @@ using Inventory.Domain.Models.Entities.Sizes;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for stock balance.
+/// </summary>
 public interface IStockBalanceService : IBaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
 {
     Task<ApiResponse<StockBalance>> GetByVariantAndBranch(Guid variantId, Guid branchId);

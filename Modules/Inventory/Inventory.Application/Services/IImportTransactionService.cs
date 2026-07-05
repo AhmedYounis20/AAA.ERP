@@ -5,6 +5,9 @@ using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for import transaction.
+/// </summary>
 public interface IImportTransactionService : IBaseService<InventoryTransaction, ImportTransactionCreateCommand, ImportTransactionUpdateCommand>
 {
     Task<ApiResponse<InventoryTransaction>> GetById(Guid id);

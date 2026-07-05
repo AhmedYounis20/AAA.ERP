@@ -4,9 +4,13 @@ using Inventory.Domain.Models.Dtos;
 
 namespace Inventory.Application.Repositories
 {
+/// <summary>
+/// Repository contract for product persistence.
+/// </summary>
     public interface IProductRepository : IBaseTreeSettingRepository<Product>
     {
         Task<IEnumerable<ProductDto>> GetDtos();
+        /// <summary>Gets dto by id.</summary>
         Task<ProductDto?> GetDtoById(Guid id);
         Task<IEnumerable<ProductDto>> GetProductsByType(ProductType? productType);
     }

@@ -5,6 +5,9 @@ using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for export transaction.
+/// </summary>
 public interface IExportTransactionService : IBaseService<InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>
 {
     Task<ApiResponse<InventoryTransaction>> GetById(Guid id);

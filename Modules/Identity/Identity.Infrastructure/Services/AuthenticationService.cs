@@ -2,6 +2,7 @@ using Identity.Application.Models.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Constants;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -72,7 +73,7 @@ public class AuthenticationService : IAuthenticationService
             {
                 response.IsSuccess = false;
                 response.StatusCode = HttpStatusCode.NotFound;
-                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "USER_NOT_FOUND" } };
+                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.UserNotFound } };
                 return response;
             }
 
@@ -81,7 +82,7 @@ public class AuthenticationService : IAuthenticationService
             {
                 response.IsSuccess = false;
                 response.StatusCode = HttpStatusCode.BadRequest;
-                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INCORRENCT_EMAIL_OR_PASSWORD" } };
+                response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.IncorrectEmailOrPassword } };
                 return response;
             }
 
@@ -113,7 +114,7 @@ public class AuthenticationService : IAuthenticationService
         {
             response.IsSuccess = false;
             response.StatusCode = HttpStatusCode.InternalServerError;
-            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "Login failed." }, new MessageTemplate { MessageKey = ex.Message } };
+            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.LoginFailed }, new MessageTemplate { MessageKey = ex.Message } };
         }
 
         return response;
@@ -133,7 +134,7 @@ public class AuthenticationService : IAuthenticationService
         {
             response.StatusCode = HttpStatusCode.BadRequest;
             response.IsSuccess = false;
-            response.Errors.Add(new MessageTemplate { MessageKey = "UsernameAlreadyExists" });
+            response.Errors.Add(new MessageTemplate { MessageKey = ErrorMessages.UsernameAlreadyExists });
             return response;
         }
 
@@ -155,7 +156,7 @@ public class AuthenticationService : IAuthenticationService
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
                 response.IsSuccess = false;
-                response.Errors.Add(new MessageTemplate { MessageKey = "UserCreationFailed" });
+                response.Errors.Add(new MessageTemplate { MessageKey = ErrorMessages.UserCreationFailed });
                 return response;
             }
 
@@ -194,7 +195,7 @@ public class AuthenticationService : IAuthenticationService
         {
             response.IsSuccess = false;
             response.StatusCode = HttpStatusCode.BadRequest;
-            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN" } };
+            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.InvalidAccessTokenOrRefreshToken } };
             return response;
         }
 
@@ -205,7 +206,7 @@ public class AuthenticationService : IAuthenticationService
         {
             response.IsSuccess = false;
             response.StatusCode = HttpStatusCode.BadRequest;
-            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "INVALID_REFRESH_TOKEN" } };
+            response.Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.InvalidRefreshToken } };
             return response;
         }
 

@@ -7,6 +7,9 @@ using Shared.DTOs;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for variant.
+/// </summary>
 public interface IVariantService : IBaseService<Variant, VariantCreateCommand, VariantUpdateCommand>
 {
     Task<ApiResponse<List<VariantDto>>> GetVariantDtos();
@@ -17,5 +20,6 @@ public interface IVariantService : IBaseService<Variant, VariantCreateCommand, V
         SettingFilterDto filter,
         CancellationToken cancellationToken = default);
     Task<ApiResponse<bool>> CreateVariantsBulkForProductUpdate(List<VariantCreateCommand> commands, bool isValidate = true);
+    /// <summary>prepare variants for product operation.</summary>
     List<Variant> PrepareVariantsForProduct(ProductCreateCommand command);
 }

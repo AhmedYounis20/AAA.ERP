@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 
 namespace Inventory.Application.Repositories
 {
+/// <summary>
+/// Repository contract for variant persistence.
+/// </summary>
     public interface IVariantRepository : IBaseRepository<Variant>
     {
         Task<IEnumerable<VariantDto>> GetDtos();
@@ -16,9 +19,11 @@ namespace Inventory.Application.Repositories
             Expression<Func<Variant, object>>? orderBy = null,
             bool descending = false,
             CancellationToken cancellationToken = default);
+        /// <summary>Gets dto by id.</summary>
         Task<VariantDto?> GetDtoById(Guid id);
         Task<IEnumerable<VariantDto>> GetVariantsByProductId(Guid productId);
         Task<IEnumerable<VariantDto>> GetVariantsWithAttributes();
+        /// <summary>Gets variant with attributes.</summary>
         Task<VariantDto?> GetVariantWithAttributes(Guid id);
         Task<IEnumerable<VariantDto>> SearchVariants(string searchTerm);
         Task<List<Variant>> GetByProductIdAsync(Guid productId);

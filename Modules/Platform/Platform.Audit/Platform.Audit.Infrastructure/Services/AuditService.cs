@@ -3,6 +3,7 @@ using Platform.Audit.Application;
 using Identity.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Shared.Constants;
 using Shared.BaseEntities;
 using Shared.DTOs;
 using Shared.Responses;
@@ -211,7 +212,7 @@ public class AuditService : IAuditService
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
-                    Errors = new List<MessageTemplate> { new() { MessageKey = "AuditLogNotFound" } }
+                    Errors = new List<MessageTemplate> { new() { MessageKey = ErrorMessages.AuditLogNotFound } }
                 };
             }
 

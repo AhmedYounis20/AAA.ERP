@@ -5,6 +5,9 @@ using Inventory.Domain.Models.Entities.Attributes;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for attribute value.
+/// </summary>
 public interface IAttributeValueService : IBaseSettingService<AttributeValue, AttributeValueCreateCommand, AttributeValueUpdateCommand>
 {
     Task<ApiResponse<List<AttributeValueDto>>> GetAttributeValueDtos();

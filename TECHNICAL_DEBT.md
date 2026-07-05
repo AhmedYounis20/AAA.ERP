@@ -25,7 +25,10 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | C2 | BuildingBlocks Account base validators → `ValidationMessages` | **Done** — `371e4c3` |
 | C3 | Inventory validators → `ValidationMessages` | **Done** (uncommitted batch) |
 | C4 | Service/controller error keys → `ErrorMessages` / `SuccessMessages` | **Done** (uncommitted batch) |
-| C5 | XML docs on Accounting service/repository interfaces | **Done** (uncommitted batch) |
+| C5 | XML docs on Accounting service/repository interfaces | **Done** — `6f232b8` |
+| C6 | Identity/Platform error keys → `ErrorMessages` | **Done** (uncommitted) |
+| C7 | XML docs on Inventory service/repository interfaces | **Done** (uncommitted) |
+| C8 | Identity interfaces XML docs + Platform audit error key | **Done** (uncommitted) |
 
 **Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
@@ -41,11 +44,11 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 
 ### 3. Inconsistent Error Message Keys
 **Impact:** Localization difficulties
-**Status:** **Partial — C4 done** for Accounting/Inventory services and Host controllers (`Shared.Constants.ErrorMessages` / `SuccessMessages`). Remaining ad-hoc strings may exist in Identity/Platform modules.
+**Status:** **Done** (C4 + C6). Accounting, Inventory, Identity, and Platform audit services use `ErrorMessages` / `SuccessMessages`.
 
 ### 4. Missing XML Documentation
 **Impact:** Developer experience, API documentation
-**Status:** **Partial — C5 done** for Accounting `Application` service/repository interfaces and `IAccountingIntegrationService`. Inventory interfaces and controller endpoints remain.
+**Status:** **Done** (C5 + C7). Accounting and Inventory `Application` service/repository interfaces documented. Controller endpoints remain optional.
 
 ### 5. Magic Strings in Validators
 **Impact:** Maintainability, localization

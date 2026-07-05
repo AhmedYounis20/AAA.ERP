@@ -6,6 +6,9 @@ using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for item.
+/// </summary>
 public interface IItemService : IBaseTreeSettingService<Item, ItemCreateCommand, ItemUpdateCommand>
 {
     Task<ApiResponse<string>> GeNextCode(Guid? parentId = null);

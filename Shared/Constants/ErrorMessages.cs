@@ -105,6 +105,18 @@ public static class ErrorMessages
     public const string VariantCombinationsAreOnlyAllowedForProductsOfTypeStock = "Variant combinations are only allowed for products of type Stock";
     public const string VariantNotFound = "VariantNotFound";
     public const string VariantWithNowStockBalance = "VariantWithNowStockBalance";
+
+    // Identity
+    public const string UserNotFound = "USER_NOT_FOUND";
+    public const string IncorrectEmailOrPassword = "INCORRENCT_EMAIL_OR_PASSWORD";
+    public const string LoginFailed = "Login failed.";
+    public const string UsernameAlreadyExists = "UsernameAlreadyExists";
+    public const string UserCreationFailed = "UserCreationFailed";
+    public const string InvalidAccessTokenOrRefreshToken = "INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN";
+    public const string InvalidRefreshToken = "INVALID_REFRESH_TOKEN";
+
+    // Platform
+    public const string AuditLogNotFound = "AuditLogNotFound";
 }
 
 /// <summary>

@@ -4,6 +4,9 @@ using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Application.Services;
 
+/// <summary>
+/// Application service contract for inventory transfer.
+/// </summary>
 public interface IInventoryTransferService : IBaseService<InventoryTransfer, InventoryTransferCreateCommand, InventoryTransferUpdateCommand>
 {
     Task<ApiResponse<InventoryTransfer>> GetWithDetails(Guid id);
