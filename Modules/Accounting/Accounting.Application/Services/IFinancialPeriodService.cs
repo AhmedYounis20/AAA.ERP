@@ -2,7 +2,7 @@ using Accounting.Application.Commands.FinancialPeriods;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Accounting.Domain.Models.Dtos.FinancialPeriods;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 

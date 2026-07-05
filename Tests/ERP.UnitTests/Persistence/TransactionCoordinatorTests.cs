@@ -3,7 +3,7 @@ using ERP.BuildingBlocks.Persistence.Repositories;
 using ERP.Infrastructure.Repositories;
 using FluentAssertions;
 using Moq;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.UnitTests.Persistence;
 

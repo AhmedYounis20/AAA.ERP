@@ -1,4 +1,4 @@
-namespace Shared.BaseEntities;
+namespace Platform.Audit.Application;
 
 /// <summary>
 /// Entity for tracking changes to records (audit trail)

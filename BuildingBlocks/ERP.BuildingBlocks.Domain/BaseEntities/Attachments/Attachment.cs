@@ -1,6 +1,6 @@
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
-namespace ERP.Shared.BaseEntities.Attachments;
+namespace ERP.BuildingBlocks.Domain.Entities.Attachments;
 
 public class Attachment : BaseEntity
 {

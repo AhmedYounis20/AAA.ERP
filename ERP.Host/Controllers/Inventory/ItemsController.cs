@@ -2,7 +2,7 @@
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Items;
 using Inventory.Domain.Models.Dtos;
-using Shared.DTOs.Filters;
+using ERP.BuildingBlocks.Application.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 

@@ -2,7 +2,7 @@ using ERP.BuildingBlocks.Application.Logging;
 using MediatR;
 using Serilog.Context;
 
-namespace Shared.Behaviors;
+namespace ERP.BuildingBlocks.Application.Behaviors;
 
 public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

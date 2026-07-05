@@ -1,12 +1,12 @@
 using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Application.Repositories;
-using Inventory.Application.Repositories;
+using Accounting.Contracts.Dtos;
 using Accounting.Domain.Models.Dtos.FinancialPeriods;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
-using Shared.Constants;
+using Inventory.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -16,18 +16,18 @@ public class FinancialPeriodService :
     private readonly IFinancialPeriodRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEntryRepository _entryRepository;
-    private readonly IInventoryTransactionRepository _inventoryTransactionRepository;
+    private readonly IFinancialPeriodInventoryUsageQueries _inventoryUsageQueries;
 
     public FinancialPeriodService(
         IFinancialPeriodRepository repository,
         IUnitOfWork unitOfWork,
         IEntryRepository entryRepository,
-        IInventoryTransactionRepository inventoryTransactionRepository) : base(repository)
+        IFinancialPeriodInventoryUsageQueries inventoryUsageQueries) : base(repository)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _entryRepository = entryRepository;
-        _inventoryTransactionRepository = inventoryTransactionRepository;
+        _inventoryUsageQueries = inventoryUsageQueries;
     }
 
     public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
@@ -196,7 +196,7 @@ public class FinancialPeriodService :
                 return result;
             }
 
-            var isInventoryTransactionAfterDateExist = await _inventoryTransactionRepository.TransactionAfterThisDateExist(newEndDate);
+            var isInventoryTransactionAfterDateExist = await _inventoryUsageQueries.TransactionExistsAfterDateAsync(newEndDate);
             if (isInventoryTransactionAfterDateExist)
             {
                 result.isValid = false;

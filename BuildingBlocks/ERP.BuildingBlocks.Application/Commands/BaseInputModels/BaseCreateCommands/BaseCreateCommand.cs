@@ -1,5 +1,5 @@
 using Shared;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 

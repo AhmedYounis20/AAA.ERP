@@ -1,9 +1,12 @@
 # AAA.ERP — Solution diagram
 
-> **Last updated:** July 2026 — post Increment **6c** + slice **7a** (`ERP.Host` rename; Accounting command namespaces)  
-> **Canonical plan:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)
+> **Last updated:** July 2026 — Phase 1 hygiene ([ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md))  
+> **Migration history:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)  
+> **Active plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)
 
 ## Project layout (actual)
+
+Solution root is **flat** (no `src/` folder). Retired horizontal layers and module API scaffolds have been removed from disk.
 
 ```
 AAA.ERP/
@@ -12,13 +15,13 @@ AAA.ERP/
 ├── BuildingBlocks/
 │   ├── ERP.BuildingBlocks.Domain/
 │   ├── ERP.BuildingBlocks.Application/
-│   └── ERP.BuildingBlocks.Persistence/
+│   ├── ERP.BuildingBlocks.Persistence/
+│   └── ERP.Shared/              # Solution folder; physical path: Shared/
 ├── Modules/
-│   ├── Accounting/              # Domain · Application · Infrastructure
-│   ├── Inventory/
-│   ├── Identity/
+│   ├── Accounting/              # Domain · Application · Infrastructure · Contracts
+│   ├── Inventory/               # Domain · Application · Infrastructure · Contracts
+│   ├── Identity/                # Domain · Application · Infrastructure
 │   └── Platform/                # Audit · Caching · Localization · Infrastructure
-├── Shared/                      # Cross-cutting DTOs, constants, resources
 └── Tests/
     ├── ERP.Architecture.Tests/
     ├── ERP.IntegrationTests/
@@ -57,7 +60,8 @@ graph TB
         IDND[Identity.Domain]
     end
 
-    BB[BuildingBlocks]
+    Contracts[Accounting.Contracts]
+    BB[BuildingBlocks + ERP.Shared]
 
     DB[(SQL Server)]
 
@@ -65,6 +69,7 @@ graph TB
     P --> ACC & INV & IDN & PLT
     ACC --> ACCA --> ACCD --> BB
     INV --> INVA --> INVD --> BB
+    INVA -.-> Contracts
     IDN --> IDNA --> IDND --> BB
     PLT --> BB
     ACC & INV & IDN & PLT --> DB

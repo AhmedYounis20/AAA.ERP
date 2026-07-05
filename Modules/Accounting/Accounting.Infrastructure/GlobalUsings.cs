@@ -1,7 +1,7 @@
-global using Shared.BaseEntities;
+global using ERP.BuildingBlocks.Domain.Entities;
 global using Accounting.Domain.Utility;
-global using Shared.DTOs;
-global using Shared.Extensions;
+global using ERP.BuildingBlocks.Application.DTOs;
+global using ERP.BuildingBlocks.Application.Extensions;
 global using ERP.BuildingBlocks.Persistence.Data;
 global using Accounting.Application.Repositories;
 global using ERP.BuildingBlocks.Persistence.Repositories;
@@ -12,6 +12,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Serilog;
 global using Shared;
-global using Shared.Responses;
+global using ERP.BuildingBlocks.Application.Responses;
 global using System.Net;
 global using System.Numerics;

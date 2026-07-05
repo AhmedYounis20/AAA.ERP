@@ -1,7 +1,7 @@
 ﻿using Inventory.Application.Commands.ManufacturerCompanies;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace ERP.Host.Controllers.Inventory;
 

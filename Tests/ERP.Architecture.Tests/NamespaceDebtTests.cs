@@ -457,6 +457,66 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_and_modules_should_not_declare_new_Shared_namespaces()
+    {
+        var assemblies = new[]
+        {
+            typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly,
+            typeof(ERP.BuildingBlocks.Domain.Entities.BaseEntity).Assembly,
+            typeof(Accounting.Application.Repositories.IEntryRepository).Assembly,
+            typeof(Inventory.Application.Repositories.IColorRepository).Assembly,
+            typeof(Identity.Application.IAuthenticationService).Assembly,
+            typeof(Platform.Audit.Application.IAuditService).Assembly,
+            typeof(ERP.Host.Controllers.Accounting.Entries.CombinedEntriesController).Assembly
+        };
+
+        foreach (var assembly in assemblies)
+        {
+            var result = Types.InAssembly(assembly)
+                .Should()
+                .NotResideInNamespaceStartingWith("Shared.")
+                .GetResult();
+
+            result.IsSuccessful.Should().BeTrue(
+                $"Shared.* namespace still present in {assembly.GetName().Name}: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+        }
+    }
+
+    [Fact]
+    public void Solution_should_not_contain_ComandValidators_typo_in_namespaces()
+    {
+        var assemblies = new[]
+        {
+            typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly,
+            typeof(Accounting.Application.Repositories.IEntryRepository).Assembly,
+            typeof(Inventory.Application.Repositories.IColorRepository).Assembly
+        };
+
+        foreach (var assembly in assemblies)
+        {
+            var result = Types.InAssembly(assembly)
+                .Should()
+                .NotResideInNamespaceContaining("ComandValidators")
+                .GetResult();
+
+            result.IsSuccessful.Should().BeTrue(
+                $"ComandValidators typo in {assembly.GetName().Name}: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+        }
+    }
+
+    [Fact]
+    public void Accounting_Domain_should_not_contain_commands_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .Should()
+            .NotResideInNamespaceContaining("Commands")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Domain commands should live in Application: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Solution_should_not_contain_legacy_Compined_type_names()
     {
         var assemblies = new[]
@@ -464,7 +524,7 @@ public class NamespaceDebtTests
             typeof(ERP.Infrastructure.Utilities.InfrastructureExtensions).Assembly,
             typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly,
             typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly,
-            typeof(ERP.Host.Controllers.Account.Entries.CombinedEntriesController).Assembly
+            typeof(ERP.Host.Controllers.Accounting.Entries.CombinedEntriesController).Assembly
         };
 
         foreach (var assembly in assemblies)

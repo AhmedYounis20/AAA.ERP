@@ -3,7 +3,7 @@ using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Items;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using ERP.Infrastructure.Repositories.BaseRepositories;
-using Shared.BaseEntities.Identity;
+using ERP.BuildingBlocks.Domain.Entities.Identity;
 
 namespace Inventory.Infrastructure.Repositories;
 

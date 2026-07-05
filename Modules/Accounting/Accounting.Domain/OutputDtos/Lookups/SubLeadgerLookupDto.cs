@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
-using Shared.BaseEntities;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;
 

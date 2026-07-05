@@ -3,7 +3,7 @@ using Accounting.Application.Services.Queries;
 using Platform.Caching.Application;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Platform.Caching.Infrastructure.Services;

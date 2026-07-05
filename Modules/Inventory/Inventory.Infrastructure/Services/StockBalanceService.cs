@@ -8,7 +8,7 @@ using Inventory.Domain.Models.Dtos.Inventory;
 using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Infrastructure.Mapping;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 

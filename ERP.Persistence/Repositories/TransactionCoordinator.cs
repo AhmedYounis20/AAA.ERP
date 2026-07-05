@@ -1,6 +1,6 @@
 using System.Net;
 using ERP.BuildingBlocks.Persistence.Repositories;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.Infrastructure.Repositories;
 

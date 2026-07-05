@@ -1,3 +1,4 @@
+using Inventory.Domain.Models.Dtos;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Domain.Models.Entities.SellingPrices;
 

@@ -1,45 +1,34 @@
-# Phase 5 sign-off — Inventory boundary + ops readiness
+# Phase 5 sign-off — Testing expansion
 
-**Goal:** Close deferred post-M4 items that do not require production access.  
-**Branch:** `Refactor` · **Date:** July 2026
+**Goal:** Module-owned tests around critical ERP workflows.  
+**Plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md) Phase 5  
+**Date:** July 2026
 
 ---
 
 ## Exit criteria
 
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| ADR-007 Inventory.Domain EF decoupling | ✅ | [adr/007-inventory-domain-ef-decoupling.md](./adr/007-inventory-domain-ef-decoupling.md) |
-| Remove `Accounting.Domain` ref from `Inventory.Domain` | ✅ | `Inventory.Domain.csproj`; arch test `Inventory_Domain_should_not_reference_Accounting_Domain` |
-| Shared `AttachmentDto` for catalog wire shape | ✅ | `Shared/DTOs/AttachmentDto.cs`; inventory DTOs/repos updated |
-| Infrastructure FK wiring without domain navigations | ✅ | `Inventory.Infrastructure/Persistence/**` DbConfigs |
-| Staging/prod schema migration runbook | ✅ | [docs/ops/SCHEMA_MIGRATION_RUNBOOK.md](../ops/SCHEMA_MIGRATION_RUNBOOK.md) |
-| Swagger v1 smoke (schema ID conflict) | ✅ | `CustomSchemaIds` in `SwaggerExtensions.cs`; 15/15 smoke tests pass |
-| Arabic localization for L1 keys | ✅ | `Resource.ar-EG.resx` — 154 keys translated (July 2026) |
+| ID | Task | Status | Evidence |
+|----|------|--------|----------|
+| 5.1 | Split unit tests per module | ✅ | `Tests/Accounting.UnitTests/`, `Tests/Inventory.UnitTests/` |
+| 5.2 | Handler tests: receipt/issue → GL | ✅ | `InventoryGlPostingHandlerTests.cs` |
+| 5.3 | Transfer GL + coordinator mocks | ✅ | Covered in integration + contract tests |
+| 5.4 | Integration tests ≥20 | ✅ | **24** in `ERP.IntegrationTests` |
+| 5.5 | `IAccountingIntegrationService` contract tests | ✅ | `AccountingIntegrationServiceContractTests.cs` |
+| 5.6 | CI Coverlet coverage artifact | ✅ | `.github/workflows/ci.yml` publishes `coverage.cobertura.xml` |
 
 ---
 
-## Build / test metrics (2026-07-05)
+## Test counts (Release)
 
-| Metric | Result |
-|--------|--------|
-| `dotnet build AAA.ERP.sln -c Release` | Green |
-| `dotnet test AAA.ERP.sln -c Release` | **119 passed**, 0 skipped |
-| Arch tests (`ERP.Architecture.Tests`) | 55 guards (includes Inventory Domain boundary) |
-| Smoke tests | 15 passed (incl. `/swagger/v1/swagger.json`) |
-| Integration tests | 11 passed |
+| Project | Tests |
+|---------|------:|
+| ERP.Architecture.Tests | 72 |
+| ERP.UnitTests | 36 |
+| ERP.IntegrationTests | 24 |
+| ERP.SmokeTests | 18 |
+| Accounting.UnitTests | 9 |
+| Inventory.UnitTests | 4 |
+| **Total** | **163** |
 
----
-
-## Intentionally deferred (future slices — completed in Phase 7)
-
-See [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
-
----
-
-## Related
-
-- [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md)
-- [M4_SIGNOFF.md](./M4_SIGNOFF.md)
-- [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md)
-- [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) §16
+_Note: 200-test target deferred to ongoing growth; critical GL/inventory paths are covered._

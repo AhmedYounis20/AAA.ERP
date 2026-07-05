@@ -1,6 +1,5 @@
 using Accounting.Contracts.Integration;
 using ERP.Infrastructure.DBConfiguration.DbContext;
-using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransfers;
@@ -10,7 +9,7 @@ using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Dtos.Inventory;
 using Inventory.Infrastructure.Mapping;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 

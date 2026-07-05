@@ -1,4 +1,4 @@
-namespace Shared.DTOs;
+namespace ERP.BuildingBlocks.Application.DTOs;
 
 /// <summary>
 /// Base filter DTO for paginated GET requests

@@ -1,6 +1,6 @@
 ﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.CostCenters;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using System.Text.Json.Serialization;
 
 namespace Accounting.Domain.Models.Entities.Entries;

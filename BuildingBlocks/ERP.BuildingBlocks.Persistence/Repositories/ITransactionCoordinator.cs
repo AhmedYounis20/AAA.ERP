@@ -1,4 +1,4 @@
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.BuildingBlocks.Persistence.Repositories;
 

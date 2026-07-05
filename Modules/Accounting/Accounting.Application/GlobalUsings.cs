@@ -1,2 +1,2 @@
 global using FluentValidation;
-global using Shared.BaseEntities;
+global using ERP.BuildingBlocks.Domain.Entities;

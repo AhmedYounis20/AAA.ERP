@@ -1,15 +1,15 @@
 using Accounting.Application.Commands.Branches;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Shared.Extensions;
+using ERP.BuildingBlocks.Application.Extensions;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Infrastructure.Services.SubLeadgers;
-using ERP.Shared.BaseEntities.Attachments;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
 using Serilog;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Infrastructure.Services;
 

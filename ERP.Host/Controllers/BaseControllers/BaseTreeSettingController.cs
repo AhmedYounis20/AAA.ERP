@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.Host.Controllers.BaseControllers;
 

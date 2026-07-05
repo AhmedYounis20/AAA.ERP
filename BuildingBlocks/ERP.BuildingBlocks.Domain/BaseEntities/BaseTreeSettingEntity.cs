@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shared.BaseEntities;
+namespace ERP.BuildingBlocks.Domain.Entities;
 
 public class BaseTreeSettingEntity<TEntity> : BaseSettingEntity where TEntity : BaseSettingEntity
 {

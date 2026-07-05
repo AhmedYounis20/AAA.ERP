@@ -8,8 +8,8 @@ using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using MediatR;
-using Shared.Responses;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Responses;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

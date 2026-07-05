@@ -3,7 +3,7 @@ using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Dtos;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Inventory.Application.Services;
 

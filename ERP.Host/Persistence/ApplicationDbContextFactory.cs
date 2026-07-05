@@ -29,7 +29,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             ?? throw new InvalidOperationException("Connection string 'DefaultDbConnection' was not found.");
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("ERP.Host"));
+        optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("ERP.Persistence"));
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }

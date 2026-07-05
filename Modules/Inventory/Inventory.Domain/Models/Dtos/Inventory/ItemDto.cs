@@ -1,4 +1,4 @@
-﻿using Shared.BaseEntities;
+﻿using ERP.BuildingBlocks.Domain.Entities;
 using System.Text.Json.Serialization;
 using Inventory.Domain.Models.Entities.Items;
 

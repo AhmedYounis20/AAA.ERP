@@ -12,7 +12,7 @@ using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace ERP.IntegrationTests.Infrastructure;
 

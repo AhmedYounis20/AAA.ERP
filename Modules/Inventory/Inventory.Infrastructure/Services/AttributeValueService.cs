@@ -1,11 +1,10 @@
-using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Commands.AttributeValues;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Attributes;
 using ERP.Infrastructure.Services.BaseServices;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 

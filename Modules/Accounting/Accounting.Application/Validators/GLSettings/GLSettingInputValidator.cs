@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Validators.Account.InputValidators.BaseValidators;
-using Accounting.Domain.Commands;
+using Accounting.Application.Commands;
 using Accounting.Domain.Models.Entities.GLSettings;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;

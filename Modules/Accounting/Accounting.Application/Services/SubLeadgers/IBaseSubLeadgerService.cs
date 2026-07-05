@@ -1,7 +1,7 @@
 using ERP.BuildingBlocks.Application.Services.BaseServices;
-using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
-using Shared.BaseEntities;
-using Shared.Responses;
+using Accounting.Application.Commands.SubLeadgers.BaseSubLeadgersCommands;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services.SubLeadgers;
 

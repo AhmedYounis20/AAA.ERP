@@ -1,4 +1,4 @@
-namespace Shared.Exceptions;
+namespace ERP.BuildingBlocks.Application.Exceptions;
 
 /// <summary>Thrown when the caller is authenticated but lacks permission for the requested resource.</summary>
 public class ForbiddenException : Exception

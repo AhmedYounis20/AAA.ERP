@@ -3,7 +3,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Currencies;
 using ERP.Infrastructure.Services.BaseServices;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

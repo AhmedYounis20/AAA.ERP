@@ -6,7 +6,7 @@ using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Infrastructure.Services.SubLeadgers;
 using Serilog;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Infrastructure.Services;
 

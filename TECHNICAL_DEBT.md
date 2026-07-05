@@ -37,7 +37,7 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | D6 | Doc sync (C3–C8 commit refs) | **Done** |
 | L1 | Localization keys → `Platform.Localization` resources | **Done** |
 
-**Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status). **Post-M4 quality plan complete** — see [POST_M4_QUALITY_SIGNOFF.md](docs/architecture/POST_M4_QUALITY_SIGNOFF.md).
+**Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status). **Forward work:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](docs/architecture/ARCHITECTURE_ENHANCEMENT_PLAN.md) (Phases 1–9, baseline July 2026). **Post-M4 quality plan complete** — see [POST_M4_QUALITY_SIGNOFF.md](docs/architecture/POST_M4_QUALITY_SIGNOFF.md).
 
 ## High Priority
 

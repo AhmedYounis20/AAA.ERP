@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.PaymentEntries;
 using Accounting.Application.Validators.Entries;
-using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Domain.Models.Entities.Entries;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;

@@ -1,6 +1,6 @@
 using Inventory.Domain.Models.Entities.Items;
 using Inventory.Domain.Models.Entities.SellingPrices;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities.Variants;
 

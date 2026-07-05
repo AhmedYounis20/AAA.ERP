@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
-> **Status:** **M4 complete** — Phase 4 hardening done; Waves 3A–3E **complete**  
-> **Last updated:** July 2026 — Increments **6–7** complete; [M4 sign-off](./M4_SIGNOFF.md)  
+> **Status:** **M4 complete** — Phases 0–7 **complete**; forward work in [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)  
+> **Last updated:** July 2026 — [FINAL_SIGNOFF](./FINAL_SIGNOFF.md); enhancement Phases 1–9 **active**  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -34,6 +34,8 @@
 16. [Immediate action list](#16-immediate-action-list)
 17. [Glossary](#17-glossary)
 18. [Architecture decision records](#18-architecture-decision-records)
+
+_For active forward work (Phases 1–9), see [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)._
 
 ---
 
@@ -1379,7 +1381,7 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | D6 | Doc sync (C3–C8 commit refs) | **Done** |
 | L1 | Localization keys → Platform resources | **Done** |
 
-**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. **Post-M4 quality plan complete (C1–C8, D1–D6, L1)** — see [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md). **Phase 5 complete** — see [PHASE5_SIGNOFF.md](./PHASE5_SIGNOFF.md) (ADR-007, schema runbook, Swagger fix, Arabic L1).
+**Next:** **[ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)** — Phases **1–9** (starts July 2026 baseline). Ongoing **4.3.x** sprint hygiene per PR. Historical: post-M4 quality [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md); Phases 5–7 [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
 
 #### Phase 5 — Inventory boundary + ops readiness
 
@@ -1413,6 +1415,22 @@ See [PHASE6_SIGNOFF.md](./PHASE6_SIGNOFF.md). **All deferred work closed** — [
 | P7.2 | `IInventoryAccountingDisplayQueries` + inventory read DTOs | **Done** |
 | P7.3 | BuildingBlocks `Dtos` namespace normalization | **Done** |
 | P7.4 | Persistence kernel arch test | **Done** |
+
+### Enhancement plan (Phases 1–9) — **ACTIVE**
+
+Migration Phases 0–7 and M4 are **complete**. All forward architecture work is tracked in **[ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)** (baseline July 2026):
+
+| Phase | Focus | Status |
+|-------|--------|--------|
+| 1 | Repository hygiene | **Complete** — [PHASE1_SIGNOFF](./PHASE1_SIGNOFF.md) |
+| 2 | Host & security hardening | **Complete** — [PHASE2_SIGNOFF](./PHASE2_SIGNOFF.md) |
+| 3 | Operational readiness | **Engineering complete** — [PHASE3_SIGNOFF](./PHASE3_SIGNOFF.md); staging/prod **operator** |
+| 4 | Cross-module boundary hardening | **Complete** — [PHASE4_SIGNOFF](./PHASE4_SIGNOFF.md) |
+| 5 | Testing expansion | Not started |
+| 6 | Namespace normalization | Not started |
+| 7 | Application layer standardization | Not started |
+| 8 | Naming debt cleanup | Backlog |
+| 9 | Optional structural polish | Backlog |
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1534,11 +1552,14 @@ dotnet test AAA.ERP.sln
 | ADR-004 | MediatR as sole write path | Deprecate direct service writes for new features |
 | ADR-005 | Microservices trigger criteria | Separate team, independent scale, or regulatory isolation required |
 | ADR-006 | [SQL schema separation](./adr/006-sql-schema-separation.md) | Option B — `accounting` / `inventory` / `platform` / `identity` schemas; migrate in place |
+| ADR-007 | [Inventory.Domain EF decoupling](./adr/007-inventory-domain-ef-decoupling.md) | Guid FKs in Domain; EF cross-module FK in Infrastructure DbConfig only |
+| ADR-008 | [EF DbConfig cross-module FK](./adr/008-ef-dbconfig-cross-module-fk.md) | Application layers use `*.Contracts`; DbConfig may reference foreign Domain types |
 
 ---
 
 ## References
 
+- **Active enhancement plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md) (Phases 1–9)
 - Persistence kernel: `ERP.Persistence/` (`ApplicationDbContext`, `UnitOfWork`, `TransactionCoordinator`)
 - Cross-module GL: `Modules/Accounting/Accounting.Infrastructure/Services/AccountingIntegrationService.cs`
 - Inventory coordinator: `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransactionService.cs`, `InventoryTransferService.cs`

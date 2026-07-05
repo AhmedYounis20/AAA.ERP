@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace ERP.BuildingBlocks.Persistence.Repositories;
 

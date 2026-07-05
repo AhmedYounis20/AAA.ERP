@@ -1,8 +1,8 @@
-using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.CreateCommandValidators;
 using Inventory.Application.Commands.Items;
 using Inventory.Domain.Models.Entities.Items;
 using FluentValidation;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Application.Validators.Items;

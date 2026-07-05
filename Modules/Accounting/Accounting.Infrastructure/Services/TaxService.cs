@@ -6,8 +6,8 @@ using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Infrastructure.Services.SubLeadgers;
-using Shared.BaseEntities;
-using Shared.Constants;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.Currencies;
-using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Domain.Models.Entities.Currencies;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;

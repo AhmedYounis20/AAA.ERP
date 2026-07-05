@@ -1,4 +1,4 @@
-﻿namespace Shared.DTOs;
+﻿namespace ERP.BuildingBlocks.Application.DTOs;
 
 public class LookupDto
 {

@@ -1,4 +1,4 @@
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Products;

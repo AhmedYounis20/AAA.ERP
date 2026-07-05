@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.FixedAssets;
 using Accounting.Application.Services.SubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 

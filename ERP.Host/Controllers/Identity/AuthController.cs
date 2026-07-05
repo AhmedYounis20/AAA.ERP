@@ -1,12 +1,13 @@
 using Identity.Application.Models.Dtos;
 using Identity.Application;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace ERP.Host.Controllers.Identity;
 
 /// <summary>
 /// Authentication endpoints for login, registration, and token refresh.
 /// </summary>
+[AllowAnonymous]
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase

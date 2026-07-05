@@ -1,5 +1,5 @@
 using Inventory.Domain.Models.Dtos;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Validation;
 

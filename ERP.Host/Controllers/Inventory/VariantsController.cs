@@ -1,7 +1,7 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.Variants;
 using Inventory.Domain.Models.Entities.Variants;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace ERP.Host.Controllers.Inventory;
 

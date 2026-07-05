@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Common;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Domain.Models.Entities.Entries;
 using System.Text.Json.Serialization;

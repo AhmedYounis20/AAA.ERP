@@ -1,5 +1,5 @@
 using Inventory.Domain.Models.Entities.Items;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities;
 

@@ -1,3 +1,4 @@
+using Accounting.Contracts.Dtos;
 using Accounting.Domain.OutputDtos;
 using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Application.Repositories;
@@ -7,7 +8,7 @@ using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

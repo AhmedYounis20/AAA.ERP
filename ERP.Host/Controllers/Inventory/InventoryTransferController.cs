@@ -1,12 +1,13 @@
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
-using Shared.DTOs.Filters;
+using ERP.BuildingBlocks.Application.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 
 /// <summary>API for inter-branch inventory transfers.</summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class InventoryTransferController : ControllerBase
 {

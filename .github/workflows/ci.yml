@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -24,5 +26,18 @@ jobs:
       - name: Build
         run: dotnet build AAA.ERP.sln --no-restore --configuration Release
 
+      - name: Nullable gate (changed .cs files on PR)
+        if: github.event_name == 'pull_request'
+        run: bash scripts/check-nullable-on-changed-files.sh
+        env:
+          GITHUB_BASE_REF: origin/${{ github.base_ref }}
+
       - name: Test
-        run: dotnet test AAA.ERP.sln --no-restore --configuration Release --verbosity normal
+        run: dotnet test AAA.ERP.sln --no-restore --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+      - name: Publish coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: TestResults/**/coverage.cobertura.xml
+          if-no-files-found: warn

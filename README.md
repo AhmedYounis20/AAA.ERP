@@ -14,6 +14,8 @@
 | **Modules** | [`Modules/Accounting`](Modules/Accounting/), [`Inventory`](Modules/Inventory/), [`Identity`](Modules/Identity/), [`Platform`](Modules/Platform/) |
 | **Building blocks** | [`BuildingBlocks/`](BuildingBlocks/) |
 | **Architecture docs** | [`docs/architecture/MODULAR_MONOLITH.md`](docs/architecture/MODULAR_MONOLITH.md) |
+| **Enhancement plan (active)** | [`docs/architecture/ARCHITECTURE_ENHANCEMENT_PLAN.md`](docs/architecture/ARCHITECTURE_ENHANCEMENT_PLAN.md) |
+| **Staging deploy checklist** | [`docs/ops/STAGING_DEPLOYMENT_CHECKLIST.md`](docs/ops/STAGING_DEPLOYMENT_CHECKLIST.md) |
 | **Solution diagram** | [`docs/architecture/SOLUTION_DIAGRAM.md`](docs/architecture/SOLUTION_DIAGRAM.md) |
 
 ```mermaid

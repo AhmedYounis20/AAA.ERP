@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace ERP.Infrastructure.Repositories.BaseRepositories;
 

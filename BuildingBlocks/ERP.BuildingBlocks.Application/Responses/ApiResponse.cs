@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 
-namespace Shared.Responses;
+namespace ERP.BuildingBlocks.Application.Responses;
 
 public interface IApiResponse
 {

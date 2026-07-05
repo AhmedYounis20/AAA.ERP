@@ -1,7 +1,7 @@
 using Inventory.Domain.Models.Entities.Items;
 using Inventory.Domain.Models.Entities.Products;
-using ERP.Shared.BaseEntities.Attachments;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities.Variants;
 

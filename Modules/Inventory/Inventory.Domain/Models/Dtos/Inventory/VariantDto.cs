@@ -1,6 +1,6 @@
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using System.Text.Json.Serialization;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Entities.Items;

@@ -2,7 +2,7 @@ using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
 using Inventory.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace ERP.IntegrationTests.Inventory;
 

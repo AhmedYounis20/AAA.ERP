@@ -4,8 +4,8 @@ using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.Services.BaseServices;
 using Serilog;
-using Shared.BaseEntities;
-using Shared.Constants;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

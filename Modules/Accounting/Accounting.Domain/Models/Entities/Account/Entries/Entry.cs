@@ -1,7 +1,7 @@
 ﻿using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Domain.Models.Entities.Entries;
 

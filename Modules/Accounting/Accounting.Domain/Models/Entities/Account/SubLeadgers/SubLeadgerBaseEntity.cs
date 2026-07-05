@@ -1,5 +1,5 @@
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Domain.Models.Entities.SubLeadgers;
 

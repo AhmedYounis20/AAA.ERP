@@ -203,6 +203,52 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
         entryCount.Should().Be(1);
     }
 
+    [Fact]
+    public async Task Issue_with_sufficient_stock_decreases_balance_and_posts_gl()
+    {
+        await using var factory = new IntegrationTestWebApplicationFactory();
+        await using var scope = factory.Services.CreateAsyncScope();
+        await InventoryTestDataSeeder.SeedAsync(scope.ServiceProvider, initialStockBalance: 20);
+
+        var service = scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        const decimal issueQuantity = 8;
+        const decimal totalCost = 80;
+
+        var result = await service.Create(new InventoryTransactionCreateCommand
+        {
+            TransactionType = InventoryTransactionType.Issue,
+            TransactionDate = InventoryTestIds.TransactionDate,
+            BranchId = InventoryTestIds.Branch1Id,
+            TransactionPartyId = InventoryTestIds.PartyAccountId,
+            Items =
+            [
+                new InventoryTransactionItemCreateDto
+                {
+                    VariantId = InventoryTestIds.VariantId,
+                    PackingUnitId = InventoryTestIds.PackingUnitId,
+                    Quantity = issueQuantity,
+                    TotalCost = totalCost
+                }
+            ]
+        });
+
+        result.IsSuccess.Should().BeTrue(result.Errors?.FirstOrDefault()?.MessageKey);
+
+        var stock = await InventoryTestDataSeeder.GetStockBalanceAsync(
+            scope.ServiceProvider,
+            InventoryTestIds.Branch1Id);
+        stock.Should().Be(12);
+
+        var entry = await InventoryTestDataSeeder.GetLatestEntryWithLinesAsync(scope.ServiceProvider);
+        entry.Should().NotBeNull();
+
+        var debit = entry!.FinancialTransactions.Single(t => t.AccountNature == AccountNature.Debit);
+        var credit = entry.FinancialTransactions.Single(t => t.AccountNature == AccountNature.Credit);
+        debit.ChartOfAccountId.Should().Be(InventoryTestIds.PartyAccountId);
+        credit.ChartOfAccountId.Should().Be(InventoryTestIds.Branch1CoaId);
+        debit.Amount.Should().Be(totalCost);
+    }
+
     private static void AssertReceiptGlLines(Entry entry, decimal totalAmount)
     {
         var debit = entry.FinancialTransactions.Single(t => t.AccountNature == AccountNature.Debit);

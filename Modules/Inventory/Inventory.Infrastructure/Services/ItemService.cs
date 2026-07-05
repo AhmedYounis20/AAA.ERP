@@ -8,7 +8,7 @@ using Inventory.Application.Commands.Items;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Items;
 using System.Text.RegularExpressions;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 public class ItemService :

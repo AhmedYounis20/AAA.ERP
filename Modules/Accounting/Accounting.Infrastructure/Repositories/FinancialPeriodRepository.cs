@@ -1,9 +1,9 @@
 using Accounting.Application.Repositories;
-using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Dtos.FinancialPeriods;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Repositories.BaseRepositories;
+using Inventory.Contracts.Integration;
 
 namespace Accounting.Infrastructure.Repositories;
 
@@ -11,9 +11,9 @@ public class FinancialPeriodRepository : BaseRepository<FinancialPeriod>, IFinan
 {
     private readonly DbSet<FinancialPeriod> _dbset;
     private readonly IApplicationDbContext _context;
-    private readonly IFinancialPeriodUsageQueries _usageQueries;
+    private readonly IFinancialPeriodInventoryUsageQueries _usageQueries;
 
-    public FinancialPeriodRepository(IApplicationDbContext context, IFinancialPeriodUsageQueries usageQueries) : base(context)
+    public FinancialPeriodRepository(IApplicationDbContext context, IFinancialPeriodInventoryUsageQueries usageQueries) : base(context)
     {
         _dbset = context.Set<FinancialPeriod>();
         _context = context;
@@ -71,7 +71,7 @@ public class FinancialPeriodRepository : BaseRepository<FinancialPeriod>, IFinan
         => _context.Set<Entry>().AnyAsync(e => e.FinancialPeriodId == id);
 
     public Task<bool> IsUsedInInventoryTransactions(Guid id)
-        => _usageQueries.IsUsedInInventoryTransactions(id);
+        => _usageQueries.IsUsedInInventoryTransactionsAsync(id);
 
     public async Task<bool> IsLastFinancialPeriod(Guid id)
     {

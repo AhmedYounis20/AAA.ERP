@@ -1,4 +1,4 @@
-using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Inventory.Application.Commands.PackingUnits;
 using Inventory.Domain.Models.Entities.PackingUnits;
 

@@ -12,13 +12,15 @@ Product catalog (products, variants, attributes), stock balances, inventory tran
 
 | Project | Role |
 |---------|------|
-| `Inventory.Domain` | DTOs and module-local models. **Entities remain in `ERP.Domain`** for most aggregates (transitional). |
-| `Inventory.Application` | Commands, validators, repository/service interfaces. |
+| `Inventory.Domain` | Entities, DTOs (no `Accounting.Domain` reference). |
+| `Inventory.Application` | Commands, validators, repository/service interfaces. References **`Accounting.Contracts`** only for cross-module DTOs. |
+| `Inventory.Contracts` | Public ports for other modules (`IFinancialPeriodInventoryUsageQueries`, …). |
 | `Inventory.Infrastructure` | Handlers, repositories, services, `*DbConfig`, `InventoryModuleExtensions`. |
 
 ```
 Modules/Inventory/
-├── Inventory.Domain/Models/          ← DTOs; entities still in ERP.Domain
+├── Inventory.Contracts/Integration/  ← cross-module query ports
+├── Inventory.Domain/
 ├── Inventory.Application/
 │   ├── Commands/{Aggregate}/
 │   ├── Validators/{Aggregate}/

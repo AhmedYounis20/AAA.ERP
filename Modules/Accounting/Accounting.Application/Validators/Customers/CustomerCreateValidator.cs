@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.Customers;
-using Accounting.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+using Accounting.Application.Validators.Account.CommandValidators.SubLeadgers.BaseSubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using FluentValidation;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Application.Validators.Customers;

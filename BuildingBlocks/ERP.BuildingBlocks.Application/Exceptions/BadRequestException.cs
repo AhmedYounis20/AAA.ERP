@@ -1,4 +1,4 @@
-namespace Shared.Exceptions;
+namespace ERP.BuildingBlocks.Application.Exceptions;
 
 public class BadRequestException : Exception
 {

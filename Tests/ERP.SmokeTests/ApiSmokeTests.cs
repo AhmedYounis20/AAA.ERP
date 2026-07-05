@@ -42,6 +42,7 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
     [InlineData("/api/Taxes")]
     [InlineData("/api/StockBalances")]
     [InlineData("/api/ChartOfAccounts")]
+    [InlineData("/api/InventoryTransfer")]
     public async Task Protected_endpoints_require_authentication(string path)
     {
         var response = await _client.GetAsync(path);
@@ -94,5 +95,26 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
             HttpStatusCode.BadRequest,
             HttpStatusCode.NotFound,
             HttpStatusCode.UnprocessableEntity);
+    }
+}
+
+/// <summary>Production-environment smoke checks (Phase 3).</summary>
+public class ProductionApiSmokeTests : IClassFixture<ErpProductionWebApplicationFactory>
+{
+    private readonly HttpClient _client;
+
+    public ProductionApiSmokeTests(ErpProductionWebApplicationFactory factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+    [Theory]
+    [InlineData("/api/Dbwork/export/account")]
+    [InlineData("/api/Dbwork/import/account")]
+    public async Task Dbwork_endpoints_return_not_found_outside_development(string path)
+    {
+        var response = await _client.GetAsync(path);
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

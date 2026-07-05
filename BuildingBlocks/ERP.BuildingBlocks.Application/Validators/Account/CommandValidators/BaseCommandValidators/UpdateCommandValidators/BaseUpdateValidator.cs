@@ -1,0 +1,12 @@
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
+using FluentValidation;
+
+namespace ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.UpdateCommandValidators;
+
+public class BaseUpdateValidator<TCommand, TResponse> : AbstractValidator<TCommand> where TCommand : BaseUpdateCommand<TResponse>
+{
+    public BaseUpdateValidator()
+    {
+        _ = RuleFor(e => e.Notes).MaximumLength(300);
+    }
+}

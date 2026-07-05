@@ -1,3 +1,4 @@
+using Inventory.Domain.Models.Dtos;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.SellingPrices;
 using Inventory.Domain.Models.Entities.SellingPrices;

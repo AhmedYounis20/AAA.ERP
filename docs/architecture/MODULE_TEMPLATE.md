@@ -20,6 +20,26 @@ Full roadmap: [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) · EF pattern: [CONTR
 
 ---
 
+## Application layer — hybrid CQRS (official pattern)
+
+**Phase 7 standard.** New features must follow this split:
+
+| Operation | Path | Examples |
+|-----------|------|----------|
+| **Create / Update** (state change) | `ISender.Send(command)` → MediatR `*CommandHandler` in `{Module}.Infrastructure` | `TaxCreateCommand`, `InventoryTransactionCreateCommand` |
+| **Read / Delete / Paginate** (queries & simple deletes) | `I{Aggregate}Service` on Application, implemented in Infrastructure | `ReadAllDtosPaginated`, `GetWithItems`, `Delete(Guid)` |
+
+**Rules:**
+
+- Commands and FluentValidation validators live in `{Module}.Application` (not Domain).
+- Handlers own business rules for writes; services own persistence orchestration for reads.
+- Cross-module calls use `*.Contracts` ports only (`IAccountingIntegrationService`, `IAttachmentCrossModulePort`, …).
+- Optional later: high-traffic reads may migrate to MediatR `IQuery<T>` — not required for new CRUD.
+
+**Base command hierarchy:** `ERP.BuildingBlocks.Application.Commands` → module commands (e.g. `BaseSubLeadgerCreateCommand` in `Accounting.Application.Commands`).
+
+---
+
 ## Target layout (per module)
 
 ```
@@ -34,10 +54,12 @@ Modules/{ModuleName}/
 
 ```
 ERP.Host/
-├── Controllers/               # Stays in host until Phase 3+ controller move
-├── Migrations/                # Host owns migrations until ERP.Persistence exists
+├── Controllers/               # Composition root API surface
 └── Persistence/
-    └── ApplicationDbContextFactory.cs   # Register module EF configs for dotnet ef
+    └── ApplicationDbContextFactory.cs   # Design-time factory; `dotnet ef` startup project
+
+ERP.Persistence/
+└── Migrations/                # EF migrations assembly (`MigrationsAssembly("ERP.Persistence")`)
 ```
 
 ---

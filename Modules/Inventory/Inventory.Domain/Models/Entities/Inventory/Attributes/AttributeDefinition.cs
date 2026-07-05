@@ -1,7 +1,7 @@
 using Inventory.Domain.Models.Entities.AttributeDefinitions;
 using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Variants;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities.Attributes;
 

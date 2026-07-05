@@ -24,7 +24,7 @@ public class ModuleNameResolverTests
 
     [Theory]
     [InlineData(typeof(ERP.Host.Controllers.Inventory.ColorsController), "Inventory")]
-    [InlineData(typeof(ERP.Host.Controllers.Account.CurrenciesController), "Accounting")]
+    [InlineData(typeof(ERP.Host.Controllers.Accounting.CurrenciesController), "Accounting")]
     [InlineData(typeof(ERP.Host.Controllers.Identity.AuthController), "Identity")]
     [InlineData(typeof(ERP.Host.Controllers.Audit.AuditLogsController), "Platform")]
     public void FromType_resolves_controller_namespace(Type type, string expectedModule)

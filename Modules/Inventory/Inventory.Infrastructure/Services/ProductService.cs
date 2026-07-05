@@ -1,5 +1,4 @@
-using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account;
+using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
@@ -7,15 +6,15 @@ using Inventory.Infrastructure.Validation;
 using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
 using Inventory.Application.Services;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.ExpiryLevels;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Products;
 using System.Text.RegularExpressions;
 using Inventory.Domain.Models.Entities.Variants;
-using ERP.Shared.BaseEntities.Attachments;
-using Shared.Constants;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -28,7 +27,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private readonly IBaseRepository<InventoryThreshold> _inventoryThresholdRepository;
     private readonly IBaseRepository<ExpiryLevel> _expiryLevelRepository;
     private readonly IBaseRepository<ProductAttachment> _productAttachmentRepository;
-    private readonly IAttachmentRepository _attachmentRepository;
+    private readonly IAttachmentCrossModulePort _attachmentPort;
     private readonly IProductAttributeDefinitionRepository _productAttributeDefinitionRepository;
     private readonly IBaseRepository<ProductSellingPriceDiscount> _productSellingPriceDiscountRepository;
     private readonly IBaseRepository<ProductPackingUnit> _productPackingUnitRepository;
@@ -57,7 +56,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
         IBaseRepository<ExpiryLevel> expiryLevelRepository,
         IBaseRepository<ProductAttachment> productAttachmentRepository,
-        IAttachmentRepository attachmentRepository,
+        IAttachmentCrossModulePort attachmentPort,
         IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
         IBaseRepository<ProductSellingPriceDiscount> productSellingPriceDiscountRepository,
         IBaseRepository<ProductPackingUnit> productPackingUnitRepository,
@@ -85,7 +84,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         _inventoryThresholdRepository = inventoryThresholdRepository;
         _expiryLevelRepository = expiryLevelRepository;
         _productAttachmentRepository = productAttachmentRepository;
-        _attachmentRepository = attachmentRepository;
+        _attachmentPort = attachmentPort;
         _productAttributeDefinitionRepository = productAttributeDefinitionRepository;
         _productSellingPriceDiscountRepository = productSellingPriceDiscountRepository;
         _productPackingUnitRepository = productPackingUnitRepository;
@@ -572,7 +571,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             // Now safely delete orphaned Attachments (no constraint conflicts)
 
-            await _attachmentRepository.ExecuteDeleteAsync(e => attachmentsIds.Contains(e.Id));
+            await _attachmentPort.DeleteByIdsAsync(attachmentsIds);
 
             await _unitOfWork.CommitAsync();
 
@@ -1297,7 +1296,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (productAttachments.Any())
             await _productAttachmentRepository.Delete(productAttachments);
         if (attachmentIds?.Any() == true)
-            await _attachmentRepository.ExecuteDeleteAsync(e => attachmentIds.Contains(e.Id));
+            await _attachmentPort.DeleteByIdsAsync(attachmentIds.ToList());
     }
 
     private async Task<ApiResponse<bool>> UpdateProductVariants(Product product, ProductUpdateCommand command)

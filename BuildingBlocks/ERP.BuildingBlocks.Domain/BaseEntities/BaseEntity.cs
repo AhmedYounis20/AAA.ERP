@@ -1,4 +1,4 @@
-﻿namespace Shared.BaseEntities;
+﻿namespace ERP.BuildingBlocks.Domain.Entities;
 
 public class BaseEntity
 {

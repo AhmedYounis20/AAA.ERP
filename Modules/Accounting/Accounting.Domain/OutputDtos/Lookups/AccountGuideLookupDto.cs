@@ -1,4 +1,4 @@
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;
 

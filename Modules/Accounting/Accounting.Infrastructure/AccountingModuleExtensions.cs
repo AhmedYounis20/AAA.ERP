@@ -62,8 +62,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<IInventoryCatalogValidationQueries, InventoryCatalogValidationQueries>();
         services.AddScoped<IInventoryAccountingDisplayQueries, InventoryAccountingDisplayQueries>();
+        services.AddScoped<IAttachmentCrossModulePort, AttachmentCrossModulePort>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-        services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
         services.AddScoped(typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
 
         return services;

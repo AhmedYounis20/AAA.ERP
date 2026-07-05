@@ -1,10 +1,10 @@
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.Repositories.BaseRepositories;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using System.Linq.Expressions;
 
 namespace Inventory.Infrastructure.Repositories;

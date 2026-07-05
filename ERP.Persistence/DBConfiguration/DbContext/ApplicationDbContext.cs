@@ -1,7 +1,7 @@
 using ERP.Infrastructure.DBConfiguration.Config.Identity;
 using Identity.Application;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Shared.BaseEntities.Identity;
+using ERP.BuildingBlocks.Domain.Entities.Identity;
 using Inventory.Domain.Models.Entities.Attributes;
 
 namespace ERP.Infrastructure.DBConfiguration.DbContext;

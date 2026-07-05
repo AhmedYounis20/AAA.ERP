@@ -2,7 +2,7 @@ using Accounting.Application.Services;
 using Accounting.Application.Commands.CombinedEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Shared;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Infrastructure.Handlers.CombinedEntries;
 

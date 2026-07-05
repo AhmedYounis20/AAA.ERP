@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.Banks;
-using Accounting.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+using Accounting.Application.Validators.Account.CommandValidators.SubLeadgers.BaseSubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using FluentValidation;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Application.Validators.Banks;
 

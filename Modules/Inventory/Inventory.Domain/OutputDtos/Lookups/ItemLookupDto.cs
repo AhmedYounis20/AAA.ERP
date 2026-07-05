@@ -1,5 +1,5 @@
-using Shared.BaseEntities;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Inventory.Domain.OutputDtos.Lookups;
 

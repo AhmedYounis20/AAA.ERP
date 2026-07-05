@@ -1,3 +1,3 @@
 global using FluentValidation;
-global using Shared.BaseEntities;
-global using Shared.Responses;
+global using ERP.BuildingBlocks.Domain.Entities;
+global using ERP.BuildingBlocks.Application.Responses;

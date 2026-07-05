@@ -1,16 +1,17 @@
+using Accounting.Contracts.Dtos;
 using Accounting.Domain.OutputDtos;
 using Accounting.Application.Commands.Entries;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
-using ERP.Shared.BaseEntities.Attachments;
-using Shared.Constants;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Infrastructure.Services;
 

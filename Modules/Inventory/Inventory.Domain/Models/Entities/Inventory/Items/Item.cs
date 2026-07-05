@@ -1,4 +1,4 @@
-﻿using Shared.BaseEntities;
+﻿using ERP.BuildingBlocks.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory.Domain.Models.Entities.Items;

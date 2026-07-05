@@ -2,10 +2,10 @@ using FluentValidation;
 using Mapster;
 using MediatR;
 using Serilog;
-using Shared.BaseEntities;
-using Shared.Responses;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.Responses;
 
-namespace Shared.Behaviors;
+namespace ERP.BuildingBlocks.Application.Behaviors;
 
 public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
     where TRequest : IRequest<TResult>

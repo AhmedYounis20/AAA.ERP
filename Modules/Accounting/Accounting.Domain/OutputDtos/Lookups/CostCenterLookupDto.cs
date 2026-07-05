@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 using Accounting.Domain.Models.Entities.CostCenters;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;
 

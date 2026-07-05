@@ -1,4 +1,4 @@
-namespace Shared.Responses;
+namespace ERP.BuildingBlocks.Application.Responses;
 
 public class MessageTemplate
 {

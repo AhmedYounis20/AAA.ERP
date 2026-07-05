@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Domain.Entities;
-using Accounting.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+using Accounting.Application.Validators.Account.CommandValidators.SubLeadgers.BaseSubLeadgers;
 using FluentValidation;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Application.Validators.Taxes;
 

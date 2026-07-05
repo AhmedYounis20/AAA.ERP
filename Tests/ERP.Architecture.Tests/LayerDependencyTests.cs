@@ -71,7 +71,7 @@ public class LayerDependencyTests
     [Fact]
     public void Shared_should_not_reference_Application_Domain_or_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(global::Shared.Constants.ErrorMessages).Assembly)
+        var result = Types.InAssembly(typeof(global::ERP.BuildingBlocks.Application.Constants.ErrorMessages).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
             .And()
@@ -86,7 +86,7 @@ public class LayerDependencyTests
     [Fact]
     public void Identity_Domain_should_not_reference_Application_Domain_or_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(global::Shared.BaseEntities.Identity.ApplicationUser).Assembly)
+        var result = Types.InAssembly(typeof(global::ERP.BuildingBlocks.Domain.Entities.Identity.ApplicationUser).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
             .And()
@@ -127,7 +127,7 @@ public class LayerDependencyTests
     [Fact]
     public void BuildingBlocks_Domain_should_not_reference_Application_Domain_or_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(global::Shared.BaseEntities.BaseEntity).Assembly)
+        var result = Types.InAssembly(typeof(global::ERP.BuildingBlocks.Domain.Entities.BaseEntity).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
             .And()
@@ -142,7 +142,7 @@ public class LayerDependencyTests
     [Fact]
     public void BuildingBlocks_Application_should_not_reference_Domain_or_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(global::Shared.DTOs.PaginatedResult<>).Assembly)
+        var result = Types.InAssembly(typeof(global::ERP.BuildingBlocks.Application.DTOs.PaginatedResult<>).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Domain")
             .And()

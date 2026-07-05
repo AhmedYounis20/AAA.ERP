@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.BaseEntities;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.DTOs;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 

@@ -1,6 +1,6 @@
 using Inventory.Domain.Models.Entities.ExpiryLevels;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
-using Shared.BaseEntities;
+using ERP.BuildingBlocks.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using Inventory.Domain.Models.Entities.Items;
 

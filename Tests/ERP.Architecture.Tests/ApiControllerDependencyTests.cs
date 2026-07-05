@@ -5,7 +5,7 @@ namespace ERP.Architecture.Tests;
 
 /// <summary>
 /// Phase 0 task 0.1.5 — API controllers must not depend on Infrastructure implementations.
-/// Legacy exception: <see cref="ERP.Host.Controllers.Account.DbworkController"/> (seed tooling; remove in Phase 3).
+/// Legacy exception: <see cref="ERP.Host.Controllers.Accounting.DbWorkController"/> (seed tooling; guarded by <see cref="ERP.Host.Security.DevelopmentOnlyAttribute"/>).
 /// </summary>
 public class ApiControllerDependencyTests
 {
@@ -16,7 +16,7 @@ public class ApiControllerDependencyTests
             .That()
             .ResideInNamespaceStartingWith("ERP.Host.Controllers")
             .And()
-            .DoNotHaveName("DbworkController")
+            .DoNotHaveName("DbWorkController")
             .Should()
             .NotHaveDependencyOn("ERP.Persistence")
             .GetResult();

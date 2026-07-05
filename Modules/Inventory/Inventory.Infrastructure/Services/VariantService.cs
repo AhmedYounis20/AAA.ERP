@@ -1,5 +1,3 @@
-using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account;
 using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
@@ -15,9 +13,9 @@ using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Variants;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using ERP.Shared.BaseEntities.Attachments;
-using Shared.DTOs;
-using Shared.Constants;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
+using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -42,7 +40,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
     private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
     private readonly IBaseRepository<VariantPackingUnitSellingPrice> _variantPackingUnitSellingPriceRepository;
     private readonly IBaseRepository<VariantAttachment> _variantAttachmentRepository;
-    private readonly IAttachmentRepository _attachmentRepository;
+    private readonly IAttachmentCrossModulePort _attachmentPort;
 
     public VariantService(
         IVariantRepository repository,
@@ -63,7 +61,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
         IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IBaseRepository<VariantAttachment> variantAttachmentRepository,
-        IAttachmentRepository attachmentRepository,
+        IAttachmentCrossModulePort attachmentPort,
         IUnitOfWork unitOfWork) : base(repository)
     {
         _repository = repository;
@@ -84,7 +82,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         _variantPackingUnitRepository = variantPackingUnitRepository;
         _variantPackingUnitSellingPriceRepository = variantPackingUnitSellingPriceRepository;
         _variantAttachmentRepository = variantAttachmentRepository;
-        _attachmentRepository = attachmentRepository;
+        _attachmentPort = attachmentPort;
         _unitOfWork = unitOfWork;
     }
     public virtual async Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
@@ -1586,12 +1584,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         {
             foreach (var attachmentId in attachmentIds)
             {
-                // Load the entity first, then delete it (avoids any EF Core ExecuteDeleteAsync issues)
-                var attachment = await _attachmentRepository.Get(attachmentId);
-                if (attachment != null)
-                {
-                    await _attachmentRepository.Delete(attachment);
-                }
+                await _attachmentPort.DeleteIfExistsAsync(attachmentId);
             }
         }
 

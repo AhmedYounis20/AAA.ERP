@@ -1,5 +1,5 @@
 using Identity.Application.Models.Dtos;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Identity.Application;
 

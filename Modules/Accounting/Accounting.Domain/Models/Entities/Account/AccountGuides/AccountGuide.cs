@@ -1,4 +1,4 @@
-﻿using Shared.BaseEntities;
+﻿using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Domain.Models.Entities.AccountGuides;
 

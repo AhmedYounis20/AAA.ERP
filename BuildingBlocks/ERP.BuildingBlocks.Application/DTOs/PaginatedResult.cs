@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Shared.DTOs;
+namespace ERP.BuildingBlocks.Application.DTOs;
 
 /// <summary>
 /// Represents a paginated result set with metadata for client-side pagination

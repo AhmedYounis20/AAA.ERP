@@ -1,8 +1,9 @@
 using Accounting.Domain.OutputDtos;
+using Accounting.Contracts.Dtos;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Accounting.Application.Commands.Entries;
 using Accounting.Domain.Models.Entities.Entries;
-using Shared.Responses;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 

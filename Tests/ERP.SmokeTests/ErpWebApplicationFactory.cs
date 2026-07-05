@@ -15,6 +15,11 @@ public class ErpWebApplicationFactory : WebApplicationFactory<Program>
     {
         builder.UseEnvironment("Development");
 
+        ConfigureTestServices(builder);
+    }
+
+    internal static void ConfigureTestServices(IWebHostBuilder builder)
+    {
         builder.ConfigureServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<ApplicationDbContext>));
@@ -30,5 +35,15 @@ public class ErpWebApplicationFactory : WebApplicationFactory<Program>
             services.RemoveAll<IItemRepository>();
             services.AddScoped(_ => new Mock<IItemRepository>().Object);
         });
+    }
+}
+
+/// <summary>Smoke host configured as Production (no SQL).</summary>
+public sealed class ErpProductionWebApplicationFactory : WebApplicationFactory<Program>
+{
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Production");
+        ErpWebApplicationFactory.ConfigureTestServices(builder);
     }
 }

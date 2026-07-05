@@ -1,6 +1,6 @@
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Validation;
 

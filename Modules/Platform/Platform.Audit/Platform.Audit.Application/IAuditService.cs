@@ -1,6 +1,6 @@
-using Shared.BaseEntities;
-using Shared.DTOs;
-using Shared.Responses;
+using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Platform.Audit.Application;
 

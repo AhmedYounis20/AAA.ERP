@@ -25,11 +25,10 @@
     <ProjectReference Include="..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Inventory\Inventory.Infrastructure\Inventory.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
-    <ProjectReference Include="..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Platform\Platform.Infrastructure\Platform.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Platform\Platform.Localization\Platform.Localization.csproj" />
-    <ProjectReference Include="..\Shared\ERP.Shared.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="seeding\attributes\" />

@@ -1,4 +1,4 @@
-﻿using Shared.BaseEntities;
+﻿using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities.SellingPrices;
 

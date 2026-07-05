@@ -16,9 +16,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Platform.Infrastructure;
 using Platform.Localization;
-using Shared.BaseEntities.Identity;
-using Shared.Behaviors;
-using Shared.Exceptions.Handler;
+using ERP.BuildingBlocks.Application.Behaviors;
+using ERP.BuildingBlocks.Application.Exceptions.Handler;
 
 namespace ERP.Host.Utilities;
 
@@ -27,7 +26,6 @@ public static class WebBuilderExtensions
     public static void AddProjectUtilities(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
-        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddEndpointsApiExplorer();
         services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
         services.AddValidatorsFromAssembly(typeof(TaxCreateValidator).Assembly);
@@ -105,7 +103,7 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("ERP.Host"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection"), b => b.MigrationsAssembly("ERP.Persistence"));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         });

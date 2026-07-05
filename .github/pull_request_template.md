@@ -13,6 +13,7 @@
 
 - [ ] `dotnet build` succeeds
 - [ ] `dotnet test` succeeds (unit + architecture + smoke)
+- [ ] **No nullable reference warnings (CS86\*\*) in changed `.cs` files** — enforced on PR via `scripts/check-nullable-on-changed-files.sh`
 - [ ] **No new repositories added to `IUnitOfWork`** (use dedicated repository injection)
 - [ ] MediatR registered only in `WebBuilderExtensions` (not in Infrastructure)
 - [ ] No duplicate DI registrations in `InfrasctructureExtensions`

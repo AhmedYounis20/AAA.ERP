@@ -1,4 +1,4 @@
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.Entries;

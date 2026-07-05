@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace ERP.UnitTests.DTOs;
 

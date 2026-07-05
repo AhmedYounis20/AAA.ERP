@@ -1,39 +1,23 @@
-# Phase 6 sign-off — pre-production enhancements
+# Phase 6 sign-off — Namespace normalization
 
-**Goal:** Safe improvements while the system is not yet live — shared DTO consolidation, validation DRY, naming, exceptions.  
-**Branch:** `Refactor` · **Date:** July 2026
+**Goal:** One namespace per physical project; retire `Shared.*` drift.  
+**Plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md) Phase 6  
+**Date:** July 2026
 
 ---
 
 ## Exit criteria
 
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| Single shared `AttachmentDto` (Accounting + Inventory) | ✅ | `Shared/DTOs/AttachmentDto.cs`; Accounting duplicate removed |
-| Attachment mapping extensions in Shared | ✅ | `Shared/Extensions/AttachmentsExtensions.cs` |
-| Entry header FluentValidation rules (DRY) | ✅ | `IEntryHeaderCommand` + `EntryHeaderRulesValidator`; 12 entry validators refactored |
-| Identity auth DTO naming (`*Dto` not `*DTO`) | ✅ | `LoginRequestDto`, `RegisterRequestDto`, `LoginResponseDto` |
-| Specific exception types | ✅ | `ConflictException`, `ForbiddenException` + `CustomExceptionHandler` wiring |
-| Full-solution `dotnet format` | ✅ | Applied July 2026 |
+| ID | Task | Status | Evidence |
+|----|------|--------|----------|
+| 6.1 | ADR-009 namespace policy | ✅ | [adr/009-namespace-policy.md](./adr/009-namespace-policy.md) |
+| 6.2–6.3 | Migrate `Shared.*` → `ERP.BuildingBlocks.*` | ✅ | Bulk migration; arch guard `BuildingBlocks_and_modules_should_not_declare_new_Shared_namespaces` |
+| 6.4 | `Controllers/Account/` → `Controllers/Accounting/` | ✅ | 22 controllers; routes unchanged |
+| 6.5 | `ERP.Infrastructure.*` → `ERP.Persistence.*` | ⏭️ | Cosmetic; deferred (low impact) |
 
 ---
 
-## Build / test metrics
+## Notes
 
-| Metric | Result |
-|--------|--------|
-| `dotnet build AAA.ERP.sln -c Release` | Green |
-| `dotnet test AAA.ERP.sln -c Release` | 119 passed |
-
----
-
-## Still deferred
-
-_None — see [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md)._
-
----
-
-## Related
-
-- [PHASE5_SIGNOFF.md](./PHASE5_SIGNOFF.md)
-- [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md)
+- EF migration snapshots retain legacy type strings until next schema migration (expected).
+- `ERP.Shared.Resources` (Platform.Localization) unchanged — not kernel `Shared.*` debt.

@@ -1,7 +1,7 @@
 using ERP.BuildingBlocks.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Shared.BaseEntities.Identity;
+using ERP.BuildingBlocks.Domain.Entities.Identity;
 
 namespace ERP.Infrastructure.DBConfiguration.Config.Identity;
 

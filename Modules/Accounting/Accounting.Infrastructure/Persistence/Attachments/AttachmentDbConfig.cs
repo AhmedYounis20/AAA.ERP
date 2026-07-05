@@ -1,5 +1,5 @@
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
-using ERP.Shared.BaseEntities.Attachments;
+using ERP.BuildingBlocks.Domain.Entities.Attachments;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
 

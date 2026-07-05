@@ -1,4 +1,4 @@
-using Shared.DTOs;
+using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Inventory.Domain.OutputDtos.Lookups;
 

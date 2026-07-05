@@ -14,6 +14,7 @@ using Inventory.Infrastructure.Persistence.StockBalances;
 using Inventory.Infrastructure.Persistence.Variants;
 using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
+using Inventory.Contracts.Integration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Inventory.Domain.Models.Entities.ExpiryLevels;
@@ -76,6 +77,8 @@ public static class InventoryModuleExtensions
         services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
         services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
         services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+        services.AddScoped<IFinancialPeriodInventoryUsageQueries, FinancialPeriodInventoryUsageQueries>();
+        services.AddScoped<IInventoryQueryService, FinancialPeriodInventoryUsageQueries>();
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();

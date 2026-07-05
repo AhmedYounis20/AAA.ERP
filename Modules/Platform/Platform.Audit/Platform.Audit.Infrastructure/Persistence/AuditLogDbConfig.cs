@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shared.BaseEntities;
+using Platform.Audit.Application;
 using ERP.BuildingBlocks.Persistence;
 
 namespace Platform.Audit.Infrastructure.Persistence;

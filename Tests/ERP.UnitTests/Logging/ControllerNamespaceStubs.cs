@@ -3,7 +3,7 @@ namespace ERP.Host.Controllers.Inventory
     internal sealed class ColorsController;
 }
 
-namespace ERP.Host.Controllers.Account
+namespace ERP.Host.Controllers.Accounting
 {
     internal sealed class CurrenciesController;
 }

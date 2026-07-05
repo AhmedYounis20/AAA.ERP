@@ -1,3 +1,4 @@
+using Accounting.Contracts.Dtos;
 using Accounting.Domain.OutputDtos;
 using Accounting.Application.Commands.ReceiptEntries;
 using Accounting.Application.Commands.Entries;
