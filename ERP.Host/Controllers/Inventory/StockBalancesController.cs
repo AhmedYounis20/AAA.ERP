@@ -1,7 +1,7 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Domain.Models.Entities.Sizes;
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 

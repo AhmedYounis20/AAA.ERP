@@ -1,4 +1,4 @@
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Accounting.SubLeadgers;
 

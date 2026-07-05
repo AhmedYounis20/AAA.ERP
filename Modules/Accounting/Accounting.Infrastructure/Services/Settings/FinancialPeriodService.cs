@@ -1,0 +1,311 @@
+using Accounting.Application.Commands.FinancialPeriods;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
+using Accounting.Contracts.Dtos;
+using Accounting.Application.Dtos.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
+using ERP.Infrastructure.Services.BaseServices;
+using Inventory.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Constants;
+
+namespace Accounting.Infrastructure.Services;
+
+public class FinancialPeriodService :
+    BaseService<FinancialPeriod, FinancialPeriodCreateCommand, FinancialPeriodUpdateCommand>, IFinancialPeriodService
+{
+    private readonly IFinancialPeriodRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEntryRepository _entryRepository;
+    private readonly IFinancialPeriodInventoryUsageQueries _inventoryUsageQueries;
+
+    public FinancialPeriodService(
+        IFinancialPeriodRepository repository,
+        IUnitOfWork unitOfWork,
+        IEntryRepository entryRepository,
+        IFinancialPeriodInventoryUsageQueries inventoryUsageQueries) : base(repository)
+    {
+        _repository = repository;
+        _unitOfWork = unitOfWork;
+        _entryRepository = entryRepository;
+        _inventoryUsageQueries = inventoryUsageQueries;
+    }
+
+    public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
+        bool isValidate = true)
+    {
+        try
+        {
+            var validationResult = await ValidateCreate(command);
+            if (!validationResult.isValid)
+            {
+                return new ApiResponse<FinancialPeriod>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
+                };
+            }
+
+            FinancialPeriod? lastFinancialPeriod = await _repository.GetLastFinancialPeriod();
+            FinancialPeriod entity = command.Adapt<FinancialPeriod>();
+            if (lastFinancialPeriod != null)
+                entity.StartDate = lastFinancialPeriod.EndDate.AddTicks(1);
+
+            entity.EndDate = entity.StartDate.AddMonths(entity.PeriodTypeByMonth).AddTicks(-1);
+
+            entity = await _repository.Add(entity);
+
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entity,
+            };
+        }
+        catch (Exception)
+        {
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+            };
+        }
+    }
+
+    public async Task<ApiResponse<FinancialPeriod>> GetCurrentFinancailPeriod()
+    {
+        FinancialPeriod? currentFinancialPeriod = await _repository.GetCurrentFinancialPeroid();
+        if (currentFinancialPeriod == null)
+        {
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound } }
+            };
+        }
+
+        return new ApiResponse<FinancialPeriod>
+        {
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = currentFinancialPeriod
+        };
+    }
+
+    public override async Task<ApiResponse<FinancialPeriod>> Update(FinancialPeriodUpdateCommand command,
+        bool isValidate = false)
+    {
+        try
+        {
+            var validationResult = await ValidateUpdate(command);
+            if (!validationResult.isValid)
+            {
+                return new ApiResponse<FinancialPeriod>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = validationResult.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
+                };
+            }
+
+            FinancialPeriod? entity = validationResult.entity;
+            if (entity != null)
+            {
+                entity.YearNumber = command.YearNumber;
+                if (command.PeriodTypeByMonth != entity.PeriodTypeByMonth)
+                {
+                    entity.PeriodTypeByMonth = command.PeriodTypeByMonth;
+                    entity.EndDate = entity.StartDate.AddMonths(entity.PeriodTypeByMonth).AddTicks(-1);
+                }
+                await _repository.Update(entity);
+            }
+
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entity
+            };
+        }
+        catch (Exception)
+        {
+            return new ApiResponse<FinancialPeriod>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+            };
+        }
+    }
+
+    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(
+        FinancialPeriodCreateCommand command)
+    {
+        var result = await base.ValidateCreate(command);
+        bool isExisted = await _repository.IsExisted(command.YearNumber);
+        if (isExisted)
+        {
+            result.isValid = false;
+            result.errors.Add(ErrorMessages.FinancialPeriodWithYearNumberIsExisted);
+        }
+
+        return result;
+    }
+
+    protected override async Task<(bool isValid, List<string> errors, FinancialPeriod? entity)> ValidateUpdate(FinancialPeriodUpdateCommand command)
+    {
+        var result = await base.ValidateUpdate(command);
+
+        if (!result.isValid || result.entity == null)
+            return result;
+
+        if (command.YearNumber != result.entity.YearNumber)
+        {
+            var isUsedInEntries = await _repository.IsUsedInEntries(command.Id);
+            if (isUsedInEntries)
+            {
+                result.isValid = false;
+                result.errors.Add(ErrorMessages.FinancialTransactionIsUsedInEntriesCannotUpdateYearName);
+                return result;
+            }
+
+            var isUsedInInventoryTransactions = await _repository.IsUsedInInventoryTransactions(command.Id);
+            if (isUsedInInventoryTransactions)
+            {
+                result.isValid = false;
+                result.errors.Add(ErrorMessages.FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName);
+                return result;
+            }
+        }
+
+        if (command.PeriodTypeByMonth < result.entity.PeriodTypeByMonth)
+        {
+            var newEndDate = result.entity.StartDate.AddMonths(command.PeriodTypeByMonth).AddTicks(-1);
+            var isLast = await _repository.IsLastFinancialPeriod(command.Id);
+            if (!isLast)
+            {
+                result.isValid = false;
+                result.errors.Add(ErrorMessages.NotLastPeriod);
+            }
+
+            var isEntryAfterDateExist = await _entryRepository.EntryAfterThisDateExist(newEndDate);
+            if (isEntryAfterDateExist)
+            {
+                result.isValid = false;
+                result.errors.Add(ErrorMessages.ThereAreEntriesAfterNewEndDate);
+                return result;
+            }
+
+            var isInventoryTransactionAfterDateExist = await _inventoryUsageQueries.TransactionExistsAfterDateAsync(newEndDate);
+            if (isInventoryTransactionAfterDateExist)
+            {
+                result.isValid = false;
+                result.errors.Add(ErrorMessages.ThereAreInventoryTrasnsactionsAfterNewEndDate);
+                return result;
+            }
+        }
+
+        return result;
+    }
+
+    public async Task<ApiResponse<List<FinancialPeriodDto>>> GetDtos()
+    {
+        try
+        {
+            var entities = await _repository.GetDtos();
+            return new ApiResponse<List<FinancialPeriodDto>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entities
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<List<FinancialPeriodDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+            };
+        }
+    }
+
+    public async Task<ApiResponse<FinancialPeriodDto?>> GetDto(Guid id)
+    {
+        try
+        {
+            var entities = await _repository.GetDto(id);
+            return new ApiResponse<FinancialPeriodDto?>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entities
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<FinancialPeriodDto?>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+            };
+        }
+    }
+
+    public async Task<ApiResponse<FinancialPeriodDto>> GetNextDefaultdata()
+    {
+        try
+        {
+            var entities = await _repository.GetNextDefaultdata();
+            return new ApiResponse<FinancialPeriodDto>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entities
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<FinancialPeriodDto>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+            };
+        }
+    }
+
+    protected override async Task<(bool isValid, List<string> errors, FinancialPeriod? entity)> ValidateDelete(Guid id)
+    {
+        var result = await base.ValidateDelete(id);
+        if (!result.isValid)
+            return result;
+
+        var isLast = await _repository.IsLastFinancialPeriod(id);
+        if (!isLast)
+        {
+            result.isValid = false;
+            result.errors.Add(ErrorMessages.NotLastPeriod);
+        }
+
+        var isEntryAfterDateExist = await _repository.IsUsedInEntries(id);
+        if (isEntryAfterDateExist)
+        {
+            result.isValid = false;
+            result.errors.Add(ErrorMessages.FinancialPeriodIsUsedInEntries);
+            return result;
+        }
+
+        var isInventoryTransactionAfterDateExist = await _repository.IsUsedInInventoryTransactions(id);
+        if (isInventoryTransactionAfterDateExist)
+        {
+            result.isValid = false;
+            result.errors.Add(ErrorMessages.FinancialPeriodIsUsedInInventoryTransactions);
+            return result;
+        }
+
+        return result;
+    }
+}

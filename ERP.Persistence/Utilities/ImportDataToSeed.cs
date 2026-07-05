@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ERP.BuildingBlocks.Domain.Entities.Identity;
+using Identity.Domain;
 
 namespace ERP.Infrastructure.Utilities;
 

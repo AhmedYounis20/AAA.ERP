@@ -12,7 +12,7 @@ global using Mapster;
 global using ERP.BuildingBlocks.Application.Responses;
 global using System.Net;
 global using Accounting.Contracts.Dtos;
-global using Accounting.Domain.OutputDtos;
+global using Accounting.Application.Dtos.Entries;
 global using ERP.Infrastructure.Services.BaseServices;
 global using System.Numerics;
 global using Accounting.Domain.Utility;

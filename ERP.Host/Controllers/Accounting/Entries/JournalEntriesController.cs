@@ -1,7 +1,6 @@
-﻿using ERP.Host.Controllers.BaseControllers;
 using Accounting.Application.Commands.JournalEntries;
 using Accounting.Domain.Models.Entities.Entries;
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Accounting.Entries;
 

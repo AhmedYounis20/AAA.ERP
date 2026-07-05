@@ -15,7 +15,7 @@
     <ProjectReference Include="..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
     <ProjectReference Include="..\Modules\Inventory\Inventory.Domain\Inventory.Domain.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
-    <ProjectReference Include="..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Identity.Contracts\Identity.Contracts.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
     <ProjectReference Include="..\Modules\Platform\Platform.Localization\Platform.Localization.csproj" />
   </ItemGroup>

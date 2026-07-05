@@ -1,4 +1,4 @@
-using Inventory.Domain.Models.Dtos;
+using Inventory.Application.Dtos;
 using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Validation;

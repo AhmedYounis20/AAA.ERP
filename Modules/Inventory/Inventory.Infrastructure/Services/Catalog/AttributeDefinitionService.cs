@@ -1,0 +1,196 @@
+using Inventory.Application.Repositories;
+using Inventory.Application.Dtos;
+using Inventory.Domain.Models.Entities.Attributes;
+using ERP.Infrastructure.Services.BaseServices;
+using Inventory.Application.Commands.AttributeDefinitions;
+using Inventory.Application.Repositories;
+using Inventory.Application.Services;
+
+namespace Inventory.Infrastructure.Services;
+
+public class AttributeDefinitionService
+    : BaseSettingService<AttributeDefinition, AttributeDefinitionCreateCommand, AttributeDefinitionUpdateCommand>, IAttributeDefinitionService
+{
+    private readonly IAttributeDefinitionRepository _attributeDefinitionRepository;
+    private readonly IAttributeValueRepository _attributeValueRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AttributeDefinitionService(
+        IAttributeDefinitionRepository attributeDefinitionRepository,
+        IAttributeValueRepository attributeValueRepository,
+        IUnitOfWork unitOfWork)
+        : base(attributeDefinitionRepository)
+    {
+        _attributeDefinitionRepository = attributeDefinitionRepository;
+        _attributeValueRepository = attributeValueRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public override async Task<ApiResponse<AttributeDefinition>> Create(AttributeDefinitionCreateCommand command, bool isValidate = true)
+    {
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var predefinedValues = command.PredefinedValues;
+            command.PredefinedValues = [];
+            var createDefinitionResponse = await base.Create(command, isValidate);
+
+            if (!createDefinitionResponse.IsSuccess || createDefinitionResponse.Result is null)
+            {
+                await _unitOfWork.RollbackAsync();
+                return createDefinitionResponse;
+            }
+
+            if (predefinedValues is null || predefinedValues.Count == 0)
+            {
+                await _unitOfWork.CommitAsync();
+                return createDefinitionResponse;
+            }
+
+            var definitionId = createDefinitionResponse.Result.Id;
+
+            var valuesToCreate = predefinedValues
+                .Where(v => !string.IsNullOrWhiteSpace(v.Name) || !string.IsNullOrWhiteSpace(v.NameSecondLanguage))
+                .Select(v => new AttributeValue
+                {
+                    Name = v.Name,
+                    NameSecondLanguage = v.NameSecondLanguage,
+                    IsActive = v.IsActive,
+                    SortOrder = v.SortOrder,
+                    AttributeDefinitionId = definitionId
+                })
+                .ToList();
+
+            if (valuesToCreate.Count > 0)
+            {
+                await _attributeValueRepository.Add(valuesToCreate);
+            }
+
+            await _unitOfWork.CommitAsync();
+            return createDefinitionResponse;
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+            return new ApiResponse<AttributeDefinition>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                Errors = [new MessageTemplate { MessageKey = $"Failed to create attribute definition with values: {ex.Message}" }]
+            };
+        }
+    }
+
+    public async Task<AttributeDefinitionDto?> GetWithPredefinedValues(Guid id)
+    {
+        var entity = await _attributeDefinitionRepository.GetWithPredefinedValuesAsync(id);
+        if (entity is null)
+            return null;
+
+        return new AttributeDefinitionDto
+        {
+            Id = entity.Id,
+            IsActive = entity.IsActive,
+            Name = entity.Name,
+            NameSecondLanguage = entity.NameSecondLanguage,
+            PredefinedValues = entity.PredefinedValues.Select(e => e.Adapt<AttributeValueDto>()).ToList()
+        };
+    }
+
+    public async Task<List<AttributeDefinitionDto>> GetActiveAttributeDefinitions()
+    {
+        var entities = await _attributeDefinitionRepository.GetActiveAttributeDefinitionsAsync();
+        return entities.Select(entity => new AttributeDefinitionDto
+        {
+            Id = entity.Id,
+            IsActive = entity.IsActive,
+            Name = entity.Name,
+            NameSecondLanguage = entity.NameSecondLanguage,
+            PredefinedValues = entity.PredefinedValues.Select(e => e.Adapt<AttributeValueDto>()).ToList()
+        }).ToList();
+    }
+
+    public override async Task<ApiResponse<AttributeDefinition>> Update(AttributeDefinitionUpdateCommand command, bool isValidate = true)
+    {
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var predefinedValues = command.PredefinedValues;
+            command.PredefinedValues = [];
+            var updateDefinitionResponse = await base.Update(command, isValidate);
+            if (!updateDefinitionResponse.IsSuccess || updateDefinitionResponse.Result is null)
+            {
+                await _unitOfWork.RollbackAsync();
+                return updateDefinitionResponse;
+            }
+
+            if (predefinedValues is null)
+            {
+                await _unitOfWork.CommitAsync();
+                return updateDefinitionResponse;
+            }
+
+            var definitionId = updateDefinitionResponse.Result.Id;
+
+            var existingValues = await _attributeValueRepository.GetByAttributeDefinitionIdAsync(definitionId);
+            var existingById = existingValues.ToDictionary(v => v.Id, v => v);
+
+            var toCreate = new List<AttributeValue>();
+            var incomingIds = new HashSet<Guid>();
+
+            foreach (var v in predefinedValues)
+            {
+                if (!v.Id.HasValue || !existingById.ContainsKey(v.Id.Value))
+                {
+                    if (string.IsNullOrWhiteSpace(v.Name) && string.IsNullOrWhiteSpace(v.NameSecondLanguage))
+                        continue;
+
+                    toCreate.Add(new AttributeValue
+                    {
+                        Name = v.Name,
+                        NameSecondLanguage = v.NameSecondLanguage,
+                        IsActive = v.IsActive,
+                        SortOrder = v.SortOrder,
+                        AttributeDefinitionId = definitionId
+                    });
+                }
+                else
+                {
+                    incomingIds.Add(v.Id.Value);
+                    var ex = existingById[v.Id.Value];
+                    ex.Name = v.Name;
+                    ex.NameSecondLanguage = v.NameSecondLanguage;
+                    ex.IsActive = v.IsActive;
+                    ex.SortOrder = v.SortOrder;
+                    ex.AttributeDefinitionId = definitionId;
+                    await _attributeValueRepository.Update(ex);
+                }
+            }
+
+            if (toCreate.Count > 0)
+            {
+                await _attributeValueRepository.Add(toCreate);
+            }
+
+            var idsToKeep = new HashSet<Guid>(incomingIds.Where(id => id != Guid.Empty));
+            var toDelete = existingValues.Where(ev => !idsToKeep.Contains(ev.Id)).ToList();
+            if (toDelete.Count > 0)
+            {
+                await _attributeValueRepository.Delete(toDelete);
+            }
+
+            await _unitOfWork.CommitAsync();
+            return updateDefinitionResponse;
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+            return new ApiResponse<AttributeDefinition>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                Errors = [new MessageTemplate { MessageKey = $"Failed to update attribute definition with values: {ex.Message}" }]
+            };
+        }
+    }
+}

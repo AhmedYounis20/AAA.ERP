@@ -197,7 +197,7 @@ services.AddMediatR(config =>
 });
 ```
 
-**Controllers:** update `using` to `{Module}.Application.Commands` and `{Module}.Domain.Entities`. Controller stays in `ERP.Host` for now.
+**Controllers:** update `using` to `{Module}.Application.Commands` and `{Module}.Domain.Entities`. Controllers belong in `{Module}.Api` — see [MODULE_API_TEMPLATE.md](./MODULE_API_TEMPLATE.md) and [ADR-011](./adr/011-module-owned-api.md). Host wires them via `AddApplicationPart`.
 
 ---
 

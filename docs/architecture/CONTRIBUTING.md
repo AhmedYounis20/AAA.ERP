@@ -2,8 +2,9 @@
 
 Guidelines for adding code to the **modular monolith**.  
 **Migration history:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) (Phases 0–7 complete)  
-**Active forward plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)  
-**Extracting an aggregate?** Follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md).
+**Active forward plan:** [MODULE_API_MIGRATION_PLAN.md](./MODULE_API_MIGRATION_PLAN.md) (module-owned APIs)  
+**Extracting an aggregate?** Follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md).  
+**Adding/moving a controller?** Follow [MODULE_API_TEMPLATE.md](./MODULE_API_TEMPLATE.md).
 
 ## Current structure
 
@@ -13,13 +14,14 @@ ERP.Persistence/           → Shared EF kernel (ApplicationDbContext, base serv
 BuildingBlocks/
   ERP.BuildingBlocks.Domain/
   ERP.BuildingBlocks.Application/
+  ERP.BuildingBlocks.Api/        # Shared CRUD controller bases
   ERP.BuildingBlocks.Persistence/
   ERP.Shared/              → Thin shim (filter DTOs, ErrorMessages, exception handler)
 Modules/
-  Accounting/              → Domain · Application · Infrastructure · Contracts
-  Inventory/               → Domain · Application · Infrastructure
-  Identity/                → Domain · Application · Infrastructure
-  Platform/                → Audit · Caching · Localization · Infrastructure
+  Accounting/              → Domain · Application · Infrastructure · Contracts · Api (planned)
+  Inventory/               → Domain · Application · Infrastructure · Api (planned)
+  Identity/                → Domain · Application · Infrastructure · Api
+  Platform/                → Audit · Caching · Localization · Infrastructure · Api (planned)
 Tests/
   ERP.Architecture.Tests/
   ERP.IntegrationTests/
@@ -27,7 +29,31 @@ Tests/
   ERP.UnitTests/
 ```
 
-Retired (do **not** recreate): `ERP.Application`, `ERP.Domain`, `ERP.Infrastracture`, `ERP.API`, `Stack.API`, `Modules/Account`, `Modules/MainAPI`, `Modules/Shared`, per-module `*.API` scaffolds.
+Retired (do **not** recreate): `ERP.Application`, `ERP.Domain`, `ERP.Infrastracture`, `ERP.API`, `Stack.API`, `Modules/Account`, `Modules/MainAPI`, `Modules/Shared`, empty `*.API` scaffolds without controllers.
+
+## Folder layout (per module layer)
+
+Use **horizontal layers with feature subfolders** (e.g. `Commands/Entries/`, `Services/Entries/`):
+
+```
+{Module}.Application/
+  Commands/{Feature}/
+  Dtos/{Feature}/           # API/read models — not in Domain
+  Repositories/{Feature}/
+  Services/{Feature}/
+  Validators/{Feature}/
+
+{Module}.Infrastructure/
+  Handlers/{Feature}/
+  Repositories/{Feature}/
+  Services/{Feature}/
+  Persistence/
+
+{Module}.Api/
+  Controllers/{Feature}/    # HTTP only — references Application + BuildingBlocks.Api
+```
+
+See [CONTROLLER_MIGRATION_MAP.md](./CONTROLLER_MIGRATION_MAP.md) for feature folder names per aggregate.
 
 ## Where to put new code
 
@@ -43,7 +69,7 @@ Retired (do **not** recreate): `ERP.Application`, `ERP.Domain`, `ERP.Infrastract
 | New service interface | `{Module}.Application/Services/...` |
 | New service implementation | `{Module}.Infrastructure/Services/...` |
 | Cross-module integration (public API) | `{Module}.Contracts/` (e.g. `Accounting.Contracts`) |
-| New API endpoint | `ERP.Host/Controllers/{Account\|Inventory\|Identity\|Audit}/...` |
+| New API endpoint | `{Module}.Api/Controllers/{Feature}/...` — **not** `ERP.Host/Controllers/` |
 | EF configuration | `{Module}.Infrastructure/Persistence/...` + `ModuleModelConfigurationRegistry.Register(...)` |
 | Base entity / API envelope | `BuildingBlocks/ERP.BuildingBlocks.{Domain,Application}` |
 | Audit / cache / localization | `Modules/Platform/Platform.{Audit,Caching,Localization}/` |
@@ -55,6 +81,7 @@ Retired (do **not** recreate): `ERP.Application`, `ERP.Domain`, `ERP.Infrastract
 |---------|------|-----------------|
 | **BuildingBlocks.Domain** | `BaseEntity`, tree bases | Business entities |
 | **BuildingBlocks.Application** | `ApiResponse`, `PaginatedResult`, CQRS markers, behaviors, exceptions, `ValidationMessages` | Module-specific DTOs |
+| **BuildingBlocks.Api** | `BaseController`, `BaseTreeController`, shared CRUD bases | Module-specific controllers |
 | **BuildingBlocks.Persistence** | `IApplicationDbContext`, `ITransactionCoordinator`, `IUnitOfWork` (coordinator only) | Business repositories |
 | **ERP.Shared** | Filter DTOs, `ErrorMessages`, `CustomExceptionHandler`, `AttachmentDto` | Module business logic |
 | **Identity.*** | `ApplicationUser`, auth services, `ICurrentUser` | Accounting/Inventory rules |
@@ -98,7 +125,13 @@ MediatR is registered **only** in `ERP.Host/Utilities/WebBuilderExtensions.cs`.
 | `*.Infrastructure` | `ERP.Host`, other modules' Domain (except EF `*DbConfig` per ADR-007) |
 | `ERP.Persistence` | `ERP.Host` |
 | `ERP.Shared` | `ERP.Persistence`, module Domain/Infrastructure |
+| `*.Api` | `{Module}.Domain`, `{Module}.Infrastructure`, `ERP.Persistence`, other modules |
+| `ERP.Host` | Direct `*.Domain` references (use `*.Application` / `*.Api`) |
 | `ERP.BuildingBlocks.*` | Module projects, `ERP.Persistence`, `ERP.Host` |
+
+**`*.Api` may reference:** `{Module}.Application`, `ERP.BuildingBlocks.Api`, `ERP.BuildingBlocks.Application`.
+
+**`ERP.Host` may reference:** all `*.Infrastructure`, all `*.Api` (composition root only).
 
 Run architecture tests before opening a PR:
 
@@ -112,6 +145,7 @@ dotnet test Tests/ERP.Architecture.Tests/ERP.Architecture.Tests.csproj
 2. **Do not register MediatR outside `WebBuilderExtensions`**.
 3. **Cross-module writes** go through `*.Contracts` integration services (e.g. `IAccountingIntegrationService`).
 4. **Cross-module reads** prefer Contracts query ports over foreign Domain types.
+5. **Do not add business controllers to `ERP.Host`** — use `{Module}.Api` ([ADR-011](./adr/011-module-owned-api.md)).
 
 ## Pull request checklist
 

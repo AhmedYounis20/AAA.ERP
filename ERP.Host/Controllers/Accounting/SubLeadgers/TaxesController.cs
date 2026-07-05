@@ -1,10 +1,9 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Services;
 using Accounting.Domain.Entities;
-using ERP.Host.Controllers.BaseControllers;
-using Accounting.Domain.OutputDtos.Lookups;
+using Accounting.Application.Dtos.Lookups;
 using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Accounting.SubLeadgers;
 

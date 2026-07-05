@@ -1,6 +1,7 @@
 using ERP.Host.Controllers.Accounting;
 using ERP.Host.Security;
 using FluentAssertions;
+using Identity.Api.Controllers;
 using NetArchTest.Rules;
 
 namespace ERP.Architecture.Tests;
@@ -13,7 +14,7 @@ public class HostDependencyTests
     [Fact]
     public void Host_should_not_reference_Identity_Domain()
     {
-        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Identity.AuthController).Assembly)
+        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly)
             .Should()
             .NotHaveDependencyOn("Identity.Domain")
             .GetResult();
@@ -31,7 +32,7 @@ public class HostDependencyTests
     [Fact]
     public void Auth_controller_should_allow_anonymous_access()
     {
-        typeof(ERP.Host.Controllers.Identity.AuthController)
+        typeof(AuthController)
             .GetCustomAttributes(typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute), inherit: true)
             .Should()
             .NotBeEmpty();

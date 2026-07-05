@@ -6,5 +6,6 @@ global using ERP.BuildingBlocks.Application.Responses;
 global using System.Net;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Http;
+global using Identity.Contracts;
 global using Identity.Application;
-global using ERP.BuildingBlocks.Domain.Entities.Identity;
+global using Identity.Domain;

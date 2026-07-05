@@ -18,6 +18,8 @@ using Platform.Infrastructure;
 using Platform.Localization;
 using ERP.BuildingBlocks.Application.Behaviors;
 using ERP.BuildingBlocks.Application.Exceptions.Handler;
+using Identity.Api;
+using Platform.Audit.Api;
 
 namespace ERP.Host.Utilities;
 
@@ -107,7 +109,10 @@ public static class WebBuilderExtensions
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         });
-        builder.Services.AddControllers().AddJsonOptions(opts =>
+        builder.Services.AddControllers()
+            .AddApplicationPart(IdentityApiAssemblyMarker.Assembly)
+            .AddApplicationPart(PlatformAuditApiAssemblyMarker.Assembly)
+            .AddJsonOptions(opts =>
         {
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             opts.JsonSerializerOptions.Converters.Add(new EntryTypeJsonConverter());

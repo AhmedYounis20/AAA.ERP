@@ -1,6 +1,7 @@
 global using ERP.BuildingBlocks.Domain.Entities;
 global using Accounting.Contracts.Dtos;
-global using Inventory.Domain.Models.Dtos;
+global using Inventory.Application.Dtos;
+global using Inventory.Application.Dtos.Pricing;
 global using Accounting.Domain.Utility;
 global using ERP.BuildingBlocks.Persistence.Data;
 global using ERP.BuildingBlocks.Persistence.Repositories;

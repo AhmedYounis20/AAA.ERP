@@ -37,7 +37,11 @@
     <ProjectReference Include="..\..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Api\ERP.BuildingBlocks.Api.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Api\Identity.Api.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Contracts\Identity.Contracts.csproj" />
+    <ProjectReference Include="..\..\Modules\Platform\Platform.Audit\Platform.Audit.Api\Platform.Audit.Api.csproj" />
   </ItemGroup>
 
 </Project>

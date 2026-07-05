@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.Common;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.DTOs;
-using Accounting.Domain.Models.Dtos.Entry;
+using Accounting.Application.Dtos.Entries;
 using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Application.Commands.CombinedEntries;

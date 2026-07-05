@@ -1,9 +1,9 @@
 ﻿using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
-using Accounting.Domain.OutputDtos.Lookups;
+using Accounting.Application.Dtos.Lookups;
 using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Accounting;
 

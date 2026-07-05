@@ -67,7 +67,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Inventory_Domain_lookup_DTOs_should_not_use_legacy_ERP_Domain_OutputDtos_Lookups_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Domain.OutputDtos.Lookups.ColorLookupDto).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Dtos.Lookups.ColorLookupDto).Assembly)
             .That()
             .ResideInNamespaceContaining("Lookups")
             .And()
@@ -83,7 +83,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_lookup_DTOs_should_not_use_legacy_ERP_Domain_OutputDtos_Lookups_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.OutputDtos.Lookups.CurrencyLookupDto).Assembly)
+        var result = Types.InAssembly(typeof(Accounting.Application.Dtos.Lookups.CurrencyLookupDto).Assembly)
             .That()
             .ResideInNamespaceContaining("Lookups")
             .And()

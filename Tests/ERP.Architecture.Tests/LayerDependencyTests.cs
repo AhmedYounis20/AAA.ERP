@@ -86,7 +86,7 @@ public class LayerDependencyTests
     [Fact]
     public void Identity_Domain_should_not_reference_Application_Domain_or_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(global::ERP.BuildingBlocks.Domain.Entities.Identity.ApplicationUser).Assembly)
+        var result = Types.InAssembly(typeof(global::Identity.Domain.ApplicationUser).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Application")
             .And()

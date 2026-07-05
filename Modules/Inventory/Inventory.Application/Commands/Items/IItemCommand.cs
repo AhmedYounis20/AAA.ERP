@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Inventory.Domain.Models.Dtos;
+using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Application.Commands.Items;

@@ -1,5 +1,5 @@
 using Accounting.Contracts.Integration;
-using Inventory.Domain.Models.Dtos.Inventory;
+using Inventory.Application.Dtos.Catalog;
 using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using Inventory.Domain.Models.Entities.Sizes;

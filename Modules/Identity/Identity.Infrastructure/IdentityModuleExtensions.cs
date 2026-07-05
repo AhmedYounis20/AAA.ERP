@@ -3,7 +3,7 @@ using Identity.Application;
 using ERP.Infrastructure.DBConfiguration.DbContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using ERP.BuildingBlocks.Domain.Entities.Identity;
+using Identity.Domain;
 
 namespace Identity.Infrastructure;
 

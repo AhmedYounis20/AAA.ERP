@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ERP.BuildingBlocks.Domain.Entities.Identity;
+namespace Identity.Domain;
 
 public class ApplicationUser : IdentityUser
 {

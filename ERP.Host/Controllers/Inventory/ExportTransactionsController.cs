@@ -1,8 +1,7 @@
-using ERP.Host.Controllers.BaseControllers;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
-using ERP.BuildingBlocks.Application.DTOs.Filters;
+using Accounting.Application.Dtos.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 

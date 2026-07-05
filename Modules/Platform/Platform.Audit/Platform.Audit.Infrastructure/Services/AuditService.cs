@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Persistence.Data;
 using Platform.Audit.Application;
-using Identity.Application;
+using Identity.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ERP.BuildingBlocks.Application.Constants;
