@@ -34,9 +34,6 @@ public static class InfrasctructureExtensions
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
         services.AddScoped<IItemService, ItemService>();
-        services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
-        services.AddScoped<IImportTransactionService, ImportTransactionService>();
-        services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
@@ -48,8 +45,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
-        // services.AddScoped<IBaseRepository<InventoryTransactionVariant>, BaseRepository<InventoryTransactionVariant>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddHttpContextAccessor();

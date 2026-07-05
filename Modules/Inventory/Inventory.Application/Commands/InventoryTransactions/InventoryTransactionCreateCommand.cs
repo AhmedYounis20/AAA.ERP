@@ -1,7 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Domain.Commands.Inventory.InventoryTransactions;
+namespace Inventory.Application.Commands.InventoryTransactions;
 
 public class InventoryTransactionCreateCommand : BaseCreateCommand<InventoryTransaction>
 {
@@ -19,4 +19,4 @@ public class InventoryTransactionItemCreateDto
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public decimal TotalCost { get; set; }
-} 
+}

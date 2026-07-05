@@ -1,11 +1,11 @@
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using Inventory.Application.Commands.InventoryTransactions;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators;
+namespace Inventory.Application.Validators.InventoryTransactions;
 
-public class ExportTransactionUpdateCommandValidator : AbstractValidator<ExportTransactionUpdateCommand>
+public class ExportTransactionUpdateValidator : AbstractValidator<ExportTransactionUpdateCommand>
 {
-    public ExportTransactionUpdateCommandValidator()
+    public ExportTransactionUpdateValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()
@@ -29,4 +29,4 @@ public class ExportTransactionUpdateCommandValidator : AbstractValidator<ExportT
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }
-} 
+}

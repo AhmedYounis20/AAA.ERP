@@ -1,7 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Domain.Commands.Inventory.InventoryTransactions;
+namespace Inventory.Application.Commands.InventoryTransactions;
 
 public class InventoryTransactionUpdateCommand : BaseUpdateCommand<InventoryTransaction>
 {
@@ -20,4 +20,4 @@ public class InventoryTransactionItemUpdateDto
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public decimal TotalCost { get; set; }
-} 
+}

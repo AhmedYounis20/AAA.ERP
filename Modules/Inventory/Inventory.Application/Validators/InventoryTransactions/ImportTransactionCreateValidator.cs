@@ -1,11 +1,11 @@
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using Inventory.Application.Commands.InventoryTransactions;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators;
+namespace Inventory.Application.Validators.InventoryTransactions;
 
-public class ImportTransactionCreateCommandValidator : AbstractValidator<ImportTransactionCreateCommand>
+public class ImportTransactionCreateValidator : AbstractValidator<ImportTransactionCreateCommand>
 {
-    public ImportTransactionCreateCommandValidator()
+    public ImportTransactionCreateValidator()
     {
         RuleFor(x => x.TransactionDate)
             .NotEmpty()
@@ -47,4 +47,4 @@ public class InventoryTransactionItemCreateDtoValidator : AbstractValidator<Inve
             .GreaterThanOrEqualTo(0)
             .WithMessage("Total cost must be greater than or equal to zero");
     }
-} 
+}

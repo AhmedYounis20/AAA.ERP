@@ -2,7 +2,7 @@ using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.InventoryTransactions;
+namespace Inventory.Infrastructure.Persistence.InventoryTransactions;
 
 public class InventoryTransactionItemDbConfig : BaseEntityDbConfig<InventoryTransactionItem>
 {
@@ -17,10 +17,9 @@ public class InventoryTransactionItemDbConfig : BaseEntityDbConfig<InventoryTran
         _ = builder.Property(e => e.Quantity).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.TotalCost).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(columnNumber++);
 
-        // Relationships
         _ = builder.HasOne(e => e.Variant).WithMany().HasForeignKey(e => e.VariantId);
         _ = builder.HasOne(e => e.PackingUnit).WithMany().HasForeignKey(e => e.PackingUnitId);
 
         return builder;
     }
-} 
+}

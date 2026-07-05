@@ -2,7 +2,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Inventory;
+namespace Inventory.Infrastructure.Repositories;
 
 public class InventoryTransactionRepository : BaseRepository<InventoryTransaction>, IInventoryTransactionRepository
 {
@@ -50,9 +50,9 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .OrderByDescending(e => e.TransactionDate)
             .ToListAsync();
     }
-    
-    public  async Task<bool> TransactionAfterThisDateExist(DateTime date)
+
+    public async Task<bool> TransactionAfterThisDateExist(DateTime date)
     {
-        return await _dbSet.AnyAsync(e=>e.TransactionDate >= date);
+        return await _dbSet.AnyAsync(e => e.TransactionDate >= date);
     }
-} 
+}

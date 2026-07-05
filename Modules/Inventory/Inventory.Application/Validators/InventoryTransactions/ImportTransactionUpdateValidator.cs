@@ -1,12 +1,16 @@
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using Inventory.Application.Commands.InventoryTransactions;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators;
+namespace Inventory.Application.Validators.InventoryTransactions;
 
-public class ExportTransactionCreateCommandValidator : AbstractValidator<ExportTransactionCreateCommand>
+public class ImportTransactionUpdateValidator : AbstractValidator<ImportTransactionUpdateCommand>
 {
-    public ExportTransactionCreateCommandValidator()
+    public ImportTransactionUpdateValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Transaction ID is required");
+
         RuleFor(x => x.TransactionDate)
             .NotEmpty()
             .WithMessage("Transaction date is required");
@@ -25,4 +29,4 @@ public class ExportTransactionCreateCommandValidator : AbstractValidator<ExportT
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }
-} 
+}

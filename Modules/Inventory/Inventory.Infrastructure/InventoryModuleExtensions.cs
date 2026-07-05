@@ -7,6 +7,7 @@ using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Persistence.ExpiryLevels;
 using Inventory.Infrastructure.Persistence.InventoryThresholds;
 using Inventory.Infrastructure.Persistence.Products;
+using Inventory.Infrastructure.Persistence.InventoryTransactions;
 using Inventory.Infrastructure.Persistence.StockBalances;
 using Inventory.Infrastructure.Persistence.Variants;
 using Inventory.Infrastructure.Repositories;
@@ -71,6 +72,10 @@ public static class InventoryModuleExtensions
         services.AddScoped<IStockBalanceService, StockBalanceService>();
         services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
         services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
+        services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+        services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
+        services.AddScoped<IImportTransactionService, ImportTransactionService>();
+        services.AddScoped<IExportTransactionService, ExportTransactionService>();
 
         return services;
     }
@@ -111,5 +116,7 @@ public static class InventoryModuleExtensions
         modelBuilder.ApplyConfiguration(new StockBalanceDbConfig());
         modelBuilder.ApplyConfiguration(new InventoryThresholdDbConfig());
         modelBuilder.ApplyConfiguration(new ExpiryLevelDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransactionDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransactionItemDbConfig());
     }
 }

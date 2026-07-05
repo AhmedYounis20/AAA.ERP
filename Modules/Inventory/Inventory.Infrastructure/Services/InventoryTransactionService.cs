@@ -1,11 +1,12 @@
 using Accounting.Contracts.Integration;
+using ERP.Application.Repositories;
 using ERP.Application.Repositories.Inventory;
-using ERP.Application.Services.Inventory;
+using ERP.Infrastracture.Services.BaseServices;
+using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 
 public class InventoryTransactionService : BaseService<InventoryTransaction, InventoryTransactionCreateCommand, InventoryTransactionUpdateCommand>, IInventoryTransactionService
 {

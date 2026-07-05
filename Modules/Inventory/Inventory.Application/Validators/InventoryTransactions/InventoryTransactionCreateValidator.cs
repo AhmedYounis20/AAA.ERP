@@ -1,9 +1,9 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using Inventory.Application.Commands.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.InventoryTransactions;
+namespace Inventory.Application.Validators.InventoryTransactions;
 
 public class InventoryTransactionCreateValidator : BaseCreateValidator<InventoryTransactionCreateCommand, InventoryTransaction>
 {
@@ -29,4 +29,4 @@ public class InventoryTransactionItemCreateValidator : AbstractValidator<Invento
         _ = RuleFor(e => e.Quantity).GreaterThan(0).WithMessage("QuantityMustBeGreaterThanZero");
         _ = RuleFor(e => e.TotalCost).GreaterThanOrEqualTo(0).WithMessage("TotalCostMustBeGreaterThanOrEqualToZero");
     }
-} 
+}

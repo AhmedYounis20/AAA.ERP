@@ -1,9 +1,9 @@
 using AAA.ERP.OutputDtos;
 using ERP.Application.Services.BaseServices;
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using Inventory.Application.Commands.InventoryTransactions;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Application.Services.Inventory;
+namespace Inventory.Application.Services;
 
 public interface IInventoryTransactionService : IBaseService<InventoryTransaction, InventoryTransactionCreateCommand, InventoryTransactionUpdateCommand>
 {
@@ -11,4 +11,4 @@ public interface IInventoryTransactionService : IBaseService<InventoryTransactio
     Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByBranch(Guid branchId);
     Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByTransactionType(InventoryTransactionType transactionType);
     Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime);
-} 
+}

@@ -2,7 +2,7 @@ using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Domain.Commands.Inventory.InventoryTransactions;
+namespace Inventory.Application.Commands.InventoryTransactions;
 
 public class ExportTransactionCreateCommand : BaseCreateCommand<InventoryTransaction>
 {
@@ -22,4 +22,4 @@ public class ExportTransactionUpdateCommand : BaseUpdateCommand<InventoryTransac
     public Guid BranchId { get; set; }
     public string? Notes { get; set; }
     public List<InventoryTransactionItemCreateDto> Items { get; set; } = [];
-} 
+}

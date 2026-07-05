@@ -1,30 +1,30 @@
 using ERP.Application.Repositories.Inventory;
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.InventoryTransactions;
+using ERP.Infrastracture.Services.BaseServices;
+using Inventory.Application.Commands.InventoryTransactions;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 
-public class ExportTransactionService : BaseService<InventoryTransaction,ExportTransactionCreateCommand,ExportTransactionUpdateCommand>, IExportTransactionService
+public class ImportTransactionService : BaseService<InventoryTransaction, ImportTransactionCreateCommand, ImportTransactionUpdateCommand>, IImportTransactionService
 {
     private readonly IInventoryTransactionService _inventoryTransactionService;
     private readonly IInventoryTransactionRepository _repository;
 
-    public ExportTransactionService(
+    public ImportTransactionService(
         IInventoryTransactionService inventoryTransactionService,
-        IInventoryTransactionRepository repository) 
+        IInventoryTransactionRepository repository)
         : base(repository)
     {
         _inventoryTransactionService = inventoryTransactionService;
         _repository = repository;
     }
 
-    public override async Task<ApiResponse<InventoryTransaction>> Create(ExportTransactionCreateCommand command,bool isValidate = false)
+    public override async Task<ApiResponse<InventoryTransaction>> Create(ImportTransactionCreateCommand command, bool isValidate = true)
     {
-        // Convert to base command
         var baseCommand = new InventoryTransactionCreateCommand
         {
-            TransactionType = InventoryTransactionType.Issue,
+            TransactionType = InventoryTransactionType.Receipt,
             TransactionDate = command.TransactionDate,
             DocumentNumber = command.DocumentNumber,
             TransactionPartyId = command.TransactionPartyId,
@@ -48,13 +48,13 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
             };
         }
 
-        if (transaction.TransactionType != InventoryTransactionType.Issue)
+        if (transaction.TransactionType != InventoryTransactionType.Receipt)
         {
             return new ApiResponse<InventoryTransaction>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionIsNotExportTransaction" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionIsNotImportTransaction" } }
             };
         }
 
@@ -68,7 +68,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
 
     public async Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetAll()
     {
-        var result = await _inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Issue);
+        var result = await _inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Receipt);
         if (result.IsSuccess)
         {
             return new ApiResponse<IEnumerable<InventoryTransaction>>
@@ -90,4 +90,4 @@ public class ExportTransactionService : BaseService<InventoryTransaction,ExportT
     {
         return await _inventoryTransactionService.GetTransactionNumber(dateTime);
     }
-} 
+}

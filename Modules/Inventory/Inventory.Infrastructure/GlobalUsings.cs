@@ -1,3 +1,4 @@
+global using AAA.ERP.OutputDtos;
 global using Domain.Account.Utility;
 global using ERP.Application.Data;
 global using ERP.Application.Repositories;
