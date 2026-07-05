@@ -1,3 +1,4 @@
+global using Domain.Account.Utility;
 global using ERP.Application.Data;
 global using ERP.Application.Repositories;
 global using Mapster;
@@ -5,6 +6,8 @@ global using MediatR;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Serilog;
 global using Shared;
 global using Shared.Responses;
 global using System.Net;
+global using System.Numerics;

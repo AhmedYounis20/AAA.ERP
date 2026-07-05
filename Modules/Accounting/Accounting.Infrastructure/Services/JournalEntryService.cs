@@ -1,9 +1,8 @@
 using AAA.ERP.OutputDtos;
 using Accounting.Application.Commands.JournalEntries;
+using Accounting.Application.Commands.Entries;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account.Entries;
-using ERP.Domain.Commands.Account.Entries;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Infrastracture.Services.BaseServices;
 

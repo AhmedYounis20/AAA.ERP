@@ -972,7 +972,7 @@ See [M2_SIGNOFF.md](./M2_SIGNOFF.md) for metrics and review checklist.
 
 **Wave 3B exit:** Commit `d8a16e3`.
 
-#### Wave 3C — Accounting extraction (Weeks 7–14) — **IN PROGRESS**
+#### Wave 3C — Accounting extraction (Weeks 7–14) — **COMPLETE**
 
 Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 pd for Entries cluster.**
 
@@ -985,7 +985,9 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A | Done |
 | 12 | Roles | 1 | Dev B | Done |
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A | Done |
-| 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A |
+| 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A | Done |
+
+**Wave 3C exit:** All `ERP.API/Controllers/Account/*` backed by Accounting module projects.
 
 **Per-aggregate checklist (repeat for each):**
 
@@ -999,8 +1001,6 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 6 | Arch tests + smoke test | S |
 | **Total per simple aggregate** | | **1–2 pd** |
 | **Total per Entries subgroup** | | **3–5 pd** |
-
-**Wave 3C exit:** All `ERP.API/Controllers/Account/*` backed by Accounting module projects.
 
 #### Wave 3D — Inventory extraction (Weeks 15–22)
 
@@ -1245,7 +1245,7 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3C — Accounting aggregate extraction (Currencies first). See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3D — Inventory aggregate extraction. See [§10.5](#105-phase-3--module-extraction).
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1261,9 +1261,9 @@ Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3C — **IN PROGRESS** (Week 13 complete)
+### Phase 3 Wave 3C — **COMPLETE** (Week 14)
 
-Week 7–13 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
+Week 7–14 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
 
 | Done | Notes |
 |------|-------|
@@ -1283,8 +1283,10 @@ Week 7–13 aggregates extracted into `Modules/Accounting/` (entities remain in 
 | Roles | `BaseSettingService` / `BaseSettingController`; `Commission` field; entity stays in `ERP.Domain` (`Job.cs`) |
 | Journal entries | Thin façade over horizontal `IEntryService`; commands, validators, handlers, service in Accounting |
 | Payment entries | Thin façade over horizontal `IComplexEntryService`; `EntryCostCenterValidator` still horizontal |
-| Receipt entries | Thin façade over horizontal `IComplexEntryService`; entity/DbConfig stay horizontal until Week 14 |
-| Next (Week 14) | Entries — Opening, Combined, EntryService core |
+| Receipt entries | Thin façade over `IComplexEntryService` |
+| Opening entries | Thin façade over `IEntryService` |
+| Combined entries | Thin façade over `IComplexEntryService`; `AccountingIntegrationService` moved to Accounting.Infrastructure |
+| Entry core | `EntryService`, `ComplexEntryService`, `IEntryRepository`; entry DbConfigs; God `IUnitOfWork` entry repos removed |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

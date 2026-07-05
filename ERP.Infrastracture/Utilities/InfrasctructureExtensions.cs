@@ -1,11 +1,8 @@
-using Accounting.Contracts.Integration;
 using ERP.Application.Repositories;
-using ERP.Infrastracture.Services.Accounting;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
-using ERP.Application.Services.Account.Entries;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Application.Services.Inventory;
 using ERP.Infrastracture.Repositories;
@@ -13,7 +10,6 @@ using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using ERP.Infrastracture.Repositories.Inventory;
-using ERP.Infrastracture.Services.Account.Entries;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Inventory;
@@ -37,15 +33,10 @@ public static class InfrasctructureExtensions
     {
         services.AddScoped(typeof(IBaseSettingService<,,>), typeof(BaseSettingService<,,>));
         services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>));
-        services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<IComplexEntryService, ComplexEntryService>();
-        services.AddScoped<IEntryService, EntryService>();
-        services.AddScoped<IOpeningEntryService, OpeningEntryService>();
-        services.AddScoped<ICompinedEntryService, CompinedEntryService>();
         services.AddScoped<IPackingUnitService, PackingUnitService>();
         services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
@@ -69,7 +60,6 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();

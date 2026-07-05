@@ -1,0 +1,15 @@
+using Accounting.Application.Services;
+using Accounting.Application.Commands.CompinedEntries;
+using ERP.Domain.Models.Entities.Account.Entries;
+using Shared;
+using Shared.Responses;
+
+namespace Accounting.Infrastructure.Handlers.CompinedEntries;
+
+public class CompinedEntryCreateCommandHandler(ICompinedEntryService service) : ICommandHandler<CompinedEntryCreateCommand, ApiResponse<Entry>>
+{
+    public async Task<ApiResponse<Entry>> Handle(CompinedEntryCreateCommand request, CancellationToken cancellationToken)
+    {
+        return await service.Create(request);
+    }
+}

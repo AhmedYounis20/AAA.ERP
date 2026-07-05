@@ -13,11 +13,13 @@ public class FinancialPeriodService :
 {
     private readonly IFinancialPeriodRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEntryRepository _entryRepository;
 
-    public FinancialPeriodService(IFinancialPeriodRepository repository, IUnitOfWork unitOfWork) : base(repository)
+    public FinancialPeriodService(IFinancialPeriodRepository repository, IUnitOfWork unitOfWork, IEntryRepository entryRepository) : base(repository)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _entryRepository = entryRepository;
     }
 
     public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
@@ -178,7 +180,7 @@ public class FinancialPeriodService :
                 result.errors.Add("NotLastPeriod");
             }
 
-            var isEntryAfterDateExist = await _unitOfWork.EntryRepository.EntryAfterThisDateExist(newEndDate);
+            var isEntryAfterDateExist = await _entryRepository.EntryAfterThisDateExist(newEndDate);
             if (isEntryAfterDateExist)
             {
                 result.isValid = false;

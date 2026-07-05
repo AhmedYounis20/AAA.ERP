@@ -1,5 +1,6 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
+using Accounting.Contracts.Integration;
 using Accounting.Infrastructure.Persistence;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
@@ -49,6 +50,12 @@ public static class AccountingModuleExtensions
         services.AddScoped<IJournalEntryService, JournalEntryService>();
         services.AddScoped<IPaymentEntryService, PaymentEntryService>();
         services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
+        services.AddScoped<IEntryRepository, EntryRepository>();
+        services.AddScoped<IEntryService, EntryService>();
+        services.AddScoped<IComplexEntryService, ComplexEntryService>();
+        services.AddScoped<IOpeningEntryService, OpeningEntryService>();
+        services.AddScoped<ICompinedEntryService, CompinedEntryService>();
+        services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
 
         return services;
     }
@@ -71,5 +78,9 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new SupplierDbConfig());
         modelBuilder.ApplyConfiguration(new FixedAssetDbConfig());
         modelBuilder.ApplyConfiguration(new RoleDbConfig());
+        modelBuilder.ApplyConfiguration(new EntryDbConfig());
+        modelBuilder.ApplyConfiguration(new FinancialTransactionDbConfig());
+        modelBuilder.ApplyConfiguration(new EntryCostCenterDbConfig());
+        modelBuilder.ApplyConfiguration(new EntryAttachmentDbConfig());
     }
 }

@@ -3,7 +3,6 @@ using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
-using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
@@ -17,7 +16,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly IApplicationDbContext _context;
     private IDbContextTransaction? _sqlTransaction;
 
-    public IEntryRepository EntryRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
     public IPackingUnitRepository PackingUnitRepository { get; }
     public IItemRepository ItemRepository { get; }
@@ -56,8 +54,6 @@ public class UnitOfWork : IUnitOfWork
     public ISupplierRepository SupplierRepository { get; }
     public IInventoryTransactionRepository InventoryTransactionRepository { get; }
     public IStockBalanceRepository StockBalanceRepository { get; }
-    public IBaseRepository<EntryAttachment> EntryAttachmentRepository { get; }
-    public IBaseRepository<FinancialTransaction> FinancialTransactionRepository { get; }
     public IInventoryTransferRepository InventoryTransferRepository { get; }
     public IAttributeValueRepository AttributeValueRepository { get; }
     public IBaseRepository<InventoryThreshold> InventoryThresholdRepository { get; }
@@ -65,7 +61,6 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         IApplicationDbContext context,
-        IEntryRepository entryRepository,
         IAttachmentRepository attachmentRepository,
         IPackingUnitRepository packingUnitRepository,
         IItemRepository itemRepository,
@@ -74,7 +69,7 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ItemManufacturerCompany> itemManufacturerCompanyRepository,
         IBaseRepository<ItemPackingUnit> itemPackingUnitRepository,
         IBaseRepository<ItemPackingUnitSellingPrice> itemPackingUnitSellingPriceRepository,
-        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,      
+        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,
         IProductRepository productRepository,
         IBaseRepository<ProductSupplier> productSupplierRepository,
         IBaseRepository<ProductSalesTax> productSalesTaxRepository,
@@ -88,24 +83,22 @@ public class UnitOfWork : IUnitOfWork
         IBaseRepository<ProductSellingPriceDiscount> productSellingPriceDiscountRepository,
         IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
         IVariantRepository variantRepository,
-    IBaseRepository<VariantSupplier> variantSupplierRepository,
-    IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
-    IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
-    IBaseRepository<VariantCostCenter> variantCostCenterRepository,
-    IBaseRepository<VariantCode> variantCodeRepository,
-    IBaseRepository<VariantAttachment> variantAttachmentRepository, 
-    IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository, 
-    IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
-    IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository, 
-    IBaseRepository<VariantSellingPriceDiscount> variantSellingPriceDiscountRepository,
-    IVariantAttributeValueRepository variantAttributeValueRepository,
-    ISupplierRepository supplierRepository,
+        IBaseRepository<VariantSupplier> variantSupplierRepository,
+        IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
+        IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
+        IBaseRepository<VariantCostCenter> variantCostCenterRepository,
+        IBaseRepository<VariantCode> variantCodeRepository,
+        IBaseRepository<VariantAttachment> variantAttachmentRepository,
+        IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository,
+        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
+        IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
+        IBaseRepository<VariantSellingPriceDiscount> variantSellingPriceDiscountRepository,
+        IVariantAttributeValueRepository variantAttributeValueRepository,
+        ISupplierRepository supplierRepository,
         ISizeRepository sizeRepository,
         IColorRepository colorRepository,
         IInventoryTransactionRepository inventoryTransactionRepository,
         IStockBalanceRepository stockBalanceRepository,
-        IBaseRepository<EntryAttachment> entryAttachmentRepository,
-        IBaseRepository<FinancialTransaction> financialTransactionRepository,
         IInventoryTransferRepository inventoryTransferRepository,
         IAttributeValueRepository attributeValueRepository,
         IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
@@ -113,7 +106,6 @@ public class UnitOfWork : IUnitOfWork
     )
     {
         _context = context;
-        EntryRepository = entryRepository;
         AttachmentRepository = attachmentRepository;
         PackingUnitRepository = packingUnitRepository;
         ItemRepository = itemRepository;
@@ -151,8 +143,6 @@ public class UnitOfWork : IUnitOfWork
         ColorRepository = colorRepository;
         InventoryTransactionRepository = inventoryTransactionRepository;
         StockBalanceRepository = stockBalanceRepository;
-        EntryAttachmentRepository = entryAttachmentRepository;
-        FinancialTransactionRepository = financialTransactionRepository;
         InventoryTransferRepository = inventoryTransferRepository;
         ProductAttributeDefinitionRepository = productAttributeDefinitionRepository;
         AttributeValueRepository = attributeValueRepository;
@@ -162,7 +152,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task BeginTransactionAsync()
     {
-        _sqlTransaction ??=  await _context.Database.BeginTransactionAsync();
+        _sqlTransaction ??= await _context.Database.BeginTransactionAsync();
     }
 
     public async Task CommitAsync()
@@ -179,10 +169,12 @@ public class UnitOfWork : IUnitOfWork
     {
         return _context.Set<T>();
     }
-    public  async Task<int> SaveChanges() 
+
+    public async Task<int> SaveChanges()
     {
         return await _context.SaveChangesAsync();
     }
+
     public async Task RollbackAsync()
     {
         if (_sqlTransaction is not null)
