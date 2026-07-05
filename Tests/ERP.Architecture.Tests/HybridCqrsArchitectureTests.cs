@@ -28,7 +28,11 @@ public class HybridCqrsArchitectureTests
         typeof(OpeningEntriesController),
         typeof(CombinedEntriesController),
         typeof(FinancialPeriodsController),
-        typeof(ChartOfAccountsController)
+        typeof(ChartOfAccountsController),
+        typeof(CustomersController),
+        typeof(SuppliersController),
+        typeof(BanksController),
+        typeof(BranchesController)
     ];
 
     [Fact]
@@ -77,7 +81,11 @@ public class HybridCqrsArchitectureTests
             typeof(Accounting.Application.Services.Entries.IOpeningEntryQueries),
             typeof(Accounting.Application.Services.Entries.ICombinedEntryQueries),
             typeof(Accounting.Application.Services.IFinancialPeriodReadService),
-            typeof(Accounting.Application.Services.IChartOfAccountReadService)
+            typeof(Accounting.Application.Services.IChartOfAccountReadService),
+            typeof(Accounting.Application.Services.ICustomerReadService),
+            typeof(Accounting.Application.Services.ISupplierReadService),
+            typeof(Accounting.Application.Services.IBankReadService),
+            typeof(Accounting.Application.Services.IBranchReadService)
         };
 
         foreach (var readService in readServiceInterfaces)

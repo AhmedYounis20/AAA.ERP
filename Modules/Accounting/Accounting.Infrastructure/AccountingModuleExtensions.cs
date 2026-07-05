@@ -44,14 +44,18 @@ public static class AccountingModuleExtensions
         services.AddScoped<IChartOfAccountReadService, ChartOfAccountReadService>();
         services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<IBankService, BankService>();
+        services.AddScoped<IBankReadService, BankReadService>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
+        services.AddScoped<IBranchReadService, BranchReadService>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ICustomerReadService, CustomerReadService>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<ISupplierReadService, SupplierReadService>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<IRoleRepository, RoleRepository>();
