@@ -1,4 +1,5 @@
 ﻿using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Services.Account.Entries;
 using ERP.Domain.Commands.Account.Entries;
@@ -12,10 +13,13 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
 {
     private IEntryRepository _repository;
     private IUnitOfWork _unitOfWork;
-    public EntryService(IEntryRepository repository, IUnitOfWork unitOfWork) : base(repository)
+    private IFinancialPeriodRepository _financialPeriodRepository;
+
+    public EntryService(IEntryRepository repository, IUnitOfWork unitOfWork, IFinancialPeriodRepository financialPeriodRepository) : base(repository)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _financialPeriodRepository = financialPeriodRepository;
     }
 
     public override async Task<ApiResponse<Entry>> Create(EntryCreateCommand command, bool isValidate = true)
@@ -172,7 +176,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             };
         }
 
-        var financialPeriod = await _unitOfWork.FinancialPeriodRepository.Get(entry.FinancialPeriodId);
+        var financialPeriod = await _financialPeriodRepository.Get(entry.FinancialPeriodId);
 
         EntryDto entryDto = entry.Adapt<EntryDto>();
         entryDto.FinancialPeriodNumber = financialPeriod?.YearNumber;

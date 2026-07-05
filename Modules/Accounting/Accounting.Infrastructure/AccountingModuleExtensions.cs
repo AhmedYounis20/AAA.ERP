@@ -25,6 +25,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<ICollectionBookService, CollectionBookService>();
+        services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
+        services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
 
         return services;
     }
@@ -36,5 +38,6 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new GLSettingDbConfig());
         modelBuilder.ApplyConfiguration(new AccountGuideDbConfig());
         modelBuilder.ApplyConfiguration(new CollectionBookDbConfig());
+        modelBuilder.ApplyConfiguration(new FinancialPeriodDbConfig());
     }
 }

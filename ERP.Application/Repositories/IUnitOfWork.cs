@@ -16,7 +16,6 @@ public interface IUnitOfWork
     public IChartOfAccountRepository ChartOfAccountRepository { get; }
     public ISizeRepository SizeRepository { get; }
     public IColorRepository ColorRepository { get; }
-    public IFinancialPeriodRepository FinancialPeriodRepository { get; }
     public ICashInBoxRepository CashInBoxRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
     public IBranchRepository BranchRepository { get; }

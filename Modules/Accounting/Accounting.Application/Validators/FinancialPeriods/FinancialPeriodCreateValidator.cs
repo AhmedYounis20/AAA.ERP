@@ -1,13 +1,13 @@
-﻿using ERP.Application.Validators.Account.InputValidators.BaseValidators;
-using ERP.Domain.Commands.Account.FinancialPeriods;
+using Accounting.Application.Commands.FinancialPeriods;
+using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.InputValidators.FinancialPeriods;
+namespace Accounting.Application.Validators.FinancialPeriods;
 
-public class FinancialPeriodInputValidator : BaseInputValidator<FinancialPeriodInputModel>
+public class FinancialPeriodCreateValidator : BaseCreateValidator<FinancialPeriodCreateCommand, FinancialPeriod>
 {
-    public FinancialPeriodInputValidator()
+    public FinancialPeriodCreateValidator() : base()
     {
         _ = RuleFor(e => e.YearNumber).NotEmpty().WithMessage("FinancialPeriodRequiredYearNumber").MaximumLength(50).WithMessage("FinancialPeriodMaximumLength");
         _ = RuleFor(e => e.StartDate).NotEmpty().WithMessage("FinancialPeriodStartDateRequired");

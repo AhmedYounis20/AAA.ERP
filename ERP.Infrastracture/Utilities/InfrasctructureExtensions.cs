@@ -1,4 +1,5 @@
 using Accounting.Contracts.Integration;
+using ERP.Application.Repositories;
 using ERP.Infrastracture.Services.Accounting;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
@@ -43,7 +44,6 @@ public static class InfrasctructureExtensions
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
-        services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBankService, BankService>();
         services.AddScoped<IBranchService, BranchService>();
@@ -81,7 +81,7 @@ public static class InfrasctructureExtensions
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
-        services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
+        services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
         services.AddScoped<IBankRepository, BankRepository>();

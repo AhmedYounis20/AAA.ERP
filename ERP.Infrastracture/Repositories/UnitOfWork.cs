@@ -18,7 +18,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IChartOfAccountRepository ChartOfAccountRepository { get; }
     public IEntryRepository EntryRepository { get; }
-    public IFinancialPeriodRepository FinancialPeriodRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
     public ICashInBoxRepository CashInBoxRepository { get; }
     public IBranchRepository BranchRepository { get; }
@@ -70,7 +69,6 @@ public class UnitOfWork : IUnitOfWork
         IApplicationDbContext context,
         IChartOfAccountRepository chartOfAccountRepository,
         IEntryRepository entryRepository,
-        IFinancialPeriodRepository financialPeriodRepository,
         IAttachmentRepository attachmentRepository,
         ICashInBoxRepository cashInBoxRepository,
         IBranchRepository branchRepository,
@@ -122,7 +120,6 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         ChartOfAccountRepository = chartOfAccountRepository;
         EntryRepository = entryRepository;
-        FinancialPeriodRepository = financialPeriodRepository   ;
         AttachmentRepository = attachmentRepository;
         CashInBoxRepository = cashInBoxRepository;
         BranchRepository = branchRepository;

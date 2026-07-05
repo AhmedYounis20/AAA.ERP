@@ -1,22 +1,23 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account;
-using ERP.Domain.Commands.Account.FinancialPeriods;
+using Accounting.Application.Commands.FinancialPeriods;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
+using ERP.Application.Repositories;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using ERP.Infrastracture.Services.BaseServices;
 
-namespace ERP.Infrastracture.Services.Account;
+namespace Accounting.Infrastructure.Services;
 
 public class FinancialPeriodService :
     BaseService<FinancialPeriod, FinancialPeriodCreateCommand, FinancialPeriodUpdateCommand>, IFinancialPeriodService
 {
-    IFinancialPeriodRepository _repository;
-    IUnitOfWork _unitofWork;
-    TimeSpan tick = new TimeSpan(0, 0, 0, 0, 1);
+    private readonly IFinancialPeriodRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public FinancialPeriodService(IFinancialPeriodRepository repository, IUnitOfWork unitofWork) : base(repository)
+    public FinancialPeriodService(IFinancialPeriodRepository repository, IUnitOfWork unitOfWork) : base(repository)
     {
         _repository = repository;
-        _unitofWork = unitofWork;
+        _unitOfWork = unitOfWork;
     }
 
     public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
@@ -40,9 +41,7 @@ public class FinancialPeriodService :
             if (lastFinancialPeriod != null)
                 entity.StartDate = lastFinancialPeriod.EndDate.AddTicks(1);
 
-
             entity.EndDate = entity.StartDate.AddMonths(entity.PeriodTypeByMonth).AddTicks(-1);
-
 
             entity = await _repository.Add(entity);
 
@@ -53,7 +52,7 @@ public class FinancialPeriodService :
                 Result = entity,
             };
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return new ApiResponse<FinancialPeriod>
             {
@@ -75,15 +74,13 @@ public class FinancialPeriodService :
                 Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
             };
         }
-        else
+
+        return new ApiResponse<FinancialPeriod>
         {
-            return new ApiResponse<FinancialPeriod>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = currentFinancialPeriod
-            };
-        }
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = currentFinancialPeriod
+        };
     }
 
     public override async Task<ApiResponse<FinancialPeriod>> Update(FinancialPeriodUpdateCommand command,
@@ -121,7 +118,7 @@ public class FinancialPeriodService :
                 Result = entity
             };
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return new ApiResponse<FinancialPeriod>
             {
@@ -162,14 +159,15 @@ public class FinancialPeriodService :
                 return result;
             }
 
-            var IsUsedInInventoryTransactions = await _repository.IsUsedInInventoryTransactions(command.Id);
-            if (isUsedInEntries)
+            var isUsedInInventoryTransactions = await _repository.IsUsedInInventoryTransactions(command.Id);
+            if (isUsedInInventoryTransactions)
             {
                 result.isValid = false;
                 result.errors.Add("FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName");
                 return result;
             }
         }
+
         if (command.PeriodTypeByMonth < result.entity.PeriodTypeByMonth)
         {
             var newEndDate = result.entity.StartDate.AddMonths(command.PeriodTypeByMonth).AddTicks(-1);
@@ -180,7 +178,7 @@ public class FinancialPeriodService :
                 result.errors.Add("NotLastPeriod");
             }
 
-            var isEntryAfterDateExist = await _unitofWork.EntryRepository.EntryAfterThisDateExist(newEndDate);
+            var isEntryAfterDateExist = await _unitOfWork.EntryRepository.EntryAfterThisDateExist(newEndDate);
             if (isEntryAfterDateExist)
             {
                 result.isValid = false;
@@ -188,7 +186,7 @@ public class FinancialPeriodService :
                 return result;
             }
 
-            var isInventoryTransactionAfterDateExist = await _unitofWork.InventoryTransactionRepository.TransactionAfterThisDateExist(newEndDate);
+            var isInventoryTransactionAfterDateExist = await _unitOfWork.InventoryTransactionRepository.TransactionAfterThisDateExist(newEndDate);
             if (isInventoryTransactionAfterDateExist)
             {
                 result.isValid = false;
@@ -222,7 +220,6 @@ public class FinancialPeriodService :
             };
         }
     }
-
 
     public async Task<ApiResponse<FinancialPeriodDto?>> GetDto(Guid id)
     {
@@ -269,6 +266,7 @@ public class FinancialPeriodService :
             };
         }
     }
+
     protected override async Task<(bool isValid, List<string> errors, FinancialPeriod? entity)> ValidateDelete(Guid id)
     {
         var result = await base.ValidateDelete(id);
@@ -288,7 +286,7 @@ public class FinancialPeriodService :
             result.isValid = false;
             result.errors.Add("FinancialPeriodIsUsedInEntries");
             return result;
-        }   
+        }
 
         var isInventoryTransactionAfterDateExist = await _repository.IsUsedInInventoryTransactions(id);
         if (isInventoryTransactionAfterDateExist)
@@ -300,5 +298,4 @@ public class FinancialPeriodService :
 
         return result;
     }
-    
 }

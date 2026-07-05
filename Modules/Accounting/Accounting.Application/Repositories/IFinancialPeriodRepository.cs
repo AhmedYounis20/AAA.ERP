@@ -1,8 +1,8 @@
-﻿using ERP.Application.Repositories.BaseRepositories;
+using ERP.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
-namespace ERP.Application.Repositories.Account;
+namespace Accounting.Application.Repositories;
 
 public interface IFinancialPeriodRepository : IBaseRepository<FinancialPeriod>
 {

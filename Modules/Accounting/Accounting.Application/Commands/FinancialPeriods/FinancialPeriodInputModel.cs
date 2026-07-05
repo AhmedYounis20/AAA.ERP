@@ -1,7 +1,7 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using Domain.Account.InputModels.BaseInputModels;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
-namespace ERP.Domain.Commands.Account.FinancialPeriods;
+namespace Accounting.Application.Commands.FinancialPeriods;
 
 public class FinancialPeriodInputModel : BaseInputModel
 {

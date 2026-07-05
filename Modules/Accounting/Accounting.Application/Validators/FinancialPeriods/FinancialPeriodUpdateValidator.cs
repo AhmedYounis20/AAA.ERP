@@ -1,9 +1,9 @@
+using Accounting.Application.Commands.FinancialPeriods;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Commands.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.ComandValidators.FinancialPeriods;
+namespace Accounting.Application.Validators.FinancialPeriods;
 
 public class FinancialPeriodUpdateValidator : BaseUpdateValidator<FinancialPeriodUpdateCommand, FinancialPeriod>
 {
