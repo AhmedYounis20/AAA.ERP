@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ERP.Application\ERP.Application.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
+    <ProjectReference Include="..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />

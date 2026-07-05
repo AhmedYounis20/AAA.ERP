@@ -84,6 +84,30 @@ public class ModuleBoundaryTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
     }
 
+    [Fact]
+    public void Inventory_Application_should_not_reference_Infrastructure()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.Infrastracture")
+            .And()
+            .NotHaveDependencyOn("Inventory.Infrastructure")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Inventory_Infrastructure_should_not_reference_API()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly)
+            .Should()
+            .NotHaveDependencyOn("ERP.API")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
     [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {

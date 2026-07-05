@@ -1,0 +1,7 @@
+using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using Inventory.Application.Commands.ManufacturerCompanies;
+using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+
+namespace Inventory.Application.Validators.ManufacturerCompanies;
+
+public class ManufacturerCompanyCreateValidator : BaseSettingCreateValidator<ManufacturerCompanyCreateCommand, ManufacturerCompany>;

@@ -1,4 +1,5 @@
 using Accounting.Infrastructure;
+using Inventory.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
 using ERP.Application.Data;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     {
         ModuleModelConfigurationRegistry.Clear();
         ModuleModelConfigurationRegistry.Register(AccountingModuleExtensions.ApplyAccountingModuleConfigurations);
+        ModuleModelConfigurationRegistry.Register(InventoryModuleExtensions.ApplyInventoryModuleConfigurations);
         ModuleModelConfigurationRegistry.Register(PlatformAuditModuleExtensions.ApplyPlatformAuditConfigurations);
 
         var configuration = new ConfigurationBuilder()

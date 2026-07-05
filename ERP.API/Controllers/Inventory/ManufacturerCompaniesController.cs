@@ -1,5 +1,5 @@
-﻿using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.ManufacturerCompanies;
+﻿using Inventory.Application.Commands.ManufacturerCompanies;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
 using Shared.DTOs;
 

@@ -2,6 +2,8 @@
 using System.Text.Json.Serialization;
 using Accounting.Application.Validators.Taxes;
 using Accounting.Infrastructure;
+using Inventory.Application.Validators.Colors;
+using Inventory.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
 using Identity.Infrastructure;
 using ERP.Application.Data;
@@ -28,11 +30,13 @@ public static class WebBuilderExtensions
         services.AddEndpointsApiExplorer();
         services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
         services.AddValidatorsFromAssembly(typeof(TaxCreateValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(ColorCreateValidator).Assembly);
         services.AddMediatR(config =>
         {
             // Single registration point for all command handlers (Phase 0 — MODULAR_MONOLITH.md §10.2).
             config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly);
             config.RegisterServicesFromAssembly(typeof(AccountingModuleExtensions).Assembly);
+            config.RegisterServicesFromAssembly(typeof(InventoryModuleExtensions).Assembly);
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
@@ -141,6 +145,7 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();
+        builder.Services.AddInventoryModule();
         builder.Services.AddPlatformModules();
         builder.Services.AddIdentityModule();
         builder.Services.AddProjectUtilities();

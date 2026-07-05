@@ -1006,7 +1006,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 
 | Week | Aggregates to migrate | PRs | Owner |
 |------|----------------------|-----|-------|
-| 15 | Colors, Sizes, PackingUnits, ManufacturerCompanies | 3–4 | Dev B |
+| 15 | Colors, Sizes, PackingUnits, ManufacturerCompanies | 3–4 | Dev B | **Done** — `Inventory.Application` + `Inventory.Infrastructure` scaffolded |
 | 16 | SellingPrices, AttributeDefinitions, AttributeValues | 2–3 | Dev B |
 | 17 | Products (+ related: codes, attachments, packing units) | 2–3 | Dev B |
 | 18 | Variants (+ related: suppliers, taxes, cost centers) | 3–4 | Dev B |
@@ -1245,7 +1245,7 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3D — Inventory aggregate extraction. See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3D — Inventory aggregate extraction (Week 15 in progress). See [§10.5](#105-phase-3--module-extraction).
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1287,6 +1287,20 @@ Week 7–14 aggregates extracted into `Modules/Accounting/` (entities remain in 
 | Opening entries | Thin façade over `IEntryService` |
 | Combined entries | Thin façade over `IComplexEntryService`; `AccountingIntegrationService` moved to Accounting.Infrastructure |
 | Entry core | `EntryService`, `ComplexEntryService`, `IEntryRepository`; entry DbConfigs; God `IUnitOfWork` entry repos removed |
+
+### Phase 3 Wave 3D — **IN PROGRESS** (Week 15)
+
+Inventory module scaffolded (`Inventory.Application`, `Inventory.Infrastructure`); entities remain in `ERP.Domain`.
+
+| Done | Notes |
+|------|-------|
+| Module bootstrap | `AddInventoryModule()`, `ApplyInventoryModuleConfigurations()`, host MediatR + FluentValidation registration |
+| Colors | Commands, validators, handlers, repo, service, `ColorDbConfig`; custom code generation + duplicate `ColorValue` check |
+| Sizes | Commands, validators, handlers, repo, service, `SizeDbConfig`; custom code generation |
+| PackingUnits | Commands, validators, handlers, repo, service, `PackingUnitDbConfig` |
+| ManufacturerCompanies | Commands, validators, handlers, repo, service, `ManufacturerCompanyDbConfig` |
+| Repository interfaces | `IColorRepository`, `ISizeRepository`, `IPackingUnitRepository` remain in `ERP.Application` (God UoW / `ISupplierRepository` precedent); `IManufacturerCompanyRepository` in `Inventory.Application` |
+| God `IUnitOfWork` | `IColorRepository`, `ISizeRepository`, `IPackingUnitRepository` remain (Item/Product consumers) |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 
