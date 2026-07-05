@@ -979,8 +979,8 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | Week | Aggregates to migrate | PRs | Owner | Status |
 |------|----------------------|-----|-------|--------|
 | 7 | Currencies, GLSettings, AccountGuides | 2–3 | Dev A | Done |
-| 8 | FinancialPeriods, CostCenters, CollectionBooks | 2–3 | Dev A |
-| 9 | ChartOfAccounts (tree) | 1–2 | Dev A |
+| 8 | FinancialPeriods, CostCenters, CollectionBooks | 2–3 | Dev A | Done |
+| 9 | ChartOfAccounts (tree) | 1–2 | Dev A | Next |
 | 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A |
 | 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A |
 | 12 | Roles | 1 | Dev B |
@@ -1261,16 +1261,19 @@ Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3C — **IN PROGRESS** (Week 7 complete)
+### Phase 3 Wave 3C — **IN PROGRESS** (Week 8 complete)
 
-Week 7 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters — e.g. `Entry` → `Currency`, `ChartOfAccount` → `AccountGuide`).
+Week 7–8 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters — e.g. `Entry` → `Currency`, `FinancialTransaction` → `CollectionBook`, inventory validators → `CostCenter`).
 
 | Done | Notes |
 |------|-------|
 | Currencies | Commands, validators, handlers, repo, service, `CurrencyDbConfig` |
 | GLSettings | Update-only slice: command, validators, handler, repo, service, `GLSettingDbConfig` |
 | AccountGuides | Commands, validators, handlers, repo, service, `AccountGuideDbConfig` |
-| Next (Week 8) | FinancialPeriods, CostCenters, CollectionBooks |
+| CollectionBooks | Commands, validators, handlers, repo, service, `CollectionBookDbConfig` |
+| FinancialPeriods | Commands, input models, validators, handlers, repo, service, `FinancialPeriodDbConfig`; `IFinancialPeriodUsageQueries` port for inventory cross-checks; `EntryService` injects `IFinancialPeriodRepository` directly (removed from God `IUnitOfWork`) |
+| CostCenters | Tree aggregate + `CostCenterChartOfAccount`; validators renamed to `CostCenter*`; handlers, repo, service, dual DbConfigs |
+| Next (Week 9) | ChartOfAccounts (tree) |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

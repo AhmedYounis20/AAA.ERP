@@ -10,7 +10,8 @@ namespace ERP.Architecture.Tests;
 /// </summary>
 public class MediatRRegistrationTests
 {
-    private const int MinimumHandlerCount = 60;
+    private const int MinimumHorizontalHandlerCount = 50;
+    private const int MinimumAccountingHandlerCount = 10;
 
     [Fact]
     public void Infrastructure_assembly_contains_command_handlers()
@@ -19,8 +20,19 @@ public class MediatRRegistrationTests
             .GetTypes()
             .Count(type => type.GetInterfaces().Any(IsRequestHandlerInterface));
 
-        handlerCount.Should().BeGreaterThanOrEqualTo(MinimumHandlerCount,
-            $"expected at least {MinimumHandlerCount} IRequestHandler implementations in ERP.Infrastracture");
+        handlerCount.Should().BeGreaterThanOrEqualTo(MinimumHorizontalHandlerCount,
+            $"expected at least {MinimumHorizontalHandlerCount} IRequestHandler implementations in ERP.Infrastracture");
+    }
+
+    [Fact]
+    public void Accounting_Infrastructure_assembly_contains_command_handlers()
+    {
+        var handlerCount = typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly
+            .GetTypes()
+            .Count(type => type.GetInterfaces().Any(IsRequestHandlerInterface));
+
+        handlerCount.Should().BeGreaterThanOrEqualTo(MinimumAccountingHandlerCount,
+            $"expected at least {MinimumAccountingHandlerCount} IRequestHandler implementations in Accounting.Infrastructure");
     }
 
     [Fact]

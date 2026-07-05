@@ -1,9 +1,13 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Application.Services.Account;
-using ERP.Domain.Commands.Account.CostCenters;
+using Accounting.Application.Commands.CostCenters;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
+using ERP.Application.Repositories.Account;
 using ERP.Domain.Models.Entities.Account.CostCenters;
+using ERP.Infrastracture.Services.BaseServices;
+using Serilog;
+using Shared.BaseEntities;
 
-namespace ERP.Infrastracture.Services.Account;
+namespace Accounting.Infrastructure.Services;
 
 public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>,
     ICostCenterService
@@ -86,6 +90,9 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(CostCenterCreateCommand command)
     {
         var result = await base.ValidateCreate(command);
+        if (command.ChartOfAccounts is null)
+            return result;
+
         var accounts = await _chartOfAccountRepository.Get(e => command.ChartOfAccounts.Contains(e.Id));
         if (accounts.Count() != command.ChartOfAccounts.Count)
         {
@@ -113,7 +120,6 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
                 };
             }
 
-            // get old entity from database 
             var oldCostCenter = validationResult.entity;
             oldCostCenter.Name = command.Name;
             oldCostCenter.NameSecondLanguage = command.NameSecondLanguage;
@@ -123,13 +129,11 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
                 oldCostCenter.Percent = command.Percent;
                 if (oldCostCenter.CostCenterType.Equals(CostCenterType.RelatedToAccount))
                 {
-                    // delete removed costCenterChartOfAccounts
                     List<CostCenterChartOfAccount> chartOfAccountsToRemove =
                         oldCostCenter.ChartOfAccounts.Where(e => command.ChartOfAccounts == null || !command.ChartOfAccounts.Contains(e.ChartOfAccountId)).ToList();
                     oldCostCenter.ChartOfAccounts = oldCostCenter.ChartOfAccounts
                         .Where(e => !chartOfAccountsToRemove.Contains(e)).ToList();
                     _repository.RemoveChartOfAccounts(chartOfAccountsToRemove);
-                    // add new costCenterChartOfAccounts
                     List<Guid> chartOfAccountsToAdd =
                         command.ChartOfAccounts == null ? [] : command.ChartOfAccounts.Except(oldCostCenter.ChartOfAccounts.Select(e => e.ChartOfAccountId)).ToList();
                     chartOfAccountsToAdd.ForEach(e =>
@@ -170,11 +174,14 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
     {
         var result = await base.ValidateUpdate(command);
         var oldCostCenter = await _repository.Get(command.Id);
-        var chartOfAccountsExists = await _chartOfAccountRepository.Get(e => command.ChartOfAccounts != null && command.ChartOfAccounts.Contains(e.Id));
-        if (command.ChartOfAccounts != null && chartOfAccountsExists.Count() != command.ChartOfAccounts.Count())
+        if (command.ChartOfAccounts != null)
         {
-            result.isValid = false;
-            result.errors.Add("SomeChartOfAcountsNotExisted");
+            var chartOfAccountsExists = await _chartOfAccountRepository.Get(e => command.ChartOfAccounts.Contains(e.Id));
+            if (chartOfAccountsExists.Count() != command.ChartOfAccounts.Count())
+            {
+                result.isValid = false;
+                result.errors.Add("SomeChartOfAcountsNotExisted");
+            }
         }
 
         if (result.entity.NodeType != command.NodeType)

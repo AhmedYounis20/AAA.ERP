@@ -50,7 +50,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
-        services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
@@ -88,7 +87,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
-        services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
