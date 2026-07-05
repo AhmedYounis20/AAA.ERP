@@ -4,14 +4,12 @@ using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Application.Services.Inventory;
 using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
-using ERP.Infrastracture.Services.Inventory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.Infrastracture.Utilities;
@@ -32,7 +30,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<IItemService, ItemService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }

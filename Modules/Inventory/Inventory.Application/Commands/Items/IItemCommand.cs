@@ -2,7 +2,7 @@
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Domain.Commands.Inventory.Items;
+namespace Inventory.Application.Commands.Items;
 
 public interface IItemCommand
 {

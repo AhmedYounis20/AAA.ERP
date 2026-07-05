@@ -1,11 +1,11 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Application.Validators.Inventory.CommandValidators.Items;
-using ERP.Domain.Commands.Inventory.Items;
+using Inventory.Application.Validators.Items;
+using Inventory.Application.Commands.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using FluentValidation;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.SellingPrices;
+namespace Inventory.Application.Validators.Items;
 
 public class ItemUpdateValidator : BaseTreeSettingUpdateValidator<ItemUpdateCommand, Item>
 {

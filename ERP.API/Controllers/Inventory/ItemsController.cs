@@ -1,5 +1,5 @@
-﻿using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Items;
+﻿using Inventory.Application.Commands.Items;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Dtos.Inventory;
 using Shared.DTOs.Filters;

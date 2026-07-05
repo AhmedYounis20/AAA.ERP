@@ -1,12 +1,13 @@
-﻿using ERP.Application.Services.BaseServices;
-using ERP.Domain.Commands.Inventory.Items;
+using ERP.Application.Repositories.Inventory;
+using ERP.Application.Services.BaseServices;
+using Inventory.Application.Commands.Items;
+using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Application.Services.Inventory;
+namespace Inventory.Application.Services;
 
 public interface IItemService : IBaseTreeSettingService<Item, ItemCreateCommand, ItemUpdateCommand>
 {
-
     Task<ApiResponse<string>> GeNextCode(Guid? parentId = null);
     Task<ApiResponse<List<ItemDto>>> GetItemDtos();
     Task<ApiResponse<ItemDto?>> GetItemDtoById(Guid id);

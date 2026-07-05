@@ -1,8 +1,8 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Items;
+using Inventory.Application.Services;
+using Inventory.Application.Commands.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Infrastracture.Handlers.Inventory.SellingPrices;
+namespace Inventory.Infrastructure.Handlers.Items;
 
 public class ItemCreateCommandHandler(IItemService service) : ICommandHandler<ItemCreateCommand, ApiResponse<Item>>
 {

@@ -2,7 +2,7 @@
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Items
+namespace Inventory.Infrastructure.Persistence.Items
 {
     public class ItemSellingPriceDiscountDbConfig : BaseEntityDbConfig<ItemSellingPriceDiscount>
     {

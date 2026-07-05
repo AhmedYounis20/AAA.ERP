@@ -1,11 +1,15 @@
-﻿using ERP.Application.Repositories.Inventory;
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Items;
+﻿using ERP.Application.Repositories;
+using ERP.Application.Repositories.BaseRepositories;
+using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Services;
+using ERP.Infrastracture.Services.BaseServices;
+
+using Inventory.Application.Commands.Items;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using System.Text.RegularExpressions;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 public class ItemService :
     BaseTreeSettingService<Item, ItemCreateCommand, ItemUpdateCommand>, IItemService
 {

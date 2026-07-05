@@ -1,11 +1,14 @@
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Domain.Commands.Inventory.Items;
+namespace Inventory.Application.Commands.Items;
 
-public class ItemUpdateCommand : BaseTreeSettingUpdateCommand<Item>, IItemCommand
+public class ItemCreateCommand : BaseTreeSettingCreateCommand<Item>, IItemCommand
 {
+    public string Code { get; set; } = string.Empty;
+    public string? Gs1Code { get; set; }
+    public string? EGSCode { get; set; }
     public bool ApplyDomainChanges { get; set; } = true;
     public Guid? ColorId { get; set; }
     public Guid? SizeId { get; set; }

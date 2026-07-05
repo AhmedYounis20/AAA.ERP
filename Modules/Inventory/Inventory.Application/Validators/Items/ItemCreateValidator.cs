@@ -1,10 +1,10 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Commands.Inventory.Items;
+using Inventory.Application.Commands.Items;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using FluentValidation;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.Items;
+namespace Inventory.Application.Validators.Items;
 
 public class ItemCreateValidator : BaseTreeSettingCreateValidator<ItemCreateCommand, Item>
 { 

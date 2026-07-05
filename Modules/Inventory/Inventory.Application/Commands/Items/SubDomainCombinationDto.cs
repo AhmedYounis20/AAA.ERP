@@ -1,6 +1,6 @@
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Domain.Commands.Inventory.Items;
+namespace Inventory.Application.Commands.Items;
 
 public class SubDomainCombinationDto
 {

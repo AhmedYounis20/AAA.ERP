@@ -1,7 +1,7 @@
 using ERP.Domain.Models.Entities.Inventory.Items;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.Items;
+namespace Inventory.Application.Validators.Items;
 
 public class ItemSellingPriceDiscountValidator : AbstractValidator<ItemSellingPriceDiscountDto>
 { 
