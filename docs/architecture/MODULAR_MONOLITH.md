@@ -983,7 +983,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 9 | ChartOfAccounts (tree) | 1–2 | Dev A | Done |
 | 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A | Done |
 | 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A | Done |
-| 12 | Roles | 1 | Dev B | Next |
+| 12 | Roles | 1 | Dev B | Done |
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A |
 | 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A |
 
@@ -1261,9 +1261,9 @@ Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3C — **IN PROGRESS** (Week 11 complete)
+### Phase 3 Wave 3C — **IN PROGRESS** (Week 12 complete)
 
-Week 7–11 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
+Week 7–12 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
 
 | Done | Notes |
 |------|-------|
@@ -1280,7 +1280,8 @@ Week 7–11 aggregates extracted into `Modules/Accounting/` (entities remain in 
 | Customers | Sub-ledger; thin `CustomerService`; entity stays in `ERP.Domain` |
 | Suppliers | Sub-ledger; `ISupplierRepository` remains on God `IUnitOfWork` (inventory catalog consumers via `_unitOfWork.SupplierRepository`) |
 | FixedAssets | Sub-ledger; custom Create/Update/Delete + depreciation COA side effects; `GetNextFixedAsset`; `IFixedAssetRepository.GetAsNoTracking` |
-| Next (Week 12) | Roles |
+| Roles | `BaseSettingService` / `BaseSettingController`; `Commission` field; entity stays in `ERP.Domain` (`Job.cs`) |
+| Next (Week 13) | Entries — Journal, Payment, Receipt |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

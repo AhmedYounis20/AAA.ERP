@@ -1,10 +1,9 @@
+using Accounting.Application.Commands.Roles;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Commands.Account.Roles;
 using ERP.Domain.Models.Entities.Account.Roles;
 using FluentValidation;
-using Shared.Responses;
 
-namespace ERP.Application.Validators.Account.ComandValidators.Roles;
+namespace Accounting.Application.Validators.Roles;
 
 public class RoleUpdateValidator : BaseSettingUpdateValidator<RoleUpdateCommand, Role>
 {

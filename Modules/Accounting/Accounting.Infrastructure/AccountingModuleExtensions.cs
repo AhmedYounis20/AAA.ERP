@@ -44,6 +44,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IRoleService, RoleService>();
 
         return services;
     }
@@ -65,5 +67,6 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new CustomerDbConfig());
         modelBuilder.ApplyConfiguration(new SupplierDbConfig());
         modelBuilder.ApplyConfiguration(new FixedAssetDbConfig());
+        modelBuilder.ApplyConfiguration(new RoleDbConfig());
     }
 }

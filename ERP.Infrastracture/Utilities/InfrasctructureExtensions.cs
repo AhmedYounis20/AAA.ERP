@@ -13,7 +13,6 @@ using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 using ERP.Infrastracture.Repositories.Inventory;
-using ERP.Infrastracture.Services.Account;
 using ERP.Infrastracture.Services.Account.Entries;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
@@ -43,7 +42,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
@@ -74,7 +72,6 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();

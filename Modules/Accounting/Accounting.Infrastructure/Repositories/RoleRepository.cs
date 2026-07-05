@@ -1,10 +1,10 @@
-﻿using ERP.Application.Repositories.Account;
+using Accounting.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.Roles;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace Accounting.Infrastructure.Repositories;
 
 public class RoleRepository : BaseSettingRepository<Role>, IRoleRepository
 {
-    public RoleRepository(ApplicationDbContext context) : base(context) {}
+    public RoleRepository(IApplicationDbContext context) : base(context) { }
 }

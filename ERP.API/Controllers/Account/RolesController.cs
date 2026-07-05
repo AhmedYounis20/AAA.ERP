@@ -1,4 +1,4 @@
-﻿using ERP.Domain.Commands.Account.Roles;
+﻿using Accounting.Application.Commands.Roles;
 using ERP.Domain.Models.Entities.Account.Roles;
 using Shared.DTOs;
 
