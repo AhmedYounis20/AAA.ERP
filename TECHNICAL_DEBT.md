@@ -21,6 +21,7 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | 7a–7e | `Domain.Account.*` namespace retirement | **Done** |
 | 8a | `AAA.ERP.OutputDtos` namespace retirement | **Done** |
 | 8b | Inventory catalog → Accounting via Contracts query port | **Done** |
+| C1 | Accounting validators → `ErrorMessages` constants | **Done** (uncommitted) |
 
 **Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
