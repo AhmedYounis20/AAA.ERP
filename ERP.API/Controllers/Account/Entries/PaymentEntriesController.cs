@@ -1,6 +1,5 @@
 ﻿using ERP.API.Controllers.BaseControllers;
-using ERP.Application.Services.Account.Entries;
-using ERP.Domain.Commands.Account.Entries.PaymentEntries;
+using Accounting.Application.Commands.PaymentEntries;
 using ERP.Domain.Models.Entities.Account.Entries;
 using Shared.DTOs.Filters;
 

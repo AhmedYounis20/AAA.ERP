@@ -45,9 +45,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
-        services.AddScoped<IJournalEntryService, JournalEntryService>();
-        services.AddScoped<IPaymentEntryService, PaymentEntryService>();
-        services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<ICompinedEntryService, CompinedEntryService>();
         services.AddScoped<IPackingUnitService, PackingUnitService>();
         services.AddScoped<ISellingPriceService, SellingPriceService>();
