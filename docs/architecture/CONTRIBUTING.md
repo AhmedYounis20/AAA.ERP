@@ -2,14 +2,14 @@
 
 Guidelines for adding code to the **modular monolith**.  
 **Migration history:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) (Phases 0–7 complete)  
-**Active forward plan:** [MODULE_API_MIGRATION_PLAN.md](./MODULE_API_MIGRATION_PLAN.md) (module-owned APIs)  
+**Module API migration:** [MODULE_API_MIGRATION_PLAN.md](./MODULE_API_MIGRATION_PLAN.md) (Phases 0–5 **complete**)  
 **Extracting an aggregate?** Follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md).  
 **Adding/moving a controller?** Follow [MODULE_API_TEMPLATE.md](./MODULE_API_TEMPLATE.md).
 
 ## Current structure
 
 ```
-ERP.Host/                  → HTTP, composition root, EF migrations
+ERP.Host/                  → Composition root, EF migrations, Dev/DbWork only
 ERP.Persistence/           → Shared EF kernel (ApplicationDbContext, base services, seed)
 BuildingBlocks/
   ERP.BuildingBlocks.Domain/
@@ -18,10 +18,10 @@ BuildingBlocks/
   ERP.BuildingBlocks.Persistence/
   ERP.Shared/              → Thin shim (filter DTOs, ErrorMessages, exception handler)
 Modules/
-  Accounting/              → Domain · Application · Infrastructure · Contracts · Api (planned)
-  Inventory/               → Domain · Application · Infrastructure · Api (planned)
-  Identity/                → Domain · Application · Infrastructure · Api
-  Platform/                → Audit · Caching · Localization · Infrastructure · Api (planned)
+  Accounting/              → Domain · Application · Infrastructure · Contracts · Api
+  Inventory/               → Domain · Application · Infrastructure · Api
+  Identity/                → Domain · Application · Infrastructure · Api · Contracts
+  Platform/                → Audit.Api · Audit · Caching · Localization · Infrastructure
 Tests/
   ERP.Architecture.Tests/
   ERP.IntegrationTests/
@@ -114,7 +114,7 @@ builder.Services.AddIdentityModule();
 builder.Services.AddProjectUtilities();
 ```
 
-MediatR is registered **only** in `ERP.Host/Utilities/WebBuilderExtensions.cs`.
+MediatR and MVC `AddApplicationPart` for each `*.Api` assembly are registered **only** in `ERP.Host/Utilities/WebBuilderExtensions.cs`.
 
 ## Dependency rules (enforced by `ERP.Architecture.Tests`)
 

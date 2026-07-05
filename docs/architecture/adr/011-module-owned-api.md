@@ -2,11 +2,12 @@
 
 ## Status
 
-Accepted — July 2026
+Accepted — July 2026  
+**Implemented** — July 2026 (Phases 0–5, [PHASE_5_API_MIGRATION_SIGNOFF](../PHASE_5_API_MIGRATION_SIGNOFF.md))
 
 ## Context
 
-The modular monolith migration (Phases 0–7) moved business logic into `Modules/{Name}/` projects, but all 38 business HTTP controllers remain in `ERP.Host/Controllers/`. This creates:
+The modular monolith migration (Phases 0–7) moved business logic into `Modules/{Name}/` projects. Through July 2026, all 38 business HTTP controllers were still in `ERP.Host/Controllers/`. That created:
 
 - No compile-time module ownership of the API surface
 - Host grows with every new endpoint

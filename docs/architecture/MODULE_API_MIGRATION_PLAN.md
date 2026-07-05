@@ -1,8 +1,8 @@
 # Module API migration plan
 
-> **Status:** Phases 0–5 **complete**  
+> **Status:** Phases 0–6 **complete**  
 > **ADR:** [011-module-owned-api.md](./adr/011-module-owned-api.md)  
-> **Sign-off:** [PHASE_5_API_MIGRATION_SIGNOFF.md](./PHASE_5_API_MIGRATION_SIGNOFF.md)
+> **Sign-off:** [PHASE_6_API_MIGRATION_SIGNOFF.md](./PHASE_6_API_MIGRATION_SIGNOFF.md)
 
 Moves HTTP controllers from `ERP.Host` into per-module `*.Api` projects while preserving API routes.
 
@@ -56,3 +56,16 @@ See [PHASE_5_API_MIGRATION_SIGNOFF.md](./PHASE_5_API_MIGRATION_SIGNOFF.md).
 |-------|-------|------------------------|
 | Phase 4 | Inventory (14) | 1 (DbWork only) |
 | Phase 5 | Remove `ERP.Host/Controllers/`, relocate DbWork to `Dev/` | 0 under `Controllers`; 1 dev-only in `ERP.Host.Dev` |
+
+---
+
+## Phase 6 — Documentation & closure (complete)
+
+See [PHASE_6_API_MIGRATION_SIGNOFF.md](./PHASE_6_API_MIGRATION_SIGNOFF.md).
+
+| ID | Task | Status |
+|----|------|--------|
+| 6.1 | Update `MODULAR_MONOLITH.md` (target layout, API increment) | ✅ |
+| 6.2 | Refresh `SOLUTION_DIAGRAM.md` with `*.Api` projects | ✅ |
+| 6.3 | Update `CONTRIBUTING.md` current structure | ✅ |
+| 6.4 | Mark ADR-011 implemented | ✅ |

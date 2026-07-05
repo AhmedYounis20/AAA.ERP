@@ -41,4 +41,4 @@ ERP.Host/
 
 ## Module API migration complete
 
-Phases 0–5 deliver module-owned APIs with Host as composition root only. Optional follow-ups: Phase 6 hardening, `MODULAR_MONOLITH.md` diagram refresh, retire `ERP.Persistence` coupling in DbWork.
+Phases 0–5 deliver module-owned APIs with Host as composition root only. **Phase 6** (doc sync) complete — see [PHASE_6_API_MIGRATION_SIGNOFF.md](./PHASE_6_API_MIGRATION_SIGNOFF.md). Optional follow-ups: retire `ERP.Persistence` coupling in DbWork; move `IBaseQueryService` to Contracts.

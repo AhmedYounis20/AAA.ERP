@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
-> **Status:** **M4 complete** — Phases 0–7 **complete**; forward work in [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)  
-> **Last updated:** July 2026 — [FINAL_SIGNOFF](./FINAL_SIGNOFF.md); enhancement Phases 1–9 **active**  
+> **Status:** **M4 complete** — Phases 0–7 **complete**; module-owned API migration **complete** ([MODULE_API_MIGRATION_PLAN](./MODULE_API_MIGRATION_PLAN.md) Phases 0–5)  
+> **Last updated:** July 2026 — [PHASE_5_API_MIGRATION_SIGNOFF](./PHASE_5_API_MIGRATION_SIGNOFF.md); enhancement Phases 1–9 **active**  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -199,36 +199,41 @@ Modular monolith + architecture tests helps prevent further drift.
 ```
 AAA.ERP/
 ├── src/
-│   ├── ERP.Host/                              # Composition root (today's ERP.Host)
+│   ├── ERP.Host/                              # Composition root only
 │   │   ├── Program.cs / startup
-│   │   ├── Controllers/
+│   │   ├── Dev/                               # DbWork seed tooling ([DevelopmentOnly])
 │   │   ├── appsettings.json
-│   │   └── Migrations/                        # Until ERP.Persistence exists
+│   │   └── Migrations/                        # Until ERP.Persistence owns migrations
 │   │
 │   ├── BuildingBlocks/
 │   │   ├── ERP.BuildingBlocks.Domain/
 │   │   ├── ERP.BuildingBlocks.Application/
+│   │   ├── ERP.BuildingBlocks.Api/            # Shared CRUD controller bases
 │   │   └── ERP.BuildingBlocks.Infrastructure/   # Optional early phase
 │   │
 │   ├── Modules/
 │   │   ├── Accounting/
 │   │   │   ├── Accounting.Domain/
 │   │   │   ├── Accounting.Application/
+│   │   │   ├── Accounting.Api/                # HTTP controllers (21)
 │   │   │   ├── Accounting.Contracts/          # PUBLIC surface for other modules
 │   │   │   └── Accounting.Infrastructure/
 │   │   │
 │   │   ├── Inventory/
 │   │   │   ├── Inventory.Domain/
 │   │   │   ├── Inventory.Application/
+│   │   │   ├── Inventory.Api/                 # HTTP controllers (14)
 │   │   │   ├── Inventory.Contracts/
 │   │   │   └── Inventory.Infrastructure/
 │   │   │
 │   │   ├── Identity/
 │   │   │   ├── Identity.Domain/
 │   │   │   ├── Identity.Application/
+│   │   │   ├── Identity.Api/                    # AuthController
 │   │   │   └── Identity.Infrastructure/
 │   │   │
 │   │   └── Platform/
+│   │       ├── Platform.Audit.Api/            # AuditLogsController
 │   │       ├── Platform.Audit/
 │   │       ├── Platform.Caching/
 │   │       └── Platform.Localization/
@@ -266,7 +271,8 @@ AAA.ERP/
 | `*.Application` | Own Domain, BuildingBlocks, other `*.Contracts` | Other modules' Domain/Infrastructure |
 | `*.Infrastructure` | Own Application, Domain, EF | Other modules' Domain |
 | `*.Contracts` | BuildingBlocks only (DTOs, interfaces) | Domain entities |
-| `ERP.Host` | All Infrastructure projects | Domain directly (ideally) |
+| `*.Api` | Own Application, BuildingBlocks.Api | Domain, Infrastructure, Persistence, other modules |
+| `ERP.Host` | All Infrastructure + all `*.Api` (composition only) | Domain directly (ideally) |
 
 **Enforcement:** `Architecture.Tests` in CI — PRs that violate rules fail the build.
 
@@ -615,7 +621,19 @@ This is **internal restructuring**. The frontend should see:
 - Same `ApiResponse<T>` shape
 - Same auth and localization headers
 
-### 9.2 Optional Swagger grouping
+### 9.2 Module-owned controllers (current)
+
+Business HTTP controllers live in `{Module}.Api` projects ([ADR-011](./adr/011-module-owned-api.md)). `ERP.Host` discovers them via `AddApplicationPart` — routes and `ApiResponse<T>` shape are unchanged.
+
+| Module | Api project | Controllers |
+|--------|-------------|-------------|
+| Accounting | `Accounting.Api` | 21 |
+| Inventory | `Inventory.Api` | 14 |
+| Identity | `Identity.Api` | 1 |
+| Platform | `Platform.Audit.Api` | 1 |
+| Host (dev only) | `ERP.Host.Dev` | 1 (`DbWork`, `[DevelopmentOnly]`) |
+
+### 9.3 Swagger grouping
 
 ```csharp
 options.SwaggerDoc("accounting", new OpenApiInfo { Title = "Accounting API" });
@@ -989,7 +1007,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A | Done |
 | 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A | Done |
 
-**Wave 3C exit:** All `ERP.Host/Controllers/Account/*` backed by Accounting module projects.
+**Wave 3C exit:** All accounting HTTP endpoints backed by `Accounting.Api` + Accounting module projects.
 
 **Per-aggregate checklist (repeat for each):**
 
@@ -1017,7 +1035,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 21 | InventoryTransfers | 2 | Dev B | **Done** — `InventoryTransferService`, 2 MediatR handlers, `InventoryTransfer*DbConfig`; `IInventoryTransferRepository` stays in `ERP.Application` |
 | 22 | Legacy Items (if still in use — deprecate or migrate) | 1–2 | Dev B | **Done** — `ItemService`, `ItemRepository` (restored), 2 MediatR handlers, 7 Item DbConfigs; junction repos in module |
 
-**Wave 3D exit:** All `ERP.Host/Controllers/Inventory/*` backed by Inventory module projects.
+**Wave 3D exit:** All inventory HTTP endpoints backed by `Inventory.Api` + Inventory module projects.
 
 #### Wave 3E — Retire horizontal layers (Weeks 23–24)
 
@@ -1076,7 +1094,7 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 **Phase 3 exit criteria (M3):**
 
 - [x] No horizontal `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` projects
-- [x] Every controller backed by a module
+- [x] Every controller backed by a module *(July 2026: HTTP surface in `*.Api` projects per [ADR-011](./adr/011-module-owned-api.md))*
 - [x] God `IUnitOfWork` removed or empty *(Week 23: transaction coordinator only)*
 - [x] All arch tests green
 - [x] Full API smoke suite passes
@@ -1381,7 +1399,21 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | D6 | Doc sync (C3–C8 commit refs) | **Done** |
 | L1 | Localization keys → Platform resources | **Done** |
 
-**Next:** **[ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)** — Phases **1–9** (starts July 2026 baseline). Ongoing **4.3.x** sprint hygiene per PR. Historical: post-M4 quality [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md); Phases 5–7 [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
+**Next:** Module-owned API migration **complete** — [PHASE_5_API_MIGRATION_SIGNOFF](./PHASE_5_API_MIGRATION_SIGNOFF.md). Ongoing **[ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)** Phases 1–9. Historical: post-M4 quality [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md); Phases 5–7 [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
+
+#### Increment — Module-owned API surface (ADR-011)
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| API-0 | `ERP.BuildingBlocks.Api`, arch tests, templates | **Done** — `8ae1afe` |
+| API-1 | DTO/repo/service folder cleanup | **Done** — `8ae1afe` |
+| API-2 | Pilot: `Identity.Api`, `Platform.Audit.Api` | **Done** — `8ae1afe` |
+| API-3 | `Accounting.Api` (21 controllers) | **Done** — `652733c` |
+| API-4 | `Inventory.Api` (14 controllers) | **Done** — `0d43fcb` |
+| API-5 | Host slim-down (`ERP.Host.Dev` only) | **Done** — `672d865` |
+| API-6 | Architecture doc sync | **Done** — this increment |
+
+**Host composition:** `AddApplicationPart` for each `*.Api` assembly in `WebBuilderExtensions.cs`. Swagger groups via `SwaggerModuleGroups` / `SwaggerModuleGroupResolver`.
 
 #### Phase 5 — Inventory boundary + ops readiness
 

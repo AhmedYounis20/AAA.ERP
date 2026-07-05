@@ -1,27 +1,28 @@
 # AAA.ERP — Solution diagram
 
-> **Last updated:** July 2026 — Phase 1 hygiene ([ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md))  
+> **Last updated:** July 2026 — module-owned API migration complete ([PHASE_5_API_MIGRATION_SIGNOFF](./PHASE_5_API_MIGRATION_SIGNOFF.md))  
 > **Migration history:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)  
 > **Active plan:** [ARCHITECTURE_ENHANCEMENT_PLAN.md](./ARCHITECTURE_ENHANCEMENT_PLAN.md)
 
 ## Project layout (actual)
 
-Solution root is **flat** (no `src/` folder). Retired horizontal layers and module API scaffolds have been removed from disk.
+Solution root is **flat** (no `src/` folder). Retired horizontal layers (`ERP.Application`, `ERP.Domain`, `ERP.Infrastracture`) and `ERP.Host/Controllers/` have been removed.
 
 ```
 AAA.ERP/
-├── ERP.Host/                    # Composition root — HTTP, Swagger, EF migrations
+├── ERP.Host/                    # Composition root — startup, Swagger, EF migrations, Dev/DbWork
 ├── ERP.Persistence/             # Shared EF kernel (ApplicationDbContext, base services)
 ├── BuildingBlocks/
 │   ├── ERP.BuildingBlocks.Domain/
 │   ├── ERP.BuildingBlocks.Application/
+│   ├── ERP.BuildingBlocks.Api/      # Shared CRUD controller bases
 │   ├── ERP.BuildingBlocks.Persistence/
-│   └── ERP.Shared/              # Solution folder; physical path: Shared/
+│   └── ERP.Shared/                  # Solution folder; physical path: Shared/
 ├── Modules/
-│   ├── Accounting/              # Domain · Application · Infrastructure · Contracts
-│   ├── Inventory/               # Domain · Application · Infrastructure · Contracts
-│   ├── Identity/                # Domain · Application · Infrastructure
-│   └── Platform/                # Audit · Caching · Localization · Infrastructure
+│   ├── Accounting/              # Domain · Application · Infrastructure · Contracts · Api (21)
+│   ├── Inventory/               # Domain · Application · Infrastructure · Api (14)
+│   ├── Identity/                # Domain · Application · Infrastructure · Api (Auth)
+│   └── Platform/                # Audit.Api · Audit · Caching · Localization · Infrastructure
 └── Tests/
     ├── ERP.Architecture.Tests/
     ├── ERP.IntegrationTests/
@@ -34,7 +35,14 @@ AAA.ERP/
 ```mermaid
 graph TB
     subgraph Host["ERP.Host"]
-        H[Controllers · Program · Migrations]
+        H[Program · Middleware · Migrations · Dev/DbWork]
+    end
+
+    subgraph Api["*.Api (HTTP surface)"]
+        ACCAPI[Accounting.Api]
+        INVAPI[Inventory.Api]
+        IDNAPI[Identity.Api]
+        PLTAPI[Platform.Audit.Api]
     end
 
     subgraph Persistence["ERP.Persistence"]
@@ -60,18 +68,24 @@ graph TB
         IDND[Identity.Domain]
     end
 
+    BBAPI[ERP.BuildingBlocks.Api]
     Contracts[Accounting.Contracts]
     BB[BuildingBlocks + ERP.Shared]
 
     DB[(SQL Server)]
 
-    H --> ACC & INV & IDN & PLT & P
-    P --> ACC & INV & IDN & PLT
+    H --> ACCAPI & INVAPI & IDNAPI & PLTAPI & ACC & INV & IDN & PLT & P
+    ACCAPI & INVAPI & IDNAPI & PLTAPI --> BBAPI
+    ACCAPI --> ACCA
+    INVAPI --> INVA
+    IDNAPI --> IDNA
+    PLTAPI --> BB
     ACC --> ACCA --> ACCD --> BB
     INV --> INVA --> INVD --> BB
     INVA -.-> Contracts
     IDN --> IDNA --> IDND --> BB
     PLT --> BB
+    P --> ACC & INV & IDN & PLT
     ACC & INV & IDN & PLT --> DB
 ```
 
@@ -81,16 +95,19 @@ graph TB
 sequenceDiagram
     participant Client
     participant Host as ERP.Host
+    participant Api as Inventory.Api
     participant Inv as Inventory.Infrastructure
     participant Acc as Accounting.Infrastructure
     participant DB as SQL Server
 
     Client->>Host: POST /api/ImportTransactions
-    Host->>Inv: InventoryTransactionService
+    Host->>Api: ImportTransactionsController
+    Api->>Inv: InventoryTransactionService
     Inv->>DB: Stock update
     Inv->>Acc: IAccountingIntegrationService
     Acc->>DB: GL entry (same transaction via ITransactionCoordinator)
-    Inv-->>Host: Result
+    Inv-->>Api: Result
+    Api-->>Host: Result
     Host-->>Client: JSON response
 ```
 
@@ -100,6 +117,7 @@ sequenceDiagram
 |-------|---------|
 | Layer dependencies | `Tests/ERP.Architecture.Tests/LayerDependencyTests.cs` |
 | Module boundaries | `Tests/ERP.Architecture.Tests/ModuleBoundaryTests.cs` |
+| Module API isolation | `Tests/ERP.Architecture.Tests/ModuleApiLayerTests.cs` |
 | Namespace debt | `Tests/ERP.Architecture.Tests/NamespaceDebtTests.cs` |
 
 ## EF migrations
