@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Variants;
 
@@ -9,7 +10,7 @@ public class VariantSalesTaxDbConfig : BaseEntityDbConfig<VariantSalesTax>
     protected override EntityTypeBuilder<VariantSalesTax> ApplyConfiguration(EntityTypeBuilder<VariantSalesTax> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("VariantSalesTaxes");
+        builder.ToTable("VariantSalesTaxes", DbSchemaNames.Inventory);
 
         _ = builder.HasIndex(e => new { e.VariantId, e.TaxId }).IsUnique();
 

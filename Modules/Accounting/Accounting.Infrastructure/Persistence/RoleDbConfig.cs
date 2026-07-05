@@ -1,5 +1,6 @@
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Accounting.Domain.Models.Entities.Roles;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -9,7 +10,7 @@ public class RoleDbConfig : BaseSettingEntityDbConfig<Role>
     {
         _ = builder.Property(e => e.Commission).HasColumnOrder(columnNumber++);
         base.ApplyConfiguration(builder);
-        builder.ToTable("Roles");
+        builder.ToTable("Roles", DbSchemaNames.Accounting);
         return builder;
     }
 }

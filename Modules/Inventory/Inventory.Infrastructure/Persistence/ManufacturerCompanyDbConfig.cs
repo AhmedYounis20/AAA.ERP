@@ -1,5 +1,6 @@
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence;
 
@@ -8,7 +9,7 @@ public class ManufacturerCompanyDbConfig : BaseSettingEntityDbConfig<Manufacture
     protected override EntityTypeBuilder<ManufacturerCompany> ApplyConfiguration(EntityTypeBuilder<ManufacturerCompany> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("ManufacturerCompanies");
+        builder.ToTable("ManufacturerCompanies", DbSchemaNames.Inventory);
         return builder;
     }
 }

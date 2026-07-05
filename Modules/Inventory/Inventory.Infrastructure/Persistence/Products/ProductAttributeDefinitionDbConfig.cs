@@ -1,5 +1,6 @@
 using Inventory.Domain.Models.Entities.Products;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Products;
 
@@ -7,7 +8,7 @@ public class ProductAttributeDefinitionDbConfig : IEntityTypeConfiguration<Produ
 {
     public void Configure(EntityTypeBuilder<ProductAttributeDefinition> builder)
     {
-        builder.ToTable("ProductAttributeDefinitions");
+        builder.ToTable("ProductAttributeDefinitions", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
         
         builder.Property(e => e.IsVariant).IsRequired();

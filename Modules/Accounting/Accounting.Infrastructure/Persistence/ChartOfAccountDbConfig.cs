@@ -1,6 +1,7 @@
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -8,7 +9,7 @@ public class ChartOfAccountDbConfig : BaseTreeSettingEntityDbConfig<ChartOfAccou
 {
     protected override EntityTypeBuilder<ChartOfAccount> ApplyConfiguration(EntityTypeBuilder<ChartOfAccount> builder)
     {
-        builder.ToTable("ChartOfAccounts");
+        builder.ToTable("ChartOfAccounts", DbSchemaNames.Accounting);
 
         _ = builder.Property(e => e.AccountGuidId).HasColumnOrder(columnNumber++).IsRequired();
         _ = builder.HasOne<AccountGuide>().WithMany().HasForeignKey(e => e.AccountGuidId);

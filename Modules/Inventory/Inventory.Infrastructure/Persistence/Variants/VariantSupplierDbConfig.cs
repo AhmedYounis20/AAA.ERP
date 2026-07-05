@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Variants
 {
@@ -9,7 +10,7 @@ namespace Inventory.Infrastructure.Persistence.Variants
         protected override EntityTypeBuilder<VariantSupplier> ApplyConfiguration(EntityTypeBuilder<VariantSupplier> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("VariantSuppliers");
+            builder.ToTable("VariantSuppliers", DbSchemaNames.Inventory);
 
             _ = builder.HasOne(e => e.Variant)
             .WithMany(e => e.VariantSuppliers)

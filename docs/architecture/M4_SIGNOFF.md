@@ -17,7 +17,7 @@
 | Namespace perimeter (Increments 6–7) | ✅ | `ERP.Host`; `Domain.Account.*` retired from production code |
 | Inventory catalog → Accounting boundary | ✅ | `IInventoryCatalogValidationQueries`; arch test enabled |
 | `AAA.ERP.OutputDtos` retired | ✅ | `Accounting.Domain.OutputDtos` + BuildingBlocks base DTOs |
-| Optional SQL schemas | **Closed — deferred** | [ADR-006](./adr/006-sql-schema-separation.md); not approved |
+| Optional SQL schemas | **Done** | [ADR-006](./adr/006-sql-schema-separation.md) Option B; `SeparateModuleSchemas` migration |
 | Onboarding < 1 day | ✅ | Module READMEs + [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) |
 
 ---
@@ -39,7 +39,7 @@
 |------|--------|
 | EF migration designer entity strings (`Domain.Account.Models.Entities.*`) | Historical snapshot identity — rewriting risks migration drift |
 | API routes / JSON wire formats | Stability contract with frontend |
-| SQL schema separation (`accounting.*`, `inventory.*`) | ADR-006 deferred — ops cost vs benefit |
+| SQL schema separation (`accounting.*`, `inventory.*`, `platform.*`, `identity.*`) | Implemented 4.2.2 — migrate in place via `RenameTable` |
 
 ---
 

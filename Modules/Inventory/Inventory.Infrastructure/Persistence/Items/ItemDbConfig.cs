@@ -1,6 +1,7 @@
 ﻿using Inventory.Domain.Models.Entities.Items;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Items
 {
@@ -9,7 +10,7 @@ namespace Inventory.Infrastructure.Persistence.Items
         protected override EntityTypeBuilder<Item> ApplyConfiguration(EntityTypeBuilder<Item> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("Items");
+            builder.ToTable("Items", DbSchemaNames.Inventory);
 
             _ = builder.Property(e => e.ItemType).HasConversion<string>();
             _ = builder.Property(e => e.DefaultDiscountType).HasConversion<string>();

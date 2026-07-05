@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Variants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Variants;
 
@@ -8,7 +9,7 @@ public class VariantAttributeValueDbConfig : IEntityTypeConfiguration<VariantAtt
 {
     public void Configure(EntityTypeBuilder<VariantAttributeValue> builder)
     {
-        builder.ToTable("VariantAttributeValues");
+        builder.ToTable("VariantAttributeValues", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
 
         // Configure relationships

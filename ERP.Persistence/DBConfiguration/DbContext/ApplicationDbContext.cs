@@ -1,3 +1,4 @@
+using ERP.Infrastructure.DBConfiguration.Config.Identity;
 using Identity.Application;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
@@ -19,6 +20,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        IdentitySchemaDbConfig.ApplyIdentitySchema(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 

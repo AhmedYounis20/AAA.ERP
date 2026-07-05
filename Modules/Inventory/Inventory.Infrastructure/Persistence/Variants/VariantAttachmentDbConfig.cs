@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Variants
 {
@@ -9,7 +10,7 @@ namespace Inventory.Infrastructure.Persistence.Variants
         protected override EntityTypeBuilder<VariantAttachment> ApplyConfiguration(EntityTypeBuilder<VariantAttachment> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("VariantAttachments");
+            builder.ToTable("VariantAttachments", DbSchemaNames.Inventory);
 
             _ = builder.Property(e => e.AttachmentType).HasConversion<string>();
 

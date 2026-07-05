@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Sizes;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.StockBalances;
 
@@ -9,7 +10,7 @@ public class StockBalanceDbConfig : BaseEntityDbConfig<StockBalance>
     protected override EntityTypeBuilder<StockBalance> ApplyConfiguration(EntityTypeBuilder<StockBalance> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("StockBalances");
+        builder.ToTable("StockBalances", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.VariantId).IsRequired().HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.PackingUnitId).IsRequired().HasColumnOrder(columnNumber++);

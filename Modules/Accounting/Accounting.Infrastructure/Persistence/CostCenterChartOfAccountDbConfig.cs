@@ -1,5 +1,6 @@
 using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -8,7 +9,7 @@ public class CostCenterChartOfAccountDbConfig : BaseEntityDbConfig<CostCenterCha
     protected override EntityTypeBuilder<CostCenterChartOfAccount> ApplyConfiguration(EntityTypeBuilder<CostCenterChartOfAccount> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("CostCenterChartOfAccounts");
+        builder.ToTable("CostCenterChartOfAccounts", DbSchemaNames.Accounting);
 
         builder.HasOne(e => e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
         builder.HasIndex(e => new { e.ChartOfAccountId, e.CostCenterId }).IsUnique();

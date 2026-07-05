@@ -1,6 +1,7 @@
 ﻿using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence
 {
@@ -10,7 +11,7 @@ namespace Accounting.Infrastructure.Persistence
         protected override EntityTypeBuilder<EntryAttachment> ApplyConfiguration(EntityTypeBuilder<EntryAttachment> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("EntryAttachments");
+            builder.ToTable("EntryAttachments", DbSchemaNames.Accounting);
 
             builder.HasOne(e => e.Attachment)
             .WithMany()

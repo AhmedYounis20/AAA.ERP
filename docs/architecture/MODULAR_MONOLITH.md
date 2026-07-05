@@ -1101,7 +1101,7 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 | ID | Task | Effort | Owner | Deliverable |
 |----|------|--------|-------|-------------|
 | 4.2.1 | Evaluate SQL schema separation (`accounting.*`, `inventory.*`) | M | Tech lead | ADR decision |
-| 4.2.2 | If approved: migration to add schemas + update EF configs | L | Dev A | Schema separated |
+| 4.2.2 | If approved: migration to add schemas + update EF configs | L | Dev A | **Done** — `SeparateModuleSchemas`; [SQL_SCHEMA_TABLE_INVENTORY.md](./SQL_SCHEMA_TABLE_INVENTORY.md) |
 | 4.2.3 | Add `SourceDocumentId` on entries for idempotent inventory posting | M | Dev A | No duplicate entries |
 | 4.2.4 | Module README per module (`Accounting/README.md`, etc.) | M | Module owners | Onboarding docs |
 | 4.2.5 | Performance review: N+1 queries on Products/Variants list endpoints | L | Dev B | Perf fixes |
@@ -1120,7 +1120,7 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 - [x] Structured logging in production — [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md) runbook; `appsettings.Production.json` (Compact JSON + enrichers)
 - [x] Naming debt resolved — `Infrastructure` / `Combined` (legacy route + JSON wire preserved)
 - [x] Module READMEs complete — `Modules/{Accounting,Inventory,Identity,Platform}/README.md`, `ERP.Persistence/README.md`
-- [x] Optional schemas deployed (if ADR approved) — **closed deferred** per [ADR-006](./adr/006-sql-schema-separation.md)
+- [x] Optional schemas deployed (if ADR approved) — **done** per [ADR-006](./adr/006-sql-schema-separation.md) Option B; migration `SeparateModuleSchemas`
 - [x] Onboarding doc: new feature in under 1 day — module READMEs + [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md)
 
 ---
@@ -1309,7 +1309,7 @@ Month 2 (4.2.x) — **complete**:
 
 | Done | Notes |
 |------|-------|
-| 4.2.1 | [ADR-006: Defer SQL schema separation](./adr/006-sql-schema-separation.md); 4.2.2 not approved |
+| 4.2.1 | [ADR-006: SQL schema separation](./adr/006-sql-schema-separation.md) — Option B approved; 4.2.2 implemented |
 | 4.2.3 | `SourceDocumentId` / `SourceDocumentType` on `Entry`; idempotent inventory GL posting; transfer phase constants |
 | 4.2.4 | Module READMEs per [§10.6](#106-phase-4--hardening) — Accounting, Inventory, Identity, Platform, `ERP.Persistence` |
 | 4.2.5 | Products/Variants list N+1 fixes; `CatalogListIntegrationTests` |
@@ -1347,7 +1347,7 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 
 **Next:** Optional push/PR; ongoing **4.3.x** sprint hygiene.
 
-**Deferred / closed:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes; EF migration designer entity strings.
+**Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings.
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1468,7 +1468,7 @@ dotnet test AAA.ERP.sln
 | ADR-003 | Synchronous GL integration | Inventory posting via `IAccountingIntegrationService` in same transaction |
 | ADR-004 | MediatR as sole write path | Deprecate direct service writes for new features |
 | ADR-005 | Microservices trigger criteria | Separate team, independent scale, or regulatory isolation required |
-| ADR-006 | [Defer SQL schema separation](./adr/006-sql-schema-separation.md) | Defer `accounting.*` / `inventory.*` schemas; single DB until triggers met |
+| ADR-006 | [SQL schema separation](./adr/006-sql-schema-separation.md) | Option B — `accounting` / `inventory` / `platform` / `identity` schemas; migrate in place |
 
 ---
 

@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Products
 {
@@ -9,7 +10,7 @@ namespace Inventory.Infrastructure.Persistence.Products
         protected override EntityTypeBuilder<ProductCode> ApplyConfiguration(EntityTypeBuilder<ProductCode> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("ProductCodes");
+            builder.ToTable("ProductCodes", DbSchemaNames.Inventory);
 
             _ = builder.Property(e => e.CodeType).HasConversion<string>();
 

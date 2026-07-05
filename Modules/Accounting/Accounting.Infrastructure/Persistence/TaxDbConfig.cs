@@ -1,5 +1,6 @@
 using Accounting.Domain.Entities;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -7,7 +8,7 @@ public class TaxDbConfig : BaseTreeSettingEntityDbConfig<Tax>
 {
     protected override EntityTypeBuilder<Tax> ApplyConfiguration(EntityTypeBuilder<Tax> builder)
     {
-        builder.ToTable("Taxes");
+        builder.ToTable("Taxes", DbSchemaNames.Accounting);
         base.ApplyConfiguration(builder);
         _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
         _ = builder.HasOne(e => e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);

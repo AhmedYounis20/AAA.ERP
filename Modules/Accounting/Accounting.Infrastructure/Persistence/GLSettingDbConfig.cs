@@ -1,5 +1,6 @@
 using Accounting.Domain.Models.Entities.GLSettings;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -8,7 +9,7 @@ public class GLSettingDbConfig : BaseEntityDbConfig<GLSetting>
     protected override EntityTypeBuilder<GLSetting> ApplyConfiguration(EntityTypeBuilder<GLSetting> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("GLSettings");
+        builder.ToTable("GLSettings", DbSchemaNames.Accounting);
 
         _ = builder.Property(e => e.IsAllowingEditVoucher).HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.IsAllowingDeleteVoucher).HasColumnOrder(columnNumber++);

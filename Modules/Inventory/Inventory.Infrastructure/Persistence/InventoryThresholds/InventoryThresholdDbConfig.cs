@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.InventoryThresholds;
 
@@ -9,7 +10,7 @@ public class InventoryThresholdDbConfig : BaseEntityDbConfig<InventoryThreshold>
     protected override EntityTypeBuilder<InventoryThreshold> ApplyConfiguration(EntityTypeBuilder<InventoryThreshold> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("InventoryThresholds");
+        builder.ToTable("InventoryThresholds", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.Level)
             .IsRequired();

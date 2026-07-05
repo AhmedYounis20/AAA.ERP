@@ -1,6 +1,7 @@
 ﻿using Inventory.Domain.Models.Entities.Items;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Items
 {
@@ -9,7 +10,7 @@ namespace Inventory.Infrastructure.Persistence.Items
         protected override EntityTypeBuilder<ItemPackingUnit> ApplyConfiguration(EntityTypeBuilder<ItemPackingUnit> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("ItemPackingUnits");
+            builder.ToTable("ItemPackingUnits", DbSchemaNames.Inventory);
 
             _ = builder.HasIndex(e => new { e.ItemId, e.PackingUnitId }).IsUnique();
 

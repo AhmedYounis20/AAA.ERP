@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.ExpiryLevels;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.ExpiryLevels;
 
@@ -9,7 +10,7 @@ public class ExpiryLevelDbConfig : BaseEntityDbConfig<ExpiryLevel>
     protected override EntityTypeBuilder<ExpiryLevel> ApplyConfiguration(EntityTypeBuilder<ExpiryLevel> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("ExpiryLevels");
+        builder.ToTable("ExpiryLevels", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.Level)
             .IsRequired();

@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.InventoryTransactions;
 
@@ -9,7 +10,7 @@ public class InventoryTransactionItemDbConfig : BaseEntityDbConfig<InventoryTran
     protected override EntityTypeBuilder<InventoryTransactionItem> ApplyConfiguration(EntityTypeBuilder<InventoryTransactionItem> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("InventoryTransactionItems");
+        builder.ToTable("InventoryTransactionItems", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.InventoryTransactionId).IsRequired().HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.VariantId).IsRequired().HasColumnOrder(columnNumber++);

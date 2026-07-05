@@ -1,4 +1,5 @@
 using Inventory.Domain.Models.Entities.Attributes;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence;
 
@@ -6,7 +7,7 @@ public class AttributeValueDbConfig : IEntityTypeConfiguration<AttributeValue>
 {
     public void Configure(EntityTypeBuilder<AttributeValue> builder)
     {
-        builder.ToTable("AttributeValues");
+        builder.ToTable("AttributeValues", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);

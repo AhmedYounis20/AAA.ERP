@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Variants;
 
@@ -9,7 +10,7 @@ public class VariantCostCenterDbConfig : BaseEntityDbConfig<VariantCostCenter>
     protected override EntityTypeBuilder<VariantCostCenter> ApplyConfiguration(EntityTypeBuilder<VariantCostCenter> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("VariantCostCenters");
+        builder.ToTable("VariantCostCenters", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.Percent)
             .HasColumnType("decimal(18,2)")

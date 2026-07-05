@@ -1,5 +1,6 @@
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;
 
@@ -7,7 +8,7 @@ public class BankDbConfig : BaseTreeSettingEntityDbConfig<Bank>
 {
     protected override EntityTypeBuilder<Bank> ApplyConfiguration(EntityTypeBuilder<Bank> builder)
     {
-        builder.ToTable("Banks");
+        builder.ToTable("Banks", DbSchemaNames.Accounting);
         base.ApplyConfiguration(builder);
         _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
         _ = builder.HasOne(e => e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);

@@ -2,6 +2,7 @@
 using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence
 {
@@ -11,7 +12,7 @@ namespace Accounting.Infrastructure.Persistence
         protected override EntityTypeBuilder<FinancialTransaction> ApplyConfiguration(EntityTypeBuilder<FinancialTransaction> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("FinancialTransactions");
+            builder.ToTable("FinancialTransactions", DbSchemaNames.Accounting);
 
             _ = builder.Property(e => e.EntryId).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.ChartOfAccountId).IsRequired().HasColumnOrder(columnNumber++);

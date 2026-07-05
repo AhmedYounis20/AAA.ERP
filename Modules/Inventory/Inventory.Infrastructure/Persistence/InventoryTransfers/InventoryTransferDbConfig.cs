@@ -1,5 +1,6 @@
 using Inventory.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.InventoryTransfers;
 
@@ -7,7 +8,7 @@ public class InventoryTransferDbConfig : IEntityTypeConfiguration<InventoryTrans
 {
     public void Configure(EntityTypeBuilder<InventoryTransfer> builder)
     {
-        builder.ToTable("InventoryTransfers");
+        builder.ToTable("InventoryTransfers", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Status).IsRequired();
         builder.Property(e => e.TransferType).IsRequired();

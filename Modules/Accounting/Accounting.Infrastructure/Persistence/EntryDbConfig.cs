@@ -4,6 +4,7 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence
 {
@@ -13,7 +14,7 @@ namespace Accounting.Infrastructure.Persistence
         protected override EntityTypeBuilder<Entry> ApplyConfiguration(EntityTypeBuilder<Entry> builder)
         {
             base.ApplyConfiguration(builder);
-            builder.ToTable("Entries");
+            builder.ToTable("Entries", DbSchemaNames.Accounting);
 
             _ = builder.Property(e => e.EntryNumber).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryType)

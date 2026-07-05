@@ -1,3 +1,4 @@
+using ERP.BuildingBlocks.Persistence;
 using Inventory.Domain.Models.Entities.Products;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -7,6 +8,7 @@ public class ProductPackingUnitSellingPriceDbConfig : IEntityTypeConfiguration<P
 {
     public void Configure(EntityTypeBuilder<ProductPackingUnitSellingPrice> builder)
     {
+        builder.ToTable("ProductPackingUnitSellingPrices", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
         
         builder.Property(e => e.Amount)

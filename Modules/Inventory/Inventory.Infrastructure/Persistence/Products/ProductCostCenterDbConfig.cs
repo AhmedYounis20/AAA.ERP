@@ -1,6 +1,7 @@
 using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Products;
 
@@ -9,7 +10,7 @@ public class ProductCostCenterDbConfig : BaseEntityDbConfig<ProductCostCenter>
     protected override EntityTypeBuilder<ProductCostCenter> ApplyConfiguration(EntityTypeBuilder<ProductCostCenter> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("ProductCostCenters");
+        builder.ToTable("ProductCostCenters", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.Percent)
             .HasColumnType("decimal(18,2)")

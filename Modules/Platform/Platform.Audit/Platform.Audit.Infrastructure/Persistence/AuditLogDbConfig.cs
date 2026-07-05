@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.BaseEntities;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Platform.Audit.Infrastructure.Persistence;
 
@@ -8,7 +9,7 @@ public class AuditLogDbConfig : IEntityTypeConfiguration<AuditLog>
 {
     public void Configure(EntityTypeBuilder<AuditLog> builder)
     {
-        builder.ToTable("AuditLogs");
+        builder.ToTable("AuditLogs", DbSchemaNames.Platform);
 
         builder.HasKey(e => e.Id);
 

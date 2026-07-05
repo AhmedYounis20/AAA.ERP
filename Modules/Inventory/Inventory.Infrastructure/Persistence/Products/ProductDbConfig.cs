@@ -2,6 +2,7 @@ using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ERP.BuildingBlocks.Persistence;
 
 namespace Inventory.Infrastructure.Persistence.Products;
 
@@ -10,7 +11,7 @@ public class ProductDbConfig : BaseTreeSettingEntityDbConfig<Product>
     protected override EntityTypeBuilder<Product> ApplyConfiguration(EntityTypeBuilder<Product> builder)
     {
         base.ApplyConfiguration(builder);
-        builder.ToTable("Products");
+        builder.ToTable("Products", DbSchemaNames.Inventory);
 
         _ = builder.Property(e => e.ProductType).HasConversion<string>();
         _ = builder.Property(e => e.DefaultDiscountType).HasConversion<string>();
