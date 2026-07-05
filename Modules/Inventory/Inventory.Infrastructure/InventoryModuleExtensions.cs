@@ -5,11 +5,13 @@ using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Persistence.Products;
+using Inventory.Infrastructure.Persistence.Variants;
 using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ERP.Domain.Models.Entities.Inventory.Products;
+using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
 namespace Inventory.Infrastructure;
@@ -47,6 +49,19 @@ public static class InventoryModuleExtensions
         services.AddScoped<IBaseRepository<ProductPackingUnitSellingPrice>, BaseRepository<ProductPackingUnitSellingPrice>>();
         services.AddScoped<IBaseRepository<ProductSellingPriceDiscount>, BaseRepository<ProductSellingPriceDiscount>>();
         services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
+        services.AddScoped<IVariantRepository, VariantRepository>();
+        services.AddScoped<IVariantService, VariantService>();
+        services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();
+        services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
+        services.AddScoped<IBaseRepository<VariantSalesTax>, BaseRepository<VariantSalesTax>>();
+        services.AddScoped<IBaseRepository<VariantPurchaseTax>, BaseRepository<VariantPurchaseTax>>();
+        services.AddScoped<IBaseRepository<VariantCostCenter>, BaseRepository<VariantCostCenter>>();
+        services.AddScoped<IBaseRepository<VariantManufacturerCompany>, BaseRepository<VariantManufacturerCompany>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnit>, BaseRepository<VariantPackingUnit>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnitSellingPrice>, BaseRepository<VariantPackingUnitSellingPrice>>();
+        services.AddScoped<IBaseRepository<VariantSellingPriceDiscount>, BaseRepository<VariantSellingPriceDiscount>>();
+        services.AddScoped<IBaseRepository<VariantAttachment>, BaseRepository<VariantAttachment>>();
+        services.AddScoped<IVariantAttributeValueRepository, VariantAttributeValueRepository>();
 
         return services;
     }
@@ -72,5 +87,17 @@ public static class InventoryModuleExtensions
         modelBuilder.ApplyConfiguration(new ProductPackingUnitSellingPriceDbConfig());
         modelBuilder.ApplyConfiguration(new ProductSellingPriceDiscountDbConfig());
         modelBuilder.ApplyConfiguration(new ProductAttributeDefinitionDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantCodeDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantAttachmentDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSupplierDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSalesTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPurchaseTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantCostCenterDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantManufacturerCompanyDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPackingUnitDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPackingUnitSellingPriceDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSellingPriceDiscountDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantAttributeValueDbConfig());
     }
 }

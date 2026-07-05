@@ -2,7 +2,7 @@ using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Variants
+namespace Inventory.Infrastructure.Persistence.Variants
 {
     public class VariantPackingUnitSellingPriceDbConfig : BaseEntityDbConfig<VariantPackingUnitSellingPrice>
     {

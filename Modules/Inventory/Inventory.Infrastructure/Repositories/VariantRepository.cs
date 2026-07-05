@@ -7,7 +7,7 @@ using ERP.Infrastracture.Repositories.BaseRepositories;
 using Shared.DTOs;
 using System.Linq.Expressions;
 
-namespace ERP.Infrastracture.Repositories.Inventory;
+namespace Inventory.Infrastructure.Repositories;
 
 public class VariantRepository : BaseRepository<Variant>, IVariantRepository
 {

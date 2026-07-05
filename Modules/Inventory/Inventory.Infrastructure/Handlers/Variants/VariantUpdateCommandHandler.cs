@@ -1,8 +1,8 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Variants;
+using Inventory.Application.Services;
+using Inventory.Application.Commands.Variants;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 
-namespace ERP.Infrastracture.Handlers.Inventory.Variants;
+namespace Inventory.Infrastructure.Handlers.Variants;
 
 public class VariantUpdateCommandHandler(IVariantService service) : ICommandHandler<VariantUpdateCommand, ApiResponse<Variant>>
 {

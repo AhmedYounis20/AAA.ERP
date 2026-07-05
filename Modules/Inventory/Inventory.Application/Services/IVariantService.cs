@@ -1,10 +1,11 @@
 using ERP.Application.Services.BaseServices;
-using ERP.Domain.Commands.Inventory.Variants;
+using Inventory.Application.Commands.Products;
+using Inventory.Application.Commands.Variants;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
 using Shared.DTOs;
 
-namespace ERP.Application.Services.Inventory;
+namespace Inventory.Application.Services;
 
 public interface IVariantService : IBaseService<Variant, VariantCreateCommand, VariantUpdateCommand>
 {
@@ -12,9 +13,9 @@ public interface IVariantService : IBaseService<Variant, VariantCreateCommand, V
     Task<ApiResponse<VariantDto?>> GetVariantDtoById(Guid id);
     Task<ApiResponse<IEnumerable<VariantDto>>> GetVariantsByProductId(Guid productId);
     Task<ApiResponse<IEnumerable<VariantDto>>> SearchVariants(string searchTerm);
-    public Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
+    Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
         SettingFilterDto filter,
         CancellationToken cancellationToken = default);
-
-    Task<ApiResponse<bool>> CreateVariantsBulkForProductUpdate( List<VariantCreateCommand> commands, bool isValidate = true);
+    Task<ApiResponse<bool>> CreateVariantsBulkForProductUpdate(List<VariantCreateCommand> commands, bool isValidate = true);
+    List<Variant> PrepareVariantsForProduct(ProductCreateCommand command);
 }

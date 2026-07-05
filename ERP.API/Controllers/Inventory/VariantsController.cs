@@ -1,5 +1,5 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Variants;
+using Inventory.Application.Services;
+using Inventory.Application.Commands.Variants;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using Shared.DTOs;
 
