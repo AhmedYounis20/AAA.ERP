@@ -1,113 +1,89 @@
-using Inventory.Application.Services;
 using Inventory.Application.Commands.StockBalances;
-using Inventory.Domain.Models.Entities.Sizes;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
+
 namespace Inventory.Api.Controllers.Stock;
 
-/// <summary>CRUD API for stock balances and quantity queries.</summary>
+/// <summary>CRUD API for stock balances and quantity queries (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class StockBalancesController : BaseController<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
+[Authorize]
+public class StockBalancesController(ISender sender, IStockBalanceReadService reads) : ControllerBase
 {
-    private readonly IStockBalanceService _service;
-
-    public StockBalancesController(
-        IStockBalanceService service,
-        ISender sender) : base(service, sender)
-    {
-        _service = service;
-    }
-
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] StockBalanceCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] StockBalanceCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
     /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        var result = await _service.GetAllForDisplay();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
     /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] StockBalanceFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] StockBalanceFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
     /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        var result = await _service.GetDisplayById(id);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] StockBalanceUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] StockBalanceUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
     /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> Delete(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new StockBalanceDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
     /// <summary>Gets stock balance by variant and branch.</summary>
     [HttpGet("byVariantAndBranch")]
-    public virtual async Task<IActionResult> GetByVariantAndBranch([FromQuery] Guid variantId, [FromQuery] Guid branchId)
-    {
-        var result = await _service.GetByVariantAndBranch(variantId, branchId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetByVariantAndBranch([FromQuery] Guid variantId, [FromQuery] Guid branchId)
+        => this.ToResult(await reads.GetByVariantAndBranch(variantId, branchId));
 
     /// <summary>Gets stock balance by variant, packing unit, and branch.</summary>
     [HttpGet("byVariantPackingUnitAndBranch")]
-    public virtual async Task<IActionResult> GetByVariantPackingUnitAndBranch([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
-    {
-        var result = await _service.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetByVariantPackingUnitAndBranch(
+        [FromQuery] Guid variantId,
+        [FromQuery] Guid packingUnitId,
+        [FromQuery] Guid branchId)
+        => this.ToResult(await reads.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId));
 
     /// <summary>Lists stock balances for a branch.</summary>
     [HttpGet("byBranch/{branchId}")]
-    public virtual async Task<IActionResult> GetByBranch(Guid branchId)
-    {
-        var result = await _service.GetByBranch(branchId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetByBranch(Guid branchId)
+        => this.ToResult(await reads.GetByBranch(branchId));
 
     /// <summary>Lists stock balances for a variant.</summary>
     [HttpGet("byVariant/{variantId}")]
-    public virtual async Task<IActionResult> GetByVariant(Guid variantId)
-    {
-        var result = await _service.GetByVariant(variantId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetByVariant(Guid variantId)
+        => this.ToResult(await reads.GetByVariant(variantId));
 
     /// <summary>Gets current quantity for variant, packing unit, and branch.</summary>
     [HttpGet("currentBalance")]
-    public virtual async Task<IActionResult> GetCurrentBalance([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
-    {
-        var result = await _service.GetCurrentBalance(variantId, packingUnitId, branchId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetCurrentBalance(
+        [FromQuery] Guid variantId,
+        [FromQuery] Guid packingUnitId,
+        [FromQuery] Guid branchId)
+        => this.ToResult(await reads.GetCurrentBalance(variantId, packingUnitId, branchId));
 
     /// <summary>Updates stock quantity and unit cost.</summary>
     [HttpPost("updateStockBalance")]
-    public virtual async Task<IActionResult> UpdateStockBalance([FromBody] UpdateStockBalanceRequest request)
-    {
-        var result = await _service.UpdateStockBalance(request.VariantId, request.PackingUnitId, request.BranchId, request.Quantity, request.UnitCost, request.IsReceipt);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> UpdateStockBalance([FromBody] UpdateStockBalanceRequest request)
+        => this.ToResult(await sender.Send(new UpdateStockBalanceCommand(
+            request.VariantId,
+            request.PackingUnitId,
+            request.BranchId,
+            request.Quantity,
+            request.UnitCost,
+            request.IsReceipt)));
 }
 
 /// <summary>API for UpdateStockBalanceRequest.</summary>

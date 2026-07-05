@@ -1,78 +1,56 @@
 using Inventory.Application.Commands.AttributeValues;
 using Inventory.Application.Services;
-using Inventory.Domain.Models.Entities.Attributes;
-using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Api.Controllers.Catalog;
 
-/// <summary>CRUD API for predefined attribute values.</summary>
+/// <summary>CRUD API for predefined attribute values (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class AttributeValuesController : BaseSettingController<AttributeValue, AttributeValueCreateCommand, AttributeValueUpdateCommand>
+[Authorize]
+public class AttributeValuesController(ISender sender, IAttributeValueReadService reads) : ControllerBase
 {
-    private readonly IAttributeValueService _service;
-
-    public AttributeValuesController(IAttributeValueService service,
-        ISender mapper) : base(service, mapper)
-    {
-        _service = service;
-    }
-
     /// <summary>Creates an attribute value.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] AttributeValueCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] AttributeValueCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
     /// <summary>Lists all attribute values.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
     /// <summary>Lists attribute values with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
     /// <summary>Gets an attribute value by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
     /// <summary>Lists values belonging to the given attribute definition.</summary>
     [HttpGet("byAttribute/{attributeId}")]
-    public virtual async Task<IActionResult> GetByAttribute(Guid attributeId)
-    {
-        var result = await _service.GetAttributeValuesByAttributeDefenitionId(attributeId);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetByAttribute(Guid attributeId)
+        => this.ToResult(await reads.GetAttributeValuesByAttributeDefenitionId(attributeId));
 
     /// <summary>Lists active attribute values.</summary>
     [HttpGet("active")]
-    public virtual async Task<IActionResult> GetActiveAttributeValues()
-    {
-        var result = await _service.GetActiveAttributeValues();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetActiveAttributeValues()
+        => this.ToResult(await reads.GetActiveAttributeValues());
 
     /// <summary>Updates an attribute value.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] AttributeValueUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] AttributeValueUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
     /// <summary>Deletes an attribute value.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> Delete(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> Delete(Guid id)
+        => this.ToResult(await sender.Send(new AttributeValueDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

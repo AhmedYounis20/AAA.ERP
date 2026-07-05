@@ -1,69 +1,44 @@
 ﻿using Inventory.Application.Commands.Sizes;
-using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Sizes;
-using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Api.Controllers.Catalog;
 
-/// <summary>CRUD API for inventory size settings.</summary>
+/// <summary>CRUD API for inventory size settings (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class SizesController : BaseSettingController<Size, SizeCreateCommand, SizeUpdateCommand>
+[Authorize]
+public class SizesController(ISender sender, ISizeReadService reads) : ControllerBase
 {
-    private readonly ISizeService _service;
-    public SizesController(ISizeService service,
-        ISender mapper) : base(service, mapper)
-    {
-        _service = service;
-    }
-
-    /// <summary>Creates a size.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] SizeCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] SizeCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all sizes.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists sizes with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a size by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Updates a size.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] SizeUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] SizeUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a size.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new SizeDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
-    /// <summary>Returns the next available size code.</summary>
     [HttpGet("nextCode")]
     public async Task<IActionResult> GetNextCode()
-    {
-        var result = await _service.GetNextCodeAsync();
-        return StatusCode((int)result.StatusCode, result);
-    }
+        => this.ToResult(await reads.GetNextCode());
 }

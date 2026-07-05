@@ -20,7 +20,7 @@
 | [7](#sprint-7) | 14–15 | Financial periods + COA | ✅ |
 | [8](#sprint-8) | 16–17 | Sub-ledgers batch 1 | ✅ |
 | [9](#sprint-9) | 18–19 | Sub-ledgers batch 2 + settings | ✅ |
-| [10](#sprint-10) | 20–21 | Inventory catalog | ⬜ |
+| [10](#sprint-10) | 20–21 | Inventory catalog | ✅ |
 | [11](#sprint-11) | 22–23 | Cleanup + final sign-off | ⬜ |
 
 **Milestones:** M0 (S0) · M1 P0 (S3) · M2 P1 (S6) · M3 master data (S10) · M4 complete (S11)

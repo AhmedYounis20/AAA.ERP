@@ -4,6 +4,8 @@ using Accounting.Api.Controllers.Settings;
 using Accounting.Api.Controllers.SubLedger;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
+using Inventory.Api.Controllers.Pricing;
+using Inventory.Api.Controllers.Stock;
 using Inventory.Api.Controllers.Transactions;
 using System.Reflection;
 
@@ -40,7 +42,17 @@ public class HybridCqrsArchitectureTests
         typeof(CollectionBooksController),
         typeof(RolesController),
         typeof(GLSettingsController),
-        typeof(AccountGuidesController)
+        typeof(AccountGuidesController),
+        typeof(SizesController),
+        typeof(ManufacturerCompaniesController),
+        typeof(PackingUnitsController),
+        typeof(AttributeDefinitionsController),
+        typeof(AttributeValuesController),
+        typeof(SellingPricesController),
+        typeof(ProductsController),
+        typeof(ItemsController),
+        typeof(VariantsController),
+        typeof(StockBalancesController)
     ];
 
     [Fact]
@@ -101,7 +113,17 @@ public class HybridCqrsArchitectureTests
             typeof(Accounting.Application.Services.ICollectionBookReadService),
             typeof(Accounting.Application.Services.IRoleReadService),
             typeof(Accounting.Application.Services.IGLSettingReadService),
-            typeof(Accounting.Application.Services.IAccountGuideReadService)
+            typeof(Accounting.Application.Services.IAccountGuideReadService),
+            typeof(Inventory.Application.Services.ISizeReadService),
+            typeof(Inventory.Application.Services.IManufacturerCompanyReadService),
+            typeof(Inventory.Application.Services.IPackingUnitReadService),
+            typeof(Inventory.Application.Services.IAttributeDefinitionReadService),
+            typeof(Inventory.Application.Services.IAttributeValueReadService),
+            typeof(Inventory.Application.Services.ISellingPriceReadService),
+            typeof(Inventory.Application.Services.IProductReadService),
+            typeof(Inventory.Application.Services.IItemReadService),
+            typeof(Inventory.Application.Services.IVariantReadService),
+            typeof(Inventory.Application.Services.IStockBalanceReadService)
         };
 
         foreach (var readService in readServiceInterfaces)

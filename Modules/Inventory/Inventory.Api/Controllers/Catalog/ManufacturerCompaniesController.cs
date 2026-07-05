@@ -1,58 +1,40 @@
 ﻿using Inventory.Application.Commands.ManufacturerCompanies;
-using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
-using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Api.Controllers.Catalog;
 
-/// <summary>CRUD API for manufacturer company settings.</summary>
+/// <summary>CRUD API for manufacturer company settings (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class ManufacturerCompaniesController : BaseSettingController<ManufacturerCompany, ManufacturerCompanyCreateCommand, ManufacturerCompanyUpdateCommand>
+[Authorize]
+public class ManufacturerCompaniesController(ISender sender, IManufacturerCompanyReadService reads) : ControllerBase
 {
-    public ManufacturerCompaniesController(IManufacturerCompanyService service,
-        ISender mapper) : base(service, mapper)
-    { }
-
-    /// <summary>Creates a manufacturer company.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] ManufacturerCompanyCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] ManufacturerCompanyCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all manufacturer companies.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists manufacturer companies with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a manufacturer company by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Updates a manufacturer company.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] ManufacturerCompanyUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] ManufacturerCompanyUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a manufacturer company.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new ManufacturerCompanyDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

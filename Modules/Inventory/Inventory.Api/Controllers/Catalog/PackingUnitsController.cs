@@ -1,54 +1,35 @@
 ﻿using Inventory.Application.Commands.PackingUnits;
-using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.PackingUnits;
-using Inventory.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Api.Controllers.Catalog;
 
-/// <summary>CRUD API for packing unit settings and lookup queries.</summary>
+/// <summary>CRUD API for packing unit settings and lookup queries (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class PackingUnitsController : BaseSettingController<PackingUnit, PackingUnitCreateCommand, PackingUnitUpdateCommand>
+[Authorize]
+public class PackingUnitsController(
+    ISender sender,
+    IPackingUnitReadService reads,
+    IBaseQueryService<PackingUnit, PackingUnitLookupDto> baseQueryService) : ControllerBase
 {
-    IBaseQueryService<PackingUnit, PackingUnitLookupDto> _baseQueryService;
-
-    public PackingUnitsController(IPackingUnitService service,
-        IBaseQueryService<PackingUnit, PackingUnitLookupDto> baseQueryService,
-        ISender mapper) : base(service, mapper)
-    {
-        _baseQueryService = baseQueryService;
-    }
-
-    /// <summary>Creates a packing unit.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] PackingUnitCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] PackingUnitCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all packing units.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists packing units with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a packing unit by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Returns cached packing-unit lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -57,7 +38,7 @@ public class PackingUnitsController : BaseSettingController<PackingUnit, Packing
         {
             result = new ApiResponse<IEnumerable<PackingUnitLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(),
+                Result = await baseQueryService.GetLookUps(),
                 IsSuccess = true
             };
         }
@@ -72,17 +53,14 @@ public class PackingUnitsController : BaseSettingController<PackingUnit, Packing
         return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Updates a packing unit.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] PackingUnitUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] PackingUnitUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a packing unit.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new PackingUnitDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

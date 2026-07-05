@@ -1,0 +1,8 @@
+using ERP.BuildingBlocks.Application.Responses;
+using Inventory.Domain.Models.Entities.Sizes;
+using Shared;
+
+namespace Inventory.Application.Commands.StockBalances;
+
+/// <summary>Deletes a stock balance record.</summary>
+public record StockBalanceDeleteCommand(Guid Id) : ICommand<ApiResponse<StockBalance>>;
