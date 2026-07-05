@@ -996,7 +996,8 @@ Add to `Tests/ERP.Architecture.Tests/`:
 | `Api_controllers_must_not_inject_repositories_or_DbContext` | New |
 | `Api_controllers_GET_actions_use_read_services` | Controllers do not call `ReadAll` on write services (aspirational; enforce post-migration) |
 | `Command_handlers_P0_P1_must_not_delegate_only_to_service` | Handlers for transactions/entries contain more than service forward |
-| `Application_read_interfaces_must_not_have_Create_Update_Delete` | `I*ReadService` has no write methods |
+| `Standard_setting_and_tree_controllers_should_inherit_hybrid_base` | Controllers injecting `ISettingQueries` / `ITreeSettingQueries` / `ISubLedgerQueries` must inherit `HybridSettingController`, `HybridTreeSettingController`, or `HybridSubLedgerController` |
+| `Application_read_interfaces_must_not_have_Create_Update_Delete` | `I*Queries` has no write methods |
 
 **PR checklist (mandatory for new features):**
 

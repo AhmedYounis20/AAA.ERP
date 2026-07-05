@@ -212,6 +212,7 @@ Copy for each aggregate row below:
 | S12-5 | `HybridSettingController` + `HybridTreeSettingController` | ✅ |
 | S12-6 | Pilot hybrid bases: Roles, ManufacturerCompanies | ✅ |
 | S12-9 | Roll out hybrid bases to all standard settings & sub-ledgers | ✅ |
+| S12-10 | Arch test: hybrid base inheritance for standard controllers | ✅ |
 | S12-7 | Arch tests: discover `*Queries` only | ✅ |
 | S12-8 | Update HYBRID_CQRS_PLAN §7.0, §8.4 | ✅ |
 

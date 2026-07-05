@@ -1,4 +1,12 @@
 using Accounting.Api.Controllers.SubLedger;
+using Accounting.Application.Commands.CostCenters;
+using Accounting.Application.Commands.Roles;
+using Accounting.Application.Commands.Taxes;
+using Accounting.Domain.Entities;
+using Accounting.Domain.Models.Entities.CostCenters;
+using Accounting.Domain.Models.Entities.Roles;
+using ERP.BuildingBlocks.Api.Controllers;
+using ERP.BuildingBlocks.Application.Services.Queries;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +37,27 @@ public class HybridCqrsArchitectureTests
     private static readonly Lazy<Type[]> HybridCqrsControllers = new(DiscoverHybridCqrsControllers);
 
     private static readonly Lazy<Type[]> ReadSideContracts = new(DiscoverReadSideContracts);
+
+    private static readonly Type HybridSettingControllerDef =
+        typeof(HybridSettingController<Role, RoleCreateCommand, RoleUpdateCommand>).GetGenericTypeDefinition();
+
+    private static readonly Type HybridTreeSettingControllerDef =
+        typeof(HybridTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>).GetGenericTypeDefinition();
+
+    private static readonly Type HybridSubLedgerControllerDef =
+        typeof(HybridSubLedgerController<Tax, TaxCreateCommand, TaxUpdateCommand>).GetGenericTypeDefinition();
+
+    private static readonly Type ISettingQueriesDef = typeof(ISettingQueries<>);
+    private static readonly Type ITreeSettingQueriesDef = typeof(ITreeSettingQueries<>);
+    private static readonly Type ISubLedgerQueriesDef = typeof(ISubLedgerQueries<,>);
+
+    private enum RequiredHybridBaseKind
+    {
+        None,
+        Setting,
+        Tree,
+        SubLedger
+    }
 
     private static Type[] DiscoverHybridCqrsControllers()
     {
@@ -120,9 +149,47 @@ public class HybridCqrsArchitectureTests
             for (var baseType = controller.BaseType; baseType is not null; baseType = baseType.BaseType)
             {
                 LegacyCrudBaseNames.Should().NotContain(baseType.Name,
-                    $"{controller.Name} must inherit ControllerBase directly, not legacy {baseType.Name}");
+                    $"{controller.Name} must not inherit legacy {baseType.Name}");
             }
         }
+    }
+
+    [Fact]
+    public void Standard_setting_and_tree_controllers_should_inherit_hybrid_base()
+    {
+        var subjectCount = 0;
+
+        foreach (var controller in HybridCqrsControllers.Value)
+        {
+            var queriesParameter = GetAggregateQueriesParameter(controller);
+            if (queriesParameter is null)
+                continue;
+
+            var requiredBase = GetRequiredHybridBase(queriesParameter.ParameterType);
+            if (requiredBase == RequiredHybridBaseKind.None)
+                continue;
+
+            subjectCount++;
+
+            var hasRequiredBase = requiredBase switch
+            {
+                RequiredHybridBaseKind.SubLedger => InheritsHybridBase(controller, HybridSubLedgerControllerDef),
+                RequiredHybridBaseKind.Tree => InheritsHybridBase(controller, HybridTreeSettingControllerDef)
+                                               || InheritsHybridBase(controller, HybridSubLedgerControllerDef),
+                RequiredHybridBaseKind.Setting => InheritsHybridBase(controller, HybridSettingControllerDef)
+                                                  || InheritsHybridBase(controller, HybridTreeSettingControllerDef)
+                                                  || InheritsHybridBase(controller, HybridSubLedgerControllerDef),
+                _ => false
+            };
+
+            hasRequiredBase.Should().BeTrue(
+                $"{controller.Name} injects {queriesParameter.ParameterType.Name} ({requiredBase} queries) " +
+                $"and must inherit HybridSettingController, HybridTreeSettingController, or HybridSubLedgerController " +
+                $"to expose standard CRUD/search/tree endpoints.");
+        }
+
+        subjectCount.Should().BeGreaterThanOrEqualTo(19,
+            "expected at least 19 standard setting/tree controllers on hybrid bases (Sprint 12 rollout)");
     }
 
     [Fact]
@@ -138,5 +205,42 @@ public class HybridCqrsArchitectureTests
 
             hasWriteBase.Should().BeFalse($"{queryContract.Name} must not extend IBaseService.");
         }
+    }
+
+    private static ParameterInfo? GetAggregateQueriesParameter(Type controller)
+    {
+        return controller.GetConstructors()
+            .SelectMany(c => c.GetParameters())
+            .FirstOrDefault(p => p.ParameterType is { IsInterface: true, Name: { } name }
+                               && name.EndsWith("Queries", StringComparison.Ordinal)
+                               && name.StartsWith('I')
+                               && p.ParameterType.Namespace?.Contains(".Application.", StringComparison.Ordinal) == true);
+    }
+
+    private static RequiredHybridBaseKind GetRequiredHybridBase(Type queriesType)
+    {
+        var interfaces = queriesType.GetInterfaces();
+
+        if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ISubLedgerQueriesDef))
+            return RequiredHybridBaseKind.SubLedger;
+
+        if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ITreeSettingQueriesDef))
+            return RequiredHybridBaseKind.Tree;
+
+        if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ISettingQueriesDef))
+            return RequiredHybridBaseKind.Setting;
+
+        return RequiredHybridBaseKind.None;
+    }
+
+    private static bool InheritsHybridBase(Type controller, Type openHybridBaseDefinition)
+    {
+        for (var baseType = controller.BaseType; baseType is not null; baseType = baseType.BaseType)
+        {
+            if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == openHybridBaseDefinition)
+                return true;
+        }
+
+        return false;
     }
 }
