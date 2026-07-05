@@ -31,6 +31,12 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
+        services.AddScoped<IBankRepository, BankRepository>();
+        services.AddScoped<IBankService, BankService>();
+        services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
+        services.AddScoped<ICashInBoxService, CashInBoxService>();
+        services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IBranchService, BranchService>();
 
         return services;
     }
@@ -46,5 +52,8 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new CostCenterDbConfig());
         modelBuilder.ApplyConfiguration(new CostCenterChartOfAccountDbConfig());
         modelBuilder.ApplyConfiguration(new ChartOfAccountDbConfig());
+        modelBuilder.ApplyConfiguration(new BankDbConfig());
+        modelBuilder.ApplyConfiguration(new CashInBoxDbConfig());
+        modelBuilder.ApplyConfiguration(new BranchDbConfig());
     }
 }

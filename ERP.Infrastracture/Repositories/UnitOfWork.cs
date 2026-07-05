@@ -19,8 +19,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IEntryRepository EntryRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
-    public ICashInBoxRepository CashInBoxRepository { get; }
-    public IBranchRepository BranchRepository { get; }
     public IPackingUnitRepository PackingUnitRepository { get; }
     public IItemRepository ItemRepository { get; }
     public IBaseRepository<ItemSupplier> ItemSupplierRepository { get; }
@@ -69,8 +67,6 @@ public class UnitOfWork : IUnitOfWork
         IApplicationDbContext context,
         IEntryRepository entryRepository,
         IAttachmentRepository attachmentRepository,
-        ICashInBoxRepository cashInBoxRepository,
-        IBranchRepository branchRepository,
         IPackingUnitRepository packingUnitRepository,
         IItemRepository itemRepository,
         IBaseRepository<ItemSupplier> itemSupplierRepository,
@@ -119,8 +115,6 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         EntryRepository = entryRepository;
         AttachmentRepository = attachmentRepository;
-        CashInBoxRepository = cashInBoxRepository;
-        BranchRepository = branchRepository;
         PackingUnitRepository = packingUnitRepository;
         ItemRepository = itemRepository;
         ItemSupplierRepository = itemSupplierRepository;

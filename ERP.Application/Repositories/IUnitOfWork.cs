@@ -15,9 +15,7 @@ public interface IUnitOfWork
 {
     public ISizeRepository SizeRepository { get; }
     public IColorRepository ColorRepository { get; }
-    public ICashInBoxRepository CashInBoxRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
-    public IBranchRepository BranchRepository { get; }
     public ISupplierRepository SupplierRepository { get; }
     public IPackingUnitRepository PackingUnitRepository { get; }
     public IItemRepository ItemRepository { get; }

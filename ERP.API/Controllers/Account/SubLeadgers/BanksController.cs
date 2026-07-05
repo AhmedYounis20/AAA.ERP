@@ -1,6 +1,6 @@
+using Accounting.Application.Commands.Banks;
+using Accounting.Application.Services;
 using ERP.API.Controllers.BaseControllers;
-using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Domain.Commands.Account.SubLeadgers.Banks;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Domain.OutputDtos.Lookups;
 using Shared.DTOs;

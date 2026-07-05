@@ -43,9 +43,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<ICashInBoxService, CashInBoxService>();
-        services.AddScoped<IBankService, BankService>();
-        services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
@@ -80,8 +77,6 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
-        services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
@@ -91,7 +86,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-        services.AddScoped<IBranchRepository, BranchRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IVariantRepository, VariantRepository>();
