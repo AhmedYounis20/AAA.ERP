@@ -1,85 +1,69 @@
 ﻿using Accounting.Application.Commands.CostCenters;
-using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.CostCenters;
-using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Dtos.Lookups;
+using Accounting.Application.Services;
+using Accounting.Application.Services.Queries;
+using Accounting.Domain.Models.Entities.CostCenters;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.Settings;
 
-/// <summary>CRUD API for cost center tree and domain lookups.</summary>
+/// <summary>CRUD API for cost center tree and domain lookups (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CostCentersController : BaseTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>
+[Authorize]
+public class CostCentersController(
+    ISender sender,
+    ICostCenterReadService reads,
+    IBaseQueryService<CostCenter, CostCenterLookupDto> lookups) : ControllerBase
 {
-    IBaseQueryService<CostCenter, CostCenterLookupDto> _baseQueryService;
-    public CostCentersController(ICostCenterService service,
-            IBaseQueryService<CostCenter, CostCenterLookupDto> baseQueryService,
-        ISender sender) : base(service, sender)
-    => _baseQueryService = baseQueryService;
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] CostCenterCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] CostCenterCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get() => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] CostCenterFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] CostCenterFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id) => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public virtual async Task<IActionResult> GetLookUps()
+    public async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<CostCenterLookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<CostCenterLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<CostCenterLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true
-            };
+                IsSuccess = true,
+                Result = await lookups.GetLookUps(e => e.NodeType == NodeType.Domain)
+            });
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<CostCenterLookupDto>>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest
-            };
+            return this.ToResult(new ApiResponse<IEnumerable<CostCenterLookupDto>> { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest });
         }
-        return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CostCenterUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CostCenterUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new CostCenterDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
+
+    [HttpGet("GetLevel")]
+    public async Task<IActionResult> GetLevel([FromQuery] int level = 0) => this.ToResult(await reads.GetLevel(level));
+
+    [HttpGet("GetChildren/{parentId}")]
+    public async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
+        => this.ToResult(await reads.GetChildren(parentId, level));
 }

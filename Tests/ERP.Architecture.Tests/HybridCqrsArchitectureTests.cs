@@ -32,7 +32,15 @@ public class HybridCqrsArchitectureTests
         typeof(CustomersController),
         typeof(SuppliersController),
         typeof(BanksController),
-        typeof(BranchesController)
+        typeof(BranchesController),
+        typeof(CashInBoxesController),
+        typeof(FixedAssetsController),
+        typeof(CurrenciesController),
+        typeof(CostCentersController),
+        typeof(CollectionBooksController),
+        typeof(RolesController),
+        typeof(GLSettingsController),
+        typeof(AccountGuidesController)
     ];
 
     [Fact]
@@ -85,7 +93,15 @@ public class HybridCqrsArchitectureTests
             typeof(Accounting.Application.Services.ICustomerReadService),
             typeof(Accounting.Application.Services.ISupplierReadService),
             typeof(Accounting.Application.Services.IBankReadService),
-            typeof(Accounting.Application.Services.IBranchReadService)
+            typeof(Accounting.Application.Services.IBranchReadService),
+            typeof(Accounting.Application.Services.ICashInBoxReadService),
+            typeof(Accounting.Application.Services.IFixedAssetReadService),
+            typeof(Accounting.Application.Services.ICurrencyReadService),
+            typeof(Accounting.Application.Services.ICostCenterReadService),
+            typeof(Accounting.Application.Services.ICollectionBookReadService),
+            typeof(Accounting.Application.Services.IRoleReadService),
+            typeof(Accounting.Application.Services.IGLSettingReadService),
+            typeof(Accounting.Application.Services.IAccountGuideReadService)
         };
 
         foreach (var readService in readServiceInterfaces)

@@ -1,57 +1,40 @@
 ﻿using Accounting.Application.Commands.Roles;
+using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Roles;
-using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.Settings;
 
-/// <summary>CRUD API for job role settings.</summary>
+/// <summary>CRUD API for job role settings (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class RolesController : BaseSettingController<Role, RoleCreateCommand, RoleUpdateCommand>
+[Authorize]
+public class RolesController(ISender sender, IRoleReadService reads) : ControllerBase
 {
-    public RolesController(IRoleService service,
-        ISender mapper) : base(service, mapper)
-    { }
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] RoleCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] RoleCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get() => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id) => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new RoleDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

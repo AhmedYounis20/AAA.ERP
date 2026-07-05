@@ -1,84 +1,58 @@
 ﻿using Accounting.Application.Commands.CollectionBooks;
+using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
+using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.CollectionBooks;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Accounting.Api.Controllers.Settings;
 
-/// <summary>CRUD API for collection book settings and lookups.</summary>
+/// <summary>CRUD API for collection book settings and lookups (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CollectionBooksController : BaseSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>
+[Authorize]
+public class CollectionBooksController(
+    ISender sender,
+    ICollectionBookReadService reads,
+    IBaseQueryService<CollectionBook, LookupDto> lookups) : ControllerBase
 {
-    IBaseQueryService<CollectionBook, LookupDto> _baseQueryService;
-
-    public CollectionBooksController(ICollectionBookService service, IBaseQueryService<CollectionBook, LookupDto> baseQueryService,
-        ISender mapper) : base(service, mapper)
-    => _baseQueryService = baseQueryService;
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] CollectionBookCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] CollectionBookCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get() => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id) => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public virtual async Task<IActionResult> GetLookUps()
+    public async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<LookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<LookupDto>>
-            {
-                Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true
-            };
+            return this.ToResult(new ApiResponse<IEnumerable<LookupDto>> { IsSuccess = true, Result = await lookups.GetLookUps() });
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<LookupDto>>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest
-            };
+            return this.ToResult(new ApiResponse<IEnumerable<LookupDto>> { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest });
         }
-        return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new CollectionBookDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

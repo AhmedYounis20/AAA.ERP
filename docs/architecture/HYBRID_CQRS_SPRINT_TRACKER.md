@@ -19,7 +19,7 @@
 | [6](#sprint-6) | 12–13 | Opening + Combined entries | ✅ |
 | [7](#sprint-7) | 14–15 | Financial periods + COA | ✅ |
 | [8](#sprint-8) | 16–17 | Sub-ledgers batch 1 | ✅ |
-| [9](#sprint-9) | 18–19 | Sub-ledgers batch 2 + settings | ⬜ |
+| [9](#sprint-9) | 18–19 | Sub-ledgers batch 2 + settings | ✅ |
 | [10](#sprint-10) | 20–21 | Inventory catalog | ⬜ |
 | [11](#sprint-11) | 22–23 | Cleanup + final sign-off | ⬜ |
 
