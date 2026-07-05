@@ -1,6 +1,7 @@
 using Accounting.Api.Controllers.SubLedger;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
+using Inventory.Api.Controllers.Transactions;
 using System.Reflection;
 
 namespace ERP.Architecture.Tests;
@@ -13,7 +14,9 @@ public class HybridCqrsArchitectureTests
     private static readonly Type[] PilotControllers =
     [
         typeof(TaxesController),
-        typeof(ColorsController)
+        typeof(ColorsController),
+        typeof(ImportTransactionsController),
+        typeof(ExportTransactionsController)
     ];
 
     [Fact]

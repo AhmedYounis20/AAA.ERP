@@ -10,9 +10,9 @@
 
 | Sprint | Weeks | Goal | Status |
 |--------|-------|------|--------|
-| [0](#sprint-0) | 1 | Kickoff — ADR, PR rules | 🔄 |
-| [1](#sprint-1) | 2–3 | Pilots: Tax, Color | 🔄 |
-| [2](#sprint-2) | 4–5 | Import + Export transactions | ⬜ |
+| [0](#sprint-0) | 1 | Kickoff — ADR, PR rules | ✅ |
+| [1](#sprint-1) | 2–3 | Pilots: Tax, Color | ✅ |
+| [2](#sprint-2) | 4–5 | Import + Export transactions | ✅ |
 | [3](#sprint-3) | 6–7 | Inventory transfers | ⬜ |
 | [4](#sprint-4) | 8–9 | Complex + Journal entries | ⬜ |
 | [5](#sprint-5) | 10–11 | Payment + Receipt entries | ⬜ |

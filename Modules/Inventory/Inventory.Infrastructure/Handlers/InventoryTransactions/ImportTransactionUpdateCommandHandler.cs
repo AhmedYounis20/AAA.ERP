@@ -1,12 +1,13 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
-using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransactions;
 
-public class ImportTransactionUpdateCommandHandler(IImportTransactionService service)
-    : ICommandHandler<ImportTransactionUpdateCommand, ApiResponse<InventoryTransaction>>
+public class ImportTransactionUpdateCommandHandler(IImportTransactionService importTransactionService)
+    : ICommandHandler<ImportTransactionUpdateCommand, ApiResponse<Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransaction>>
 {
-    public Task<ApiResponse<InventoryTransaction>> Handle(ImportTransactionUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
+    public Task<ApiResponse<Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransaction>> Handle(
+        ImportTransactionUpdateCommand request,
+        CancellationToken cancellationToken)
+        => importTransactionService.Update(request);
 }

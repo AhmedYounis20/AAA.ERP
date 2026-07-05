@@ -4,9 +4,23 @@ using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransactions;
 
-public class ImportTransactionCreateCommandHandler(IImportTransactionService service)
+public class ImportTransactionCreateCommandHandler(IInventoryTransactionService inventoryTransactionService)
     : ICommandHandler<ImportTransactionCreateCommand, ApiResponse<InventoryTransaction>>
 {
-    public Task<ApiResponse<InventoryTransaction>> Handle(ImportTransactionCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
+    public Task<ApiResponse<InventoryTransaction>> Handle(
+        ImportTransactionCreateCommand command,
+        CancellationToken cancellationToken)
+    {
+        var baseCommand = new InventoryTransactionCreateCommand
+        {
+            TransactionType = InventoryTransactionType.Receipt,
+            TransactionDate = command.TransactionDate,
+            DocumentNumber = command.DocumentNumber,
+            TransactionPartyId = command.TransactionPartyId,
+            BranchId = command.BranchId,
+            Items = command.Items
+        };
+
+        return inventoryTransactionService.Create(baseCommand);
+    }
 }
