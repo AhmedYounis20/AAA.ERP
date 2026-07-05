@@ -1335,9 +1335,9 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | 7b | `ERP.Application.Validators.Account.*` → `ERP.BuildingBlocks.Application.Validators.Account.*` / `Accounting.Application.Validators.*` | **Done** — `1e27afe` |
 | 7c | `Domain.Account.Commands.*` / `Domain.Account.InputModels.*` → `ERP.BuildingBlocks.Application.Commands.BaseInputModels.*` | **Done** — `5374da1` |
 | 7d | `Domain.Account.Models.Dtos.*` → `Accounting.Domain.Models.Dtos.*` / `Identity.Application.Models.Dtos` | **Done** — `2e6a5c6` |
-| 7e | `Domain.Account.DBConfiguration` / `Utility` → `ERP.Infrastructure.*` / `Accounting.Domain.Utility` | **Done** (uncommitted) |
+| 7e | `Domain.Account.DBConfiguration` / `Utility` → `ERP.Infrastructure.*` / `Accounting.Domain.Utility` | **Done** — `adf08cb` |
 
-**Next:** Increment **7** commit + optional push/PR; ongoing **4.3.x** sprint hygiene. Historical EF migration designer strings still reference `Domain.Account.Models.Entities.*` (snapshot identity — intentional).
+**Next:** Optional push/PR (30 commits on `Refactor`); ongoing **4.3.x** sprint hygiene. Historical EF migration designer strings still reference `Domain.Account.Models.Entities.*` (snapshot identity — intentional).
 
 **Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
 
