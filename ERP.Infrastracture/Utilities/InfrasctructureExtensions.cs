@@ -13,10 +13,10 @@ using ERP.Infrastracture.Repositories.Inventory;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Inventory;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Domain.Models.Entities.Inventory.Products;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.Infrastracture.Utilities;
@@ -38,8 +38,8 @@ public static class InfrasctructureExtensions
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
         services.AddScoped<IItemService, ItemService>();
-        services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IVariantService, VariantService>();
+        services.AddScoped<IVariantProductPreparation>(sp => sp.GetRequiredService<VariantService>());
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
@@ -55,17 +55,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IVariantRepository, VariantRepository>();
-        // New Product/Variant related repositories
-        services.AddScoped<IBaseRepository<ProductCode>, BaseRepository<ProductCode>>();
-        services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();
-        services.AddScoped<IBaseRepository<ProductSalesTax>, BaseRepository<ProductSalesTax>>();
-        services.AddScoped<IBaseRepository<ProductPurchaseTax>, BaseRepository<ProductPurchaseTax>>();
-        services.AddScoped<IBaseRepository<ProductCostCenter>, BaseRepository<ProductCostCenter>>();
-        services.AddScoped<IBaseRepository<ProductManufacturerCompany>, BaseRepository<ProductManufacturerCompany>>();
-        services.AddScoped<IBaseRepository<ProductAttachment>, BaseRepository<ProductAttachment>>();
-        services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
         services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();
         services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
         services.AddScoped<IBaseRepository<VariantSalesTax>, BaseRepository<VariantSalesTax>>();

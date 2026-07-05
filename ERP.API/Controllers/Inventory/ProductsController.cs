@@ -1,5 +1,5 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Products;
+using Inventory.Application.Services;
+using Inventory.Application.Commands.Products;
 using ERP.Domain.Models.Entities.Inventory.Products;
 
 namespace ERP.API.Controllers.Inventory;

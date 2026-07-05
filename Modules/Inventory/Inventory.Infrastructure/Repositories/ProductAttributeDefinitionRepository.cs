@@ -2,7 +2,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Inventory;
+namespace Inventory.Infrastructure.Repositories;
 
 public class ProductAttributeDefinitionRepository : BaseRepository<ProductAttributeDefinition>, IProductAttributeDefinitionRepository
 {

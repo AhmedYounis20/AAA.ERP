@@ -5,7 +5,7 @@ using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Inventory;
+namespace Inventory.Infrastructure.Repositories;
 
 public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRepository
 {

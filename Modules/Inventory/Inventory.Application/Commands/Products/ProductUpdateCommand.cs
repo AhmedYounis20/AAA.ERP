@@ -4,7 +4,7 @@ using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Domain.Commands.Inventory.Products;
+namespace Inventory.Application.Commands.Products;
 
 public class ProductUpdateCommand : BaseTreeSettingUpdateCommand<Product>
 {
@@ -19,7 +19,7 @@ public class ProductUpdateCommand : BaseTreeSettingUpdateCommand<Product>
     public DiscountType DefaultDiscountType { get; set; }
     public bool IsDiscountBasedOnSellingPrice { get; set; }
     public bool IsSales { get; set; }
-    public bool IsPurchase { get; set; } 
+    public bool IsPurchase { get; set; }
     public string? Model { get; set; }
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }

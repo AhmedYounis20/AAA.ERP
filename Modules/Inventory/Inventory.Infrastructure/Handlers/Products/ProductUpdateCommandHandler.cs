@@ -1,8 +1,8 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Products;
+using Inventory.Application.Services;
+using Inventory.Application.Commands.Products;
 using ERP.Domain.Models.Entities.Inventory.Products;
 
-namespace ERP.Infrastracture.Handlers.Inventory.Products;
+namespace Inventory.Infrastructure.Handlers.Products;
 
 public class ProductUpdateCommandHandler(IProductService service) : ICommandHandler<ProductUpdateCommand, ApiResponse<Product>>
 {

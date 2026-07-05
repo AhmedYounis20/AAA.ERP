@@ -11,7 +11,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Inventory_transaction_services_should_not_reference_Account_domain_entities()
     {
-        var result = Types.InAssembly(typeof(ERP.Infrastracture.Services.Inventory.ProductService).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Infrastructure.Services.ProductService).Assembly)
             .That()
             .HaveNameEndingWith("TransactionService")
             .Or()
@@ -111,9 +111,9 @@ public class ModuleBoundaryTests
     [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {
-        var result = Types.InAssembly(typeof(ERP.Infrastracture.Services.Inventory.ProductService).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Infrastructure.Services.ProductService).Assembly)
             .That()
-            .ResideInNamespace("ERP.Infrastracture.Services.Inventory")
+            .ResideInNamespace("Inventory.Infrastructure.Services")
             .Should()
             .NotHaveDependencyOn("ERP.Domain.Models.Entities.Account")
             .GetResult();

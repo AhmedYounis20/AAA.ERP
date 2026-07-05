@@ -1,6 +1,12 @@
+using ERP.Application.Repositories;
+using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.Products;
+using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastracture.Services.Inventory;
+using Inventory.Application.Services;
+using Shared.BaseEntities;
+using Inventory.Application.Commands.Products;
 using ERP.Domain.Commands.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
@@ -10,7 +16,7 @@ using System.Text.RegularExpressions;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Shared.BaseEntities.Attachments;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 
 public class ProductService : BaseTreeSettingService<Product, ProductCreateCommand, ProductUpdateCommand>, IProductService
 {
@@ -18,13 +24,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private readonly IBaseRepository<ProductCode> _codeRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVariantService _variantService;
+    private readonly IVariantProductPreparation _variantPreparation;
 
-    public ProductService(IUnitOfWork unitOfWork, IVariantService variantService) : base(unitOfWork.ProductRepository)
+    public ProductService(
+        IUnitOfWork unitOfWork,
+        IVariantService variantService,
+        IVariantProductPreparation variantPreparation) : base(unitOfWork.ProductRepository)
     {
         _repository = unitOfWork.ProductRepository;
         _unitOfWork = unitOfWork;
         _codeRepository = _unitOfWork.ProductCodeRepository;
         _variantService = variantService;
+        _variantPreparation = variantPreparation;
     }
 
     public override async Task<ApiResponse<Product>> Create(ProductCreateCommand command, bool isValidate = true)
@@ -99,7 +110,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             // Prepare variants for Domain products (no database hits - prepared in memory)
             if (command.NodeType == NodeType.Domain)
-                product.Variants = _variantService.PrepareVariantsForProduct(command);
+                product.Variants = _variantPreparation.PrepareVariantsForProduct(command);
 
             // Single database hit - EF will cascade insert all navigation properties including variants
             await _repository.Add(product);

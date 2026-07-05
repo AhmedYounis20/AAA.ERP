@@ -4,7 +4,7 @@ using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Items;
 
-namespace ERP.Domain.Commands.Inventory.Products;
+namespace Inventory.Application.Commands.Products;
 
 public class ProductCreateCommand : BaseTreeSettingCreateCommand<Product>
 {

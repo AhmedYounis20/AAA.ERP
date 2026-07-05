@@ -2,7 +2,7 @@ using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Products;
+namespace Inventory.Infrastructure.Persistence.Products;
 
 public class ProductSalesTaxDbConfig : BaseEntityDbConfig<ProductSalesTax>
 {

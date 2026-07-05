@@ -1,7 +1,8 @@
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Services.Inventory;
+using Inventory.Application.Commands.Products;
+using Inventory.Application.Services;
 using ERP.Domain.Commands.Inventory.Variants;
-using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
@@ -13,7 +14,7 @@ using Shared.DTOs;
 
 namespace ERP.Infrastracture.Services.Inventory;
 
-public class VariantService : BaseService<Variant, VariantCreateCommand, VariantUpdateCommand>, IVariantService
+public class VariantService : BaseService<Variant, VariantCreateCommand, VariantUpdateCommand>, IVariantService, IVariantProductPreparation
 {
     private readonly IVariantRepository _repository;
     private readonly IBaseRepository<VariantCode> _codeRepository;

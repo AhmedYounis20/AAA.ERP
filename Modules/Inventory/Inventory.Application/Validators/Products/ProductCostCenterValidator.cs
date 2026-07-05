@@ -1,7 +1,7 @@
 using ERP.Domain.Models.Dtos.Inventory;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.Products;
+namespace Inventory.Application.Validators.Products;
 
 public class ProductCostCenterValidator : AbstractValidator<ProductCostCenterDto>
 {

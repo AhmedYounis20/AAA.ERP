@@ -1,7 +1,7 @@
 using ERP.Domain.Models.Entities.Inventory.Products;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.Products;
+namespace Inventory.Infrastructure.Persistence.Products;
 
 public class ProductAttributeDefinitionDbConfig : IEntityTypeConfiguration<ProductAttributeDefinition>
 {

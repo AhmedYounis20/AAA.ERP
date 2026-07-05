@@ -1,6 +1,5 @@
 using ERP.Application.Services.BaseServices;
 using ERP.Domain.Commands.Inventory.Variants;
-using ERP.Domain.Commands.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Dtos.Inventory;
 using Shared.DTOs;
@@ -13,7 +12,6 @@ public interface IVariantService : IBaseService<Variant, VariantCreateCommand, V
     Task<ApiResponse<VariantDto?>> GetVariantDtoById(Guid id);
     Task<ApiResponse<IEnumerable<VariantDto>>> GetVariantsByProductId(Guid productId);
     Task<ApiResponse<IEnumerable<VariantDto>>> SearchVariants(string searchTerm);
-    List<Variant> PrepareVariantsForProduct(ProductCreateCommand command);
     public Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
         SettingFilterDto filter,
         CancellationToken cancellationToken = default);
