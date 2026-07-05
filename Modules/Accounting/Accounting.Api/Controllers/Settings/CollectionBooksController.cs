@@ -1,11 +1,14 @@
 ﻿using Accounting.Application.Commands.CollectionBooks;
-using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.CollectionBooks;
+using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;
-using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Accounting.Api.Controllers.Settings;
 
@@ -16,47 +19,13 @@ namespace Accounting.Api.Controllers.Settings;
 public class CollectionBooksController(
     ISender sender,
     ICollectionBookQueries queries,
-    IBaseQueryService<CollectionBook, LookupDto> lookups) : ControllerBase
+    IBaseQueryService<CollectionBook, LookupDto> lookups)
+    : HybridSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>(sender, queries)
 {
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CollectionBookCreateCommand input)
-        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
-
-    [HttpGet]
-    public async Task<IActionResult> Get() => this.ToResult(await queries.GetAll());
-
-    [HttpGet("paginated")]
-    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string query)
-        => this.ToResult(await queries.SearchByName(query));
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id) => this.ToResult(await queries.GetById(id));
+    protected override IRequest<ApiResponse<CollectionBook>> BuildDeleteCommand(Guid id)
+        => new CollectionBookDeleteCommand(id);
 
     [HttpGet("lookups")]
-    public async Task<IActionResult> GetLookUps()
-    {
-        try
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<LookupDto>> { IsSuccess = true, Result = await lookups.GetLookUps() });
-        }
-        catch
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<LookupDto>> { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest });
-        }
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)
-    {
-        input.Id = id;
-        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
-        => this.ToResult(await sender.Send(new CollectionBookDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
+    public Task<IActionResult> GetLookUps()
+        => this.ToLookupsResult(() => lookups.GetLookUps());
 }

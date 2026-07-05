@@ -2,9 +2,13 @@
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.SellingPrices;
 using Inventory.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Api.Extensions;
-using ERP.BuildingBlocks.Application.Constants;
 using Accounting.Application.Services.Queries;
+using ERP.BuildingBlocks.Api.Controllers;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Api.Controllers.Pricing;
 
@@ -15,65 +19,17 @@ namespace Inventory.Api.Controllers.Pricing;
 public class SellingPricesController(
     ISender sender,
     ISellingPriceQueries queries,
-    IBaseQueryService<SellingPrice, SellingPriceLookupDto> lookups) : ControllerBase
+    IBaseQueryService<SellingPrice, SellingPriceLookupDto> lookups)
+    : HybridSettingController<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>(sender, queries)
 {
-    /// <summary>Creates a selling price.</summary>
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SellingPriceCreateCommand input)
-        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
+    protected override IRequest<ApiResponse<SellingPrice>> BuildDeleteCommand(Guid id)
+        => new SellingPriceDeleteCommand(id);
 
-    /// <summary>Lists all selling prices as DTOs.</summary>
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public override async Task<IActionResult> Get()
         => this.ToResult(await queries.GetDtos());
 
-    /// <summary>Lists selling prices with pagination and filtering.</summary>
-    [HttpGet("paginated")]
-    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
-
-    /// <summary>Gets a selling price by identifier.</summary>
-    
-    [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string query)
-        => this.ToResult(await queries.SearchByName(query));
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await queries.GetById(id));
-
-    /// <summary>Returns cached selling-price lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public async Task<IActionResult> GetLookUps()
-    {
-        try
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<SellingPriceLookupDto>>
-            {
-                Result = await lookups.GetLookUps(),
-                IsSuccess = true
-            });
-        }
-        catch
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<SellingPriceLookupDto>>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest
-            });
-        }
-    }
-
-    /// <summary>Updates a selling price.</summary>
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] SellingPriceUpdateCommand input)
-    {
-        input.Id = id;
-        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
-    }
-
-    /// <summary>Deletes a selling price.</summary>
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
-        => this.ToResult(await sender.Send(new SellingPriceDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
+    public Task<IActionResult> GetLookUps()
+        => this.ToLookupsResult(() => lookups.GetLookUps());
 }

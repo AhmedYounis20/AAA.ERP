@@ -1,7 +1,12 @@
 using Inventory.Application.Commands.AttributeDefinitions;
 using Inventory.Application.Services;
+using Inventory.Domain.Models.Entities.Attributes;
+using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;
-using ERP.BuildingBlocks.Application.Constants;
+using ERP.BuildingBlocks.Application.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Api.Controllers.Catalog;
 
@@ -9,19 +14,12 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class AttributeDefinitionsController(ISender sender, IAttributeDefinitionQueries queries) : ControllerBase
+public class AttributeDefinitionsController(ISender sender, IAttributeDefinitionQueries queries)
+    : HybridSettingController<AttributeDefinition, AttributeDefinitionCreateCommand, AttributeDefinitionUpdateCommand>(sender, queries)
 {
-    /// <summary>Lists all attribute definitions.</summary>
-    [HttpGet]
-    public async Task<IActionResult> Get()
-        => this.ToResult(await queries.GetAll());
+    protected override IRequest<ApiResponse<AttributeDefinition>> BuildDeleteCommand(Guid id)
+        => new AttributeDefinitionDeleteCommand(id);
 
-    /// <summary>Lists attribute definitions with pagination and filtering.</summary>
-    [HttpGet("paginated")]
-    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
-
-    /// <summary>Lists active attribute definitions for UI pickers.</summary>
     [HttpGet("lookups/active")]
     public async Task<IActionResult> GetActive()
     {
@@ -29,17 +27,6 @@ public class AttributeDefinitionsController(ISender sender, IAttributeDefinition
         return Ok(new { success = true, data = result });
     }
 
-    /// <summary>Gets an attribute definition by identifier.</summary>
-    
-    [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string query)
-        => this.ToResult(await queries.SearchByName(query));
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await queries.GetById(id));
-
-    /// <summary>Gets an attribute definition including its predefined values.</summary>
     [HttpGet("{id}/with-values")]
     public async Task<IActionResult> GetWithPredefinedValues(Guid id)
     {
@@ -48,22 +35,4 @@ public class AttributeDefinitionsController(ISender sender, IAttributeDefinition
             return NotFound(new { success = false, message = "Attribute definition not found" });
         return Ok(new { success = true, data = result });
     }
-
-    /// <summary>Creates an attribute definition.</summary>
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] AttributeDefinitionCreateCommand input)
-        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
-
-    /// <summary>Updates an attribute definition.</summary>
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] AttributeDefinitionUpdateCommand input)
-    {
-        input.Id = id;
-        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
-    }
-
-    /// <summary>Deletes an attribute definition.</summary>
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
-        => this.ToResult(await sender.Send(new AttributeDefinitionDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

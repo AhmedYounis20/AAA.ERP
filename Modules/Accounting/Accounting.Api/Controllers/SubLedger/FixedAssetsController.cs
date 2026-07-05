@@ -1,11 +1,14 @@
 using Accounting.Application.Commands.FixedAssets;
-using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;
-using ERP.BuildingBlocks.Application.Constants;
+using ERP.BuildingBlocks.Application.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Accounting.Api.Controllers.SubLedger;
 
@@ -16,62 +19,17 @@ namespace Accounting.Api.Controllers.SubLedger;
 public class FixedAssetsController(
     ISender sender,
     IFixedAssetQueries queries,
-    IBaseQueryService<FixedAsset, SubLeadgerLookupDto> lookups) : ControllerBase
+    IBaseQueryService<FixedAsset, SubLeadgerLookupDto> lookups)
+    : HybridTreeSettingController<FixedAsset, FixedAssetCreateCommand, FixedAssetUpdateCommand>(sender, queries)
 {
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] FixedAssetCreateCommand input)
-        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
-
-    [HttpGet]
-    public async Task<IActionResult> Get() => this.ToResult(await queries.GetAll());
-
-    [HttpGet("paginated")]
-    public async Task<IActionResult> GetPaginated([FromQuery] SubLeadgerFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string query)
-        => this.ToResult(await queries.SearchByName(query));
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id) => this.ToResult(await queries.GetById(id));
+    protected override IRequest<ApiResponse<FixedAsset>> BuildDeleteCommand(Guid id)
+        => new FixedAssetDeleteCommand(id);
 
     [HttpGet("lookups")]
-    public async Task<IActionResult> GetLookUps()
-    {
-        try
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
-            {
-                IsSuccess = true,
-                Result = await lookups.GetLookUps(e => e.NodeType == NodeType.Domain)
-            });
-        }
-        catch
-        {
-            return this.ToResult(new ApiResponse<IEnumerable<SubLeadgerLookupDto>> { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest });
-        }
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, FixedAssetUpdateCommand input)
-    {
-        input.Id = id;
-        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
-        => this.ToResult(await sender.Send(new FixedAssetDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
+    public Task<IActionResult> GetLookUps()
+        => this.ToLookupsResult(() => lookups.GetLookUps(e => e.NodeType == NodeType.Domain));
 
     [HttpGet("NextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId, [FromQuery] FixedAssetType fixedAssetType)
         => this.ToResult(await queries.GetNextFixedAsset(parentId, fixedAssetType));
-
-    [HttpGet("GetLevel")]
-    public async Task<IActionResult> GetLevel([FromQuery] int level = 0) => this.ToResult(await queries.GetLevel(level));
-
-    [HttpGet("GetChildren/{parentId}")]
-    public async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
-        => this.ToResult(await queries.GetChildren(parentId, level));
 }

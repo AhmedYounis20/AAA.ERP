@@ -688,6 +688,9 @@ public static class ControllerResponseExtensions
 |------------|---------|
 | `HybridSettingController<TEntity,TCreate,TUpdate>` | Standard setting CRUD GET + MediatR writes + `GET search` |
 | `HybridTreeSettingController<TEntity,TCreate,TUpdate>` | Above + `GetLevel` / `GetChildren` |
+| `HybridSubLedgerController<TEntity,TCreate,TUpdate>` | Tree base + `NextAccountDefaultData` (via `ISubLedgerQueries`) |
+
+Use `ControllerLookupExtensions.ToLookupsResult()` for standard `GET lookups` endpoints.
 
 ```csharp
 [Route("api/[controller]")]
