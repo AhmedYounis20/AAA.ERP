@@ -285,6 +285,36 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_Application_base_validators_should_not_use_legacy_ERP_Application_Validators_Account_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Validators")
+            .Should()
+            .NotResideInNamespace("ERP.Application.Validators.Account")
+            .And()
+            .NotResideInNamespaceStartingWith("ERP.Application.Validators.Account.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Accounting_Application_validators_should_not_use_legacy_ERP_Application_Validators_Account_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Application.Repositories.IEntryRepository).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Validators")
+            .Should()
+            .NotResideInNamespaceStartingWith("ERP.Application.Validators.Account")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

@@ -1,4 +1,4 @@
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Inventory.Application.Commands.SellingPrices;
 using Inventory.Domain.Models.Entities.SellingPrices;
 

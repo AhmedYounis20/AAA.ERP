@@ -1,5 +1,5 @@
 using Accounting.Application.Validators.Entries;
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Application.Commands.Entries;
 using Accounting.Domain.Models.Entities.Entries;
 using FluentValidation;

@@ -1,4 +1,4 @@
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Accounting.Application.Commands.OpeningEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using FluentValidation;

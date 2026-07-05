@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.CostCenters;
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Domain.Models.Entities.CostCenters;
 using FluentValidation;
 using Shared.BaseEntities;

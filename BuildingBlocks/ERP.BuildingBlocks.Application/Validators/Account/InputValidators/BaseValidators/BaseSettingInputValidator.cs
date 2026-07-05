@@ -1,7 +1,7 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using Domain.Account.InputModels.BaseInputModels;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.InputValidators.BaseValidators;
+namespace ERP.BuildingBlocks.Application.Validators.Account.InputValidators.BaseValidators;
 
 public class BaseSettingInputValidator<TEntity> : BaseInputValidator<TEntity> where TEntity : BaseSettingInputModel
 {

@@ -1,9 +1,9 @@
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
+namespace Accounting.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
 
 public class BaseSubLeadgerCreateValidator<TCommand, TEntity> : BaseTreeSettingCreateValidator<TCommand, TEntity>
     where TEntity : SubLeadgerBaseEntity<TEntity>

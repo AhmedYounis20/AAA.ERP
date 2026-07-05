@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.FinancialPeriods;
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using FluentValidation;
 

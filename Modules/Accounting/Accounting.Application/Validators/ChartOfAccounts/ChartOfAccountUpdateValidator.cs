@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.ChartOfAccounts;
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using FluentValidation;
 
