@@ -9,7 +9,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class ItemsController(ISender sender, IItemReadService reads) : ControllerBase
+public class ItemsController(ISender sender, IItemQueries queries) : ControllerBase
 {
     /// <summary>Creates a new record.</summary>
     [HttpPost]
@@ -21,7 +21,7 @@ public class ItemsController(ISender sender, IItemReadService reads) : Controlle
     /// </summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     /// <summary>
     /// Gets paginated items with entity-specific filtering
@@ -30,28 +30,33 @@ public class ItemsController(ISender sender, IItemReadService reads) : Controlle
     /// <param name="cancellationToken">Cancellation token</param>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] ItemFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     /// <summary>Returns the next available code.</summary>
     [HttpGet("getNextCode")]
     public async Task<IActionResult> GetNextCode([FromQuery] Guid? parentId)
-        => this.ToResult(await reads.GetNextCode(parentId));
+        => this.ToResult(await queries.GetNextCode(parentId));
 
     /// <summary>Gets a record by identifier.</summary>
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Lists item variants.</summary>
     [HttpGet("variants")]
     public async Task<IActionResult> GetVariants()
-        => this.ToResult(await reads.GetVariants());
+        => this.ToResult(await queries.GetVariants());
 
     /// <summary>Lists packing units for an item.</summary>
     [HttpGet("{id}/packingUnits")]
     public async Task<IActionResult> GetPackingUnits(Guid id)
     {
-        var item = await reads.GetById(id);
+        var item = await queries.GetById(id);
         if (item == null || item.Result == null)
             return NotFound();
         return Ok(item.Result.PackingUnits);
@@ -73,10 +78,10 @@ public class ItemsController(ISender sender, IItemReadService reads) : Controlle
     /// <summary>Gets all nodes at the given tree depth (root level when level is 0).</summary>
     [HttpGet("GetLevel")]
     public async Task<IActionResult> GetLevel([FromQuery] int level = 0)
-        => this.ToResult(await reads.GetLevel(level));
+        => this.ToResult(await queries.GetLevel(level));
 
     /// <summary>Gets child nodes under parentId down to the requested depth.</summary>
     [HttpGet("GetChildren/{parentId}")]
     public async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
-        => this.ToResult(await reads.GetChildren(parentId, level));
+        => this.ToResult(await queries.GetChildren(parentId, level));
 }

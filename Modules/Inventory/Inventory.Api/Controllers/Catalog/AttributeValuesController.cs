@@ -9,7 +9,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class AttributeValuesController(ISender sender, IAttributeValueReadService reads) : ControllerBase
+public class AttributeValuesController(ISender sender, IAttributeValueQueries queries) : ControllerBase
 {
     /// <summary>Creates an attribute value.</summary>
     [HttpPost]
@@ -19,27 +19,32 @@ public class AttributeValuesController(ISender sender, IAttributeValueReadServic
     /// <summary>Lists all attribute values.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     /// <summary>Lists attribute values with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     /// <summary>Gets an attribute value by identifier.</summary>
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Lists values belonging to the given attribute definition.</summary>
     [HttpGet("byAttribute/{attributeId}")]
     public async Task<IActionResult> GetByAttribute(Guid attributeId)
-        => this.ToResult(await reads.GetAttributeValuesByAttributeDefenitionId(attributeId));
+        => this.ToResult(await queries.GetAttributeValuesByAttributeDefenitionId(attributeId));
 
     /// <summary>Lists active attribute values.</summary>
     [HttpGet("active")]
     public async Task<IActionResult> GetActiveAttributeValues()
-        => this.ToResult(await reads.GetActiveAttributeValues());
+        => this.ToResult(await queries.GetActiveAttributeValues());
 
     /// <summary>Updates an attribute value.</summary>
     [HttpPut("{id}")]

@@ -15,7 +15,7 @@ namespace Accounting.Api.Controllers.Settings;
 [Authorize]
 public class CollectionBooksController(
     ISender sender,
-    ICollectionBookReadService reads,
+    ICollectionBookQueries queries,
     IBaseQueryService<CollectionBook, LookupDto> lookups) : ControllerBase
 {
     [HttpPost]
@@ -23,14 +23,18 @@ public class CollectionBooksController(
         => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
     [HttpGet]
-    public async Task<IActionResult> Get() => this.ToResult(await reads.GetAll());
+    public async Task<IActionResult> Get() => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id) => this.ToResult(await reads.GetById(id));
+    public async Task<IActionResult> Get(Guid id) => this.ToResult(await queries.GetById(id));
 
     [HttpGet("lookups")]
     public async Task<IActionResult> GetLookUps()

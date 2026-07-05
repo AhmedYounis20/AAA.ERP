@@ -14,7 +14,7 @@ namespace Inventory.Api.Controllers.Pricing;
 [Authorize]
 public class SellingPricesController(
     ISender sender,
-    ISellingPriceReadService reads,
+    ISellingPriceQueries queries,
     IBaseQueryService<SellingPrice, SellingPriceLookupDto> lookups) : ControllerBase
 {
     /// <summary>Creates a selling price.</summary>
@@ -25,17 +25,22 @@ public class SellingPricesController(
     /// <summary>Lists all selling prices as DTOs.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetDtos());
+        => this.ToResult(await queries.GetDtos());
 
     /// <summary>Lists selling prices with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     /// <summary>Gets a selling price by identifier.</summary>
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Returns cached selling-price lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]

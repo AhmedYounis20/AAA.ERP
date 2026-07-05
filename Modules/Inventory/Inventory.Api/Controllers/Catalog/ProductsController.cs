@@ -9,7 +9,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class ProductsController(ISender sender, IProductReadService reads) : ControllerBase
+public class ProductsController(ISender sender, IProductQueries queries) : ControllerBase
 {
     /// <summary>Creates a new record.</summary>
     [HttpPost]
@@ -19,17 +19,22 @@ public class ProductsController(ISender sender, IProductReadService reads) : Con
     /// <summary>Lists all records.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     /// <summary>Returns the next available code.</summary>
     [HttpGet("getNextCode")]
     public async Task<IActionResult> GetNextCode([FromQuery] Guid? parentId)
-        => this.ToResult(await reads.GetNextCode(parentId));
+        => this.ToResult(await queries.GetNextCode(parentId));
 
     /// <summary>Gets a record by identifier.</summary>
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
@@ -47,10 +52,10 @@ public class ProductsController(ISender sender, IProductReadService reads) : Con
     /// <summary>Gets all nodes at the given tree depth (root level when level is 0).</summary>
     [HttpGet("GetLevel")]
     public async Task<IActionResult> GetLevel([FromQuery] int level = 0)
-        => this.ToResult(await reads.GetLevel(level));
+        => this.ToResult(await queries.GetLevel(level));
 
     /// <summary>Gets child nodes under parentId down to the requested depth.</summary>
     [HttpGet("GetChildren/{parentId}")]
     public async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
-        => this.ToResult(await reads.GetChildren(parentId, level));
+        => this.ToResult(await queries.GetChildren(parentId, level));
 }

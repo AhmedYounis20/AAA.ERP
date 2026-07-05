@@ -52,14 +52,13 @@ public class HybridCqrsArchitectureTests
     {
         return new[]
             {
-                typeof(Accounting.Application.Services.ITaxReadService).Assembly,
-                typeof(Inventory.Application.Services.IColorReadService).Assembly
+                typeof(Accounting.Application.Services.ITaxQueries).Assembly,
+                typeof(Inventory.Application.Services.IColorQueries).Assembly
             }
             .SelectMany(assembly => assembly.GetExportedTypes())
             .Where(type => type is { IsInterface: true, IsPublic: true }
                            && type.Namespace?.Contains(".Application.", StringComparison.Ordinal) == true
-                           && (type.Name.Contains("ReadService", StringComparison.Ordinal)
-                               || type.Name.EndsWith("Queries", StringComparison.Ordinal))
+                           && type.Name.EndsWith("Queries", StringComparison.Ordinal)
                            && !type.Name.Contains("BaseQuery", StringComparison.Ordinal))
             .OrderBy(type => type.FullName, StringComparer.Ordinal)
             .ToArray();
@@ -80,7 +79,7 @@ public class HybridCqrsArchitectureTests
             var writeServiceParams = controller.GetConstructors()
                 .SelectMany(c => c.GetParameters())
                 .Where(p => p.ParameterType.Name.EndsWith("Service", StringComparison.Ordinal)
-                            && !p.ParameterType.Name.Contains("ReadService", StringComparison.Ordinal)
+                            && !p.ParameterType.Name.Contains("Queries", StringComparison.Ordinal)
                             && !p.ParameterType.Name.Contains("QueryService", StringComparison.Ordinal)
                             && p.ParameterType.Name != "IAuthenticationService")
                 .Select(p => p.ParameterType.Name)
@@ -88,7 +87,7 @@ public class HybridCqrsArchitectureTests
                 .ToList();
 
             writeServiceParams.Should().BeEmpty(
-                $"{controller.Name} must inject ISender + read services only, not write services. Found: {string.Join(", ", writeServiceParams)}");
+                $"{controller.Name} must inject ISender + query services only, not write services. Found: {string.Join(", ", writeServiceParams)}");
         }
     }
 
@@ -127,17 +126,17 @@ public class HybridCqrsArchitectureTests
     }
 
     [Fact]
-    public void Read_service_interfaces_should_not_extend_write_base_service()
+    public void Query_interfaces_should_not_extend_write_base_service()
     {
-        ReadSideContracts.Value.Should().NotBeEmpty("expected read-side contracts in Application layers");
+        ReadSideContracts.Value.Should().NotBeEmpty("expected query contracts in Application layers");
 
-        foreach (var readService in ReadSideContracts.Value)
+        foreach (var queryContract in ReadSideContracts.Value)
         {
-            var hasWriteBase = readService.GetInterfaces()
+            var hasWriteBase = queryContract.GetInterfaces()
                 .Any(i => i.IsGenericType
                           && i.GetGenericTypeDefinition().FullName?.Contains("IBaseService", StringComparison.Ordinal) == true);
 
-            hasWriteBase.Should().BeFalse($"{readService.Name} must not extend IBaseService.");
+            hasWriteBase.Should().BeFalse($"{queryContract.Name} must not extend IBaseService.");
         }
     }
 }

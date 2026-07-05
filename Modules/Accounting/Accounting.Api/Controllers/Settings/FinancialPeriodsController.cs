@@ -14,7 +14,7 @@ namespace Accounting.Api.Controllers.Settings;
 [Authorize]
 public class FinancialPeriodsController(
     ISender sender,
-    IFinancialPeriodReadService reads,
+    IFinancialPeriodQueries queries,
     IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> lookups) : ControllerBase
 {
     [HttpPost]
@@ -23,23 +23,23 @@ public class FinancialPeriodsController(
 
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] FinancialPeriodFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     [HttpGet("nextDefaultdata")]
     public async Task<IActionResult> GetNextDefaultdata()
-        => this.ToResult(await reads.GetNextDefaultdata());
+        => this.ToResult(await queries.GetNextDefaultdata());
 
     [HttpGet("GetCurrentFinancialPeriod")]
     public async Task<IActionResult> GetCurrentFinancialPeriod()
-        => this.ToResult(await reads.GetCurrentFinancialPeriod());
+        => this.ToResult(await queries.GetCurrentFinancialPeriod());
 
     [HttpGet("lookups")]
     public async Task<IActionResult> GetLookUps()

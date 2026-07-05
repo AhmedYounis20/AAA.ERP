@@ -16,11 +16,11 @@ namespace Accounting.Api.Controllers.Settings;
 [Authorize]
 public class GLSettingsController(
     ISender sender,
-    IGLSettingReadService reads,
+    IGLSettingQueries queries,
     GLSettingInputValidator validator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get() => this.ToResult(await reads.Get());
+    public async Task<IActionResult> Get() => this.ToResult(await queries.Get());
 
     [HttpPut]
     public async Task<IActionResult> Update(GlSettingUpdateCommand input)

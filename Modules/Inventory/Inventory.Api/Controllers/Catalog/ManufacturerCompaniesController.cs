@@ -1,5 +1,5 @@
 ﻿using Inventory.Application.Commands.ManufacturerCompanies;
-using Inventory.Domain.Models.Entities.ManufacturerCompanies;
+using Inventory.Application.Services;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;
 
@@ -9,7 +9,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class ManufacturerCompaniesController(ISender sender, IManufacturerCompanyReadService reads) : ControllerBase
+public class ManufacturerCompaniesController(ISender sender, IManufacturerCompanyQueries queries) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] ManufacturerCompanyCreateCommand input)
@@ -17,15 +17,20 @@ public class ManufacturerCompaniesController(ISender sender, IManufacturerCompan
 
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
+
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] ManufacturerCompanyUpdateCommand input)

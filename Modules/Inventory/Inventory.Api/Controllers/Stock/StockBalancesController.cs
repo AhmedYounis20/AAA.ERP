@@ -1,4 +1,5 @@
 using Inventory.Application.Commands.StockBalances;
+using Inventory.Application.Services;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;
 
@@ -8,7 +9,7 @@ namespace Inventory.Api.Controllers.Stock;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class StockBalancesController(ISender sender, IStockBalanceReadService reads) : ControllerBase
+public class StockBalancesController(ISender sender, IStockBalanceQueries queries) : ControllerBase
 {
     /// <summary>Creates a new record.</summary>
     [HttpPost]
@@ -18,17 +19,17 @@ public class StockBalancesController(ISender sender, IStockBalanceReadService re
     /// <summary>Lists all records.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] StockBalanceFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
@@ -46,7 +47,7 @@ public class StockBalancesController(ISender sender, IStockBalanceReadService re
     /// <summary>Gets stock balance by variant and branch.</summary>
     [HttpGet("byVariantAndBranch")]
     public async Task<IActionResult> GetByVariantAndBranch([FromQuery] Guid variantId, [FromQuery] Guid branchId)
-        => this.ToResult(await reads.GetByVariantAndBranch(variantId, branchId));
+        => this.ToResult(await queries.GetByVariantAndBranch(variantId, branchId));
 
     /// <summary>Gets stock balance by variant, packing unit, and branch.</summary>
     [HttpGet("byVariantPackingUnitAndBranch")]
@@ -54,17 +55,17 @@ public class StockBalancesController(ISender sender, IStockBalanceReadService re
         [FromQuery] Guid variantId,
         [FromQuery] Guid packingUnitId,
         [FromQuery] Guid branchId)
-        => this.ToResult(await reads.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId));
+        => this.ToResult(await queries.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId));
 
     /// <summary>Lists stock balances for a branch.</summary>
     [HttpGet("byBranch/{branchId}")]
     public async Task<IActionResult> GetByBranch(Guid branchId)
-        => this.ToResult(await reads.GetByBranch(branchId));
+        => this.ToResult(await queries.GetByBranch(branchId));
 
     /// <summary>Lists stock balances for a variant.</summary>
     [HttpGet("byVariant/{variantId}")]
     public async Task<IActionResult> GetByVariant(Guid variantId)
-        => this.ToResult(await reads.GetByVariant(variantId));
+        => this.ToResult(await queries.GetByVariant(variantId));
 
     /// <summary>Gets current quantity for variant, packing unit, and branch.</summary>
     [HttpGet("currentBalance")]
@@ -72,7 +73,7 @@ public class StockBalancesController(ISender sender, IStockBalanceReadService re
         [FromQuery] Guid variantId,
         [FromQuery] Guid packingUnitId,
         [FromQuery] Guid branchId)
-        => this.ToResult(await reads.GetCurrentBalance(variantId, packingUnitId, branchId));
+        => this.ToResult(await queries.GetCurrentBalance(variantId, packingUnitId, branchId));
 
     /// <summary>Updates stock quantity and unit cost.</summary>
     [HttpPost("updateStockBalance")]

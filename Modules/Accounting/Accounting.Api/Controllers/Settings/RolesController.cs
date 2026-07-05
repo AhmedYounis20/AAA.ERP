@@ -11,21 +11,25 @@ namespace Accounting.Api.Controllers.Settings;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class RolesController(ISender sender, IRoleReadService reads) : ControllerBase
+public class RolesController(ISender sender, IRoleQueries queries) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] RoleCreateCommand input)
         => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
     [HttpGet]
-    public async Task<IActionResult> Get() => this.ToResult(await reads.GetAll());
+    public async Task<IActionResult> Get() => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id) => this.ToResult(await reads.GetById(id));
+    public async Task<IActionResult> Get(Guid id) => this.ToResult(await queries.GetById(id));
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] RoleUpdateCommand input)

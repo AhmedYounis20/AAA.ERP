@@ -1,4 +1,5 @@
 ﻿using Inventory.Application.Commands.PackingUnits;
+using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;
@@ -11,7 +12,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Authorize]
 public class PackingUnitsController(
     ISender sender,
-    IPackingUnitReadService reads,
+    IPackingUnitQueries queries,
     IBaseQueryService<PackingUnit, PackingUnitLookupDto> baseQueryService) : ControllerBase
 {
     [HttpPost]
@@ -20,15 +21,20 @@ public class PackingUnitsController(
 
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
+
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()

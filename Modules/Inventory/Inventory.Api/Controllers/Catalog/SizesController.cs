@@ -9,7 +9,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class SizesController(ISender sender, ISizeReadService reads) : ControllerBase
+public class SizesController(ISender sender, ISizeQueries queries) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] SizeCreateCommand input)
@@ -17,15 +17,20 @@ public class SizesController(ISender sender, ISizeReadService reads) : Controlle
 
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
+
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] SizeUpdateCommand input)
@@ -40,5 +45,5 @@ public class SizesController(ISender sender, ISizeReadService reads) : Controlle
 
     [HttpGet("nextCode")]
     public async Task<IActionResult> GetNextCode()
-        => this.ToResult(await reads.GetNextCode());
+        => this.ToResult(await queries.GetNextCode());
 }

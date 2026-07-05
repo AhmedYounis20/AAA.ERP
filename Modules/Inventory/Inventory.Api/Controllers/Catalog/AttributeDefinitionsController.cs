@@ -9,36 +9,41 @@ namespace Inventory.Api.Controllers.Catalog;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class AttributeDefinitionsController(ISender sender, IAttributeDefinitionReadService reads) : ControllerBase
+public class AttributeDefinitionsController(ISender sender, IAttributeDefinitionQueries queries) : ControllerBase
 {
     /// <summary>Lists all attribute definitions.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-        => this.ToResult(await reads.GetAll());
+        => this.ToResult(await queries.GetAll());
 
     /// <summary>Lists attribute definitions with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
     /// <summary>Lists active attribute definitions for UI pickers.</summary>
     [HttpGet("lookups/active")]
     public async Task<IActionResult> GetActive()
     {
-        var result = await reads.GetActiveAttributeDefinitions();
+        var result = await queries.GetActiveAttributeDefinitions();
         return Ok(new { success = true, data = result });
     }
 
     /// <summary>Gets an attribute definition by identifier.</summary>
+    
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] string query)
+        => this.ToResult(await queries.SearchByName(query));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-        => this.ToResult(await reads.GetById(id));
+        => this.ToResult(await queries.GetById(id));
 
     /// <summary>Gets an attribute definition including its predefined values.</summary>
     [HttpGet("{id}/with-values")]
     public async Task<IActionResult> GetWithPredefinedValues(Guid id)
     {
-        var result = await reads.GetWithPredefinedValues(id);
+        var result = await queries.GetWithPredefinedValues(id);
         if (result == null)
             return NotFound(new { success = false, message = "Attribute definition not found" });
         return Ok(new { success = true, data = result });
