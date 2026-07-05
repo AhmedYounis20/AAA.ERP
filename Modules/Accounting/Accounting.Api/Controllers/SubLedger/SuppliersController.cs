@@ -1,22 +1,19 @@
-using Accounting.Application.Commands.Banks;
-using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Application.DTOs;
+using Accounting.Application.Commands.Suppliers;
 using Accounting.Application.Dtos.Filters;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for bank sub-ledger accounts.</summary>
+/// <summary>CRUD API for supplier sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand, BankUpdateCommand>
+public class SuppliersController : BaseTreeSettingController<Supplier, SupplierCreateCommand, SupplierUpdateCommand>
 {
-    private IBankService _service;
+    private ISupplierService _service;
     private ISender _sender;
-    IBaseQueryService<Bank, SubLeadgerLookupDto> _baseQueryService;
+    IBaseQueryService<Supplier, SubLeadgerLookupDto> _baseQueryService;
 
-    public BanksController(IBankService service, IBaseQueryService<Bank, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public SuppliersController(ISupplierService service, IBaseQueryService<Supplier, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -26,7 +23,7 @@ public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(BankCreateCommand input)
+    public async Task<IActionResult> Create(SupplierCreateCommand input)
     => await CreateRecord(input);
 
     /// <summary>Lists all records.</summary>
@@ -70,7 +67,7 @@ public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, BankUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, SupplierUpdateCommand input)
     => await UpdateRecord(id, input);
 
 

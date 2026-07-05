@@ -4,7 +4,7 @@ using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.ChartOfAccounts;
 
 /// <summary>CRUD API for chart-of-account tree and code generation.</summary>
 [Route("api/[controller]")]

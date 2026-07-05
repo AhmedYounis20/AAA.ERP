@@ -1,21 +1,22 @@
-using Accounting.Application.Commands.Customers;
+using Accounting.Application.Commands.Banks;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Application.Dtos.Lookups;
+using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for customer sub-ledger accounts.</summary>
+/// <summary>CRUD API for bank sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CustomersController : BaseTreeSettingController<Customer, CustomerCreateCommand, CustomerUpdateCommand>
+public class BanksController : BaseTreeSettingController<Bank, BankCreateCommand, BankUpdateCommand>
 {
-    private ICustomerService _service;
+    private IBankService _service;
     private ISender _sender;
-    IBaseQueryService<Customer, SubLeadgerLookupDto> _baseQueryService;
+    IBaseQueryService<Bank, SubLeadgerLookupDto> _baseQueryService;
 
-    public CustomersController(ICustomerService service, IBaseQueryService<Customer, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public BanksController(IBankService service, IBaseQueryService<Bank, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -25,9 +26,8 @@ public class CustomersController : BaseTreeSettingController<Customer, CustomerC
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(CustomerCreateCommand input)
+    public async Task<IActionResult> Create(BankCreateCommand input)
     => await CreateRecord(input);
-
 
     /// <summary>Lists all records.</summary>
     [HttpGet]
@@ -44,7 +44,6 @@ public class CustomersController : BaseTreeSettingController<Customer, CustomerC
     public async Task<IActionResult> Get(Guid id)
     => await GetRecord(id);
 
-
     /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
@@ -55,8 +54,7 @@ public class CustomersController : BaseTreeSettingController<Customer, CustomerC
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true,
-                ErrorMessages = new List<string>()
+                IsSuccess = true
             };
         }
         catch
@@ -72,7 +70,7 @@ public class CustomersController : BaseTreeSettingController<Customer, CustomerC
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, CustomerUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, BankUpdateCommand input)
     => await UpdateRecord(id, input);
 
 

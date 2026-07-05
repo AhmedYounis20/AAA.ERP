@@ -1,23 +1,24 @@
-using Accounting.Application.Commands.OpeningEntries;
+using Accounting.Application.Commands.CombinedEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for opening balance entries.</summary>
-[Route("api/[controller]")]
+/// <summary>CRUD API for combined entries (legacy route alias preserved).</summary>
+[Route("api/CombinedEntries")]
+[Route("api/CompinedEntries")] // legacy route — Phase 4.1.4 backward compatibility
 [ApiController]
-public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreateCommand, OpeningEntryUpdateCommand>
+public class CombinedEntriesController : BaseController<Entry, CombinedEntryCreateCommand, CombinedEntryUpdateCommand>
 {
-    private IOpeningEntryService _service;
+    private ICombinedEntryService _service;
 
-    public OpeningEntriesController(IOpeningEntryService service,
+    public CombinedEntriesController(ICombinedEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] OpeningEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] CombinedEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -26,7 +27,7 @@ public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreate
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        var result = await _service.GetDto();
+        var result = await _service.GetComplexEntries();
         return StatusCode((int)result.StatusCode, result);
     }
 
@@ -41,13 +42,13 @@ public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreate
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        var result = await _service.GetDto(id);
+        var result = await _service.GetComplexEntryById(id);
         return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, OpeningEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, CombinedEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

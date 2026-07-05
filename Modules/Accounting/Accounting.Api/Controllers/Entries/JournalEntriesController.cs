@@ -2,7 +2,7 @@ using Accounting.Application.Commands.JournalEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
 /// <summary>CRUD API for journal entries.</summary>
 [Route("api/[controller]")]

@@ -1,23 +1,23 @@
-using Accounting.Application.Commands.Entries;
+using Accounting.Application.Commands.PaymentEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for complex accounting entries.</summary>
+/// <summary>CRUD API for payment entries.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
+public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreateCommand, PaymentEntryUpdateCommand>
 {
-    private IComplexEntryService _service;
+    private IPaymentEntryService _service;
 
-    public EntriesController(IComplexEntryService service,
+    public PaymentEntriesController(IPaymentEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ComplexEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] PaymentEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -26,7 +26,8 @@ public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetComplexEntries();
+        return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>Lists records with pagination and filtering.</summary>
@@ -46,7 +47,7 @@ public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, ComplexEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, PaymentEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

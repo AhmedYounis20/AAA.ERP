@@ -5,7 +5,7 @@ using Accounting.Application.Dtos.Lookups;
 using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.Settings;
 
 /// <summary>CRUD API for financial periods and current-period queries.</summary>
 [Route("api/[controller]")]

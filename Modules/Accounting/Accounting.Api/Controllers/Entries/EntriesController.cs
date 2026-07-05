@@ -1,23 +1,23 @@
-using Accounting.Application.Commands.ReceiptEntries;
+using Accounting.Application.Commands.Entries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for receipt entries.</summary>
+/// <summary>CRUD API for complex accounting entries.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class ReceiptEntriesController : BaseController<Entry, ReceiptEntryCreateCommand, ReceiptEntryUpdateCommand>
+public class EntriesController : BaseController<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
 {
-    private IReceiptEntryService _service;
+    private IComplexEntryService _service;
 
-    public ReceiptEntriesController(IReceiptEntryService service,
+    public EntriesController(IComplexEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ReceiptEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] ComplexEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -26,8 +26,7 @@ public class ReceiptEntriesController : BaseController<Entry, ReceiptEntryCreate
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        var result = await _service.GetComplexEntries();
-        return StatusCode((int)result.StatusCode, result);
+        return await GetAllRecords();
     }
 
     /// <summary>Lists records with pagination and filtering.</summary>
@@ -47,7 +46,7 @@ public class ReceiptEntriesController : BaseController<Entry, ReceiptEntryCreate
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, ReceiptEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, ComplexEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

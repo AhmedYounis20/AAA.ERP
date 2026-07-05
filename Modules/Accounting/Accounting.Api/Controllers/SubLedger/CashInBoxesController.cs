@@ -1,17 +1,21 @@
+using Accounting.Application.Commands.CashInBoxes;
+using Accounting.Application.Services;
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for supplier sub-ledger accounts.</summary>
+/// <summary>CRUD API for cash-in-box sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class SuppliersController : BaseTreeSettingController<Supplier, SupplierCreateCommand, SupplierUpdateCommand>
+public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>
 {
-    private ISupplierService _service;
+    private ICashInBoxService _service;
     private ISender _sender;
-    IBaseQueryService<Supplier, SubLeadgerLookupDto> _baseQueryService;
+    IBaseQueryService<CashInBox, SubLeadgerLookupDto> _baseQueryService;
 
-    public SuppliersController(ISupplierService service, IBaseQueryService<Supplier, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public CashInBoxesController(ICashInBoxService service, IBaseQueryService<CashInBox, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -21,7 +25,7 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(SupplierCreateCommand input)
+    public async Task<IActionResult> Create(CashInBoxCreateCommand input)
     => await CreateRecord(input);
 
     /// <summary>Lists all records.</summary>
@@ -65,7 +69,7 @@ public class SuppliersController : BaseTreeSettingController<Supplier, SupplierC
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, SupplierUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, CashInBoxUpdateCommand input)
     => await UpdateRecord(id, input);
 
 

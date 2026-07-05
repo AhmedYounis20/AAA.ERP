@@ -2,7 +2,7 @@
 using Accounting.Domain.Models.Entities.Roles;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.Settings;
 
 /// <summary>CRUD API for job role settings.</summary>
 [Route("api/[controller]")]

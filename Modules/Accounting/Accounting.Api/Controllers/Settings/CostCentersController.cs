@@ -1,24 +1,25 @@
-﻿using Accounting.Application.Commands.CollectionBooks;
+﻿using Accounting.Application.Commands.CostCenters;
 using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.CollectionBooks;
+using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.BuildingBlocks.Application.DTOs;
+using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.Settings;
 
-/// <summary>CRUD API for collection book settings and lookups.</summary>
+/// <summary>CRUD API for cost center tree and domain lookups.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CollectionBooksController : BaseSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>
+public class CostCentersController : BaseTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>
 {
-    IBaseQueryService<CollectionBook, LookupDto> _baseQueryService;
-
-    public CollectionBooksController(ICollectionBookService service, IBaseQueryService<CollectionBook, LookupDto> baseQueryService,
-        ISender mapper) : base(service, mapper)
+    IBaseQueryService<CostCenter, CostCenterLookupDto> _baseQueryService;
+    public CostCentersController(ICostCenterService service,
+            IBaseQueryService<CostCenter, CostCenterLookupDto> baseQueryService,
+        ISender sender) : base(service, sender)
     => _baseQueryService = baseQueryService;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] CollectionBookCreateCommand input)
+    public virtual async Task<IActionResult> Create([FromBody] CostCenterCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -32,7 +33,7 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
 
     /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+    public virtual async Task<IActionResult> GetPaginated([FromQuery] CostCenterFilterDto filter, CancellationToken cancellationToken)
     {
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
@@ -48,18 +49,18 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<LookupDto>>();
+        var result = new ApiResponse<IEnumerable<CostCenterLookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<LookupDto>>
+            result = new ApiResponse<IEnumerable<CostCenterLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(),
+                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
                 IsSuccess = true
             };
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<LookupDto>>
+            result = new ApiResponse<IEnumerable<CostCenterLookupDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
@@ -70,7 +71,7 @@ public class CollectionBooksController : BaseSettingController<CollectionBook, C
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CollectionBookUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CostCenterUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

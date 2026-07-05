@@ -1,24 +1,23 @@
-using Accounting.Application.Commands.CombinedEntries;
+using Accounting.Application.Commands.ReceiptEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for combined entries (legacy route alias preserved).</summary>
-[Route("api/CombinedEntries")]
-[Route("api/CompinedEntries")] // legacy route — Phase 4.1.4 backward compatibility
+/// <summary>CRUD API for receipt entries.</summary>
+[Route("api/[controller]")]
 [ApiController]
-public class CombinedEntriesController : BaseController<Entry, CombinedEntryCreateCommand, CombinedEntryUpdateCommand>
+public class ReceiptEntriesController : BaseController<Entry, ReceiptEntryCreateCommand, ReceiptEntryUpdateCommand>
 {
-    private ICombinedEntryService _service;
+    private IReceiptEntryService _service;
 
-    public CombinedEntriesController(ICombinedEntryService service,
+    public ReceiptEntriesController(IReceiptEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CombinedEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] ReceiptEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -48,7 +47,7 @@ public class CombinedEntriesController : BaseController<Entry, CombinedEntryCrea
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, CombinedEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, ReceiptEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

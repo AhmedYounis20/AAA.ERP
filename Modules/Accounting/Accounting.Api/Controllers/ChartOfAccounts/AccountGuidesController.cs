@@ -1,32 +1,29 @@
-﻿using Accounting.Application.Commands.Currencies;
+﻿using Accounting.Application.Commands.AccountGuides;
 using Accounting.Application.Services;
-using Accounting.Application.Validators.Currencies;
-using Accounting.Domain.Models.Entities.Currencies;
-using Accounting.Application.Dtos.Lookups;
+using Accounting.Domain.Models.Entities.AccountGuides;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.ChartOfAccounts;
 
-/// <summary>CRUD API for currency settings and lookups.</summary>
+/// <summary>CRUD API for account guide settings and lookups.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CurrenciesController : BaseSettingController<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>
+public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>
 {
-    IBaseQueryService<Currency, CurrencyLookupDto> _baseQueryService;
-    public CurrenciesController(ICurrencyService service, IBaseQueryService<Currency, CurrencyLookupDto> baseQueryService,
-        CurrencyInputValidator validator,
-        ISender sender) : base(service, sender)
+    IBaseQueryService<AccountGuide, LookupDto> _baseQueryService;
+    public AccountGuidesController(IAccountGuideService service, IBaseQueryService<AccountGuide, LookupDto> baseQueryService,
+        ISender mapper) : base(service, mapper)
     => _baseQueryService = baseQueryService;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] CurrencyCreateCommand input)
+    public virtual async Task<IActionResult> Create([FromBody] AccountGuideCreateCommand input)
     {
         return await CreateRecord(input);
     }
 
     /// <summary>
-    /// Gets all currencies (no pagination - for backward compatibility)
+    /// Gets all account guides (no pagination - for backward compatibility)
     /// </summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
@@ -35,7 +32,7 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
     }
 
     /// <summary>
-    /// Gets paginated currencies with filtering support
+    /// Gets paginated account guides with filtering support
     /// </summary>
     /// <param name="filter">Filter parameters including PageNumber, PageSize, SearchTerm, etc.</param>
     /// <param name="cancellationToken">Cancellation token</param>
@@ -78,7 +75,7 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, [FromBody] AccountGuideUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

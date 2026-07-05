@@ -1,3 +1,4 @@
+using Accounting.Api;
 using FluentAssertions;
 using Identity.Api;
 using NetArchTest.Rules;
@@ -11,9 +12,9 @@ namespace ERP.Architecture.Tests;
 public class ModuleApiLayerTests
 {
     [Fact]
-    public void Module_Api_should_not_reference_own_Domain()
+    public void Module_Api_should_not_reference_own_Domain_except_Accounting_CRUD_generics()
     {
-        var result = Types.InAssembly(IdentityApiAssemblyMarker.Assembly)
+        var identityResult = Types.InAssembly(IdentityApiAssemblyMarker.Assembly)
             .Should()
             .NotHaveDependencyOn("Identity.Domain")
             .And()
@@ -22,24 +23,27 @@ public class ModuleApiLayerTests
             .NotHaveDependencyOn("Inventory.Domain")
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Module.Api → *.Domain", result));
+        identityResult.IsSuccessful.Should().BeTrue(FormatViolationMessage("Identity.Api → *.Domain", identityResult));
     }
 
     [Fact]
     public void Module_Api_should_not_reference_own_Infrastructure()
     {
-        var result = Types.InAssembly(IdentityApiAssemblyMarker.Assembly)
-            .Should()
-            .NotHaveDependencyOn("Identity.Infrastructure")
-            .And()
-            .NotHaveDependencyOn("Accounting.Infrastructure")
-            .And()
-            .NotHaveDependencyOn("Inventory.Infrastructure")
-            .And()
-            .NotHaveDependencyOn("ERP.Persistence")
-            .GetResult();
+        foreach (var assembly in new[] { IdentityApiAssemblyMarker.Assembly, AccountingApiAssemblyMarker.Assembly })
+        {
+            var result = Types.InAssembly(assembly)
+                .Should()
+                .NotHaveDependencyOn("Identity.Infrastructure")
+                .And()
+                .NotHaveDependencyOn("Accounting.Infrastructure")
+                .And()
+                .NotHaveDependencyOn("Inventory.Infrastructure")
+                .And()
+                .NotHaveDependencyOn("ERP.Persistence")
+                .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Module.Api → *.Infrastructure / Persistence", result));
+            result.IsSuccessful.Should().BeTrue(FormatViolationMessage($"Module.Api → Infrastructure ({assembly.GetName().Name})", result));
+        }
     }
 
     [Fact]
@@ -57,7 +61,20 @@ public class ModuleApiLayerTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage("BuildingBlocks.Api → Persistence/Infrastructure", result));
     }
 
-    [Fact(Skip = "Enable as business controllers migrate out of Host (Phase 3+). Current count: 36.")]
+    [Fact]
+    public void Accounting_Api_may_reference_Accounting_Domain_for_CRUD_generics_only()
+    {
+        var result = Types.InAssembly(AccountingApiAssemblyMarker.Assembly)
+            .That()
+            .DoNotHaveNameEndingWith("Controller")
+            .Should()
+            .NotHaveDependencyOn("Accounting.Domain")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Accounting.Api non-controllers → Domain", result));
+    }
+
+    [Fact(Skip = "Enable when all business controllers migrate out of Host (Phase 4+). Current count: 15.")]
     public void Host_should_not_contain_business_controllers()
     {
         var hostAssembly = typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly;
@@ -80,7 +97,7 @@ public class ModuleApiLayerTests
                 && t.Namespace?.StartsWith("ERP.Host.Controllers", StringComparison.Ordinal) == true
                 && t.Namespace != "ERP.Host.Controllers.BaseControllers");
 
-        count.Should().Be(36, "ratchet baseline — decrease as controllers migrate to *.Api in Phases 3–4");
+        count.Should().Be(15, "ratchet baseline — 14 Inventory + 1 DbWork; decrease in Phase 4");
     }
 
     [Fact]

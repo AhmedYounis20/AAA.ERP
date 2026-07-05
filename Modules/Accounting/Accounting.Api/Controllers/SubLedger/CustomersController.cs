@@ -1,22 +1,21 @@
-using Accounting.Application.Commands.Taxes;
+using Accounting.Application.Commands.Customers;
 using Accounting.Application.Services;
-using Accounting.Domain.Entities;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for tax sub-ledger accounts.</summary>
+/// <summary>CRUD API for customer sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, TaxUpdateCommand>
+public class CustomersController : BaseTreeSettingController<Customer, CustomerCreateCommand, CustomerUpdateCommand>
 {
-    private readonly ITaxService _service;
-    private readonly ISender _sender;
-    private readonly IBaseQueryService<Tax, SubLeadgerLookupDto> _baseQueryService;
+    private ICustomerService _service;
+    private ISender _sender;
+    IBaseQueryService<Customer, SubLeadgerLookupDto> _baseQueryService;
 
-    public TaxesController(ITaxService service, IBaseQueryService<Tax, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public CustomersController(ICustomerService service, IBaseQueryService<Customer, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -26,8 +25,9 @@ public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, 
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(TaxCreateCommand input)
+    public async Task<IActionResult> Create(CustomerCreateCommand input)
     => await CreateRecord(input);
+
 
     /// <summary>Lists all records.</summary>
     [HttpGet]
@@ -44,6 +44,7 @@ public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, 
     public async Task<IActionResult> Get(Guid id)
     => await GetRecord(id);
 
+
     /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
@@ -54,7 +55,8 @@ public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, 
             result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true
+                IsSuccess = true,
+                ErrorMessages = new List<string>()
             };
         }
         catch
@@ -70,8 +72,9 @@ public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, 
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, TaxUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, CustomerUpdateCommand input)
     => await UpdateRecord(id, input);
+
 
     /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]

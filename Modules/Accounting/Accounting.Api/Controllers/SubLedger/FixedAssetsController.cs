@@ -1,21 +1,21 @@
-using Accounting.Application.Commands.Branches;
+using Accounting.Application.Commands.FixedAssets;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for branch sub-ledger accounts.</summary>
+/// <summary>CRUD API for fixed-asset sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class BranchesController : BaseTreeSettingController<Branch, BranchCreateCommand, BranchUpdateCommand>
+public class FixedAssetsController : BaseTreeSettingController<FixedAsset, FixedAssetCreateCommand, FixedAssetUpdateCommand>
 {
-    private IBranchService _service;
+    private IFixedAssetService _service;
     private ISender _sender;
-    IBaseQueryService<Branch, SubLeadgerLookupDto> _baseQueryService;
+    IBaseQueryService<FixedAsset, SubLeadgerLookupDto> _baseQueryService;
 
-    public BranchesController(IBranchService service, IBaseQueryService<Branch, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public FixedAssetsController(IFixedAssetService service, IBaseQueryService<FixedAsset, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -25,7 +25,7 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(BranchCreateCommand input)
+    public async Task<IActionResult> Create(FixedAssetCreateCommand input)
     => await CreateRecord(input);
 
     /// <summary>Lists all records.</summary>
@@ -67,10 +67,12 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
         return StatusCode((int)result.StatusCode, result);
     }
 
+
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, BranchUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, FixedAssetUpdateCommand input)
     => await UpdateRecord(id, input);
+
 
     /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
@@ -79,8 +81,8 @@ public class BranchesController : BaseTreeSettingController<Branch, BranchCreate
 
     /// <summary>Returns default data for the next account under a parent.</summary>
     [HttpGet("NextAccountDefaultData")]
-    public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)
+    public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId, [FromQuery] FixedAssetType fixedAssetType)
     {
-        return Ok(await _service.GetNextSubLeadgers(parentId));
+        return Ok(await _service.GetNextFixedAsset(parentId, fixedAssetType));
     }
 }

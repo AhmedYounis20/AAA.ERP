@@ -30,6 +30,7 @@
     <ProjectReference Include="..\Modules\Platform\Platform.Localization\Platform.Localization.csproj" />
     <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Api\ERP.BuildingBlocks.Api.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Api\Accounting.Api.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Api\Identity.Api.csproj" />
     <ProjectReference Include="..\Modules\Platform\Platform.Audit\Platform.Audit.Api\Platform.Audit.Api.csproj" />
   </ItemGroup>

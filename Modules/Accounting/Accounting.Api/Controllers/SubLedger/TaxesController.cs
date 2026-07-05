@@ -1,21 +1,22 @@
-using Accounting.Application.Commands.CashInBoxes;
+using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Domain.Entities;
 using Accounting.Application.Dtos.Lookups;
+using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.SubLeadgers;
+namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for cash-in-box sub-ledger accounts.</summary>
+/// <summary>CRUD API for tax sub-ledger accounts.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>
+public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, TaxUpdateCommand>
 {
-    private ICashInBoxService _service;
-    private ISender _sender;
-    IBaseQueryService<CashInBox, SubLeadgerLookupDto> _baseQueryService;
+    private readonly ITaxService _service;
+    private readonly ISender _sender;
+    private readonly IBaseQueryService<Tax, SubLeadgerLookupDto> _baseQueryService;
 
-    public CashInBoxesController(ICashInBoxService service, IBaseQueryService<CashInBox, SubLeadgerLookupDto> baseQueryService, ISender sender)
+    public TaxesController(ITaxService service, IBaseQueryService<Tax, SubLeadgerLookupDto> baseQueryService, ISender sender)
         : base(service, sender)
     {
         _service = service;
@@ -25,7 +26,7 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(CashInBoxCreateCommand input)
+    public async Task<IActionResult> Create(TaxCreateCommand input)
     => await CreateRecord(input);
 
     /// <summary>Lists all records.</summary>
@@ -69,9 +70,8 @@ public class CashInBoxesController : BaseTreeSettingController<CashInBox, CashIn
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, CashInBoxUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, TaxUpdateCommand input)
     => await UpdateRecord(id, input);
-
 
     /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]

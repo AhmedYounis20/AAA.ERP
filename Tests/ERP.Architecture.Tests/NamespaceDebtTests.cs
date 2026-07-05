@@ -467,7 +467,7 @@ public class NamespaceDebtTests
             typeof(Inventory.Application.Repositories.IColorRepository).Assembly,
             typeof(Identity.Application.IAuthenticationService).Assembly,
             typeof(Platform.Audit.Application.IAuditService).Assembly,
-            typeof(ERP.Host.Controllers.Accounting.Entries.CombinedEntriesController).Assembly
+            typeof(Accounting.Api.Controllers.Entries.CombinedEntriesController).Assembly
         };
 
         foreach (var assembly in assemblies)
@@ -524,7 +524,7 @@ public class NamespaceDebtTests
             typeof(ERP.Infrastructure.Utilities.InfrastructureExtensions).Assembly,
             typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly,
             typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly,
-            typeof(ERP.Host.Controllers.Accounting.Entries.CombinedEntriesController).Assembly
+            typeof(Accounting.Api.Controllers.Entries.CombinedEntriesController).Assembly
         };
 
         foreach (var assembly in assemblies)

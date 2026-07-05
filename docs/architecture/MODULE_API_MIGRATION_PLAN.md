@@ -1,6 +1,6 @@
 # Module API migration plan
 
-> **Status:** Phases 0–2 **complete** — Phase 3 (Accounting API) is next  
+> **Status:** Phases 0–3 **complete** — Phase 4 (Inventory API) is next  
 > **ADR:** [011-module-owned-api.md](./adr/011-module-owned-api.md)  
 > **Sign-off:** [PHASE_0_API_MIGRATION_SIGNOFF.md](./PHASE_0_API_MIGRATION_SIGNOFF.md)
 
@@ -36,12 +36,17 @@ See [PHASE_2_API_MIGRATION_SIGNOFF.md](./PHASE_2_API_MIGRATION_SIGNOFF.md).
 
 ---
 
-## Phases 3–5 — Controller extraction
+## Phase 3 — Accounting API extraction (complete)
+
+See [PHASE_3_API_MIGRATION_SIGNOFF.md](./PHASE_3_API_MIGRATION_SIGNOFF.md).
+
+---
+
+## Phases 4–5 — Controller extraction
 
 See [CONTROLLER_MIGRATION_MAP.md](./CONTROLLER_MIGRATION_MAP.md) for per-controller targets and wave schedule.
 
 | Phase | Scope | Host controllers after |
 |-------|-------|------------------------|
-| Phase 3 | Accounting (22) | 14 |
-| Phase 4 | Inventory (14) | 0 |
+| Phase 4 | Inventory (14) | 1 (DbWork only) |
 | Phase 5 | Remove empty `ERP.Host/Controllers/` | 0 |

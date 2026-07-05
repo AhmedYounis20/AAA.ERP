@@ -1,23 +1,23 @@
-using Accounting.Application.Commands.PaymentEntries;
+using Accounting.Application.Commands.OpeningEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
 
-namespace ERP.Host.Controllers.Accounting.Entries;
+namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for payment entries.</summary>
+/// <summary>CRUD API for opening balance entries.</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreateCommand, PaymentEntryUpdateCommand>
+public class OpeningEntriesController : BaseController<Entry, OpeningEntryCreateCommand, OpeningEntryUpdateCommand>
 {
-    private IPaymentEntryService _service;
+    private IOpeningEntryService _service;
 
-    public PaymentEntriesController(IPaymentEntryService service,
+    public OpeningEntriesController(IOpeningEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] PaymentEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] OpeningEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -26,7 +26,7 @@ public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreate
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        var result = await _service.GetComplexEntries();
+        var result = await _service.GetDto();
         return StatusCode((int)result.StatusCode, result);
     }
 
@@ -41,13 +41,13 @@ public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreate
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        var result = await _service.GetComplexEntryById(id);
+        var result = await _service.GetDto(id);
         return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, PaymentEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, OpeningEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

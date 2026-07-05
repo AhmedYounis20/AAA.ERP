@@ -7,7 +7,7 @@ using Mapster;
 using ERP.BuildingBlocks.Application.Responses;
 using ERP.BuildingBlocks.Application.Constants;
 
-namespace ERP.Host.Controllers.Accounting;
+namespace Accounting.Api.Controllers.Settings;
 
 /// <summary>Read/update API for general ledger settings.</summary>
 [Route("api/[controller]")]

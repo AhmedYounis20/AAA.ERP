@@ -18,6 +18,7 @@ using Platform.Infrastructure;
 using Platform.Localization;
 using ERP.BuildingBlocks.Application.Behaviors;
 using ERP.BuildingBlocks.Application.Exceptions.Handler;
+using Accounting.Api;
 using Identity.Api;
 using Platform.Audit.Api;
 
@@ -110,6 +111,7 @@ public static class WebBuilderExtensions
 
         });
         builder.Services.AddControllers()
+            .AddApplicationPart(AccountingApiAssemblyMarker.Assembly)
             .AddApplicationPart(IdentityApiAssemblyMarker.Assembly)
             .AddApplicationPart(PlatformAuditApiAssemblyMarker.Assembly)
             .AddJsonOptions(opts =>
