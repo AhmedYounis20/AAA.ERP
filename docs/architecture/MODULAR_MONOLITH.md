@@ -1403,7 +1403,16 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | P6.4 | `ConflictException` / `ForbiddenException` | **Done** |
 | P6.5 | Full-solution `dotnet format` | **Done** |
 
-See [PHASE6_SIGNOFF.md](./PHASE6_SIGNOFF.md).
+See [PHASE6_SIGNOFF.md](./PHASE6_SIGNOFF.md). **All deferred work closed** — [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
+
+#### Phase 7 — Final pre-production closure
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| P7.1 | ERP.Persistence Accounting horizontal → `Accounting.Infrastructure` | **Done** |
+| P7.2 | `IInventoryAccountingDisplayQueries` + inventory read DTOs | **Done** |
+| P7.3 | BuildingBlocks `Dtos` namespace normalization | **Done** |
+| P7.4 | Persistence kernel arch test | **Done** |
 
 ### Phase 3 Wave 3B — **COMPLETE**
 

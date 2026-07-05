@@ -1,10 +1,15 @@
-﻿using Accounting.Application.Services.Queries;
-using System.Linq;
+using Accounting.Application.Services.Queries;
+using Shared.BaseEntities;
+using System.Linq.Expressions;
 
-namespace ERP.Infrastructure.Services.Account.Queries;
-public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto> where TEntity : BaseEntity where TDto : class
+namespace Accounting.Infrastructure.Services.Queries;
+
+public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto>
+    where TEntity : BaseEntity
+    where TDto : class
 {
-    IApplicationDbContext _dbContext;
+    private readonly IApplicationDbContext _dbContext;
+
     public BaseQueryService(IApplicationDbContext applicationDbContext)
     {
         _dbContext = applicationDbContext;

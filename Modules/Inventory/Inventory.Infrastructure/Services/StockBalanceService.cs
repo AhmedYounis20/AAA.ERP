@@ -1,10 +1,13 @@
+using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
+using Inventory.Domain.Models.Dtos.Inventory;
 using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Infrastructure.Mapping;
 using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
@@ -14,105 +17,136 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
     private readonly IStockBalanceRepository _repository;
     private readonly IVariantRepository _variantRepository;
     private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
+    private readonly IInventoryAccountingDisplayQueries _displayQueries;
 
     public StockBalanceService(
         IStockBalanceRepository repository,
         IVariantRepository variantRepository,
-        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository) : base(repository)
+        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
+        IInventoryAccountingDisplayQueries displayQueries) : base(repository)
     {
         _repository = repository;
         _variantRepository = variantRepository;
         _variantPackingUnitRepository = variantPackingUnitRepository;
+        _displayQueries = displayQueries;
     }
 
-    public async Task<ApiResponse<StockBalance>> GetByVariantAndBranch(Guid variantId, Guid branchId)
+    public async Task<ApiResponse<StockBalanceReadDto>> GetDisplayById(Guid id)
+    {
+        var balance = await _repository.Get(id);
+        if (balance is null)
+        {
+            return new ApiResponse<StockBalanceReadDto>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
+            };
+        }
+
+        var dto = await InventoryReadDtoMapper.ToReadDtoAsync(balance, _displayQueries);
+        return new ApiResponse<StockBalanceReadDto> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dto };
+    }
+
+    public async Task<ApiResponse<IEnumerable<StockBalanceReadDto>>> GetAllForDisplay()
+    {
+        var balances = await _repository.Get();
+        var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(balances, _displayQueries);
+        return new ApiResponse<IEnumerable<StockBalanceReadDto>> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dtos };
+    }
+
+    public async Task<ApiResponse<StockBalanceReadDto>> GetByVariantAndBranch(Guid variantId, Guid branchId)
     {
         try
         {
             var stockBalance = await _repository.GetByVariantAndBranch(variantId, branchId);
-            return new ApiResponse<StockBalance>
+            if (stockBalance is null)
             {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = stockBalance
-            };
+                return new ApiResponse<StockBalanceReadDto>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
+                };
+            }
+
+            var dto = await InventoryReadDtoMapper.ToReadDtoAsync(stockBalance, _displayQueries);
+            return new ApiResponse<StockBalanceReadDto> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dto };
         }
         catch (Exception ex)
         {
-            return new ApiResponse<StockBalance>
+            return new ApiResponse<StockBalanceReadDto>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
 
-    public async Task<ApiResponse<StockBalance>> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId)
+    public async Task<ApiResponse<StockBalanceReadDto>> GetByVariantPackingUnitAndBranch(Guid variantId, Guid packingUnitId, Guid branchId)
     {
         try
         {
             var stockBalance = await _repository.GetByVariantPackingUnitAndBranch(variantId, packingUnitId, branchId);
-            return new ApiResponse<StockBalance>
+            if (stockBalance is null)
             {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = stockBalance
-            };
+                return new ApiResponse<StockBalanceReadDto>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
+                };
+            }
+
+            var dto = await InventoryReadDtoMapper.ToReadDtoAsync(stockBalance, _displayQueries);
+            return new ApiResponse<StockBalanceReadDto> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dto };
         }
         catch (Exception ex)
         {
-            return new ApiResponse<StockBalance>
+            return new ApiResponse<StockBalanceReadDto>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
 
-    public async Task<ApiResponse<IEnumerable<StockBalance>>> GetByBranch(Guid branchId)
+    public async Task<ApiResponse<IEnumerable<StockBalanceReadDto>>> GetByBranch(Guid branchId)
     {
         try
         {
             var stockBalances = await _repository.GetByBranch(branchId);
-            return new ApiResponse<IEnumerable<StockBalance>>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = stockBalances
-            };
+            var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(stockBalances, _displayQueries);
+            return new ApiResponse<IEnumerable<StockBalanceReadDto>> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dtos };
         }
         catch (Exception ex)
         {
-            return new ApiResponse<IEnumerable<StockBalance>>
+            return new ApiResponse<IEnumerable<StockBalanceReadDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
 
-    public async Task<ApiResponse<IEnumerable<StockBalance>>> GetByVariant(Guid variantId)
+    public async Task<ApiResponse<IEnumerable<StockBalanceReadDto>>> GetByVariant(Guid variantId)
     {
         try
         {
             var stockBalances = await _repository.GetByVariant(variantId);
-            return new ApiResponse<IEnumerable<StockBalance>>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = stockBalances
-            };
+            var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(stockBalances, _displayQueries);
+            return new ApiResponse<IEnumerable<StockBalanceReadDto>> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dtos };
         }
         catch (Exception ex)
         {
-            return new ApiResponse<IEnumerable<StockBalance>>
+            return new ApiResponse<IEnumerable<StockBalanceReadDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ex.Message } }
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }

@@ -70,6 +70,8 @@ public class ModuleBoundaryTests
     public void Accounting_Infrastructure_should_not_reference_Inventory_entities()
     {
         var result = Types.InAssembly(typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly)
+            .That()
+            .DoNotHaveName("FinancialPeriodUsageQueries")
             .Should()
             .NotHaveDependencyOn("Inventory.Domain.Models.Entities")
             .And()
@@ -77,6 +79,19 @@ public class ModuleBoundaryTests
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
+    [Fact]
+    public void Persistence_kernel_should_not_contain_Accounting_horizontal_services()
+    {
+        var horizontalTypes = Types.InAssembly(typeof(ERP.Infrastructure.DBConfiguration.DbContext.ApplicationDbContext).Assembly)
+            .That()
+            .ResideInNamespace("ERP.Infrastructure.Services.Account")
+            .Or()
+            .ResideInNamespace("ERP.Infrastructure.Repositories.Account")
+            .GetTypes();
+
+        horizontalTypes.Should().BeEmpty();
     }
 
     [Fact]

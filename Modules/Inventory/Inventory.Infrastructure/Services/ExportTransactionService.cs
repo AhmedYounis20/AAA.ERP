@@ -1,8 +1,11 @@
+using Accounting.Contracts.Integration;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
+using Inventory.Domain.Models.Dtos.Inventory;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
+using Inventory.Infrastructure.Mapping;
 using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
@@ -11,14 +14,17 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
 {
     private readonly IInventoryTransactionService _inventoryTransactionService;
     private readonly IInventoryTransactionRepository _repository;
+    private readonly IInventoryAccountingDisplayQueries _displayQueries;
 
     public ExportTransactionService(
         IInventoryTransactionService inventoryTransactionService,
-        IInventoryTransactionRepository repository)
+        IInventoryTransactionRepository repository,
+        IInventoryAccountingDisplayQueries displayQueries)
         : base(repository)
     {
         _inventoryTransactionService = inventoryTransactionService;
         _repository = repository;
+        _displayQueries = displayQueries;
     }
 
     public override async Task<ApiResponse<InventoryTransaction>> Create(ExportTransactionCreateCommand command, bool isValidate = false)
@@ -36,54 +42,57 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
         return await _inventoryTransactionService.Create(baseCommand);
     }
 
-    public async Task<ApiResponse<InventoryTransaction>> GetById(Guid id)
+    public async Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
     {
         var transaction = await _repository.GetWithItems(id);
         if (transaction == null)
         {
-            return new ApiResponse<InventoryTransaction>
+            return new ApiResponse<InventoryTransactionReadDto>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.TransactionNotFound } }
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransactionNotFound }]
             };
         }
 
         if (transaction.TransactionType != InventoryTransactionType.Issue)
         {
-            return new ApiResponse<InventoryTransaction>
+            return new ApiResponse<InventoryTransactionReadDto>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.TransactionIsNotExportTransaction } }
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransactionIsNotExportTransaction }]
             };
         }
 
-        return new ApiResponse<InventoryTransaction>
+        var dto = await InventoryReadDtoMapper.ToReadDtoAsync(transaction, _displayQueries);
+        return new ApiResponse<InventoryTransactionReadDto>
         {
             IsSuccess = true,
             StatusCode = HttpStatusCode.OK,
-            Result = transaction
+            Result = dto
         };
     }
 
-    public async Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetAll()
+    public async Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll()
     {
         var result = await _inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Issue);
-        if (result.IsSuccess)
+        if (!result.IsSuccess || result.Result is null)
         {
-            return new ApiResponse<IEnumerable<InventoryTransaction>>
+            return new ApiResponse<IEnumerable<InventoryTransactionReadDto>>
             {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = result.Result
+                IsSuccess = false,
+                StatusCode = result.StatusCode,
+                Errors = result.Errors
             };
         }
-        return new ApiResponse<IEnumerable<InventoryTransaction>>
+
+        var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(result.Result, _displayQueries);
+        return new ApiResponse<IEnumerable<InventoryTransactionReadDto>>
         {
-            IsSuccess = false,
-            StatusCode = result.StatusCode,
-            Errors = result.Errors
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = dtos
         };
     }
 

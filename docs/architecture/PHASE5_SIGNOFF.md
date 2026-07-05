@@ -31,15 +31,9 @@
 
 ---
 
-## Intentionally deferred (future slices — not Phase 5 blockers)
+## Intentionally deferred (future slices — completed in Phase 7)
 
-| Item | Reason |
-|------|--------|
-| ERP.Persistence base-service retirement | Wave 3E follow-up; kernel retained by design; one cluster per slice |
-| Staging/prod `SeparateModuleSchemas` execution | Operator task — runbook ready; requires target environment |
-| DTO `Dto`/`DTO` naming normalization | Low priority; no wire impact |
-| FluentValidation rule sets / specific exception types | Enhancement backlog |
-| Branch/party name enrichment on inventory reads | Future Accounting query ports if UI needs nested objects |
+See [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md).
 
 ---
 

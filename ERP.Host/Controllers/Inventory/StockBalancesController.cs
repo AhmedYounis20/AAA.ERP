@@ -30,7 +30,8 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
-        return await GetAllRecords();
+        var result = await _service.GetAllForDisplay();
+        return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>Lists records with pagination and filtering.</summary>
@@ -44,7 +45,8 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
-        return await GetRecord(id);
+        var result = await _service.GetDisplayById(id);
+        return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>Updates an existing record.</summary>

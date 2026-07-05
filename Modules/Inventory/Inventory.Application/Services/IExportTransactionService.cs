@@ -1,16 +1,16 @@
 using Accounting.Domain.OutputDtos;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
-using Inventory.Domain.Models.Entities.InventoryTransactions;
+using Inventory.Domain.Models.Dtos.Inventory;
 
 namespace Inventory.Application.Services;
 
 /// <summary>
 /// Application service contract for export transaction.
 /// </summary>
-public interface IExportTransactionService : IBaseService<InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>
+public interface IExportTransactionService : IBaseService<Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>
 {
-    Task<ApiResponse<InventoryTransaction>> GetById(Guid id);
-    Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetAll();
+    Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id);
+    Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll();
     Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime);
 }

@@ -8,6 +8,8 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Domain.Models.Dtos.Inventory;
+using Inventory.Infrastructure.Mapping;
 using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
@@ -19,19 +21,22 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     private readonly ITransactionCoordinator _transactionCoordinator;
     private readonly ApplicationDbContext _dbContext;
     private readonly IAccountingIntegrationService _accountingIntegration;
+    private readonly IInventoryAccountingDisplayQueries _displayQueries;
 
     public InventoryTransferService(
         IInventoryTransferRepository repository,
         IStockBalanceRepository stockBalanceRepository,
         ITransactionCoordinator transactionCoordinator,
         ApplicationDbContext dbContext,
-        IAccountingIntegrationService accountingIntegration) : base(repository)
+        IAccountingIntegrationService accountingIntegration,
+        IInventoryAccountingDisplayQueries displayQueries) : base(repository)
     {
         _repository = repository;
         _stockBalanceRepository = stockBalanceRepository;
         _transactionCoordinator = transactionCoordinator;
         _dbContext = dbContext;
         _accountingIntegration = accountingIntegration;
+        _displayQueries = displayQueries;
     }
 
     public override Task<ApiResponse<InventoryTransfer>> Create(InventoryTransferCreateCommand command, bool isValidate = true)
@@ -273,18 +278,21 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
         return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };
     }
 
-    public async Task<ApiResponse<InventoryTransfer>> GetWithDetails(Guid id)
+    public async Task<ApiResponse<InventoryTransferReadDto>> GetWithDetails(Guid id)
     {
         var transfer = await _repository.GetWithDetails(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
-        return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };
+            return new ApiResponse<InventoryTransferReadDto> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
+
+        var dto = await InventoryReadDtoMapper.ToReadDtoAsync(transfer, _displayQueries);
+        return new ApiResponse<InventoryTransferReadDto> { IsSuccess = true, Result = dto };
     }
 
-    public async Task<ApiResponse<IEnumerable<InventoryTransfer>>> GetByStatus(InventoryTransferStatus status)
+    public async Task<ApiResponse<IEnumerable<InventoryTransferReadDto>>> GetByStatus(InventoryTransferStatus status)
     {
         var transfers = await _repository.GetByStatus(status);
-        return new ApiResponse<IEnumerable<InventoryTransfer>> { IsSuccess = true, Result = transfers };
+        var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(transfers, _displayQueries);
+        return new ApiResponse<IEnumerable<InventoryTransferReadDto>> { IsSuccess = true, Result = dtos };
     }
 
     public Task<ApiResponse<InventoryTransfer>> ApproveTransfer(Guid id)

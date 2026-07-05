@@ -2,14 +2,14 @@ using Accounting.Application.Repositories.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
-namespace ERP.Infrastructure.Repositories.Account.SubLeadgers;
+namespace Accounting.Infrastructure.Repositories;
 
 public class BaseSubLeadgerRepository<TEntity> : BaseTreeSettingRepository<TEntity>, IBaseSubLeadgerRepository<TEntity>
     where TEntity : SubLeadgerBaseEntity<TEntity>
 {
-    private IApplicationDbContext _context;
     public BaseSubLeadgerRepository(IApplicationDbContext context) : base(context)
-        => _context = context;
+    {
+    }
 
     public override async Task<IEnumerable<TEntity>> Get()
     {
@@ -23,23 +23,19 @@ public class BaseSubLeadgerRepository<TEntity> : BaseTreeSettingRepository<TEnti
 
     public override async Task<List<TEntity>> GetLevel(int level = 0)
     {
-        List<TEntity> entities = new List<TEntity>();
-        entities = await _dbSet.Include(e => e.ChartOfAccount).Where(e => e.ParentId == null).ToListAsync();
+        var entities = await _dbSet.Include(e => e.ChartOfAccount).Where(e => e.ParentId == null).ToListAsync();
         if (level == 0)
             return entities;
-        else
-            return await GetChildren(entities, level - 1);
+
+        return await GetChildren(entities, level - 1);
     }
 
     public override async Task<List<TEntity>> GetChildren(Guid id, int level = 1)
     {
-        List<TEntity> children = new List<TEntity>();
-
-        children = await _dbSet.Where(e => e.ParentId.Equals(id)).Include(e => e.ChartOfAccount).ToListAsync();
+        var children = await _dbSet.Where(e => e.ParentId.Equals(id)).Include(e => e.ChartOfAccount).ToListAsync();
         if (level == 0)
             return children;
 
-        else
-            return await GetChildren(children, level - 1);
+        return await GetChildren(children, level - 1);
     }
 }

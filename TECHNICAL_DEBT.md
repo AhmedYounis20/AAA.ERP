@@ -67,18 +67,15 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 ## Low Priority
 
 ### 7. Inconsistent Naming in DTOs
-- Some use `Id` suffix, some don't
-- Mix of `Dto` and `DTO` suffixes
-
-**Status:** Partial — Identity auth DTOs normalized to `*Dto` (Phase 6). BuildingBlocks `DTOs` folder namespace unchanged (no wire impact).
+**Status:** **Done** (Phase 6–7). Identity auth DTOs use `*Dto`; BuildingBlocks base DTOs use `ERP.BuildingBlocks.Application.Dtos.BaseDtos`.
 
 ### 8. Unused Using Statements
-**Status:** **Done** (Phase 6). Full-solution `dotnet format` applied.
+**Status:** **Done**. Full-solution `dotnet format` applied.
 
 ### 9. Consider Adding:
-- FluentValidation rule sets for different scenarios — **Partial** (Phase 6): shared `EntryHeaderRulesValidator` for all entry commands
-- More specific exception types — **Done** (Phase 6): `ConflictException`, `ForbiddenException` wired in `CustomExceptionHandler`
-- Request/Response logging middleware *(covered by Serilog + `LoggingBehavior`; no additional middleware required)*
+- FluentValidation rule sets — **Done** for entry commands (`EntryHeaderRulesValidator`); create/update pairs share header rules via `Include()`.
+- More specific exception types — **Done** (`ConflictException`, `ForbiddenException`).
+- Request/Response logging middleware *(covered by Serilog + `LoggingBehavior`)*
 
 ### 10. Localization resource parity
 **Status:** **Done** (L1). `ErrorMessages`, `SuccessMessages`, and `ValidationMessages` wire keys synced to `Platform.Localization/Resources/Resource.resx` and `Resource.ar-EG.resx`; `LocalizationResponseMiddleware` resolves at runtime.

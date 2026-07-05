@@ -1,3 +1,4 @@
+global using Shared.BaseEntities;
 global using Accounting.Domain.Utility;
 global using Shared.DTOs;
 global using Shared.Extensions;

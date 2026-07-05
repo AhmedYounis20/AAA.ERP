@@ -4,9 +4,11 @@ using Accounting.Application.Services.SubLeadgers;
 using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.Infrastructure.Services.BaseServices;
+using Shared;
 using Shared.Constants;
 
-namespace ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
+namespace Accounting.Infrastructure.Services.SubLeadgers;
 
 public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     BaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>,
@@ -14,12 +16,10 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     where TEntity : SubLeadgerBaseEntity<TEntity>
     where TCreateCommand : BaseSubLeadgerCreateCommand<TEntity>
     where TUpdateCommand : BaseSubLeadgerUpdateCommand<TEntity>
-
 {
-    private IUnitOfWork _unitOfWork;
-    private IBaseSubLeadgerRepository<TEntity> _repository;
-    private IHttpContextAccessor _accessor;
-    private string _accountId;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IBaseSubLeadgerRepository<TEntity> _repository;
+    private readonly string _accountId;
     protected SubLeadgerType? _subLeadgerType;
     protected readonly IChartOfAccountRepository _chartOfAccountRepository;
 
@@ -28,7 +28,6 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         SubLeadgerType? subLeadgerType = null) : base(repository)
     {
         _unitOfWork = unitOfWork;
-        _accessor = accessor;
         _repository = repository;
         _chartOfAccountRepository = chartOfAccountRepository;
         _accountId = accountId;
@@ -109,7 +108,6 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     {
         try
         {
-            bool isDomain = command.NodeType.Equals(NodeType.Domain);
             TEntity? entity = await _repository.Get(command.Id);
             if (entity != null)
             {
@@ -153,7 +151,6 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             {
                 if (validationResult.entity is not null)
                 {
-
                     var entity = validationResult.entity;
                     entity.ChartOfAccount = null;
                     await _repository.Delete(entity);
@@ -194,13 +191,10 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     protected override async Task<(bool isValid, List<string> errors, TEntity? entity)> ValidateUpdate(TUpdateCommand command)
     {
         var result = await base.ValidateUpdate(command);
-        if (result.isValid)
+        if (result.isValid && result.entity!.NodeType != command.NodeType)
         {
-            if (result.entity.NodeType != command.NodeType)
-            {
-                result.isValid = false;
-                result.errors.Add(ErrorMessages.CannotChangeNodeType);
-            }
+            result.isValid = false;
+            result.errors.Add(ErrorMessages.CannotChangeNodeType);
         }
 
         return result;

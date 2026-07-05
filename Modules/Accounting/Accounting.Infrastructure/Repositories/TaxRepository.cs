@@ -1,7 +1,5 @@
 using Accounting.Application.Repositories;
 using Accounting.Domain.Entities;
-using ERP.Infrastructure.Repositories.Account.SubLeadgers;
-
 namespace Accounting.Infrastructure.Repositories;
 
 public class TaxRepository : BaseSubLeadgerRepository<Tax>, ITaxRepository

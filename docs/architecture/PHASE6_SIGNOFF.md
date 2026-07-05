@@ -29,11 +29,7 @@
 
 ## Still deferred
 
-| Item | Reason |
-|------|--------|
-| ERP.Persistence base-service retirement | Kernel by design; one aggregate cluster per slice |
-| `BuildingBlocks.Application.DTOs` folder rename | Large namespace churn; no wire impact |
-| Branch/party enrichment on inventory reads | Query ports when UI needs nested objects |
+_None — see [FINAL_SIGNOFF.md](./FINAL_SIGNOFF.md)._
 
 ---
 

@@ -1,4 +1,4 @@
-namespace ERP.BuildingBlocks.Application.DTOs.BaseDtos;
+namespace ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 
 public class BaseSettingDto : BaseDto
 {

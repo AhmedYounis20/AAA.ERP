@@ -1,115 +1,47 @@
 # ERP.Persistence — persistence kernel
 
-Shared data access layer for the modular monolith: **EF Core `ApplicationDbContext`**, base repositories, the god `IUnitOfWork`, horizontal (unmigrated) handlers/repos/services, and **`ITransactionCoordinator`**. Migrations remain in **`ERP.Host/Migrations/`** until a dedicated migrations project is introduced.
+Shared data access layer for the modular monolith: **EF Core `ApplicationDbContext`**, base repositories/services, slim `IUnitOfWork`, and **`ITransactionCoordinator`**. Migrations remain in **`ERP.Host/Migrations/`**.
 
-> **Namespace note (Phase 4.1.3):** The project folder is `ERP.Persistence` but most types still use the `ERP.Infrastructure.*` namespace and `RootNamespace` migration is incremental. New code in this project should prefer `ERP.Persistence` namespaces when touching files substantially.
+> **Namespace note:** Project folder is `ERP.Persistence`; CLR namespaces remain `ERP.Infrastructure.*` (incremental alignment). New kernel code should prefer `ERP.Persistence` when substantially touching files.
 
 ## Purpose
 
-- Single SQL Server database, single `ApplicationDbContext`, module EF configs applied via `ModuleModelConfigurationRegistry`.
-- Base repository patterns (`BaseRepository<T>`, tree/setting variants) used by modules during the strangler migration.
-- Cross-module **ACID coordination** through `TransactionCoordinator` implementing `ITransactionCoordinator`.
-- Residual horizontal slices not yet moved to `Modules/*` (attachments, sub-ledger base services, seed import/export).
+- Single SQL Server database, single `ApplicationDbContext`, module EF configs via `ModuleModelConfigurationRegistry`.
+- Generic base repository/service patterns used by modules during the strangler migration.
+- Cross-module **ACID coordination** through `TransactionCoordinator`.
+- Dev seed import/export utilities (`DbWorkController`).
 
-## Project map
+**Module-specific horizontal code** (sub-ledgers, attachments, lookup queries, financial-period usage) lives in **`Modules/Accounting/Accounting.Infrastructure`** as of Phase 7.
+
+## Project map (kernel only)
 
 ```
 ERP.Persistence/
 ├── DBConfiguration/
-│   ├── DbContext/ApplicationDbContext.cs    ← Identity + module registry
-│   └── Config/                            ← legacy horizontal DbConfigs
+│   ├── DbContext/ApplicationDbContext.cs
+│   └── Config/BaseConfig/              ← shared EF base configs
+│   └── Config/Identity/                ← identity schema
 ├── Repositories/
-│   ├── BaseRepositories/                  ← BaseRepository, UnitOfWork
-│   ├── Account/                           ← Attachment, FinancialPeriodUsageQueries
-│   └── TransactionCoordinator.cs          ← ITransactionCoordinator impl
-├── Services/
-│   ├── BaseServices/                      ← BaseService, BaseTreeService, …
-│   └── Account/                           ← SubLeadgerService, queries
+│   ├── BaseRepositories/               ← BaseRepository, tree/setting variants
+│   ├── UnitOfWork.cs
+│   └── TransactionCoordinator.cs
+├── Services/BaseServices/                ← BaseService, BaseTreeService, …
 └── Utilities/
-    ├── InfrastructureExtensions.cs          ← AddInfrastructureServices()
-    ├── DbConfigExtensions.cs
+    ├── InfrastructureExtensions.cs
     └── ImportDataToSeed.cs / ExportDataToSeed.cs
 ```
-
-**Related building blocks:**
-
-| Project | Role |
-|---------|------|
-| `BuildingBlocks/ERP.BuildingBlocks.Persistence` | `IApplicationDbContext`, `ModuleModelConfigurationRegistry`, `ITransactionCoordinator` interface |
-| `BuildingBlocks/ERP.BuildingBlocks.Application` | `ValidationBehavior`, `LoggingBehavior`, `ApiResponse` |
-| `BuildingBlocks/ERP.BuildingBlocks.Domain` | `BaseEntity`, tree bases, `Attachment` |
-
-**Host references:** `ERP.Host` → `ERP.Persistence` + all `*.Infrastructure` module projects.
-
-## How to add a feature
-
-**Prefer module extraction** ([MODULE_TEMPLATE.md](../docs/architecture/MODULE_TEMPLATE.md)) for new aggregates. Only add to `ERP.Persistence` when:
-
-- Extending **shared** infrastructure (base repo, coordinator, context behavior), or
-- Maintaining **unmigrated** horizontal code until its module slice lands.
-
-For shared persistence changes:
-
-1. Interface in `ERP.Application` or `BuildingBlocks` as appropriate.
-2. Implementation in `ERP.Persistence/Repositories` or `Services`.
-3. Register in `InfrastructureExtensions.AddRepositories()` / `AddServices()`.
-4. If EF config: legacy configs under `DBConfiguration/Config/`; module configs belong in `Modules/*/Infrastructure/Persistence/`.
-
-**Do not** add new properties to `IUnitOfWork` — inject dedicated repositories (Phase 0 freeze).
 
 ## Architecture rules
 
 | Rule | Detail |
 |------|--------|
 | No API reference | Persistence must not reference `ERP.Host`. |
-| Module configs | Modules register via `ModuleModelConfigurationRegistry`; context applies them in `OnModelCreating`. |
-| Migrations | Owned by host: `dotnet ef ... --project ERP.Host --startup-project ERP.Host`. |
-| Design-time factory | `ERP.Host/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI. |
-| Coordinator scope | `ITransactionCoordinator` is **scoped**; one coordinator per HTTP request. |
+| No module-specific services | Accounting/Infrastructure/Inventory horizontal code belongs in module Infrastructure projects. |
+| Module configs | Modules register via `ModuleModelConfigurationRegistry`. |
+| Migrations | `dotnet ef ... --project ERP.Host --startup-project ERP.Host`. |
+| Coordinator scope | `ITransactionCoordinator` is **scoped** per HTTP request. |
 
-## Key integration points
+## Related
 
-### `ITransactionCoordinator`
-
-```csharp
-// BuildingBlocks — ERP.Application.Repositories.ITransactionCoordinator
-Task<ApiResponse<T>> ExecuteAsync<T>(
-    Func<CancellationToken, Task<ApiResponse<T>>> action,
-    CancellationToken cancellationToken = default);
-```
-
-- **Implementation:** `Repositories/TransactionCoordinator.cs` — wraps `IUnitOfWork.BeginTransactionAsync` / `CommitAsync` / `RollbackAsync`.
-- **Registration:** `InfrastructureExtensions.AddRepositories()` → `services.AddScoped<ITransactionCoordinator, TransactionCoordinator>()`.
-- **Consumers:** `InventoryTransactionService.Create` (and `InventoryTransferService` after 4.2.x migration). Callback should call `IAccountingIntegrationService` for GL side effects.
-
-On failure or `IsSuccess == false`, the coordinator rolls back the ambient transaction.
-
-### `IApplicationDbContext` / `ApplicationDbContext`
-
-- Implements EF `DbContext` + identity stores.
-- Injects `ICurrentUser` for audit columns on `BaseEntity`.
-- Applies `ModuleModelConfigurationRegistry.Configurators` after assembly configs.
-
-### `IUnitOfWork`
-
-Legacy unit-of-work still used by horizontal services and `TransactionCoordinator`. New module code should prefer explicit repository injection.
-
-## Tests
-
-```bash
-dotnet build AAA.ERP.sln -c Release
-dotnet test AAA.ERP.sln -c Release
-
-dotnet test Tests/ERP.Architecture.Tests/ERP.Architecture.Tests.csproj -c Release
-dotnet test Tests/ERP.IntegrationTests/ERP.IntegrationTests.csproj -c Release
-
-dotnet ef dbcontext info --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj
-```
-
-Architecture tests in `LayerDependencyTests` and `ModuleBoundaryTests` guard persistence layering.
-
-## Related docs
-
-- [MODULAR_MONOLITH.md §6.4 — Transaction coordinator](../docs/architecture/MODULAR_MONOLITH.md)
-- [CONTRIBUTING.md — Module EF and migrations](../docs/architecture/CONTRIBUTING.md#module-ef-and-migrations-phase-2)
-- [MEDIATR_REGISTRATION.md](../docs/architecture/MEDIATR_REGISTRATION.md)
+- [FINAL_SIGNOFF.md](../docs/architecture/FINAL_SIGNOFF.md)
+- [MODULE_TEMPLATE.md](../docs/architecture/MODULE_TEMPLATE.md)

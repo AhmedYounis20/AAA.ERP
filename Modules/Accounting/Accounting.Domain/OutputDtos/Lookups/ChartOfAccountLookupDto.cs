@@ -1,4 +1,4 @@
-using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
+using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Shared.DTOs;
 

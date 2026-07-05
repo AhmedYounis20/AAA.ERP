@@ -1,8 +1,7 @@
-using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 
-namespace ERP.Infrastructure.Repositories.Account;
+namespace Accounting.Infrastructure.Repositories;
 
 public class FinancialPeriodUsageQueries(IApplicationDbContext context) : IFinancialPeriodUsageQueries
 {

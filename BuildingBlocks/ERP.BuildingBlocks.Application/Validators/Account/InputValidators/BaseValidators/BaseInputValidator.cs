@@ -1,4 +1,4 @@
-using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
+using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 using FluentValidation;
 using System.Data;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels;

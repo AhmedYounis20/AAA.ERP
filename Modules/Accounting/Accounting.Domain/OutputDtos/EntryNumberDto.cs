@@ -1,4 +1,4 @@
-using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
+using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 
 namespace Accounting.Domain.OutputDtos;
 
