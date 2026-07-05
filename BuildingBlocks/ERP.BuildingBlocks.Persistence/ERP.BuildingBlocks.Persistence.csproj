@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 

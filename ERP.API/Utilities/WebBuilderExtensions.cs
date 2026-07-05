@@ -7,12 +7,13 @@ using Inventory.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
 using Identity.Infrastructure;
 using ERP.Application.Data;
-using ERP.Infrastracture.Utilities;
+using ERP.BuildingBlocks.Application.Extensions;
+using ERP.BuildingBlocks.Application.Logging.Middleware;
+using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.Infrastructure.Utilities;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Platform.Infrastructure;
 using Platform.Localization;
 using Shared.BaseEntities.Identity;
@@ -34,9 +35,10 @@ public static class WebBuilderExtensions
         services.AddMediatR(config =>
         {
             // Single registration point for all command handlers (Phase 0 — MODULAR_MONOLITH.md §10.2).
-            config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly);
+            config.RegisterServicesFromAssembly(typeof(InfrastructureExtensions).Assembly);
             config.RegisterServicesFromAssembly(typeof(AccountingModuleExtensions).Assembly);
             config.RegisterServicesFromAssembly(typeof(InventoryModuleExtensions).Assembly);
+            config.AddOpenBehavior(typeof(LoggingBehavior<,>));
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
@@ -66,8 +68,8 @@ public static class WebBuilderExtensions
 
         services.AddAuthentication(u =>
         {
-            u.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            u.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            u.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+            u.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
 
         }).AddJwtBearer(u =>
         {
@@ -84,39 +86,6 @@ public static class WebBuilderExtensions
             };
         });
     }
-    public static void AddSwaggerConfiguration(this IServiceCollection services)
-    {
-
-        services.AddSwaggerGen(options =>
-        {
-            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-            {
-                Description = "JWt Authorization header using the Bearer scheme. \r\n\r\n" +
-                               "Enter 'Bearer' [space] and you token in the text input below \r\n\r\n",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Scheme = JwtBearerDefaults.AuthenticationScheme
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme{
-
-                Reference = new OpenApiReference()
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id= "Bearer"
-                },
-                Scheme = "oauth2",
-                Name="Bearer",
-                In = ParameterLocation.Header
-            },
-            new List<string>()
-        }
-    });
-        });
-    }
     public static void ConfigureApplication(this WebApplicationBuilder builder)
     {
         BuildApplication(builder).Run();
@@ -124,6 +93,7 @@ public static class WebBuilderExtensions
 
     public static WebApplication BuildApplication(this WebApplicationBuilder builder)
     {
+        builder.AddSerilogLogging();
         builder.Services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequireDigit = false;
@@ -142,6 +112,7 @@ public static class WebBuilderExtensions
         builder.Services.AddControllers().AddJsonOptions(opts =>
         {
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            opts.JsonSerializerOptions.Converters.Add(new EntryTypeJsonConverter());
         });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();
@@ -150,22 +121,16 @@ public static class WebBuilderExtensions
         builder.Services.AddIdentityModule();
         builder.Services.AddProjectUtilities();
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddErpStructuredLogging();
         builder.Services.AddSwaggerConfiguration();
         builder.Services.AddAuthenticationConfiguration(builder.Configuration);
         builder.Services.AddCors();
         var app = builder.Build();
 
         app.UseExceptionHandler(options => { });
+        app.UseMiddleware<CorrelationIdMiddleware>();
 
-        app.UseSwagger();
-
-        app.UseSwaggerUI(e =>
-        {
-            e.SwaggerEndpoint("/swagger/v1/swagger.json", "AAA ERP Api V1");
-            e.RoutePrefix = string.Empty;
-            e.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-
-        });
+        app.UseModuleSwaggerUi();
 
         app.UseHttpsRedirection();
 
@@ -174,6 +139,8 @@ public static class WebBuilderExtensions
             app.UseRequestLocalization(localizeOptions.Value);
         app.UseCors(e => e.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
         app.UseMiddleware<LocalizationResponseMiddleware>();
+        app.UseRouting();
+        app.UseMiddleware<RequestModuleMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

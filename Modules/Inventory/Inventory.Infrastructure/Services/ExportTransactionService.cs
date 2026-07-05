@@ -1,5 +1,5 @@
 using ERP.Application.Repositories.Inventory;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;

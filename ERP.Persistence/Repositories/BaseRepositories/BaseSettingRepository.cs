@@ -1,4 +1,4 @@
-﻿namespace ERP.Infrastracture.Repositories.BaseRepositories;
+﻿namespace ERP.Infrastructure.Repositories.BaseRepositories;
 
 public class BaseSettingRepository<TEntity>
     : BaseRepository<TEntity>,

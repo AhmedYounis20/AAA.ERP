@@ -22,6 +22,9 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
 
     [Theory]
     [InlineData("/swagger/v1/swagger.json")]
+    [InlineData("/swagger/accounting/swagger.json")]
+    [InlineData("/swagger/inventory/swagger.json")]
+    [InlineData("/swagger/identity/swagger.json")]
     public async Task OpenApi_document_is_available(string path)
     {
         var response = await _client.GetAsync(path);
@@ -33,6 +36,7 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
 
     [Theory]
     [InlineData("/api/Currencies")]
+    [InlineData("/api/CompinedEntries")]
     [InlineData("/api/Products")]
     [InlineData("/api/Colors")]
     [InlineData("/api/Taxes")]
@@ -43,6 +47,40 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
         var response = await _client.GetAsync(path);
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Responses_include_correlation_id_header()
+    {
+        var response = await _client.GetAsync("/api/Colors");
+
+        response.Headers.Should().ContainKey("X-Correlation-Id");
+        response.Headers.GetValues("X-Correlation-Id").First().Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public async Task Correlation_id_is_echoed_when_sent_by_client()
+    {
+        var expected = Guid.NewGuid().ToString("D");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/Colors");
+        request.Headers.Add("X-Correlation-Id", expected);
+
+        var response = await _client.SendAsync(request);
+
+        response.Headers.GetValues("X-Correlation-Id").First().Should().Be(expected);
+    }
+
+    [Fact]
+    public async Task Module_swagger_documents_filter_endpoints_by_module()
+    {
+        var accounting = await _client.GetStringAsync("/swagger/accounting/swagger.json");
+        var inventory = await _client.GetStringAsync("/swagger/inventory/swagger.json");
+
+        accounting.Should().Contain("/api/Currencies");
+        accounting.Should().NotContain("/api/Colors");
+
+        inventory.Should().Contain("/api/Colors");
+        inventory.Should().NotContain("/api/Currencies");
     }
 
     [Fact]

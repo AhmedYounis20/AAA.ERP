@@ -1,7 +1,7 @@
 ﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 
-namespace ERP.Infrastracture.Services.BaseServices;
+namespace ERP.Infrastructure.Services.BaseServices;
 
 public class BaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>
     : BaseSettingService<TEntity, TCreateCommand, TUpdateCommand>,

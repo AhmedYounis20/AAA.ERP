@@ -1,5 +1,6 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
+using Accounting.Contracts.Integration;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
@@ -174,6 +175,32 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
 
         var entry = await InventoryTestDataSeeder.GetLatestEntryWithLinesAsync(_scope.ServiceProvider);
         AssertReceiptGlLines(entry!, totalCost);
+    }
+
+    [Fact]
+    public async Task Duplicate_gl_post_for_same_source_document_is_idempotent()
+    {
+        var integration = _scope.ServiceProvider.GetRequiredService<IAccountingIntegrationService>();
+        var sourceDocumentId = Guid.NewGuid();
+
+        var request = new InventoryTransactionPostingRequest(
+            sourceDocumentId,
+            InventoryTestIds.Branch1Id,
+            InventoryTestIds.PartyAccountId,
+            InventoryTestIds.TransactionDate,
+            InventoryTestIds.FinancialPeriodId,
+            50m,
+            InventoryGlDirection.Receipt);
+
+        var first = await integration.PostInventoryTransactionEntryAsync(request);
+        var second = await integration.PostInventoryTransactionEntryAsync(request);
+
+        first.IsSuccess.Should().BeTrue();
+        second.IsSuccess.Should().BeTrue();
+        second.Result.Should().Be(first.Result);
+
+        var entryCount = await InventoryTestDataSeeder.CountEntriesAsync(_scope.ServiceProvider);
+        entryCount.Should().Be(1);
     }
 
     private static void AssertReceiptGlLines(Entry entry, decimal totalAmount)

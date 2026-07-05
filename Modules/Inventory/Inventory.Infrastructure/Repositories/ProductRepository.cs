@@ -3,7 +3,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Inventory.Infrastructure.Repositories;
 
@@ -12,59 +12,30 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
     private readonly IApplicationDbContext _context;
     public ProductRepository(IApplicationDbContext context) : base(context) => _context = context;
 
+    /// <summary>
+    /// Full product list for tree/grid views. Uses batched includes + grouped variant counts (no per-row queries).
+    /// </summary>
     public async Task<IEnumerable<ProductDto>> GetDtos()
     {
-        // Load all products with all related data using proper Includes (single query)
         var products = await _context.Set<Product>()
+            .AsNoTracking()
+            .AsSplitQuery()
             .Include(e => e.ProductCodes)
             .Include(e => e.ProductAttachments)
                 .ThenInclude(e => e.Attachment)
             .ToListAsync();
 
-        if (!products.Any())
+        if (products.Count == 0)
             return Enumerable.Empty<ProductDto>();
 
-        // Build DTOs in memory (all data already loaded)
-        var result = products.Select(product =>
-        {
-            // Filter variants in memory (already loaded)
-            var variantsCount = _context
-                .Set<Variant>()
-                .Count(v => !v.IsDefault && v.ProductId==product.Id && !v.IsArchived);
+        var variantCounts = await GetNonDefaultVariantCountsAsync();
 
-            // Get primary picture from loaded attachments
-            var primaryPicture = product.ProductAttachments
-                .FirstOrDefault(pa => pa.IsPrimary);
-
-            return new ProductDto
-            {
-                Id = product.Id,
-                ParentId = product.ParentId,
-                CreatedAt = product.CreatedAt,
-                ModifiedAt = product.ModifiedAt,
-                NameSecondLanguage = product.NameSecondLanguage,
-                Name = product.Name,
-                ProductType = product.ProductType,
-                NodeType = product.NodeType,
-                Version = product.Version,
-                HasVariants = variantsCount > 0,
-                VariantsCount = variantsCount,
-                ProductCodes = product.ProductCodes,
-                ProductPicture = (primaryPicture?.Attachment != null) ? new AttachmentDto()
-                {
-                    FileContent = Convert.ToBase64String(primaryPicture.Attachment.FileData),
-                    ContentType = primaryPicture.Attachment.FileContentType,
-                    FileName = primaryPicture.Attachment.FileName,
-                } : null,
-            };
-        });
-
-        return result;
+        return products.Select(product => MapProductListDto(product, variantCounts));
     }
 
     public async Task<ProductDto?> GetDtoById(Guid id)
     {
-        // Load product with all related data in one database trip
+        // Intentionally heavy: detail view loads full product graph (variants, packing units, taxes, etc.).
         var product = await _context.Set<Product>()
             .AsNoTracking()
             .AsSplitQuery()
@@ -90,7 +61,6 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
         if (product == null)
             return null;
 
-        // Filter variants in memory (already loaded)
         var variants = product.Variants
             .Where(v => !v.IsDefault && v.VariantAttributeValues.Any())
             .ToList();
@@ -219,40 +189,94 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
         return dto;
     }
 
-
     public async Task<IEnumerable<ProductDto>> GetProductsByType(ProductType? productType)
     {
-        var query = _context.Set<Product>().AsQueryable();
-        
+        var query = _context.Set<Product>().AsNoTracking();
+
         if (productType.HasValue)
-        {
             query = query.Where(p => p.ProductType == productType.Value);
-        }
 
-        var products = await (from product in query
-                             select new ProductDto
-                             {
-                                 Id = product.Id,
-                                 ParentId = product.ParentId,
-                                 ConditionalDiscount = product.ConditionalDiscount,
-                                 CreatedAt = product.CreatedAt,
-                                 CountryOfOrigin = product.CountryOfOrigin,
-                                 DefaultDiscount = product.DefaultDiscount,
-                                 ModifiedAt = product.ModifiedAt,
-                                 ProductCodes = _context.Set<ProductCode>().Where(e => e.ProductId == product.Id).ToList(),
-                                 DefaultDiscountType = product.DefaultDiscountType,
-                                 Model = product.Model,
-                                 Name = product.Name,
-                                 NameSecondLanguage = product.NameSecondLanguage,
-                                 IsDiscountBasedOnSellingPrice = product.IsDiscountBasedOnSellingPrice,
-                                 ProductType = product.ProductType,
-                                 MaxDiscount = product.MaxDiscount,
-                                 NodeType = product.NodeType,
-                                 Version = product.Version,
-                                 HasVariants = _context.Set<Variant>().Any(v => v.ProductId == product.Id)
-                             }).ToListAsync();
+        var products = await query
+            .AsSplitQuery()
+            .Include(p => p.ProductCodes)
+            .ToListAsync();
 
-        return products;
+        if (products.Count == 0)
+            return Enumerable.Empty<ProductDto>();
+
+        var productIds = products.Select(p => p.Id).ToList();
+        var variantCounts = await GetNonDefaultVariantCountsAsync(productIds);
+
+        return products.Select(product =>
+        {
+            variantCounts.TryGetValue(product.Id, out var count);
+            return new ProductDto
+            {
+                Id = product.Id,
+                ParentId = product.ParentId,
+                ConditionalDiscount = product.ConditionalDiscount,
+                CreatedAt = product.CreatedAt,
+                CountryOfOrigin = product.CountryOfOrigin,
+                DefaultDiscount = product.DefaultDiscount,
+                ModifiedAt = product.ModifiedAt,
+                ProductCodes = product.ProductCodes,
+                DefaultDiscountType = product.DefaultDiscountType,
+                Model = product.Model,
+                Name = product.Name,
+                NameSecondLanguage = product.NameSecondLanguage,
+                IsDiscountBasedOnSellingPrice = product.IsDiscountBasedOnSellingPrice,
+                ProductType = product.ProductType,
+                MaxDiscount = product.MaxDiscount,
+                NodeType = product.NodeType,
+                Version = product.Version,
+                HasVariants = count > 0,
+                VariantsCount = count
+            };
+        });
+    }
+
+    private async Task<Dictionary<Guid, int>> GetNonDefaultVariantCountsAsync(IReadOnlyList<Guid>? productIds = null)
+    {
+        var query = _context.Set<Variant>()
+            .AsNoTracking()
+            .Where(v => !v.IsDefault && !v.IsArchived);
+
+        if (productIds is { Count: > 0 })
+            query = query.Where(v => productIds.Contains(v.ProductId));
+
+        return await query
+            .GroupBy(v => v.ProductId)
+            .Select(g => new { ProductId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.ProductId, x => x.Count);
+    }
+
+    private static ProductDto MapProductListDto(Product product, IReadOnlyDictionary<Guid, int> variantCounts)
+    {
+        variantCounts.TryGetValue(product.Id, out var variantsCount);
+
+        var primaryPicture = product.ProductAttachments
+            .FirstOrDefault(pa => pa.IsPrimary);
+
+        return new ProductDto
+        {
+            Id = product.Id,
+            ParentId = product.ParentId,
+            CreatedAt = product.CreatedAt,
+            ModifiedAt = product.ModifiedAt,
+            NameSecondLanguage = product.NameSecondLanguage,
+            Name = product.Name,
+            ProductType = product.ProductType,
+            NodeType = product.NodeType,
+            Version = product.Version,
+            HasVariants = variantsCount > 0,
+            VariantsCount = variantsCount,
+            ProductCodes = product.ProductCodes,
+            ProductPicture = primaryPicture?.Attachment != null ? new AttachmentDto
+            {
+                FileContent = Convert.ToBase64String(primaryPicture.Attachment.FileData),
+                ContentType = primaryPicture.Attachment.FileContentType,
+                FileName = primaryPicture.Attachment.FileName,
+            } : null,
+        };
     }
 }
-

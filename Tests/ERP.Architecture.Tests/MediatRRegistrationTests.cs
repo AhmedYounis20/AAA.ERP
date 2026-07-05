@@ -1,7 +1,7 @@
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using ERP.Infrastracture.Utilities;
+using ERP.Infrastructure.Utilities;
 
 namespace ERP.Architecture.Tests;
 
@@ -17,7 +17,7 @@ public class MediatRRegistrationTests
     [Fact]
     public void Infrastructure_assembly_contains_command_handlers()
     {
-        var handlerCount = typeof(InfrasctructureExtensions).Assembly
+        var handlerCount = typeof(InfrastructureExtensions).Assembly
             .GetTypes()
             .Count(type => type.GetInterfaces().Any(IsRequestHandlerInterface));
 
@@ -52,7 +52,7 @@ public class MediatRRegistrationTests
     {
         var services = new ServiceCollection();
         services.AddMediatR(config =>
-            config.RegisterServicesFromAssembly(typeof(InfrasctructureExtensions).Assembly));
+            config.RegisterServicesFromAssembly(typeof(InfrastructureExtensions).Assembly));
 
         using var provider = services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();

@@ -1,6 +1,6 @@
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Inventory.Infrastructure.Persistence.Products;

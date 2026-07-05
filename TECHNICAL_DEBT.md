@@ -2,26 +2,28 @@
 
 This document tracks known technical debt and code quality issues that need to be addressed.
 
+## Phase 4 completion markers (July 2026 — uncommitted on `Refactor`)
+
+| ID | Item | Status |
+|----|------|--------|
+| 4.1.1 | Production structured logging + [runbook](docs/ops/PRODUCTION_LOGGING.md) | **Done** |
+| 4.1.3 | `Infrastracture` → `Infrastructure` namespaces in `ERP.Persistence` | **Done** |
+| 4.1.4 | `Compined` → `Combined` types; legacy route/JSON preserved | **Done** |
+| 4.1.5 | `ITransactionCoordinator` for cross-module ACID | **Done** (transactions + transfers) |
+| 4.2.1 | ADR-006 SQL schemas | **Deferred** |
+| 4.2.3 | `Entry.SourceDocumentId` idempotent GL | **Done** |
+| 4.2.4 | Module READMEs | **Done** |
+| 4.2.5 | Products/Variants N+1 query fixes | **Done** |
+
+**Remaining Phase 4 / 3E follow-ups:** incremental namespace migration (`ERP.Domain.*` → modules), `ERP.API` → `ERP.Host` rename, solution diagram — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+
 ## High Priority
 
-### 1. Typo: "Compined" → "Combined" (19 files affected)
-**Impact:** Code readability, professionalism
-**Effort:** Medium (requires file renaming, reference updates)
-**Files:**
-- `ERP.API/Controllers/Account/Entries/CompinedEntriesController.cs`
-- `ERP.Application/Services/Account/Entries/ICompinedEntryService.cs`
-- `ERP.Application/Validators/Account/ComandValidators/Entries/CompinedEntries/*`
-- `ERP.Domain/Commands/Account/Entries/CompinedEntries/*`
-- `ERP.Domain/Models/Entities/Account/Entries/EntryType.cs`
-- `ERP.Infrastracture/Services/Account/Entries/CompinedEntryService.cs`
-- `ERP.Infrastracture/Handlers/Account/Entries/CompinedEntries/*`
-
-**Recommendation:** Create a separate branch for this refactoring with careful testing.
+### 1. Typo: "Compined" → "Combined"
+**Status:** **Done** (Phase 4 — task 4.1.4). Types renamed to `Combined*`; legacy API route `/api/CompinedEntries` and JSON wire value `"Compined"` preserved for `EntryType.Combined` (intentional — not filenames).
 
 ### 2. Folder Name Typo: "Infrastracture" → "Infrastructure"
-**Impact:** Code organization, professionalism
-**Effort:** High (major folder rename, all references)
-**Recommendation:** Use IDE refactoring tools, update all imports and references.
+**Status:** **Done** (Phase 4 — task 4.1.3). Project folder is `ERP.Persistence`; namespaces are `ERP.Infrastructure.*`; `InfrastructureExtensions.cs` replaces `InfrasctructureExtensions.cs`.
 
 ## Medium Priority
 
@@ -42,16 +44,19 @@ This document tracks known technical debt and code quality issues that need to b
 **Impact:** Maintainability, localization
 **Recommendation:** Replace with `ErrorMessages` constants.
 
+### 6. Inventory catalog → Account entity coupling
+**Status:** Arch test skipped (`Inventory_catalog_services_should_not_reference_Account_domain_entities`). Product/Variant services still reference Account entities for cost centers/taxes until decoupling.
+
 ## Low Priority
 
-### 6. Inconsistent Naming in DTOs
+### 7. Inconsistent Naming in DTOs
 - Some use `Id` suffix, some don't
 - Mix of `Dto` and `DTO` suffixes
 
-### 7. Unused Using Statements
+### 8. Unused Using Statements
 - Run code cleanup to remove unused imports
 
-### 8. Consider Adding:
+### 9. Consider Adding:
 - FluentValidation rule sets for different scenarios
 - More specific exception types
 - Request/Response logging middleware
@@ -67,4 +72,5 @@ This document tracks known technical debt and code quality issues that need to b
 - [x] No Bulk Operations - **Fixed in Phase 9**
 - [x] No Caching - **Fixed in Phase 10**
 - [x] Commented out code in BaseRepository - **Removed in Phase 13**
-
+- [x] God `IUnitOfWork` repository properties - **Removed in Wave 3E**
+- [x] Horizontal `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` projects - **Retired in Wave 3E**

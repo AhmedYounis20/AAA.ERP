@@ -11,7 +11,7 @@ global using Mapster;
 global using Shared.Responses;
 global using System.Net;
 global using AAA.ERP.OutputDtos;
-global using ERP.Infrastracture.Services.BaseServices;
+global using ERP.Infrastructure.Services.BaseServices;
 global using System.Numerics;
 global using Domain.Account.Utility;
 global using Serilog;

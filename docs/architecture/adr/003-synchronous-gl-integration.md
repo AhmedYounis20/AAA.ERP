@@ -6,7 +6,7 @@ Accepted — July 2026
 
 ## Context
 
-`InventoryTransactionService` directly builds `CompinedEntryCreateCommand` and calls Accounting internals, coupling modules.
+`InventoryTransactionService` previously built Accounting commands directly and called Accounting internals, coupling modules. Replaced by `IAccountingIntegrationService` (Phase 1); idempotent posting via `SourceDocumentId` (Phase 4.2.3).
 
 ## Decision
 
@@ -18,4 +18,4 @@ Use in-process domain events only for non-critical side effects (audit, cache in
 
 - Phase 1 implementation required before enabling module boundary arch test
 - GL posting logic consolidated in Accounting module
-- Idempotency via `SourceDocumentId` recommended in Phase 4
+- Idempotency via `SourceDocumentId` on GL entries — **implemented** (Phase 4.2.3)

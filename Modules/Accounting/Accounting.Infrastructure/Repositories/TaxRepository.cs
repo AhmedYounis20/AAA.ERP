@@ -1,6 +1,6 @@
 using Accounting.Application.Repositories;
 using Accounting.Domain.Entities;
-using ERP.Infrastracture.Repositories.Account.SubLeadgers;
+using ERP.Infrastructure.Repositories.Account.SubLeadgers;
 
 namespace Accounting.Infrastructure.Repositories;
 

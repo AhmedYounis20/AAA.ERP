@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using Shared.DTOs;
 
-namespace ERP.Infrastracture.Repositories.BaseRepositories;
+namespace ERP.Infrastructure.Repositories.BaseRepositories;
 
 public class BaseRepository<TEntity>
     : IBaseRepository<TEntity> where TEntity : BaseEntity

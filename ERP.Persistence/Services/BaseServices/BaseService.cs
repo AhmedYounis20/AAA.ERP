@@ -3,7 +3,7 @@ using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Shared.DTOs;
 using System.Linq.Expressions;
 
-namespace ERP.Infrastracture.Services.BaseServices;
+namespace ERP.Infrastructure.Services.BaseServices;
 
 public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
     IBaseService<TEntity, TCreateCommand, TUpdateCommand>

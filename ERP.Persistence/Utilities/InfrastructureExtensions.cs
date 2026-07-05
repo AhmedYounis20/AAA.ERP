@@ -4,17 +4,17 @@ using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Infrastracture.Repositories;
-using ERP.Infrastracture.Repositories.Account;
-using ERP.Infrastracture.Repositories.Account.SubLeadgers;
-using ERP.Infrastracture.Repositories.BaseRepositories;
-using ERP.Infrastracture.Services.Account.Queries;
-using ERP.Infrastracture.Services.Account.SubLeadgers;
+using ERP.Infrastructure.Repositories;
+using ERP.Infrastructure.Repositories.Account;
+using ERP.Infrastructure.Repositories.Account.SubLeadgers;
+using ERP.Infrastructure.Repositories.BaseRepositories;
+using ERP.Infrastructure.Services.Account.Queries;
+using ERP.Infrastructure.Services.Account.SubLeadgers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ERP.Infrastracture.Utilities;
+namespace ERP.Infrastructure.Utilities;
 
-public static class InfrasctructureExtensions
+public static class InfrastructureExtensions
 {
     public static void AddInfrastructureServices(this IServiceCollection services)
     {
@@ -41,6 +41,7 @@ public static class InfrasctructureExtensions
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITransactionCoordinator, TransactionCoordinator>();
         services.AddHttpContextAccessor();
     }
 }

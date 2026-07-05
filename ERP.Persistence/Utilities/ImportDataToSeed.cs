@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shared.BaseEntities.Identity;
 
-namespace ERP.Infrastracture.Utilities;
+namespace ERP.Infrastructure.Utilities;
 
 public class ImportDataToSeed
 {

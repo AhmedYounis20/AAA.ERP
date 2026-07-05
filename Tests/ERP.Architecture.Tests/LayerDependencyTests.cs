@@ -61,7 +61,7 @@ public class LayerDependencyTests
     [Fact]
     public void Infrastructure_should_not_reference_API()
     {
-        var result = Types.InAssembly(typeof(ERP.Infrastracture.Utilities.InfrasctructureExtensions).Assembly)
+        var result = Types.InAssembly(typeof(ERP.Infrastructure.Utilities.InfrastructureExtensions).Assembly)
             .Should()
             .NotHaveDependencyOn(ApiAssembly)
             .GetResult();

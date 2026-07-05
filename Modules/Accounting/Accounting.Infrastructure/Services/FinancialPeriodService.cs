@@ -5,7 +5,7 @@ using ERP.Application.Repositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;
 

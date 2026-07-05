@@ -3,7 +3,7 @@ using ERP.Application.Repositories;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Accounting.Infrastructure.Repositories;
 

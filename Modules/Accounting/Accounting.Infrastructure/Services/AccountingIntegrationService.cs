@@ -1,9 +1,10 @@
 using Accounting.Contracts.Integration;
 using Domain.Account.Models.Dtos.Entry;
 using ERP.Application.Data;
-using Accounting.Application.Commands.CompinedEntries;
+using Accounting.Application.Commands.CombinedEntries;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.Currencies;
+using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using MediatR;
@@ -20,6 +21,28 @@ public class AccountingIntegrationService : IAccountingIntegrationService
     {
         _dbContext = dbContext;
         _mediator = mediator;
+    }
+
+    private async Task<ApiResponse<Guid>?> TryGetExistingPostedEntryAsync(
+        string sourceDocumentType,
+        Guid sourceDocumentId,
+        CancellationToken cancellationToken)
+    {
+        var existing = await _dbContext.Set<Entry>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                e => e.SourceDocumentType == sourceDocumentType && e.SourceDocumentId == sourceDocumentId,
+                cancellationToken);
+
+        if (existing is null)
+            return null;
+
+        return new ApiResponse<Guid>
+        {
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = existing.Id
+        };
     }
 
     public async Task<ApiResponse<FinancialPeriodInfo>> GetOpenPeriodForDateAsync(
@@ -110,6 +133,13 @@ public class AccountingIntegrationService : IAccountingIntegrationService
         InventoryTransactionPostingRequest request,
         CancellationToken cancellationToken = default)
     {
+        var existing = await TryGetExistingPostedEntryAsync(
+            EntrySourceDocumentTypes.InventoryTransaction,
+            request.SourceDocumentId,
+            cancellationToken);
+        if (existing is not null)
+            return existing;
+
         var defaultCurrency = await _dbContext.Set<Currency>()
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.IsDefault, cancellationToken);
@@ -151,13 +181,15 @@ public class AccountingIntegrationService : IAccountingIntegrationService
         var partyAccountId = partyAccountResult.Result;
         var isReceipt = request.Direction == InventoryGlDirection.Receipt;
 
-        var command = new CompinedEntryCreateCommand
+        var command = new CombinedEntryCreateCommand
         {
             BranchId = request.BranchId,
             CurrencyId = defaultCurrency.Id,
             ExchangeRate = defaultCurrency.ExchangeRate,
             EntryDate = request.TransactionDate,
             FinancialPeriodId = request.FinancialPeriodId,
+            SourceDocumentId = request.SourceDocumentId,
+            SourceDocumentType = EntrySourceDocumentTypes.InventoryTransaction,
             FinancialTransactions =
             [
                 new ComplexFinancialTransactionDto
@@ -193,6 +225,13 @@ public class AccountingIntegrationService : IAccountingIntegrationService
         InventoryTransferPostingRequest request,
         CancellationToken cancellationToken = default)
     {
+        var existing = await TryGetExistingPostedEntryAsync(
+            request.SourceDocumentType,
+            request.SourceDocumentId,
+            cancellationToken);
+        if (existing is not null)
+            return existing;
+
         var defaultCurrency = await _dbContext.Set<Currency>()
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.IsDefault, cancellationToken);
@@ -207,13 +246,15 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             };
         }
 
-        var command = new CompinedEntryCreateCommand
+        var command = new CombinedEntryCreateCommand
         {
             BranchId = request.BranchId,
             CurrencyId = defaultCurrency.Id,
             ExchangeRate = defaultCurrency.ExchangeRate,
             EntryDate = request.EntryDate,
             FinancialPeriodId = request.FinancialPeriodId,
+            SourceDocumentId = request.SourceDocumentId,
+            SourceDocumentType = request.SourceDocumentType,
             FinancialTransactions =
             [
                 new ComplexFinancialTransactionDto

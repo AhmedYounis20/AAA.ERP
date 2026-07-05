@@ -22,6 +22,74 @@ namespace AAA.ERP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Accounting.Domain.Entities.Tax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<Guid?>("ChartOfAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("NodeType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnOrder(7);
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnOrder(6);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Taxes", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.AccountGuides.AccountGuide", b =>
                 {
                     b.Property<Guid>("Id")
@@ -383,7 +451,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<Guid>("BranchId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(10);
 
                     b.Property<Guid?>("BranchId1")
                         .HasColumnType("uniqueidentifier");
@@ -396,7 +464,7 @@ namespace AAA.ERP.Migrations
 
                     b.Property<Guid?>("CurrencyId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(8);
 
                     b.Property<Guid?>("CurrencyId1")
                         .HasColumnType("uniqueidentifier");
@@ -421,11 +489,11 @@ namespace AAA.ERP.Migrations
 
                     b.Property<decimal>("ExchangeRate")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(9);
 
                     b.Property<Guid>("FinancialPeriodId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(7);
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -435,11 +503,20 @@ namespace AAA.ERP.Migrations
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(12);
 
                     b.Property<string>("ReceiverName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(11);
+
+                    b.Property<Guid?>("SourceDocumentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("SourceDocumentType")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnOrder(6);
 
                     b.HasKey("Id");
 
@@ -463,6 +540,10 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("FinancialPeriodId", "EntryNumber")
                         .IsUnique();
+
+                    b.HasIndex("SourceDocumentType", "SourceDocumentId")
+                        .IsUnique()
+                        .HasFilter("[SourceDocumentId] IS NOT NULL");
 
                     b.ToTable("Entries", (string)null);
                 });
@@ -1333,74 +1414,6 @@ namespace AAA.ERP.Migrations
                     b.ToTable("Suppliers", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(3);
-
-                    b.Property<Guid?>("ChartOfAccountId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(5);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(2);
-
-                    b.Property<int>("NodeType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasColumnOrder(7);
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(4);
-
-                    b.Property<decimal>("Percent")
-                        .HasColumnType("decimal(18,4)")
-                        .HasColumnOrder(6);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChartOfAccountId");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Taxes", (string)null);
-                });
-
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1751,10 +1764,6 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(1);
 
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(2);
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -1773,15 +1782,19 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnOrder(5);
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(2);
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("InventoryTransactionId");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("PackingUnitId");
+
+                    b.HasIndex("VariantId");
 
                     b.ToTable("InventoryTransactionItems", (string)null);
                 });
@@ -1849,9 +1862,6 @@ namespace AAA.ERP.Migrations
                     b.Property<Guid>("InventoryTransferId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -1864,13 +1874,16 @@ namespace AAA.ERP.Migrations
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("InventoryTransferId");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("PackingUnitId");
+
+                    b.HasIndex("VariantId");
 
                     b.ToTable("InventoryTransferItems", (string)null);
                 });
@@ -2973,10 +2986,6 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnOrder(4);
 
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(1);
-
                     b.Property<decimal>("MaximumBalance")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnOrder(6);
@@ -3003,6 +3012,10 @@ namespace AAA.ERP.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnOrder(7);
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(1);
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
@@ -3011,7 +3024,7 @@ namespace AAA.ERP.Migrations
 
                     b.HasIndex("PackingUnitId");
 
-                    b.HasIndex("ItemId", "PackingUnitId", "BranchId")
+                    b.HasIndex("VariantId", "PackingUnitId", "BranchId")
                         .IsUnique();
 
                     b.ToTable("StockBalances", (string)null);
@@ -3881,6 +3894,19 @@ namespace AAA.ERP.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Accounting.Domain.Entities.Tax", b =>
+                {
+                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartOfAccountId");
+
+                    b.HasOne("Accounting.Domain.Entities.Tax", null)
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("ChartOfAccount");
+                });
+
             modelBuilder.Entity("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Account.AccountGuides.AccountGuide", null)
@@ -4115,19 +4141,6 @@ namespace AAA.ERP.Migrations
                     b.Navigation("ChartOfAccount");
                 });
 
-            modelBuilder.Entity("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
-                {
-                    b.HasOne("ERP.Domain.Models.Entities.Account.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
-                        .WithMany()
-                        .HasForeignKey("ChartOfAccountId");
-
-                    b.HasOne("ERP.Domain.Models.Entities.Account.SubLeadgers.Tax", null)
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.Navigation("ChartOfAccount");
-                });
-
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeValue", b =>
                 {
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.Attributes.AttributeDefinition", "AttributeDefinition")
@@ -4208,21 +4221,21 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.PackingUnits.PackingUnit", "PackingUnit")
                         .WithMany()
                         .HasForeignKey("PackingUnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Item");
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PackingUnit");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.InventoryTransfer", b =>
@@ -4252,23 +4265,23 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.PackingUnits.PackingUnit", "PackingUnit")
                         .WithMany()
                         .HasForeignKey("PackingUnitId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("InventoryTransfer");
 
-                    b.Navigation("Item");
-
                     b.Navigation("PackingUnit");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Items.Item", b =>
@@ -4552,23 +4565,23 @@ namespace AAA.ERP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Domain.Models.Entities.Inventory.PackingUnits.PackingUnit", "PackingUnit")
                         .WithMany()
                         .HasForeignKey("PackingUnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ERP.Domain.Models.Entities.Inventory.Variants.Variant", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
 
-                    b.Navigation("Item");
-
                     b.Navigation("PackingUnit");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("ERP.Domain.Models.Entities.Inventory.Variants.Variant", b =>

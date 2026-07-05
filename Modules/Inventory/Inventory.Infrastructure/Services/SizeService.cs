@@ -2,7 +2,7 @@ using ERP.Application.Repositories.Inventory;
 using Inventory.Application.Commands.Sizes;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 
 namespace Inventory.Infrastructure.Services;
 

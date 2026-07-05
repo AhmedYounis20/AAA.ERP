@@ -31,7 +31,12 @@ public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,
         
         if (failures.Any())
         {
-            Log.Error($"Failed In Input Validation Of {typeof(TRequest)}");
+            Log.Warning(
+                "Validation failed for {CommandName} with {FailureCount} errors: {ValidationErrors}",
+                typeof(TRequest).Name,
+                failures.Count,
+                failures.Select(e => e.ErrorMessage).ToArray());
+
             var response = Activator.CreateInstance<TResult>();
 
             var res = new ApiResponse<BaseEntity>();

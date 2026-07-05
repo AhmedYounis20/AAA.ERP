@@ -2,7 +2,7 @@ using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Items;
 using ERP.Domain.Models.Entities.Inventory.PackingUnits;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 using Shared.BaseEntities.Identity;
 
 namespace Inventory.Infrastructure.Repositories;

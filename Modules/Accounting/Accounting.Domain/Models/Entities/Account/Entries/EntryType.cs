@@ -2,7 +2,7 @@
 
 public enum EntryType
 {
-    Compined,
+    Combined,
     Payment,
     Receipt,
     Journal,

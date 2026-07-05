@@ -2,7 +2,7 @@ using Accounting.Application.Commands.Currencies;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;
 

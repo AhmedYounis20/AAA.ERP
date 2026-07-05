@@ -6,7 +6,7 @@ using Accounting.Application.Commands.Entries;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;
 

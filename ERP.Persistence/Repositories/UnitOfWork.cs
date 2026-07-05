@@ -1,6 +1,6 @@
 using ERP.Application.Repositories;
 
-namespace ERP.Infrastracture.Repositories;
+namespace ERP.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {

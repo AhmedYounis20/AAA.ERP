@@ -5,7 +5,7 @@ using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 
-namespace ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+namespace ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 
 public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     BaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>,

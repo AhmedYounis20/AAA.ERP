@@ -3,9 +3,9 @@ using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using ERP.Domain.Models.Entities.Account.Entries;
 
-namespace Accounting.Application.Commands.CompinedEntries;
+namespace Accounting.Application.Commands.CombinedEntries;
 
-public class CompinedEntryUpdateCommand : BaseUpdateCommand<Entry>
+public class CombinedEntryUpdateCommand : BaseUpdateCommand<Entry>
 {
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }

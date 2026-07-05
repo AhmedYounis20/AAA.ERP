@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+namespace ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 public class BaseTreeSettingEntityDbConfig<TEntity> : BaseSettingEntityDbConfig<TEntity> where TEntity : BaseTreeSettingEntity<TEntity>
 {

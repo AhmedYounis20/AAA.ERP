@@ -1,6 +1,6 @@
 using Accounting.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.GLSettings;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Accounting.Infrastructure.Repositories;
 

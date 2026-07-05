@@ -1,6 +1,6 @@
 using ERP.Domain.Models.Entities.Account.AccountGuides;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 namespace Accounting.Infrastructure.Persistence;
 

@@ -1,8 +1,8 @@
 ﻿using ERP.Application.Repositories.Account;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 using ERP.Shared.BaseEntities.Attachments;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace ERP.Infrastructure.Repositories.Account;
 
 public class AttachmentRepository : BaseRepository<Attachment>, IAttachmentRepository
 {

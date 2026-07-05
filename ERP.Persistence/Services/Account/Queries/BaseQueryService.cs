@@ -1,7 +1,7 @@
 ﻿using ERP.Application.Services.Account;
 using System.Linq;
 
-namespace ERP.Infrastracture.Services.Account.Queries;
+namespace ERP.Infrastructure.Services.Account.Queries;
 public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto> where TEntity : BaseEntity where TDto : class
 {
     IApplicationDbContext _dbContext;

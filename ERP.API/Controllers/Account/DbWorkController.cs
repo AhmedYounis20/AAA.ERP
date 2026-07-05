@@ -1,6 +1,6 @@
 ﻿using Domain.Account.DBConfiguration.DbContext;
 using Domain.Account.Utility;
-using ERP.Infrastracture.Utilities;
+using ERP.Infrastructure.Utilities;
 
 namespace ERP.API.Controllers.Account;
 

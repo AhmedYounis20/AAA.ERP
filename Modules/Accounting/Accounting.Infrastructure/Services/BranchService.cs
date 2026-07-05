@@ -6,7 +6,7 @@ using ERP.Application.Repositories;
 using ERP.Application.Repositories.Account;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 using ERP.Shared.BaseEntities.Attachments;
 using Serilog;
 using Shared.BaseEntities;

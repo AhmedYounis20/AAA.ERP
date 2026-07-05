@@ -1,6 +1,6 @@
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Sizes;

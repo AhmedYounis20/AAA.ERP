@@ -1,22 +1,23 @@
 ﻿using ERP.API.Controllers.BaseControllers;
-using Accounting.Application.Commands.CompinedEntries;
+using Accounting.Application.Commands.CombinedEntries;
 using ERP.Domain.Models.Entities.Account.Entries;
 using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account.Entries;
 
-[Route("api/[controller]")]
+[Route("api/CombinedEntries")]
+[Route("api/CompinedEntries")] // legacy route — Phase 4.1.4 backward compatibility
 [ApiController]
-public class CompinedEntriesController : BaseController<Entry, CompinedEntryCreateCommand, CompinedEntryUpdateCommand>
+public class CombinedEntriesController : BaseController<Entry, CombinedEntryCreateCommand, CombinedEntryUpdateCommand>
 {
-    private ICompinedEntryService _service;
+    private ICombinedEntryService _service;
 
-    public CompinedEntriesController(ICompinedEntryService service,
+    public CombinedEntriesController(ICombinedEntryService service,
         ISender sender) : base(service, sender)
         => _service = service;
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CompinedEntryCreateCommand input)
+    public async Task<IActionResult> Create([FromBody] CombinedEntryCreateCommand input)
     {
         return await CreateRecord(input);
     }
@@ -42,7 +43,7 @@ public class CompinedEntriesController : BaseController<Entry, CompinedEntryCrea
     }
 
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, CompinedEntryUpdateCommand input)
+    public virtual async Task<IActionResult> Update(Guid id, CombinedEntryUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }

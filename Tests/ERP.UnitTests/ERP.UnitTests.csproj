@@ -24,6 +24,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\..\ERP.Persistence\ERP.Persistence.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Platform\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj" />
   </ItemGroup>

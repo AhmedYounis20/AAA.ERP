@@ -4,7 +4,7 @@ using Accounting.Application.Commands.Entries;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.Entries;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;
 

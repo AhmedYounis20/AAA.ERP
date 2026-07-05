@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+namespace ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 public class BaseEntityDbConfig<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
 {

@@ -1,5 +1,5 @@
 ﻿using ERP.Domain.Models.Entities.Account.Entries;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Accounting.Infrastructure.Persistence;

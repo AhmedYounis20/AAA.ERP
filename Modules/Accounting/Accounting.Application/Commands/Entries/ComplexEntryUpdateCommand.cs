@@ -9,7 +9,7 @@ namespace Accounting.Application.Commands.Entries;
 public class ComplexEntryUpdateCommand : BaseUpdateCommand<Entry>
 {
     [JsonIgnore]
-    public EntryType Type { get; set; } = EntryType.Compined;
+    public EntryType Type { get; set; } = EntryType.Combined;
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }

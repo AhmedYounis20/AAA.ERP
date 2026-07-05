@@ -1,14 +1,14 @@
 using Accounting.Application.Validators.Entries;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using Accounting.Application.Commands.CompinedEntries;
+using Accounting.Application.Commands.CombinedEntries;
 using ERP.Domain.Models.Entities.Account.Entries;
 using FluentValidation;
 
-namespace Accounting.Application.Validators.CompinedEntries;
+namespace Accounting.Application.Validators.CombinedEntries;
 
-public class CompinedEntryUpdateValidator : BaseUpdateValidator<CompinedEntryUpdateCommand, Entry>
+public class CombinedEntryUpdateValidator : BaseUpdateValidator<CombinedEntryUpdateCommand, Entry>
 {
-    public CompinedEntryUpdateValidator()
+    public CombinedEntryUpdateValidator()
     {
         _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage("BranchIdIsRequired");
         _ = RuleFor(e => e.CurrencyId).NotEmpty().WithMessage("CurrencyIdIsRequired");

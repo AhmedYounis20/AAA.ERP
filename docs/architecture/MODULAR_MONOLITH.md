@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
-> **Status:** In progress — **Phase 3 Wave 3A complete (pending review)**  
-> **Last updated:** July 2026 — **Phase 0 complete (M0)**, **Phase 1 complete (M1)**, **Phase 2 complete (M2)**, **Wave 3A complete**  
+> **Status:** In progress — **Phase 4 hardening** (post-M3); Waves 3A–3E **complete**  
+> **Last updated:** July 2026 — **M0–M3 done**; Phase 4.1.x + 4.2.4–4.2.5 + production logging runbook complete (uncommitted on `Refactor`)  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -1117,11 +1117,11 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 
 **Phase 4 exit criteria (M4):**
 
-- [ ] Structured logging in production
-- [ ] Naming debt resolved
-- [ ] Module READMEs complete
-- [ ] Optional schemas deployed (if ADR approved)
-- [ ] Onboarding doc: new feature in under 1 day
+- [x] Structured logging in production — [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md) runbook; `appsettings.Production.json` (Compact JSON + enrichers)
+- [x] Naming debt resolved — `Infrastructure` / `Combined` (legacy route + JSON wire preserved)
+- [x] Module READMEs complete — `Modules/{Accounting,Inventory,Identity,Platform}/README.md`, `ERP.Persistence/README.md`
+- [ ] Optional schemas deployed (if ADR approved) — **deferred** per [ADR-006](./adr/006-sql-schema-separation.md)
+- [x] Onboarding doc: new feature in under 1 day — module READMEs + [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md)
 
 ---
 
@@ -1131,9 +1131,9 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 |-----------|------------------|----------------|------------|
 | **M0** Phase 0 complete | 24 Jul 2026 | 17 Jul 2026 | Arch tests in CI; MediatR consolidated |
 | **M1** Phase 1 complete | 28 Aug 2026 | 7 Aug 2026 | **Done** — integration tests in CI |
-| **M2** Phase 2 complete | 16 Oct 2026 | 4 Sep 2026 | **In progress** — Taxes in `Accounting.*`; template pending |
-| **M3** Phase 3 complete | 9 Apr 2027 | 12 Dec 2026 | Horizontal layers retired |
-| **M4** Phase 4 baseline | 4 Jun 2027 | 6 Feb 2027 | Logging, debt, docs complete |
+| **M2** Phase 2 complete | 16 Oct 2026 | 4 Sep 2026 | **Done** — Tax pilot; [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) |
+| **M3** Phase 3 complete | 9 Apr 2027 | 12 Dec 2026 | **Done** — Waves 3A–3E; horizontal layers retired (`1a4242e`) |
+| **M4** Phase 4 baseline | 4 Jun 2027 | 6 Feb 2027 | **In progress** — logging runbook, READMEs, perf, coordinator |
 
 **Go/no-go checkpoints:**
 
@@ -1287,7 +1287,37 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3E — Retire horizontal layers. See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 module extraction — see [§16](#16-phase-status) (M3 complete).
+
+### Phase 3 — **COMPLETE (M3)**
+
+Waves 3A (BuildingBlocks + Platform), 3B (Identity), 3C (Accounting), 3D (Inventory), 3E (retire horizontal layers). Last committed milestone: Wave 3E — `1a4242e`.
+
+### Phase 4 — **IN PROGRESS** (post-M3 hardening)
+
+Month 1 (4.1.x) **complete** — structured logging, Swagger module groups, naming debt (`Infrastructure`, `Combined`), `ITransactionCoordinator`.
+
+| Done | Notes |
+|------|-------|
+| 4.1.1 | Serilog enrichers (`CorrelationId`, `Module`, `CommandName`); production runbook [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md); `appsettings.Production.json` |
+| 4.1.2 | Swagger grouped by module + legacy `v1` combined doc |
+| 4.1.3 | `ERP.Infrastracture.*` → `ERP.Infrastructure.*` (project folder `ERP.Persistence`) |
+| 4.1.4 | `Compined` → `Combined`; legacy route `/api/CompinedEntries` + JSON `"Compined"` preserved |
+| 4.1.5 | `ITransactionCoordinator` in BuildingBlocks; inventory receipt/issue uses it |
+
+Month 2 (4.2.x) — **substantially complete** (uncommitted on `Refactor`):
+
+| Done | Notes |
+|------|-------|
+| 4.2.1 | [ADR-006: Defer SQL schema separation](./adr/006-sql-schema-separation.md); 4.2.2 not approved |
+| 4.2.3 | `SourceDocumentId` / `SourceDocumentType` on `Entry`; idempotent inventory GL posting; transfer phase constants |
+| 4.2.4 | Module READMEs per [§10.6](#106-phase-4--hardening) — Accounting, Inventory, Identity, Platform, `ERP.Persistence` |
+| 4.2.5 | Products/Variants list N+1 fixes; `CatalogListIntegrationTests` |
+| — | `InventoryTransferService` → `ITransactionCoordinator` (`Create`, `ApproveTransfer`, `RejectTransfer`) |
+
+**Next:** Increment 6 — 3E deferred follow-ups (namespace cleanup, `ERP.API` → `ERP.Host`, solution diagram); ongoing 4.3.x sprint hygiene.
+
+**Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1408,12 +1438,15 @@ dotnet test AAA.ERP.sln
 | ADR-003 | Synchronous GL integration | Inventory posting via `IAccountingIntegrationService` in same transaction |
 | ADR-004 | MediatR as sole write path | Deprecate direct service writes for new features |
 | ADR-005 | Microservices trigger criteria | Separate team, independent scale, or regulatory isolation required |
+| ADR-006 | [Defer SQL schema separation](./adr/006-sql-schema-separation.md) | Defer `accounting.*` / `inventory.*` schemas; single DB until triggers met |
 
 ---
 
 ## References
 
-- Current codebase: `ERP.Application/Repositories/IUnitOfWork.cs` (God UoW)
-- Cross-module coupling: `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransactionService.cs`
-- Technical debt tracker: `TECHNICAL_DEBT.md`
-- DI registration: `ERP.Infrastracture/Utilities/InfrasctructureExtensions.cs`, `ERP.API/Utilities/WebBuilderExtensions.cs`
+- Persistence kernel: `ERP.Persistence/` (`ApplicationDbContext`, `UnitOfWork`, `TransactionCoordinator`)
+- Cross-module GL: `Modules/Accounting/Accounting.Infrastructure/Services/AccountingIntegrationService.cs`
+- Inventory coordinator: `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransactionService.cs`, `InventoryTransferService.cs`
+- Technical debt tracker: [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md)
+- Production logging: [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md)
+- DI registration: `ERP.Persistence/Utilities/InfrastructureExtensions.cs`, `ERP.API/Utilities/WebBuilderExtensions.cs`

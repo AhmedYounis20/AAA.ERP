@@ -2,7 +2,7 @@ using ERP.Application.Repositories;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Infrastructure.Validation;
 using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;

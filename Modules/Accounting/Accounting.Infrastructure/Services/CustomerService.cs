@@ -4,7 +4,7 @@ using Accounting.Application.Services;
 using Domain.Account.Utility;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 
 namespace Accounting.Infrastructure.Services;
 

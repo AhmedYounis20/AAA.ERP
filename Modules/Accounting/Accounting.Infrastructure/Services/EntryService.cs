@@ -8,7 +8,7 @@ using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Infrastracture.Services.BaseServices;
+using ERP.Infrastructure.Services.BaseServices;
 using ERP.Shared.BaseEntities.Attachments;
 
 namespace Accounting.Infrastructure.Services;
@@ -181,7 +181,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
 
     public async Task<ApiResponse<EntryDto>> Get(Guid id, EntryType? entryType = null)
     {
-        var entry = await _repository.Get(id, entryType ?? EntryType.Compined);
+        var entry = await _repository.Get(id, entryType ?? EntryType.Combined);
         if (entry == null)
         {
             return new ApiResponse<EntryDto>

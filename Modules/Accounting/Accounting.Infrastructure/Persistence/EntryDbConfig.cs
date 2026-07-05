@@ -2,7 +2,7 @@
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Accounting.Infrastructure.Persistence
@@ -16,7 +16,9 @@ namespace Accounting.Infrastructure.Persistence
             builder.ToTable("Entries");
 
             _ = builder.Property(e => e.EntryNumber).IsRequired().HasColumnOrder(columnNumber++);
-            _ = builder.Property(e => e.EntryType).HasConversion<string>().HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.EntryType)
+                .HasConversion(EntryTypeValueConverter.Instance)
+                .HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.DocumentNumber).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
             
@@ -26,6 +28,12 @@ namespace Accounting.Infrastructure.Persistence
             _ = builder.HasIndex(e => e.EntryDate);
             _ = builder.HasIndex(e => e.FinancialPeriodId);
             _ = builder.HasIndex(e => new { e.FinancialPeriodId, e.EntryNumber }).IsUnique();
+
+            _ = builder.Property(e => e.SourceDocumentId).HasColumnOrder(columnNumber++);
+            _ = builder.Property(e => e.SourceDocumentType).HasMaxLength(64).HasColumnOrder(columnNumber++);
+            _ = builder.HasIndex(e => new { e.SourceDocumentType, e.SourceDocumentId })
+                .IsUnique()
+                .HasFilter("[SourceDocumentId] IS NOT NULL");
 
             _ = builder.Property(e => e.FinancialPeriodId).HasColumnOrder(columnNumber++);
             _ = builder.HasOne(e => e.FinancialPeriod).WithMany().HasForeignKey(e => e.FinancialPeriodId);

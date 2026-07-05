@@ -2,7 +2,7 @@ using ERP.Application.Data;
 using ERP.Application.Repositories;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace ERP.Infrastructure.Repositories.Account;
 
 public class FinancialPeriodUsageQueries(IApplicationDbContext context) : IFinancialPeriodUsageQueries
 {

@@ -5,7 +5,7 @@ using Accounting.Domain.Entities;
 using ERP.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
+using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 using Shared.BaseEntities;
 
 namespace Accounting.Infrastructure.Services;

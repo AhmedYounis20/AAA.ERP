@@ -1,8 +1,8 @@
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastracture.Repositories.BaseRepositories;
+using ERP.Infrastructure.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Account.SubLeadgers;
+namespace ERP.Infrastructure.Repositories.Account.SubLeadgers;
 
 public class BaseSubLeadgerRepository<TEntity> : BaseTreeSettingRepository<TEntity>, IBaseSubLeadgerRepository<TEntity>
     where TEntity : SubLeadgerBaseEntity<TEntity>

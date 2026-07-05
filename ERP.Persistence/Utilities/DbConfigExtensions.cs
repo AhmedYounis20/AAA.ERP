@@ -1,8 +1,8 @@
 ﻿using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using System.Reflection;
 
-namespace ERP.Infrastracture.Utilities;
+namespace ERP.Infrastructure.Utilities;
 
 public static class ModelBuilderExtensions
 {

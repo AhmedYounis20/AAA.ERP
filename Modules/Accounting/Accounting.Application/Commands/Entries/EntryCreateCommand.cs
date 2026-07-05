@@ -8,7 +8,7 @@ namespace Accounting.Application.Commands.Entries;
 public class EntryCreateCommand : BaseCreateCommand<Entry>
 {
     [JsonIgnore]
-    public EntryType Type { get; set; } = EntryType.Compined;
+    public EntryType Type { get; set; } = EntryType.Combined;
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid? CurrencyId { get; set; }
@@ -17,6 +17,8 @@ public class EntryCreateCommand : BaseCreateCommand<Entry>
     public Guid BranchId { get; set; }
     public DateTime EntryDate { get; set; }
     public Guid FinancialPeriodId { get; set; }
+    public Guid? SourceDocumentId { get; set; }
+    public string? SourceDocumentType { get; set; }
     public List<AttachmentDto> Attachments { get; set; } = [];
     public List<FinancialTransaction> FinancialTransactions { get; set; } = [];
     public List<EntryCostCenter> CostCenters { get; set; } = [];
