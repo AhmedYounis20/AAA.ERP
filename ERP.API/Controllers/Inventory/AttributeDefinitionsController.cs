@@ -1,6 +1,5 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.AttributeDefinitions;
-using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
+using Inventory.Application.Commands.AttributeDefinitions;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Attributes;
 using Shared.DTOs;
 

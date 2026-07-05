@@ -37,12 +37,9 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IItemService, ItemService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IVariantService, VariantService>();
-        services.AddScoped<IAttributeValueService, AttributeValueService>();
-        services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
@@ -56,13 +53,10 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IVariantRepository, VariantRepository>();
-        services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
-        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
         // New Product/Variant related repositories
         services.AddScoped<IBaseRepository<ProductCode>, BaseRepository<ProductCode>>();
         services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();

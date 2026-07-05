@@ -1,5 +1,5 @@
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.AttributeValues;
+using Inventory.Application.Commands.AttributeValues;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Attributes;
 using Shared.DTOs;
 
@@ -10,7 +10,7 @@ namespace ERP.API.Controllers.Inventory;
 public class AttributeValuesController : BaseSettingController<AttributeValue, AttributeValueCreateCommand, AttributeValueUpdateCommand>
 {
     private readonly IAttributeValueService _service;
-    
+
     public AttributeValuesController(IAttributeValueService service,
         ISender mapper) : base(service, mapper)
     {
