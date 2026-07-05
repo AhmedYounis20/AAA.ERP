@@ -10,8 +10,8 @@ namespace ERP.Architecture.Tests;
 /// </summary>
 public class MediatRRegistrationTests
 {
-    private const int MinimumHorizontalHandlerCount = 44;
-    private const int MinimumAccountingHandlerCount = 18;
+    private const int MinimumHorizontalHandlerCount = 38;
+    private const int MinimumAccountingHandlerCount = 24;
 
     [Fact]
     public void Infrastructure_assembly_contains_command_handlers()

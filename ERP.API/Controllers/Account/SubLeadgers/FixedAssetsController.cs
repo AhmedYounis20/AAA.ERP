@@ -1,5 +1,5 @@
-using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Domain.Commands.Account.SubLeadgers.FixedAssets;
+using Accounting.Application.Commands.FixedAssets;
+using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Domain.OutputDtos.Lookups;
 using Shared.DTOs.Filters;

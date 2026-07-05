@@ -4,6 +4,7 @@ using Accounting.Infrastructure.Persistence;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
 using ERP.Application.Data;
+using ERP.Application.Repositories.SubLeadgers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -37,6 +38,12 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
+        services.AddScoped<IFixedAssetService, FixedAssetService>();
 
         return services;
     }
@@ -55,5 +62,8 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new BankDbConfig());
         modelBuilder.ApplyConfiguration(new CashInBoxDbConfig());
         modelBuilder.ApplyConfiguration(new BranchDbConfig());
+        modelBuilder.ApplyConfiguration(new CustomerDbConfig());
+        modelBuilder.ApplyConfiguration(new SupplierDbConfig());
+        modelBuilder.ApplyConfiguration(new FixedAssetDbConfig());
     }
 }

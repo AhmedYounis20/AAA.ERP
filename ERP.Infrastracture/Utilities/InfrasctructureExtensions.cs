@@ -43,9 +43,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<ISupplierService, SupplierService>();
-        services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IEntryService, EntryService>();
@@ -77,9 +74,6 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<ISupplierRepository, SupplierRepository>();
-        services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();

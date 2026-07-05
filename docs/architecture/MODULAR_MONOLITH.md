@@ -982,8 +982,8 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 8 | FinancialPeriods, CostCenters, CollectionBooks | 2–3 | Dev A | Done |
 | 9 | ChartOfAccounts (tree) | 1–2 | Dev A | Done |
 | 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A | Done |
-| 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A | Next |
-| 12 | Roles | 1 | Dev B |
+| 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A | Done |
+| 12 | Roles | 1 | Dev B | Next |
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A |
 | 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A |
 
@@ -1261,9 +1261,9 @@ Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3C — **IN PROGRESS** (Week 10 complete)
+### Phase 3 Wave 3C — **IN PROGRESS** (Week 11 complete)
 
-Week 7–10 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
+Week 7–11 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
 
 | Done | Notes |
 |------|-------|
@@ -1277,7 +1277,10 @@ Week 7–10 aggregates extracted into `Modules/Accounting/` (entities remain in 
 | Banks | Sub-ledger; thin `BankService` extending `SubLeadgerService`; entity stays in `ERP.Domain` |
 | CashInBoxes | Sub-ledger; commands renamed from misnamed `BaseSubLeadger*` files; `ICashInBoxRepository` removed from God `IUnitOfWork` |
 | Branches | Sub-ledger; custom Create/Update/Delete (attachments, chart-of-account side effects); `BranchRepository` includes; `IBranchRepository` removed from God `IUnitOfWork` |
-| Next (Week 11) | Sub-ledgers: Customers, Suppliers, FixedAssets (Tax already migrated) |
+| Customers | Sub-ledger; thin `CustomerService`; entity stays in `ERP.Domain` |
+| Suppliers | Sub-ledger; `ISupplierRepository` remains on God `IUnitOfWork` (inventory catalog consumers via `_unitOfWork.SupplierRepository`) |
+| FixedAssets | Sub-ledger; custom Create/Update/Delete + depreciation COA side effects; `GetNextFixedAsset`; `IFixedAssetRepository.GetAsNoTracking` |
+| Next (Week 12) | Roles |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 
