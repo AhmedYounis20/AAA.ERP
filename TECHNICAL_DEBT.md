@@ -23,14 +23,21 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | 8b | Inventory catalog → Accounting via Contracts query port | **Done** |
 | C1 | Accounting validators → `ValidationMessages` constants | **Done** — `9ec86a9` / `371e4c3` |
 | C2 | BuildingBlocks Account base validators → `ValidationMessages` | **Done** — `371e4c3` |
-| C3 | Inventory validators → `ValidationMessages` | **Done** (uncommitted batch) |
-| C4 | Service/controller error keys → `ErrorMessages` / `SuccessMessages` | **Done** (uncommitted batch) |
+| C3 | Inventory validators → `ValidationMessages` | **Done** — `6f232b8` |
+| C4 | Service/controller error keys → `ErrorMessages` / `SuccessMessages` | **Done** — `6f232b8` |
 | C5 | XML docs on Accounting service/repository interfaces | **Done** — `6f232b8` |
-| C6 | Identity/Platform error keys → `ErrorMessages` | **Done** (uncommitted) |
-| C7 | XML docs on Inventory service/repository interfaces | **Done** (uncommitted) |
-| C8 | Identity interfaces XML docs + Platform audit error key | **Done** (uncommitted) |
+| C6 | Identity/Platform error keys → `ErrorMessages` | **Done** — `e8ffd06` |
+| C7 | XML docs on Inventory service/repository interfaces | **Done** — `e8ffd06` |
+| C8 | Identity interfaces XML docs + Platform audit error key | **Done** — `e8ffd06` |
+| D1 | Persistence/exception handler error keys → `ErrorMessages` | **Done** |
+| D2 | Identity.Infrastructure namespace cleanup | **Done** |
+| D3 | Platform `ICacheService` XML docs | **Done** |
+| D4 | Controller/Swagger XML docs (`ERP.Host` + auth DTOs) | **Done** |
+| D5 | `BaseService` `RecordNotFound` key + arch test for Identity namespace | **Done** |
+| D6 | Doc sync (C3–C8 commit refs) | **Done** |
+| L1 | Localization keys → `Platform.Localization` resources | **Done** |
 
-**Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+**Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status). **Post-M4 quality plan complete** — see [POST_M4_QUALITY_SIGNOFF.md](docs/architecture/POST_M4_QUALITY_SIGNOFF.md).
 
 ## High Priority
 
@@ -44,11 +51,11 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 
 ### 3. Inconsistent Error Message Keys
 **Impact:** Localization difficulties
-**Status:** **Done** (C4 + C6). Accounting, Inventory, Identity, and Platform audit services use `ErrorMessages` / `SuccessMessages`.
+**Status:** **Done** (C4 + C6 + D1). Module services, host controllers, `CustomExceptionHandler`, and horizontal `BaseService` / tree services use `ErrorMessages` / `SuccessMessages`.
 
 ### 4. Missing XML Documentation
 **Impact:** Developer experience, API documentation
-**Status:** **Done** (C5 + C7). Accounting and Inventory `Application` service/repository interfaces documented. Controller endpoints remain optional.
+**Status:** **Done** (C5 + C7 + C8 + D3 + D4). Application interfaces, `ICacheService`, and all `ERP.Host` controller public actions documented; Swagger `IncludeXmlComments` wired.
 
 ### 5. Magic Strings in Validators
 **Impact:** Maintainability, localization
@@ -64,12 +71,15 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 - Mix of `Dto` and `DTO` suffixes
 
 ### 8. Unused Using Statements
-- Run code cleanup to remove unused imports
+**Status:** Partial — `dotnet format` applied to touched projects (July 2026). Full-solution cleanup deferred.
 
 ### 9. Consider Adding:
-- FluentValidation rule sets for different scenarios
-- More specific exception types
-- Request/Response logging middleware
+- FluentValidation rule sets for different scenarios *(Phase 5 backlog)*
+- More specific exception types *(Phase 5 backlog)*
+- Request/Response logging middleware *(covered by Serilog + `LoggingBehavior`; no additional middleware required)*
+
+### 10. Localization resource parity
+**Status:** **Done** (L1). `ErrorMessages`, `SuccessMessages`, and `ValidationMessages` wire keys synced to `Platform.Localization/Resources/Resource.resx` and `Resource.ar-EG.resx`; `LocalizationResponseMiddleware` resolves at runtime.
 
 ## Completed Items
 

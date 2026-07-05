@@ -6,6 +6,7 @@ using Shared.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>CRUD API for chart-of-account tree and code generation.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>
@@ -21,6 +22,7 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
         _baseQueryService = baseQueryService;
     }
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
     {
@@ -47,18 +49,21 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -82,18 +87,21 @@ public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccoun
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
         return await DeleteRecord(id);
     }
 
+    /// <summary>Generates a new child account code.</summary>
     [HttpGet("generateNewChildCode")]
     public async Task<IActionResult> GenerateNewChildCode([FromQuery] Guid? parentId)
     {
         return Ok(await _service.GenerateNewCodeForChild(parentId));
     }
 
+    /// <summary>Returns default data for the next account under a parent.</summary>
     [HttpGet("NextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)
     {

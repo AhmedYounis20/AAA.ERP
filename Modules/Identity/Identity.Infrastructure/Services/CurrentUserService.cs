@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Domain.Account.Services.Identity;
+namespace Identity.Infrastructure.Services;
 
 public class CurrentUserService : ICurrentUser
 {

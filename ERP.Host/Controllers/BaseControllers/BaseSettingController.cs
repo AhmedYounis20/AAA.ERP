@@ -1,9 +1,11 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Shared.Constants;
 
 namespace ERP.Host.Controllers.BaseControllers;
 
+/// <summary>
+/// CRUD base for named setting entities with optional name search.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class BaseSettingController<TEntity, TCreate, TUpdate>
@@ -23,6 +25,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
         _sender = sender;
     }
 
+    /// <summary>Searches settings by name (primary or second language).</summary>
     [HttpGet("search")]
     public async Task<IActionResult> Search([FromQuery] string query)
     {

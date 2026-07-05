@@ -5,7 +5,7 @@ using Shared.BaseEntities;
 
 namespace ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
-public class BaseTreeEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity>  where TEntity : BaseTreeEntity<TEntity>
+public class BaseTreeEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity> where TEntity : BaseTreeEntity<TEntity>
 {
     protected override EntityTypeBuilder<TEntity> ApplyConfiguration(EntityTypeBuilder<TEntity> builder)
     {

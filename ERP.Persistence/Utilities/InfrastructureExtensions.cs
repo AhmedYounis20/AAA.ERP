@@ -28,7 +28,7 @@ public static class InfrastructureExtensions
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
 
-        services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
+        services.AddScoped(typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }

@@ -2,6 +2,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Shared.Constants;
+using Shared.Exceptions;
 using Shared.Responses;
 using System.Net;
 
@@ -20,7 +22,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         {
             InternalServerException internalEx => (
                 HttpStatusCode.InternalServerError,
-                new List<MessageTemplate> { new() { MessageKey = "InternalServerError", Args = new[] { internalEx.Details ?? internalEx.Message } } }
+                new List<MessageTemplate> { new() { MessageKey = ErrorMessages.InternalServerError, Args = new[] { internalEx.Details ?? internalEx.Message } } }
             ),
             ValidationException validationEx => (
                 HttpStatusCode.BadRequest,
@@ -32,15 +34,15 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
             ),
             NotFoundException notFoundEx => (
                 HttpStatusCode.NotFound,
-                new List<MessageTemplate> { new() { MessageKey = "RecordNotFound", Args = new[] { notFoundEx.Message } } }
+                new List<MessageTemplate> { new() { MessageKey = ErrorMessages.RecordNotFound, Args = new[] { notFoundEx.Message } } }
             ),
             UnauthorizedAccessException => (
                 HttpStatusCode.Unauthorized,
-                new List<MessageTemplate> { new() { MessageKey = "Unauthorized" } }
+                new List<MessageTemplate> { new() { MessageKey = ErrorMessages.Unauthorized } }
             ),
             _ => (
                 HttpStatusCode.InternalServerError,
-                new List<MessageTemplate> { new() { MessageKey = "UnexpectedError" } }
+                new List<MessageTemplate> { new() { MessageKey = ErrorMessages.UnexpectedError } }
             )
         };
 

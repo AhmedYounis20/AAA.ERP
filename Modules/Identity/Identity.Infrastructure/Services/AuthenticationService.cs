@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Domain.Account.Services.Identity;
+namespace Identity.Infrastructure.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

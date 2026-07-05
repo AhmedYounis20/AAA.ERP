@@ -1,5 +1,6 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
+using Shared.Constants;
 using Shared.DTOs;
 using System.Linq.Expressions;
 
@@ -400,7 +401,7 @@ public class BaseService<TEntity, TCreateCommand, TUpdateCommand> :
     {
         TEntity? entity = await _repository.Get(id);
         if (entity is null)
-            return (false, ["RecordNotFound"], null);
+            return (false, [ErrorMessages.RecordNotFound], null);
 
         return (true, [], entity);
     }

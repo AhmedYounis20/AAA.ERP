@@ -4,6 +4,7 @@ using ERP.Infrastructure.Utilities;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>Development utilities for database import and export.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class DbworkController : ControllerBase
@@ -19,12 +20,14 @@ public class DbworkController : ControllerBase
         _importDataToSeed = importDataToSeed;
     }
 
+    /// <summary>Exports database tables to JSON seed files.</summary>
     [HttpGet("export/{folderName}")]
     public async Task<IActionResult> ExportData(string folderName = "account")
     {
         await _exportDataToSeed.ExportAllTablesToJsonAsync(folderName);
         return Ok("Exported Successfully");
     }
+    /// <summary>Imports database seed data from JSON files.</summary>
     [HttpGet("import/{folderName}")]
     public async Task<IActionResult> Import(string folderName = "account")
     {
@@ -33,6 +36,7 @@ public class DbworkController : ControllerBase
     }
 }
 
+/// <summary>API for TableData.</summary>
 public class TableData
 {
     public string TableName { get; set; }

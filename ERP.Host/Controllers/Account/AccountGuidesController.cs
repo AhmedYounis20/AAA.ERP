@@ -5,15 +5,17 @@ using Shared.DTOs;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>CRUD API for account guide settings and lookups.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class AccountGuidesController : BaseSettingController<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>
 {
     IBaseQueryService<AccountGuide, LookupDto> _baseQueryService;
-    public AccountGuidesController(IAccountGuideService service, IBaseQueryService<AccountGuide,LookupDto> baseQueryService,
+    public AccountGuidesController(IAccountGuideService service, IBaseQueryService<AccountGuide, LookupDto> baseQueryService,
         ISender mapper) : base(service, mapper)
     => _baseQueryService = baseQueryService;
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] AccountGuideCreateCommand input)
     {
@@ -40,19 +42,21 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
 
+    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
         var result = new ApiResponse<IEnumerable<LookupDto>>();
         try
         {
-             result = new ApiResponse<IEnumerable<LookupDto>>
+            result = new ApiResponse<IEnumerable<LookupDto>>
             {
                 Result = await _baseQueryService.GetLookUps(),
                 IsSuccess = true
@@ -66,15 +70,17 @@ public class AccountGuidesController : BaseSettingController<AccountGuide, Accou
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
-        return StatusCode((int) result.StatusCode, result);
+        return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] AccountGuideUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

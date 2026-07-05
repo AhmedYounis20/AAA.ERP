@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace ERP.Host.Utilities;
 
@@ -19,6 +20,9 @@ public static class SwaggerExtensions
                     Version = "v1"
                 });
             }
+
+            IncludeXmlComments(options, Assembly.GetExecutingAssembly());
+            IncludeXmlComments(options, typeof(Identity.Application.IAuthenticationService).Assembly);
 
             options.DocInclusionPredicate((documentName, apiDescription) =>
             {
@@ -76,5 +80,12 @@ public static class SwaggerExtensions
         });
 
         return app;
+    }
+
+    private static void IncludeXmlComments(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions options, Assembly assembly)
+    {
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml");
+        if (File.Exists(xmlPath))
+            options.IncludeXmlComments(xmlPath);
     }
 }

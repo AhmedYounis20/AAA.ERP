@@ -5,6 +5,7 @@ using Shared.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 
+/// <summary>CRUD API for stock balances and quantity queries.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class StockBalancesController : BaseController<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
@@ -18,42 +19,49 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         _service = service;
     }
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] StockBalanceCreateCommand input)
     {
         return await CreateRecord(input);
     }
 
+    /// <summary>Lists all records.</summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
         return await GetAllRecords();
     }
 
+    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public virtual async Task<IActionResult> GetPaginated([FromQuery] StockBalanceFilterDto filter, CancellationToken cancellationToken)
     {
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] StockBalanceUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> Delete(Guid id)
     {
         return await DeleteRecord(id);
     }
 
+    /// <summary>Gets stock balance by variant and branch.</summary>
     [HttpGet("byVariantAndBranch")]
     public virtual async Task<IActionResult> GetByVariantAndBranch([FromQuery] Guid variantId, [FromQuery] Guid branchId)
     {
@@ -61,6 +69,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Gets stock balance by variant, packing unit, and branch.</summary>
     [HttpGet("byVariantPackingUnitAndBranch")]
     public virtual async Task<IActionResult> GetByVariantPackingUnitAndBranch([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
     {
@@ -68,6 +77,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists stock balances for a branch.</summary>
     [HttpGet("byBranch/{branchId}")]
     public virtual async Task<IActionResult> GetByBranch(Guid branchId)
     {
@@ -75,6 +85,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists stock balances for a variant.</summary>
     [HttpGet("byVariant/{variantId}")]
     public virtual async Task<IActionResult> GetByVariant(Guid variantId)
     {
@@ -82,6 +93,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Gets current quantity for variant, packing unit, and branch.</summary>
     [HttpGet("currentBalance")]
     public virtual async Task<IActionResult> GetCurrentBalance([FromQuery] Guid variantId, [FromQuery] Guid packingUnitId, [FromQuery] Guid branchId)
     {
@@ -89,6 +101,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates stock quantity and unit cost.</summary>
     [HttpPost("updateStockBalance")]
     public virtual async Task<IActionResult> UpdateStockBalance([FromBody] UpdateStockBalanceRequest request)
     {
@@ -97,6 +110,7 @@ public class StockBalancesController : BaseController<StockBalance, StockBalance
     }
 }
 
+/// <summary>API for UpdateStockBalanceRequest.</summary>
 public class UpdateStockBalanceRequest
 {
     public Guid VariantId { get; set; }

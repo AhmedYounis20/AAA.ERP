@@ -59,7 +59,7 @@ public class ImportDataToSeed
         await ImportTable<Customer>(folder, "Customers.json");
         await ImportTable<Supplier>(folder, "Suppliers.json");
         await ImportTable<CashInBox>(folder, "CashInBoxes.json");
-         await ImportTable<FixedAsset>(folder, "FixedAssets.json");
+        await ImportTable<FixedAsset>(folder, "FixedAssets.json");
         //await ImportTable<Attachment>(folder, "Attachments.json");
         await ImportTable<Branch>(folder, "Branches.json");
     }

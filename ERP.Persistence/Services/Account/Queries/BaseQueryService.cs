@@ -12,10 +12,10 @@ public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto> 
 
     public async Task<IEnumerable<TDto>> GetLookUps()
     {
-        return await _dbContext.Set<TEntity>().Select(e=>e.Adapt<TDto>()).ToListAsync();
+        return await _dbContext.Set<TEntity>().Select(e => e.Adapt<TDto>()).ToListAsync();
     }
 
-    public async Task<IEnumerable<TDto>> GetLookUps(Expression<Func<TEntity,bool>> expression)
+    public async Task<IEnumerable<TDto>> GetLookUps(Expression<Func<TEntity, bool>> expression)
     {
         return await _dbContext.Set<TEntity>().Where(expression).Select(e => e.Adapt<TDto>()).ToListAsync();
     }

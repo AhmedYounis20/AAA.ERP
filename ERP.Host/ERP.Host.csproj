@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ERP.Host</RootNamespace>
     <AssemblyName>ERP.Host</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -32,5 +34,12 @@
   <ItemGroup>
     <Folder Include="seeding\attributes\" />
   </ItemGroup>
+
+  <Target Name="CopyProjectReferenceXmlDocumentation" AfterTargets="Build">
+    <ItemGroup>
+      <ReferenceCopyLocalPathsXml Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ReferenceCopyLocalPathsXml)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

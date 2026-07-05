@@ -27,8 +27,8 @@
 | Metric | Result |
 |--------|--------|
 | `dotnet build AAA.ERP.sln -c Release` | Green |
-| `dotnet test AAA.ERP.sln -c Release` | 117 passed, 0 skipped |
-| Arch tests (`ERP.Architecture.Tests`) | 53 guards, 0 skipped |
+| `dotnet test AAA.ERP.sln -c Release` | 118 passed, 0 skipped |
+| Arch tests (`ERP.Architecture.Tests`) | 54 guards, 0 skipped |
 | `dotnet ef dbcontext info` | `ApplicationDbContext`, `MigrationsAssembly=ERP.Host` |
 
 ---
@@ -55,6 +55,7 @@
 
 ## Next
 
-- **Quality (Option C):** error message / validator constants — one module cluster per slice ([TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md))
+- **Post-M4 quality:** **Complete** — [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md) (D1–D6, L1)
 - **Ongoing:** 4.3.x arch test review per PR
-- **Optional:** push `Refactor` (~33 commits) and open PR when ready
+- **Phase 5 (deferred):** Inventory.Domain EF decoupling (ADR); ERP.Persistence retirement; ops schema on staging/prod
+- **Optional:** push `Refactor` and open PR when ready

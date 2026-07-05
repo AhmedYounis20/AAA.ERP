@@ -7,6 +7,7 @@ using Shared.DTOs;
 
 namespace ERP.Host.Controllers.Inventory;
 
+/// <summary>CRUD API for selling price settings and lookup queries.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class SellingPricesController : BaseSettingController<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>
@@ -22,12 +23,14 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
         _baseQueryService = baseQueryService;
     }
 
+    /// <summary>Creates a selling price.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] SellingPriceCreateCommand input)
     {
         return await CreateRecord(input);
     }
 
+    /// <summary>Lists all selling prices as DTOs.</summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
@@ -35,18 +38,21 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists selling prices with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
     {
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a selling price by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
 
+    /// <summary>Returns cached selling-price lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -70,12 +76,14 @@ public class SellingPricesController : BaseSettingController<SellingPrice, Selli
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates a selling price.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] SellingPriceUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a selling price.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

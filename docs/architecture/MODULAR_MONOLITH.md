@@ -1353,7 +1353,33 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | 9b | DbConfig schemas + Identity + `SeparateModuleSchemas` migration | **Done** — `f256151` |
 | 9c | Dev DB migration applied | **Done** — July 2026 |
 
-**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. Quality debt C1–C5 complete — see [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md).
+#### Post-M4 — Quality debt (C1–C8)
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| C1 | Accounting validators → `ValidationMessages` | **Done** — `9ec86a9` / `371e4c3` |
+| C2 | BuildingBlocks base validators → `ValidationMessages` | **Done** — `371e4c3` |
+| C3 | Inventory validators → `ValidationMessages` | **Done** — `6f232b8` |
+| C4 | Service/controller error keys → `ErrorMessages` / `SuccessMessages` | **Done** — `6f232b8` |
+| C5 | XML docs on Accounting service/repository interfaces | **Done** — `6f232b8` |
+| C6 | Identity/Platform error keys → `ErrorMessages` | **Done** — `e8ffd06` |
+| C7 | XML docs on Inventory service/repository interfaces | **Done** — `e8ffd06` |
+| C8 | Identity interfaces XML docs + Platform audit error key | **Done** — `e8ffd06` |
+
+#### Post-M4 — Doc/quality follow-up (D1–D5)
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| D6 | Doc sync (C3–C8 commit refs) | **Done** |
+| D1 | Persistence + `CustomExceptionHandler` error keys | **Done** |
+| D2 | `Identity.Infrastructure.Services` namespace | **Done** |
+| D3 | Platform `ICacheService` XML docs | **Done** |
+| D4 | `ERP.Host` controller Swagger XML + `IncludeXmlComments` | **Done** |
+| D5 | `BaseService.RecordNotFound` + Identity namespace arch test | **Done** |
+| D6 | Doc sync (C3–C8 commit refs) | **Done** |
+| L1 | Localization keys → Platform resources | **Done** |
+
+**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. **Post-M4 quality plan complete (C1–C8, D1–D6, L1)** — see [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md). Phase 5 deferred: Inventory.Domain EF decoupling (ADR first); ERP.Persistence retirement; staging/prod schema migration.
 
 **Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings.
 

@@ -103,7 +103,7 @@ public class BaseRepository<TEntity>
     }
     public virtual async Task Delete(TEntity entity)
     {
-        _dbSet.Remove(entity);  
+        _dbSet.Remove(entity);
         await SaveChangesAsync();
     }
     public virtual async Task Delete(IEnumerable<TEntity> entities)
@@ -196,13 +196,13 @@ public class BaseRepository<TEntity>
         // For simple property updates, consider using ExecuteUpdateAsync with SetProperty
         var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
         var compiled = updateExpression.Compile();
-        
+
         foreach (var entity in entities)
         {
             var updated = compiled(entity);
             context.Entry(entity).CurrentValues.SetValues(updated);
         }
-        
+
         return await context.SaveChangesAsync(cancellationToken);
     }
 

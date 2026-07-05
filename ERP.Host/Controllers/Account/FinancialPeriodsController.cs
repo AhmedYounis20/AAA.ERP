@@ -7,11 +7,11 @@ using Shared.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>CRUD API for financial periods and current-period queries.</summary>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class
-    FinancialPeriodsController : BaseController<FinancialPeriod, FinancialPeriodCreateCommand,
+public class FinancialPeriodsController : BaseController<FinancialPeriod, FinancialPeriodCreateCommand,
     FinancialPeriodUpdateCommand>
 {
     IFinancialPeriodService _service;
@@ -26,12 +26,14 @@ public class
         _baseQueryService = baseQueryService;
     }
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] FinancialPeriodCreateCommand input)
     {
         return await CreateRecord(input);
     }
 
+    /// <summary>Lists all records.</summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
@@ -39,33 +41,38 @@ public class
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public virtual async Task<IActionResult> GetPaginated([FromQuery] FinancialPeriodFilterDto filter, CancellationToken cancellationToken)
     {
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         var result = await _service.GetDto(id);
-        return StatusCode((int)result.StatusCode, result);   
+        return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Returns default data for the next financial period.</summary>
     [HttpGet("nextDefaultdata")]
     public virtual async Task<IActionResult> GetNextDefaultdata()
     {
         var result = await _service.GetNextDefaultdata();
-        return StatusCode((int)result.StatusCode, result);   
+        return StatusCode((int)result.StatusCode, result);
     }
 
-    [HttpGet("GetCurrentFinancialPeriod")]  
+    /// <summary>Returns the current active financial period.</summary>
+    [HttpGet("GetCurrentFinancialPeriod")]
     public virtual async Task<IActionResult> GetCurrentFinancialPeriod()
     {
         var result = await _service.GetCurrentFinancailPeriod();
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -89,12 +96,14 @@ public class
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] FinancialPeriodUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

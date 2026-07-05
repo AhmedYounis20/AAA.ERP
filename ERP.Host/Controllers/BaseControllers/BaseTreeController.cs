@@ -4,6 +4,9 @@ using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands
 
 namespace ERP.Host.Controllers.BaseControllers;
 
+/// <summary>
+/// CRUD base for hierarchical tree entities.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class BaseTreeController<TEntity, TCreate, TUpdate>

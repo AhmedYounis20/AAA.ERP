@@ -4,6 +4,7 @@ using Accounting.Application.Services.SubLeadgers;
 using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using Shared.Constants;
 
 namespace ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 
@@ -198,7 +199,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
             if (result.entity.NodeType != command.NodeType)
             {
                 result.isValid = false;
-                result.errors.Add("CannotChangeNodeType");
+                result.errors.Add(ErrorMessages.CannotChangeNodeType);
             }
         }
 

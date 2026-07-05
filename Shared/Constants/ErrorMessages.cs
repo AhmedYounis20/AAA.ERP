@@ -10,6 +10,7 @@ public static class ErrorMessages
     public const string RecordAlreadyExists = "RecordAlreadyExists";
     public const string InvalidOperation = "InvalidOperation";
     public const string UnauthorizedAccess = "UnauthorizedAccess";
+    public const string Unauthorized = "Unauthorized";
     public const string ValidationFailed = "ValidationFailed";
     public const string InternalServerError = "InternalServerError";
     public const string UnexpectedError = "UnexpectedError";
@@ -51,6 +52,7 @@ public static class ErrorMessages
     public const string AttributeValueNotFound = "AttributeValueNotFound";
     public const string BranchOrBranchAccountNotFound = "BranchOrBranchAccountNotFound";
     public const string CannotChangeNodeType = "CannotChangeNodeType";
+    public const string NodeTypeCannotBeChanged = "Node Type cannot be changed";
     public const string ChartOfAccountUpdateSubLeadgerName = "ChartOfAccountUpdateSubLeadgerName";
     public const string ChartOfAccountUpdateSubLeadgerNameSecondLanguage = "ChartOfAccountUpdateSubLeadgerNameSecondLanguage";
     public const string ColorValueIsDuplicate = "ColorValueIsDuplicate";

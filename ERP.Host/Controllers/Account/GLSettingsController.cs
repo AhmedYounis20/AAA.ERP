@@ -9,6 +9,7 @@ using Shared.Constants;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>Read/update API for general ledger settings.</summary>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -31,6 +32,7 @@ public class GLSettingsController : ControllerBase
         _service = service;
     }
 
+    /// <summary>Lists all records.</summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
@@ -38,6 +40,7 @@ public class GLSettingsController : ControllerBase
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut]
     public virtual async Task<IActionResult> Update(GlSettingUpdateCommand input)
     {

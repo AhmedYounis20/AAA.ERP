@@ -7,16 +7,18 @@ using Shared.DTOs;
 
 namespace ERP.Host.Controllers.Account;
 
+/// <summary>CRUD API for currency settings and lookups.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class CurrenciesController : BaseSettingController<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>
 {
     IBaseQueryService<Currency, CurrencyLookupDto> _baseQueryService;
-    public CurrenciesController(ICurrencyService service, IBaseQueryService<Currency,CurrencyLookupDto>baseQueryService,
+    public CurrenciesController(ICurrencyService service, IBaseQueryService<Currency, CurrencyLookupDto> baseQueryService,
         CurrencyInputValidator validator,
         ISender sender) : base(service, sender)
     => _baseQueryService = baseQueryService;
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] CurrencyCreateCommand input)
     {
@@ -43,12 +45,14 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         return await GetRecord(id);
     }
 
+    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
     public virtual async Task<IActionResult> GetLookUps()
     {
@@ -72,12 +76,14 @@ public class CurrenciesController : BaseSettingController<Currency, CurrencyCrea
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] CurrencyUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

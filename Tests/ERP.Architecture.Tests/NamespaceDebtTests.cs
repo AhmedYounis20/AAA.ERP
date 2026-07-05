@@ -111,6 +111,20 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Identity_Infrastructure_should_not_use_legacy_Domain_Account_Services_Identity_namespace()
+    {
+        var result = Types.InAssembly(typeof(Identity.Infrastructure.IdentityModuleExtensions).Assembly)
+            .Should()
+            .NotResideInNamespace("Domain.Account.Services.Identity")
+            .And()
+            .NotResideInNamespaceStartingWith("Domain.Account.Services.Identity.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void BuildingBlocks_Persistence_ports_should_not_use_legacy_ERP_Application_Data_or_Repositories_namespace()
     {
         var assembly = typeof(ERP.BuildingBlocks.Persistence.Data.IApplicationDbContext).Assembly;

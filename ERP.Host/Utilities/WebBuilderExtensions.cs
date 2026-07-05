@@ -41,11 +41,11 @@ public static class WebBuilderExtensions
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
-        
+
         // Register Global Exception Handler
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddProblemDetails();
-        
+
         services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(
             opt =>

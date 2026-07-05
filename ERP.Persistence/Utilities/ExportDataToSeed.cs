@@ -92,71 +92,71 @@ public class ExportDataToSeed
         var files = Directory.GetFiles("seeding/account", "*.json").Select(e => e)
             .ToList();
 
-            var json = await File.ReadAllTextAsync(files.FirstOrDefault());
-            List<Dictionary<string, object>> dictionaryList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(json);
+        var json = await File.ReadAllTextAsync(files.FirstOrDefault());
+        List<Dictionary<string, object>> dictionaryList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(json);
 
-            // Get the Type object of the class using the class name
-            Type type = Type.GetType("AccountGuide");
+        // Get the Type object of the class using the class name
+        Type type = Type.GetType("AccountGuide");
 
-            if (type != null)
+        if (type != null)
+        {
+            // Create an empty list to hold objects of MyClass
+            List<object> objectList = new List<object>();
+
+            // Loop through each dictionary in the list
+            foreach (var dictionary in dictionaryList)
             {
-                // Create an empty list to hold objects of MyClass
-                List<object> objectList = new List<object>();
+                // Create an instance of the class dynamically
+                object instance = Activator.CreateInstance(type);
 
-                // Loop through each dictionary in the list
-                foreach (var dictionary in dictionaryList)
+                // Populate the properties of the instance using reflection
+                foreach (var kvp in dictionary)
                 {
-                    // Create an instance of the class dynamically
-                    object instance = Activator.CreateInstance(type);
-
-                    // Populate the properties of the instance using reflection
-                    foreach (var kvp in dictionary)
+                    PropertyInfo property = type.GetProperty(kvp.Key);
+                    if (property != null && property.CanWrite)
                     {
-                        PropertyInfo property = type.GetProperty(kvp.Key);
-                        if (property != null && property.CanWrite)
-                        {
-                            // Convert the value to the correct type if necessary
-                            object value = Convert.ChangeType(kvp.Value, property.PropertyType);
-                            property.SetValue(instance, value);
-                        }
+                        // Convert the value to the correct type if necessary
+                        object value = Convert.ChangeType(kvp.Value, property.PropertyType);
+                        property.SetValue(instance, value);
                     }
-
-                    // Add the populated instance to the list
-                    objectList.Add(instance);
                 }
 
-                // Now objectList contains a list of MyClass objects
-                foreach (var obj in objectList)
-                {
-                    object myObj = Convert.ChangeType(obj, type);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Class not found!");
-            }
-            var tableData = JsonConvert.DeserializeObject<Object[]>(json);
-            var t = tableData.GetType();
-       
-            // Get the DbSet property dynamically based on the table name
-            var dbSetProperty = _context.GetType().GetProperty(Path.GetFileNameWithoutExtension(files.FirstOrDefault()));
-            if (dbSetProperty == null)
-            {
-                throw new ArgumentException($"Table {tableName} does not exist in the context.");
+                // Add the populated instance to the list
+                objectList.Add(instance);
             }
 
-            // Get the DbSet instance
-            var dbSet = dbSetProperty.GetValue(_context);
-
-            // Use reflection to call the Add method on the DbSet
-            var addMethod = dbSet.GetType().GetMethod("Add");
-            if (addMethod == null)
+            // Now objectList contains a list of MyClass objects
+            foreach (var obj in objectList)
             {
-                throw new InvalidOperationException("Add method not found on DbSet.");
+                object myObj = Convert.ChangeType(obj, type);
             }
-            addMethod.Invoke(dbSet, tableData);
+        }
+        else
+        {
+            Console.WriteLine("Class not found!");
+        }
+        var tableData = JsonConvert.DeserializeObject<Object[]>(json);
+        var t = tableData.GetType();
 
-            await _context.SaveChangesAsync();
-        
+        // Get the DbSet property dynamically based on the table name
+        var dbSetProperty = _context.GetType().GetProperty(Path.GetFileNameWithoutExtension(files.FirstOrDefault()));
+        if (dbSetProperty == null)
+        {
+            throw new ArgumentException($"Table {tableName} does not exist in the context.");
+        }
+
+        // Get the DbSet instance
+        var dbSet = dbSetProperty.GetValue(_context);
+
+        // Use reflection to call the Add method on the DbSet
+        var addMethod = dbSet.GetType().GetMethod("Add");
+        if (addMethod == null)
+        {
+            throw new InvalidOperationException("Add method not found on DbSet.");
+        }
+        addMethod.Invoke(dbSet, tableData);
+
+        await _context.SaveChangesAsync();
+
     }
 }

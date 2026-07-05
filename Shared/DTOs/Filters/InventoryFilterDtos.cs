@@ -11,37 +11,37 @@ public class ItemFilterDto : TreeFilterDto
     /// Search by item code
     /// </summary>
     public string? Code { get; set; }
-    
+
     /// <summary>
     /// Filter by item type
     /// </summary>
     public int? ItemType { get; set; }
-    
+
     /// <summary>
     /// Filter by node type (Category, Domain, SubDomain)
     /// </summary>
     public int? NodeType { get; set; }
-    
+
     /// <summary>
     /// Filter by supplier
     /// </summary>
     public Guid? SupplierId { get; set; }
-    
+
     /// <summary>
     /// Filter by manufacturer company
     /// </summary>
     public Guid? ManufacturerCompanyId { get; set; }
-    
+
     /// <summary>
     /// Search by barcode
     /// </summary>
     public string? Barcode { get; set; }
-    
+
     /// <summary>
     /// Filter by color (for SubDomain items)
     /// </summary>
     public Guid? ColorId { get; set; }
-    
+
     /// <summary>
     /// Filter by size (for SubDomain items)
     /// </summary>
@@ -57,27 +57,27 @@ public class InventoryTransactionFilterDto : BaseFilterDto
     /// Filter by transaction type (Import, Export)
     /// </summary>
     public int? TransactionType { get; set; }
-    
+
     /// <summary>
     /// Filter by branch
     /// </summary>
     public Guid? BranchId { get; set; }
-    
+
     /// <summary>
     /// Filter by variant
     /// </summary>
     public Guid? VariantId { get; set; }
-    
+
     /// <summary>
     /// Filter by transaction date from
     /// </summary>
     public DateTime? TransactionDateFrom { get; set; }
-    
+
     /// <summary>
     /// Filter by transaction date to
     /// </summary>
     public DateTime? TransactionDateTo { get; set; }
-    
+
     /// <summary>
     /// Search by transaction number
     /// </summary>
@@ -93,22 +93,22 @@ public class StockBalanceFilterDto : BaseFilterDto
     /// Filter by branch
     /// </summary>
     public Guid? BranchId { get; set; }
-    
+
     /// <summary>
     /// Filter by variant
     /// </summary>
     public Guid? VariantId { get; set; }
-    
+
     /// <summary>
     /// Filter by packing unit
     /// </summary>
     public Guid? PackingUnitId { get; set; }
-    
+
     /// <summary>
     /// Filter for items with low stock (below minimum)
     /// </summary>
     public bool? LowStock { get; set; }
-    
+
     /// <summary>
     /// Filter for items with zero stock
     /// </summary>
@@ -168,22 +168,22 @@ public class InventoryTransferFilterDto : BaseFilterDto
     /// Filter by source branch
     /// </summary>
     public Guid? FromBranchId { get; set; }
-    
+
     /// <summary>
     /// Filter by destination branch
     /// </summary>
     public Guid? ToBranchId { get; set; }
-    
+
     /// <summary>
     /// Filter by transfer date from
     /// </summary>
     public DateTime? TransferDateFrom { get; set; }
-    
+
     /// <summary>
     /// Filter by transfer date to
     /// </summary>
     public DateTime? TransferDateTo { get; set; }
-    
+
     /// <summary>
     /// Filter by status
     /// </summary>

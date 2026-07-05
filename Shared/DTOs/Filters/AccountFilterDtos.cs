@@ -11,27 +11,27 @@ public class ChartOfAccountFilterDto : TreeFilterDto
     /// Filter by account nature (Debit/Credit)
     /// </summary>
     public int? AccountNature { get; set; }
-    
+
     /// <summary>
     /// Filter by account guide
     /// </summary>
     public Guid? AccountGuidId { get; set; }
-    
+
     /// <summary>
     /// Filter by active status
     /// </summary>
     public bool? IsActiveAccount { get; set; }
-    
+
     /// <summary>
     /// Filter by posted status
     /// </summary>
     public bool? IsPostedAccount { get; set; }
-    
+
     /// <summary>
     /// Filter by stop dealing status
     /// </summary>
     public bool? IsStopDealing { get; set; }
-    
+
     /// <summary>
     /// Filter by sub-ledger type
     /// </summary>
@@ -47,37 +47,37 @@ public class EntryFilterDto : BaseFilterDto
     /// Filter by entry type (Opening, Journal, Payment, Receipt, Combined)
     /// </summary>
     public int? EntryType { get; set; }
-    
+
     /// <summary>
     /// Filter by branch
     /// </summary>
     public Guid? BranchId { get; set; }
-    
+
     /// <summary>
     /// Filter by financial period
     /// </summary>
     public Guid? FinancialPeriodId { get; set; }
-    
+
     /// <summary>
     /// Filter by currency
     /// </summary>
     public Guid? CurrencyId { get; set; }
-    
+
     /// <summary>
     /// Filter by entry date from
     /// </summary>
     public DateTime? EntryDateFrom { get; set; }
-    
+
     /// <summary>
     /// Filter by entry date to
     /// </summary>
     public DateTime? EntryDateTo { get; set; }
-    
+
     /// <summary>
     /// Search by entry number
     /// </summary>
     public string? EntryNumber { get; set; }
-    
+
     /// <summary>
     /// Search by document number
     /// </summary>
@@ -93,12 +93,12 @@ public class FinancialPeriodFilterDto : SettingFilterDto
     /// Filter by period type
     /// </summary>
     public int? PeriodType { get; set; }
-    
+
     /// <summary>
     /// Filter by year number
     /// </summary>
     public string? YearNumber { get; set; }
-    
+
     /// <summary>
     /// Filter for periods that contain this date
     /// </summary>
@@ -125,12 +125,12 @@ public class SubLeadgerFilterDto : TreeFilterDto
     /// Search by code
     /// </summary>
     public string? Code { get; set; }
-    
+
     /// <summary>
     /// Search by phone number
     /// </summary>
     public string? Phone { get; set; }
-    
+
     /// <summary>
     /// Filter by chart of account
     /// </summary>
@@ -146,7 +146,7 @@ public class CurrencyFilterDto : SettingFilterDto
     /// Filter by symbol
     /// </summary>
     public string? Symbol { get; set; }
-    
+
     /// <summary>
     /// Filter for default currency only
     /// </summary>

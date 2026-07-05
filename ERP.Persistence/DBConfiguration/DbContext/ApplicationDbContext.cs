@@ -6,7 +6,7 @@ using Inventory.Domain.Models.Entities.Attributes;
 
 namespace ERP.Infrastructure.DBConfiguration.DbContext;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly ICurrentUser? _currentUser;
 
@@ -82,13 +82,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     }
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-    
+
     // Attribute system DbSets
     public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
     public DbSet<AttributeValue> AttributeValues { get; set; }
     public DbSet<Inventory.Domain.Models.Entities.Products.ProductAttributeDefinition> ProductAttributeDefinitions { get; set; }
     public DbSet<Inventory.Domain.Models.Entities.Variants.VariantAttributeValue> VariantAttributeValues { get; set; }
-    
+
     // Product template system DbSets
     public DbSet<Inventory.Domain.Models.Entities.Products.ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; }
     public DbSet<Inventory.Domain.Models.Entities.Products.ProductPackingUnit> ProductPackingUnits { get; set; }

@@ -4,24 +4,27 @@ using Inventory.Domain.Models.Entities.Products;
 
 namespace ERP.Host.Controllers.Inventory;
 
+/// <summary>CRUD API for product catalog tree.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ProductsController : BaseTreeSettingController<Product, ProductCreateCommand, ProductUpdateCommand>
 {
     private readonly IProductService _service;
-    
+
     public ProductsController(IProductService service,
         ISender sender) : base(service, sender)
     {
         _service = service;
     }
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ProductCreateCommand input)
     {
         return await CreateRecord(input);
     }
 
+    /// <summary>Lists all records.</summary>
     [HttpGet]
     public virtual async Task<IActionResult> Get()
     {
@@ -29,6 +32,7 @@ public class ProductsController : BaseTreeSettingController<Product, ProductCrea
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Returns the next available code.</summary>
     [HttpGet("getNextCode")]
     public virtual async Task<IActionResult> GetNextCode([FromQuery] Guid? parentId)
     {
@@ -36,6 +40,7 @@ public class ProductsController : BaseTreeSettingController<Product, ProductCrea
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
@@ -43,6 +48,7 @@ public class ProductsController : BaseTreeSettingController<Product, ProductCrea
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ProductUpdateCommand input)
     {
@@ -50,6 +56,7 @@ public class ProductsController : BaseTreeSettingController<Product, ProductCrea
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> Delete(Guid id)
     {

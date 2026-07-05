@@ -6,6 +6,7 @@ using Shared.DTOs.Filters;
 
 namespace ERP.Host.Controllers.Inventory;
 
+/// <summary>CRUD API for legacy item catalog tree.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand, ItemUpdateCommand>
@@ -17,6 +18,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         _service = service;
     }
 
+    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] ItemCreateCommand input)
     {
@@ -44,13 +46,15 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         return await GetAllRecordsPaginated(filter, cancellationToken);
     }
 
+    /// <summary>Returns the next available code.</summary>
     [HttpGet("getNextCode")]
-    public virtual async Task<IActionResult> GetNextCode([FromQuery]Guid? parentId)
+    public virtual async Task<IActionResult> GetNextCode([FromQuery] Guid? parentId)
     {
         var result = await _service.GeNextCode(parentId);
-        return StatusCode((int)result.StatusCode,result);
+        return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
@@ -58,6 +62,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists item variants.</summary>
     [HttpGet("variants")]
     public virtual async Task<IActionResult> GetVariants()
     {
@@ -65,6 +70,7 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         return StatusCode((int)result.StatusCode, result);
     }
 
+    /// <summary>Lists packing units for an item.</summary>
     [HttpGet("{id}/packingUnits")]
     public async Task<IActionResult> GetPackingUnits(Guid id)
     {
@@ -75,12 +81,14 @@ public class ItemsController : BaseTreeSettingController<Item, ItemCreateCommand
         return Ok(item.Result.PackingUnits);
     }
 
+    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(Guid id, [FromBody] ItemUpdateCommand input)
     {
         return await UpdateRecord(id, input);
     }
 
+    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {

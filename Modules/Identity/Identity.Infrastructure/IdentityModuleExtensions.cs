@@ -1,4 +1,4 @@
-using Domain.Account.Services.Identity;
+using Identity.Infrastructure.Services;
 using Identity.Application;
 using Microsoft.Extensions.DependencyInjection;
 
