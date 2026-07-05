@@ -12,7 +12,8 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | 4.1.3 | `Infrastracture` → `Infrastructure` namespaces in `ERP.Persistence` | **Done** |
 | 4.1.4 | `Compined` → `Combined` types; legacy route/JSON preserved | **Done** |
 | 4.1.5 | `ITransactionCoordinator` for cross-module ACID | **Done** (transactions + transfers) |
-| 4.2.1 | ADR-006 SQL schemas | **Closed — deferred** |
+| 4.2.1 | ADR-006 SQL schema evaluation | **Done** — Option B approved |
+| 4.2.2 | Module SQL schemas + `SeparateModuleSchemas` migration | **Done** — `f256151`; dev DB applied |
 | 4.2.3 | `Entry.SourceDocumentId` idempotent GL | **Done** |
 | 4.2.4 | Module READMEs | **Done** |
 | 4.2.5 | Products/Variants N+1 query fixes | **Done** |

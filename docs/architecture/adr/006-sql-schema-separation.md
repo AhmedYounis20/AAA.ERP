@@ -63,8 +63,9 @@ Original defer triggers (DBA permissions, module extraction ADR, naming collisio
 
 | Slice | Deliverable |
 |-------|-------------|
-| **8a** | ADR revision + [SQL_SCHEMA_TABLE_INVENTORY.md](../SQL_SCHEMA_TABLE_INVENTORY.md) |
-| **8b** | DbConfig + Identity schema + `SeparateModuleSchemas` migration + doc updates |
+| **9a** | ADR revision + [SQL_SCHEMA_TABLE_INVENTORY.md](../SQL_SCHEMA_TABLE_INVENTORY.md) — **Done** (`f256151`) |
+| **9b** | DbConfig + Identity schema + `SeparateModuleSchemas` migration + doc updates — **Done** (`f256151`) |
+| **9c** | Dev DB migration applied — **Done** (July 2026) |
 
 Migration strategy: **in-place** — `SeparateModuleSchemas` uses `EnsureSchema` + `RenameTable` (`ALTER SCHEMA TRANSFER` on SQL Server); no drop/recreate.
 

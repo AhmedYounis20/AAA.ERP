@@ -124,7 +124,7 @@ EF pattern (next slice): `builder.ToTable("Entries", "accounting");`
 
 ## `identity` (7)
 
-Configured by ASP.NET Identity via `IdentityDbContext<ApplicationUser>` in `ApplicationDbContext` — no module `*DbConfig` files. Next slice: override in `OnModelCreating` or a dedicated `IdentityDbConfig` in `Identity.Infrastructure` / `ERP.Persistence`.
+Configured via `IdentitySchemaDbConfig` in `ERP.Persistence/DBConfiguration/Config/Identity/` (applied from `ApplicationDbContext.OnModelCreating`).
 
 | Table | Entity |
 |-------|--------|
@@ -177,7 +177,7 @@ Inventory transaction / transfer headers reference `Branches` (accounting) by `B
 - [x] Add explicit `ToTable` for `ProductPackingUnits`, `ProductSellingPriceDiscounts`
 - [x] Configure Identity `AspNet*` tables → `identity` schema
 - [x] EF migration: `20260705173310_SeparateModuleSchemas` (`EnsureSchema` + `RenameTable`; no `DropTable`)
-- [ ] Apply migration on dev DB: `dotnet ef database update --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj`
+- [x] Apply migration on dev DB: `dotnet ef database update --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj` (applied July 2026)
 - [x] Update [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) §10.6 and [M4_SIGNOFF.md](./M4_SIGNOFF.md)
 
 ---

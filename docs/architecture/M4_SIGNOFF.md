@@ -27,8 +27,8 @@
 | Metric | Result |
 |--------|--------|
 | `dotnet build AAA.ERP.sln -c Release` | Green |
-| `dotnet test AAA.ERP.sln -c Release` | 115+ passed, 0 skipped |
-| Arch tests (`ERP.Architecture.Tests`) | 52+ guards, 0 skipped |
+| `dotnet test AAA.ERP.sln -c Release` | 117 passed, 0 skipped |
+| Arch tests (`ERP.Architecture.Tests`) | 53 guards, 0 skipped |
 | `dotnet ef dbcontext info` | `ApplicationDbContext`, `MigrationsAssembly=ERP.Host` |
 
 ---
@@ -55,4 +55,6 @@
 
 ## Next
 
-Optional: push `Refactor` (31+ commits) and open PR summarizing Increments 6–7 + M4 hardening.
+- **Quality (Option C):** error message / validator constants — one module cluster per slice ([TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md))
+- **Ongoing:** 4.3.x arch test review per PR
+- **Optional:** push `Refactor` (~33 commits) and open PR when ready

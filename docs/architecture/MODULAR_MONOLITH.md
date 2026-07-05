@@ -1100,8 +1100,8 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 
 | ID | Task | Effort | Owner | Deliverable |
 |----|------|--------|-------|-------------|
-| 4.2.1 | Evaluate SQL schema separation (`accounting.*`, `inventory.*`) | M | Tech lead | ADR decision |
-| 4.2.2 | If approved: migration to add schemas + update EF configs | L | Dev A | **Done** — `SeparateModuleSchemas`; [SQL_SCHEMA_TABLE_INVENTORY.md](./SQL_SCHEMA_TABLE_INVENTORY.md) |
+| 4.2.1 | Evaluate SQL schema separation (`accounting.*`, `inventory.*`) | M | Tech lead | **Done** — [ADR-006](./adr/006-sql-schema-separation.md) Option B |
+| 4.2.2 | If approved: migration to add schemas + update EF configs | L | Dev A | **Done** — `f256151` `SeparateModuleSchemas`; [SQL_SCHEMA_TABLE_INVENTORY.md](./SQL_SCHEMA_TABLE_INVENTORY.md); dev DB applied |
 | 4.2.3 | Add `SourceDocumentId` on entries for idempotent inventory posting | M | Dev A | No duplicate entries |
 | 4.2.4 | Module README per module (`Accounting/README.md`, etc.) | M | Module owners | Onboarding docs |
 | 4.2.5 | Performance review: N+1 queries on Products/Variants list endpoints | L | Dev B | Perf fixes |
@@ -1341,11 +1341,19 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 
 | Slice | Target | Status |
 |-------|--------|--------|
-| 8a | `AAA.ERP.OutputDtos` → `Accounting.Domain.OutputDtos` / BuildingBlocks base DTOs | **Done** (uncommitted) |
-| 8b | Inventory catalog supplier validation via `IInventoryCatalogValidationQueries` | **Done** (uncommitted) |
-| 8c | M4 sign-off + Phase 4 docs marked complete | **Done** (uncommitted) |
+| 8a | `AAA.ERP.OutputDtos` → `Accounting.Domain.OutputDtos` / BuildingBlocks base DTOs | **Done** — `d65001f` |
+| 8b | Inventory catalog supplier validation via `IInventoryCatalogValidationQueries` | **Done** — `d65001f` |
+| 8c | M4 sign-off + Phase 4 docs marked complete | **Done** — `d65001f` |
 
-**Next:** Optional push/PR; ongoing **4.3.x** sprint hygiene.
+#### Post-M4 — SQL schemas (4.2.2)
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| 9a | ADR-006 revision + table inventory | **Done** — `f256151` |
+| 9b | DbConfig schemas + Identity + `SeparateModuleSchemas` migration | **Done** — `f256151` |
+| 9c | Dev DB migration applied | **Done** — July 2026 |
+
+**Next:** **Option C** quality debt (one cluster per slice — e.g. Accounting validator `ErrorMessages`); ongoing **4.3.x** sprint hygiene. Push/PR optional when ready (`Refactor` ~33 commits ahead).
 
 **Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings.
 
