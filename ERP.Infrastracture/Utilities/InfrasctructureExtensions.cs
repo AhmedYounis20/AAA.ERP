@@ -9,7 +9,6 @@ using ERP.Infrastracture.Repositories;
 using ERP.Infrastracture.Repositories.Account;
 using ERP.Infrastracture.Repositories.Account.SubLeadgers;
 using ERP.Infrastracture.Repositories.BaseRepositories;
-using ERP.Infrastracture.Repositories.Inventory;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Inventory;
@@ -34,7 +33,6 @@ public static class InfrasctructureExtensions
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
         services.AddScoped<IItemService, ItemService>();
-        services.AddScoped<IInventoryTransferService, InventoryTransferService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
@@ -46,7 +44,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddHttpContextAccessor();
     }
 }

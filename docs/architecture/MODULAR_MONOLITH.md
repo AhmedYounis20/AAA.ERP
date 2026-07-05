@@ -846,7 +846,7 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 | `Modules/Accounting/Accounting.Contracts/Integration/IAccountingIntegrationService.cs` | Public contract |
 | `ERP.Infrastracture/Services/Accounting/AccountingIntegrationService.cs` | Facade implementation |
 | `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransactionService.cs` | Refactored consumer |
-| `ERP.Infrastracture/Services/Inventory/InventoryTransferService.cs` | Refactored consumer |
+| `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransferService.cs` | Refactored consumer |
 | `Tests/ERP.Architecture.Tests/ModuleBoundaryTests.cs` | Boundary gate |
 | `Tests/ERP.IntegrationTests/` | Phase 1 Sprint 4 — inventory + GL integration tests |
 
@@ -1012,7 +1012,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 18 | Variants (+ related: suppliers, taxes, cost centers) | 3–4 | Dev B | **Done** — `VariantService`, junction repos, 12 DbConfigs; `IVariantProductPreparation` folded into `IVariantService` |
 | 19 | StockBalances, InventoryThresholds, ExpiryLevels | 2–3 | Dev B | **Done** — `StockBalanceService`, threshold/expiry DbConfigs, validation helpers; StockBalance MediatR handlers added |
 | 20 | InventoryTransactions (import/export) | 2 | Dev B | **Done** — `InventoryTransactionService`, import/export facades, 6 MediatR handlers, `InventoryTransaction*DbConfig`; `IInventoryTransactionRepository` stays in `ERP.Application` |
-| 21 | InventoryTransfers | 2 | Dev B |
+| 21 | InventoryTransfers | 2 | Dev B | **Done** — `InventoryTransferService`, 2 MediatR handlers, `InventoryTransfer*DbConfig`; `IInventoryTransferRepository` stays in `ERP.Application` |
 | 22 | Legacy Items (if still in use — deprecate or migrate) | 1–2 | Dev B |
 
 **Wave 3D exit:** All `ERP.API/Controllers/Inventory/*` backed by Inventory module projects.
@@ -1245,7 +1245,7 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 | 2.4.1, 2.4.3–2.4.4 Template, sign-off, build metrics | 2.4.2 ExpiryLevels deferred |
 | `ModuleModelConfigurationRegistry` for EF configs without circular refs | |
 
-**Next:** Phase 3 Wave 3D — Inventory aggregate extraction (Week 21 InventoryTransfers). See [§10.5](#105-phase-3--module-extraction).
+**Next:** Phase 3 Wave 3D — Inventory aggregate extraction (Week 22 Legacy Items). See [§10.5](#105-phase-3--module-extraction).
 
 ### Phase 3 Wave 3B — **COMPLETE**
 
@@ -1288,7 +1288,7 @@ Week 7–14 aggregates extracted into `Modules/Accounting/` (entities remain in 
 | Combined entries | Thin façade over `IComplexEntryService`; `AccountingIntegrationService` moved to Accounting.Infrastructure |
 | Entry core | `EntryService`, `ComplexEntryService`, `IEntryRepository`; entry DbConfigs; God `IUnitOfWork` entry repos removed |
 
-### Phase 3 Wave 3D — **IN PROGRESS** (Week 20)
+### Phase 3 Wave 3D — **IN PROGRESS** (Week 21)
 
 Inventory module scaffolded (`Inventory.Application`, `Inventory.Infrastructure`); entities remain in `ERP.Domain`.
 
@@ -1299,7 +1299,8 @@ Inventory module scaffolded (`Inventory.Application`, `Inventory.Infrastructure`
 | Week 19 | InventoryThresholds — `InventoryThresholdDbConfig`, `IBaseRepository<InventoryThreshold>` in module; `InventoryThresholdValidationHelper` in `Inventory.Infrastructure.Validation` |
 | Week 19 | ExpiryLevels — `ExpiryLevelDbConfig`, `IBaseRepository<ExpiryLevel>` in module; `ExpiryLevelValidationHelper` in module |
 | Week 20 | InventoryTransactions — commands, validators, 6 handlers, `InventoryTransactionService`, import/export facades, `InventoryTransactionRepository`, `InventoryTransaction*DbConfig`; accounting via `Accounting.Contracts` only |
-| God `IUnitOfWork` | `IInventoryTransactionRepository`, `IStockBalanceRepository`, threshold/expiry repos remain on UoW |
+| Week 21 | InventoryTransfers — commands, 2 handlers, `InventoryTransferService`, `InventoryTransferRepository`, `InventoryTransfer*DbConfig`; approve/reject flows; accounting via `Accounting.Contracts` only |
+| God `IUnitOfWork` | `IInventoryTransactionRepository`, `IInventoryTransferRepository`, `IStockBalanceRepository`, threshold/expiry repos remain on UoW |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

@@ -1,7 +1,7 @@
 using ERP.Domain.Models.Entities.Inventory;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory;
+namespace Inventory.Infrastructure.Persistence.InventoryTransfers;
 
 public class InventoryTransferDbConfig : IEntityTypeConfiguration<InventoryTransfer>
 {
@@ -24,4 +24,4 @@ public class InventoryTransferDbConfig : IEntityTypeConfiguration<InventoryTrans
             .HasForeignKey(e => e.DestinationBranchId)
             .OnDelete(DeleteBehavior.Restrict);
     }
-} 
+}

@@ -1,12 +1,14 @@
 using Accounting.Contracts.Integration;
+using Domain.Account.DBConfiguration.DbContext;
 using ERP.Application.Repositories.Inventory;
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory;
+using ERP.Infrastracture.Services.BaseServices;
+using Inventory.Application.Commands.InventoryTransfers;
+using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 
 public class InventoryTransferService : BaseService<InventoryTransfer, InventoryTransferCreateCommand, InventoryTransferUpdateCommand>, IInventoryTransferService
 {

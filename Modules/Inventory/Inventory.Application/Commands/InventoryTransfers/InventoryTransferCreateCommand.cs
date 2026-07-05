@@ -1,21 +1,20 @@
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Entities.Inventory;
 
-namespace ERP.Domain.Commands.Inventory;
+namespace Inventory.Application.Commands.InventoryTransfers;
 
-public class InventoryTransferItemUpdateCommand
+public class InventoryTransferItemCreateCommand
 {
-    public Guid? Id { get; set; } // Null for new items
     public Guid VariantId { get; set; }
     public Guid PackingUnitId { get; set; }
     public decimal Quantity { get; set; }
     public string? Notes { get; set; }
 }
 
-public class InventoryTransferUpdateCommand : BaseUpdateCommand<InventoryTransfer>
+public class InventoryTransferCreateCommand : BaseCreateCommand<InventoryTransfer>
 {
     public Guid SourceBranchId { get; set; }
     public Guid DestinationBranchId { get; set; }
     public InventoryTransferType TransferType { get; set; } = InventoryTransferType.Conditional;
-    public List<InventoryTransferItemUpdateCommand> Items { get; set; } = new();
-} 
+    public List<InventoryTransferItemCreateCommand> Items { get; set; } = new();
+}
