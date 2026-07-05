@@ -2,7 +2,7 @@ using Accounting.Application.Commands.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using FluentValidation;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Application.Validators.ChartOfAccounts;
 
@@ -10,8 +10,8 @@ public class ChartOfAccountCreateValidator : BaseTreeSettingCreateValidator<Char
 {
     public ChartOfAccountCreateValidator() : base()
     {
-        _ = RuleFor(e => e.Code).MaximumLength(100).WithMessage(ErrorMessages.ChartOfAccountCodeMaxLengthValidation).NotEmpty().WithMessage(ErrorMessages.ChartOfAccountCodeRequired);
-        _ = RuleFor(e => e.AccountGuidId).NotEmpty().WithMessage(ErrorMessages.ChartOfAccountAccountGuideRequired);
-        _ = RuleFor(e => e.AccountNature).IsInEnum().WithMessage(ErrorMessages.ChartOfAccountNotValidAccountNature);
+        _ = RuleFor(e => e.Code).MaximumLength(100).WithMessage(ValidationMessages.ChartOfAccountCodeMaxLengthValidation).NotEmpty().WithMessage(ValidationMessages.ChartOfAccountCodeRequired);
+        _ = RuleFor(e => e.AccountGuidId).NotEmpty().WithMessage(ValidationMessages.ChartOfAccountAccountGuideRequired);
+        _ = RuleFor(e => e.AccountNature).IsInEnum().WithMessage(ValidationMessages.ChartOfAccountNotValidAccountNature);
     }
 }

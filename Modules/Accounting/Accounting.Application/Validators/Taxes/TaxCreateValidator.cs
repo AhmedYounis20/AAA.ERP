@@ -3,7 +3,7 @@ using Accounting.Domain.Entities;
 using Accounting.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
 using FluentValidation;
 using Shared.BaseEntities;
-using Shared.Constants;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Application.Validators.Taxes;
 
@@ -17,7 +17,7 @@ public class TaxCreateValidator : BaseSubLeadgerCreateValidator<TaxCreateCommand
             .When(e => e.NodeType.Equals(NodeType.Domain));
         _ = RuleFor(e => e.ChartOfAccountId)
             .NotEmpty()
-            .WithMessage(ErrorMessages.ChartOfAccountIdIsRequired)
+            .WithMessage(ValidationMessages.ChartOfAccountIdIsRequired)
             .When(e => e.NodeType.Equals(NodeType.Domain));
     }
 }

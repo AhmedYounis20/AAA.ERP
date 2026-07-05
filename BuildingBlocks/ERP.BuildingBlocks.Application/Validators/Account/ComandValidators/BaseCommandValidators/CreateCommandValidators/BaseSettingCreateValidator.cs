@@ -1,6 +1,7 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using FluentValidation;
 using Shared.Responses;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 
@@ -8,7 +9,7 @@ public class BaseSettingCreateValidator<TCommand, TResponse> : BaseCreateValidat
 {
     public BaseSettingCreateValidator() : base()
     {
-        _ = RuleFor(e => e.Name).NotEmpty().WithMessage("NameIsRequired").MaximumLength(50).WithMessage("NameMaxLength");
-        _ = RuleFor(e => e.NameSecondLanguage).NotEmpty().WithMessage("NameSecondLanguageIsRequired").MaximumLength(50).WithMessage("NameSecondLanguageMaxLength");
+        _ = RuleFor(e => e.Name).NotEmpty().WithMessage(ValidationMessages.NameIsRequired).MaximumLength(50).WithMessage(ValidationMessages.NameMaxLength);
+        _ = RuleFor(e => e.NameSecondLanguage).NotEmpty().WithMessage(ValidationMessages.NameSecondLanguageIsRequired).MaximumLength(50).WithMessage(ValidationMessages.NameSecondLanguageMaxLength);
     }
 }

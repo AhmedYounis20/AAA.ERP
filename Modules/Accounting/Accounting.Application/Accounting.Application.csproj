@@ -11,7 +11,6 @@
     <ProjectReference Include="..\Accounting.Domain\Accounting.Domain.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
-    <ProjectReference Include="..\..\..\Shared\ERP.Shared.csproj" />
     <ProjectReference Include="..\..\Inventory\Inventory.Application\Inventory.Application.csproj" />
   </ItemGroup>
 

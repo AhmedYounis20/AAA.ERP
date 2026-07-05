@@ -21,7 +21,8 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 | 7a–7e | `Domain.Account.*` namespace retirement | **Done** |
 | 8a | `AAA.ERP.OutputDtos` namespace retirement | **Done** |
 | 8b | Inventory catalog → Accounting via Contracts query port | **Done** |
-| C1 | Accounting validators → `ErrorMessages` constants | **Done** (uncommitted) |
+| C1 | Accounting validators → `ValidationMessages` constants | **Done** — `9ec86a9` |
+| C2 | BuildingBlocks Account base validators → `ValidationMessages` | **Done** (uncommitted) |
 
 **Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
@@ -50,7 +51,7 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 
 ### 5. Magic Strings in Validators
 **Impact:** Maintainability, localization
-**Recommendation:** Replace with `ErrorMessages` constants.
+**Status:** **Partial — C1/C2 done** (Accounting + BuildingBlocks base validators use `ValidationMessages` in `ERP.BuildingBlocks.Application.Constants`). Inventory validators remain.
 
 ### 6. Inventory catalog → Account entity coupling
 **Status:** **Done** (Increment 8b). Supplier existence checks use `IInventoryCatalogValidationQueries` (Contracts); arch test `Inventory_catalog_services_should_not_reference_Account_domain_entities` enabled. Junction entities in `Inventory.Domain` still reference Accounting navigation types for EF — acceptable shared-database pattern.
