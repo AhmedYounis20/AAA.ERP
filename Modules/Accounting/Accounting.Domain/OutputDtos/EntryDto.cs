@@ -1,4 +1,4 @@
-﻿using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Attachments;
 using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.SubLeadgers;

@@ -2,7 +2,7 @@ using AAA.ERP.OutputDtos;
 using Accounting.Application.Commands.Entries;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Attachments;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;

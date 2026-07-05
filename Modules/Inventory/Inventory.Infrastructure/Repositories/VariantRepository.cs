@@ -1,4 +1,4 @@
-using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Attachments;
 using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Variants;

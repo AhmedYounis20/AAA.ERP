@@ -1,4 +1,4 @@
-using Domain.Account.Models.Dtos;
+using Identity.Application.Models.Dtos;
 using Shared.Responses;
 
 namespace Identity.Application;

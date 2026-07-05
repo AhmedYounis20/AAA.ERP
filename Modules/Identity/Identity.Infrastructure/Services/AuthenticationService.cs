@@ -1,4 +1,4 @@
-using Domain.Account.Models.Dtos;
+using Identity.Application.Models.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

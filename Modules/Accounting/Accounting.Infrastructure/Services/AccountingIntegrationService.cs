@@ -1,5 +1,5 @@
 using Accounting.Contracts.Integration;
-using Domain.Account.Models.Dtos.Entry;
+using Accounting.Domain.Models.Dtos.Entry;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Commands.CombinedEntries;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;

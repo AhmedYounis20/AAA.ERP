@@ -1,4 +1,4 @@
-using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Attachments;
 using ERP.Shared.BaseEntities.Attachments;
 
 namespace Domain.Account.Utility;

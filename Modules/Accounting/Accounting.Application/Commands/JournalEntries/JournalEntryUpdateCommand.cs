@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Domain.Account.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Attachments;
 using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Application.Commands.JournalEntries;

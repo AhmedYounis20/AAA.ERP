@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Domain.Account.Models.Dtos.Attachments;
-using Domain.Account.Models.Dtos.Entry;
+using Accounting.Domain.Models.Dtos.Attachments;
+using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Domain.Models.Entities.Entries;
 using System.Text.Json.Serialization;
 

@@ -1,6 +1,6 @@
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
-namespace Domain.Account.Models.Dtos.Entry;
+namespace Accounting.Domain.Models.Dtos.Entry;
 
 public class ComplexFinancialTransactionDto
 {

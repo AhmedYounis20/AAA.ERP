@@ -1,6 +1,6 @@
 using Domain.Account.Utility;
 
-namespace Domain.Account.Models.Dtos.Attachments;
+namespace Accounting.Domain.Models.Dtos.Attachments;
 
 public class AttachmentDto
 {

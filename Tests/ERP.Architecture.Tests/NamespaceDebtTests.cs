@@ -341,6 +341,36 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Accounting_Domain_models_dtos_should_not_use_legacy_Domain_Account_Models_Dtos_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Models.Dtos")
+            .Should()
+            .NotResideInNamespaceStartingWith("Domain.Account.Models.Dtos")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Identity_Application_auth_dtos_should_not_use_legacy_Domain_Account_Models_Dtos_namespace()
+    {
+        var result = Types.InAssembly(typeof(Identity.Application.IAuthenticationService).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Models.Dtos")
+            .Should()
+            .NotResideInNamespace("Domain.Account.Models.Dtos")
+            .And()
+            .NotResideInNamespaceStartingWith("Domain.Account.Models.Dtos.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

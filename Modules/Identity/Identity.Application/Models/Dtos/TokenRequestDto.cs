@@ -1,4 +1,4 @@
-namespace Domain.Account.Models.Dtos;
+namespace Identity.Application.Models.Dtos;
 
 public class TokenRequestDto
 {
