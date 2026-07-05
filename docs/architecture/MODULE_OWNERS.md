@@ -8,7 +8,7 @@ Module owners review PRs that touch their area and approve architectural changes
 | **Inventory** | `Controllers/Inventory`, products, variants, stock, transactions | Ahmed Younis | — |
 | **Platform** | Audit, caching, localization, shared cross-cutting | Ahmed Younis | — |
 | **Identity** | `Controllers/Identity`, auth, users, roles | Ahmed Younis | — |
-| **Host** | `ERP.API` startup, DI composition, migrations, CI | Ahmed Younis | — |
+| **Host** | `ERP.Host` startup, DI composition, migrations, CI | Ahmed Younis | — |
 
 > Update backup owners when the team grows beyond one developer.
 

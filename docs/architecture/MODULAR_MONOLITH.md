@@ -95,7 +95,7 @@ The project is at the point where a layered monolith begins eroding into tight c
 ### 3.1 Layered monolith structure
 
 ```
-ERP.API            → HTTP, Swagger, migrations, startup
+ERP.Host            → HTTP, Swagger, migrations, startup
 ERP.Application    → IRepository, IService interfaces, validators
 ERP.Domain         → Entities, commands, DTOs
 ERP.Infrastracture → Implementations (repos, services, handlers, DbContext)
@@ -114,7 +114,7 @@ This is **technically** clean architecture, but **organizationally horizontal**:
 
 | Project | Role |
 |---------|------|
-| `ERP.API` | 42 controllers, startup, EF migrations |
+| `ERP.Host` | 42 controllers, startup, EF migrations |
 | `ERP.Application` | Repository + service interfaces, validators |
 | `ERP.Domain` | Entities, commands, DTOs (~279 files) |
 | `ERP.Infrastracture` | Repos, services, handlers, DbContext |
@@ -197,7 +197,7 @@ Modular monolith + architecture tests helps prevent further drift.
 ```
 AAA.ERP/
 ├── src/
-│   ├── ERP.Host/                              # Composition root (today's ERP.API)
+│   ├── ERP.Host/                              # Composition root (today's ERP.Host)
 │   │   ├── Program.cs / startup
 │   │   ├── Controllers/
 │   │   ├── appsettings.json
@@ -273,7 +273,7 @@ AAA.ERP/
 ```mermaid
 graph TB
     subgraph Host["ERP.Host (single API process)"]
-        API[ERP.API]
+        API[ERP.Host]
     end
 
     subgraph Modules
@@ -486,7 +486,7 @@ Not recommended now. Would require sagas/outbox for inventory + GL.
 
 | Phase | Location |
 |-------|----------|
-| Today | `ERP.API` |
+| Today | `ERP.Host` |
 | Short term | Keep in Host (no ops change) |
 | Medium term | `ERP.Persistence` referenced only by Host |
 
@@ -899,7 +899,7 @@ AFTER:  InventoryTransactionService → IAccountingIntegrationService.PostInvent
 | `Modules/Accounting/Accounting.Application/` | Commands, validators, `ITaxService` / `ITaxRepository` |
 | `Modules/Accounting/Accounting.Infrastructure/AccountingModuleExtensions.cs` | `AddAccountingModule()` composition |
 | `ERP.Application/Data/ModuleModelConfigurationRegistry.cs` | EF module config hook (avoids circular refs) |
-| `ERP.API/Utilities/WebBuilderExtensions.cs` | Host wires module + second MediatR/validator assembly |
+| `ERP.Host/Utilities/WebBuilderExtensions.cs` | Host wires module + second MediatR/validator assembly |
 
 #### Week 3 — EF and migrations
 
@@ -987,7 +987,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A | Done |
 | 14 | Entries — Opening, Combined, EntryService core | 3–4 | Dev A | Done |
 
-**Wave 3C exit:** All `ERP.API/Controllers/Account/*` backed by Accounting module projects.
+**Wave 3C exit:** All `ERP.Host/Controllers/Account/*` backed by Accounting module projects.
 
 **Per-aggregate checklist (repeat for each):**
 
@@ -1015,7 +1015,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 21 | InventoryTransfers | 2 | Dev B | **Done** — `InventoryTransferService`, 2 MediatR handlers, `InventoryTransfer*DbConfig`; `IInventoryTransferRepository` stays in `ERP.Application` |
 | 22 | Legacy Items (if still in use — deprecate or migrate) | 1–2 | Dev B | **Done** — `ItemService`, `ItemRepository` (restored), 2 MediatR handlers, 7 Item DbConfigs; junction repos in module |
 
-**Wave 3D exit:** All `ERP.API/Controllers/Inventory/*` backed by Inventory module projects.
+**Wave 3D exit:** All `ERP.Host/Controllers/Inventory/*` backed by Inventory module projects.
 
 #### Wave 3E — Retire horizontal layers (Weeks 23–24)
 
@@ -1024,7 +1024,7 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 3E.1 | Verify `ERP.Domain` has no remaining source files | S | Dev A | Empty project |
 | 3E.2 | Verify `ERP.Application` has no remaining source files | S | Dev A | Empty project |
 | 3E.3 | Verify `ERP.Infrastracture` has no remaining source files | S | Dev A | Empty project |
-| 3E.4 | Remove projects from solution; rename `ERP.API` → `ERP.Host` (optional) | M | Tech lead | Clean solution |
+| 3E.4 | Remove projects from solution; rename `ERP.Host` → `ERP.Host` (optional) | M | Tech lead | Clean solution |
 | 3E.5 | Replace God `IUnitOfWork` with module UoWs or remove entirely | L | Dev A | UoW deprecated |
 | 3E.6 | Full regression test suite | L | Dev A+B | All green |
 | 3E.7 | Update README, solution diagram | S | Tech lead | Docs current |
@@ -1315,7 +1315,7 @@ Month 2 (4.2.x) — **substantially complete** (uncommitted on `Refactor`):
 | 4.2.5 | Products/Variants list N+1 fixes; `CatalogListIntegrationTests` |
 | — | `InventoryTransferService` → `ITransactionCoordinator` (`Create`, `ApproveTransfer`, `RejectTransfer`) |
 
-**Next:** Increment 6 — 3E deferred follow-ups (namespace cleanup, `ERP.API` → `ERP.Host`, solution diagram); ongoing 4.3.x sprint hygiene.
+**Next:** Increment 6 — 3E deferred follow-ups (namespace cleanup, `ERP.Host` → `ERP.Host`, solution diagram); ongoing 4.3.x sprint hygiene.
 
 **Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
 
@@ -1449,4 +1449,4 @@ dotnet test AAA.ERP.sln
 - Inventory coordinator: `Modules/Inventory/Inventory.Infrastructure/Services/InventoryTransactionService.cs`, `InventoryTransferService.cs`
 - Technical debt tracker: [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md)
 - Production logging: [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md)
-- DI registration: `ERP.Persistence/Utilities/InfrastructureExtensions.cs`, `ERP.API/Utilities/WebBuilderExtensions.cs`
+- DI registration: `ERP.Persistence/Utilities/InfrastructureExtensions.cs`, `ERP.Host/Utilities/WebBuilderExtensions.cs`

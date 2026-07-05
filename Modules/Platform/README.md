@@ -51,7 +51,7 @@ builder.Services.AddPlatformModules();   // before AddIdentityModule()
 1. Create `{Name}.Application` (interfaces) and `{Name}.Infrastructure` (implementation).
 2. Add `{Name}ModuleExtensions.cs` with `Add{Name}()` — register services and `ModuleModelConfigurationRegistry` if EF entities are involved.
 3. Call from `PlatformModuleExtensions.AddPlatformModules()`.
-4. Reference new Infrastructure from `ERP.API` only if the host must compose it (follow Audit pattern).
+4. Reference new Infrastructure from `ERP.Host` only if the host must compose it (follow Audit pattern).
 
 ### Extend existing sub-module
 
@@ -70,7 +70,7 @@ builder.Services.AddPlatformModules();   // before AddIdentityModule()
 | No domain logic | Platform must not encode Accounting or Inventory rules. |
 | Identity for actor | Audit uses `ICurrentUser` from Identity — reference `Identity.Application`, not controllers. |
 | EF configs | Register via `ModuleModelConfigurationRegistry` inside each `AddPlatform*()` method. |
-| Host-only HTTP | New REST endpoints for platform concerns go in `ERP.API` with Swagger group `platform`. |
+| Host-only HTTP | New REST endpoints for platform concerns go in `ERP.Host` with Swagger group `platform`. |
 
 ## Key integration points
 

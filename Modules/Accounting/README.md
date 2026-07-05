@@ -6,7 +6,7 @@ General ledger, chart of accounts, sub-ledgers, financial periods, taxes, and jo
 
 - Own accounting aggregates: currencies, COA, cost centers, sub-ledgers (banks, customers, suppliers, …), entries (journal, payment, receipt, opening, combined), taxes, and GL settings.
 - Post inventory-driven GL entries through `IAccountingIntegrationService` with idempotent `SourceDocumentId` / `SourceDocumentType` (Phase 4.2.3).
-- Register EF configurations and DI via `AddAccountingModule()`; host owns HTTP controllers under `ERP.API/Controllers/Account/`.
+- Register EF configurations and DI via `AddAccountingModule()`; host owns HTTP controllers under `ERP.Host/Controllers/Account/`.
 
 ## Project map
 
@@ -34,9 +34,9 @@ Modules/Accounting/
     └── AccountingModuleExtensions.cs
 ```
 
-**Host wiring:** `ERP.API/Utilities/WebBuilderExtensions.cs` calls `AddAccountingModule()` after `AddInfrastructureServices()`.
+**Host wiring:** `ERP.Host/Utilities/WebBuilderExtensions.cs` calls `AddAccountingModule()` after `AddInfrastructureServices()`.
 
-**Swagger group:** `accounting` (see `ERP.API/Utilities/SwaggerModuleGroups.cs`).
+**Swagger group:** `accounting` (see `ERP.Host/Utilities/SwaggerModuleGroups.cs`).
 
 ## How to add a feature
 
@@ -46,9 +46,9 @@ Follow [MODULE_TEMPLATE.md](../../docs/architecture/MODULE_TEMPLATE.md). Minimal
 2. **Application** — `*CreateCommand` / `*UpdateCommand`, validators, `I*Repository`, `I*Service` in `Accounting.Application`.
 3. **Infrastructure** — `*CommandHandler`, `*Repository`, `*Service`, `{Entity}DbConfig` in `Accounting.Infrastructure`.
 4. **Composition** — Register repo/service in `AccountingModuleExtensions.AddAccountingModule()`; register `*DbConfig` in `ApplyAccountingModuleConfigurations`.
-5. **Host** — Add controller in `ERP.API/Controllers/Account/`; assign Swagger module group.
+5. **Host** — Add controller in `ERP.Host/Controllers/Account/`; assign Swagger module group.
 6. **MediatR** — Handler assembly is already registered in `WebBuilderExtensions.AddProjectUtilities()`; add validator assembly if you introduce a new Application project (not needed for aggregates in this module).
-7. **Migration** — `dotnet ef migrations add <Name> --project ERP.API --startup-project ERP.API`; confirm no unintended table drops.
+7. **Migration** — `dotnet ef migrations add <Name> --project ERP.Host --startup-project ERP.Host`; confirm no unintended table drops.
 
 **Writes:** Controller → `ISender.Send(command)` → Handler → Service (ADR-004). Do not add `AddMediatR` inside the module.
 
@@ -60,7 +60,7 @@ Enforced by `Tests/ERP.Architecture.Tests/ModuleBoundaryTests.cs`:
 |------|--------|
 | Domain purity | `Accounting.Domain` must not reference Infrastructure, EF, or Inventory entities. |
 | Application isolation | `Accounting.Application` must not reference `Accounting.Infrastructure` or `ERP.Persistence`. |
-| No API reference | `Accounting.Infrastructure` must not reference `ERP.API`. |
+| No API reference | `Accounting.Infrastructure` must not reference `ERP.Host`. |
 | No Inventory in Accounting | Accounting Infrastructure must not reference `ERP.Domain.Models.Entities.Inventory`. |
 | Contracts stay thin | `Accounting.Contracts` references only shared response types — safe for Inventory to reference. |
 | God `IUnitOfWork` | Do not add new repository properties to `IUnitOfWork`; inject dedicated repositories. |
@@ -104,7 +104,7 @@ dotnet test Tests/ERP.Architecture.Tests/ERP.Architecture.Tests.csproj -c Releas
 dotnet test Tests/ERP.IntegrationTests/ERP.IntegrationTests.csproj -c Release --filter "FullyQualifiedName~Inventory"
 
 # EF / migrations
-dotnet ef dbcontext info --project ERP.API/ERP.API.csproj --startup-project ERP.API/ERP.API.csproj
+dotnet ef dbcontext info --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj
 ```
 
 ## Related docs

@@ -11,7 +11,7 @@ namespace ERP.Architecture.Tests;
 public class LayerDependencyTests
 {
     private const string InfrastructureAssembly = "ERP.Persistence";
-    private const string ApiAssembly = "ERP.API";
+    private const string ApiAssembly = "ERP.Host";
 
     [Fact]
     public void Domain_should_not_reference_Infrastructure()

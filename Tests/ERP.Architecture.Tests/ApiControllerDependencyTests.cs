@@ -5,16 +5,16 @@ namespace ERP.Architecture.Tests;
 
 /// <summary>
 /// Phase 0 task 0.1.5 — API controllers must not depend on Infrastructure implementations.
-/// Legacy exception: <see cref="ERP.API.Controllers.Account.DbworkController"/> (seed tooling; remove in Phase 3).
+/// Legacy exception: <see cref="ERP.Host.Controllers.Account.DbworkController"/> (seed tooling; remove in Phase 3).
 /// </summary>
 public class ApiControllerDependencyTests
 {
     [Fact]
     public void API_controllers_should_not_reference_Infrastructure_except_legacy_seed_controller()
     {
-        var result = Types.InAssembly(typeof(ERP.API.Controllers.Inventory.ProductsController).Assembly)
+        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly)
             .That()
-            .ResideInNamespaceStartingWith("ERP.API.Controllers")
+            .ResideInNamespaceStartingWith("ERP.Host.Controllers")
             .And()
             .DoNotHaveName("DbworkController")
             .Should()

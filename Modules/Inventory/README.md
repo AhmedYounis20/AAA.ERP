@@ -45,7 +45,7 @@ Modules/Inventory/
 3. **Implementation** — Handler in `Inventory.Infrastructure/Handlers/`, repo/service in `Repositories/` and `Services/`.
 4. **EF config** — `{Entity}DbConfig` under `Inventory.Infrastructure/Persistence/`; register in `ApplyInventoryModuleConfigurations`.
 5. **DI** — Register in `InventoryModuleExtensions.AddInventoryModule()`.
-6. **API** — Controller under `ERP.API/Controllers/Inventory/`; Swagger group `inventory`.
+6. **API** — Controller under `ERP.Host/Controllers/Inventory/`; Swagger group `inventory`.
 7. **Cross-module GL** — If the feature posts entries, build an `Inventory*PostingRequest` and call `IAccountingIntegrationService` inside `_transactionCoordinator.ExecuteAsync` (see below).
 
 Example handler registration is already in `WebBuilderExtensions` via `typeof(InventoryModuleExtensions).Assembly`.
@@ -57,7 +57,7 @@ Example handler registration is already in `WebBuilderExtensions` via `typeof(In
 | No Accounting domain | `InventoryTransactionService` and `InventoryTransferService` must not reference `ERP.Domain.Models.Entities.Account` (arch test). |
 | Catalog decoupling | `ProductService` / `VariantService` → Account entity reference test is **skipped** until cost-center/tax decoupling (Phase 3 debt). |
 | Application isolation | `Inventory.Application` must not reference `Inventory.Infrastructure` or `ERP.Persistence`. |
-| No API reference | `Inventory.Infrastructure` must not reference `ERP.API`. |
+| No API reference | `Inventory.Infrastructure` must not reference `ERP.Host`. |
 | Integration boundary | Reference **`Accounting.Contracts` only** — never `Accounting.Domain` or `Accounting.Infrastructure`. |
 | Writes via MediatR | Controller → `ISender.Send` → Handler → Service. |
 

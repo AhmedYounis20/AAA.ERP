@@ -11,7 +11,7 @@
 | Command handlers (Accounting module) | `Accounting.Infrastructure/Handlers/` | Tax + future aggregates |
 | Validators (horizontal) | `ERP.Application/Validators/` | ~83 validator classes |
 | Validators (Accounting module) | `Accounting.Application/Validators/` | Tax + future aggregates |
-| MediatR registration | `ERP.API/Utilities/WebBuilderExtensions.cs` | **Single composition point** |
+| MediatR registration | `ERP.Host/Utilities/WebBuilderExtensions.cs` | **Single composition point** |
 | Pipeline behavior | `ValidationBehavior<,>` via `AddOpenBehavior` | 1 |
 
 ## Before Phase 0
@@ -26,7 +26,7 @@ MediatR was registered twice:
 ## After Phase 0
 
 ```csharp
-// ERP.API/Utilities/WebBuilderExtensions.cs
+// ERP.Host/Utilities/WebBuilderExtensions.cs
 services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
 services.AddMediatR(config =>
 {

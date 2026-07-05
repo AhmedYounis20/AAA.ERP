@@ -84,7 +84,7 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly)
             .Should()
-            .NotHaveDependencyOn("ERP.API")
+            .NotHaveDependencyOn("ERP.Host")
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
@@ -108,7 +108,7 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly)
             .Should()
-            .NotHaveDependencyOn("ERP.API")
+            .NotHaveDependencyOn("ERP.Host")
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));

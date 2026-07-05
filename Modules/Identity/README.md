@@ -1,6 +1,6 @@
 # Identity module
 
-Authentication services and the **current-user abstraction** used for audit fields and authorization context. ASP.NET Identity (`ApplicationUser`, JWT, `AddIdentity<>`) remains in the **host** (`ERP.API`); this module owns application-level auth ports and implementations.
+Authentication services and the **current-user abstraction** used for audit fields and authorization context. ASP.NET Identity (`ApplicationUser`, JWT, `AddIdentity<>`) remains in the **host** (`ERP.Host`); this module owns application-level auth ports and implementations.
 
 ## Purpose
 
@@ -31,7 +31,7 @@ Modules/Identity/
 
 - JWT configuration — `WebBuilderExtensions.AddAuthenticationConfiguration`
 - `AddIdentity<ApplicationUser, IdentityRole>()` — `AddProjectUtilities`
-- Controllers — `ERP.API/Controllers/Identity/`
+- Controllers — `ERP.Host/Controllers/Identity/`
 
 **Swagger group:** `identity`.
 
@@ -41,7 +41,7 @@ Typical identity changes are small and host-adjacent:
 
 1. **DTO / contract** — Add to `Identity.Application/Models/Dtos/` or extend `IAuthenticationService`.
 2. **Implementation** — `Identity.Infrastructure/Services/`; register in `IdentityModuleExtensions.AddIdentityModule()`.
-3. **API** — New endpoint in `ERP.API/Controllers/Identity/`; use MediatR only if introducing a command-style write (most auth flows call `IAuthenticationService` directly).
+3. **API** — New endpoint in `ERP.Host/Controllers/Identity/`; use MediatR only if introducing a command-style write (most auth flows call `IAuthenticationService` directly).
 4. **Audit integration** — `ICurrentUser` is consumed by `ApplicationDbContext` and `Platform.Audit` `AuditService`; extend `ICurrentUser` only when all consumers are updated.
 
 Identity does **not** own MediatR handler assemblies today; no validator assembly registration is required unless you add commands under a new Application area.
@@ -51,9 +51,9 @@ Identity does **not** own MediatR handler assemblies today; no validator assembl
 | Rule | Detail |
 |------|--------|
 | No business logic | Identity must not contain Accounting or Inventory rules. |
-| Host composition | JWT secrets, Identity stores, and `ApplicationDbContext` wiring stay in `ERP.API`. |
+| Host composition | JWT secrets, Identity stores, and `ApplicationDbContext` wiring stay in `ERP.Host`. |
 | `ICurrentUser` scope | Registered **scoped**; safe for EF `SaveChanges` audit stamping. |
-| Module boundaries | Do not reference `ERP.API` from `Identity.Infrastructure`. |
+| Module boundaries | Do not reference `ERP.Host` from `Identity.Infrastructure`. |
 
 ## Key integration points
 

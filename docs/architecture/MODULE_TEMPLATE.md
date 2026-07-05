@@ -33,7 +33,7 @@ Modules/{ModuleName}/
 **Host (unchanged per aggregate):**
 
 ```
-ERP.API/
+ERP.Host/
 ├── Controllers/               # Stays in host until Phase 3+ controller move
 ├── Migrations/                # Host owns migrations until ERP.Persistence exists
 └── Persistence/
@@ -73,7 +73,7 @@ Create four SDK projects under `Modules/{Module}/` and add them to `AAA.ERP.sln`
 | `{Module}.Application` | Own Domain, `ERP.Application`, `ERP.Domain` |
 | `{Module}.Contracts` | BuildingBlocks / Shared only when possible |
 | `{Module}.Infrastructure` | Own Application + Domain, `ERP.Infrastracture` (strangler — base repos) |
-| `ERP.API` | `{Module}.Infrastructure` only (composition root) |
+| `ERP.Host` | `{Module}.Infrastructure` only (composition root) |
 
 Do **not** reference `{Module}.Infrastructure` from `ERP.Application` or `ERP.Domain`.
 
@@ -152,7 +152,7 @@ public static void ApplyAccountingModuleConfigurations(this ModelBuilder modelBu
 
 ---
 
-## Step 6 — Host wiring (`ERP.API`)
+## Step 6 — Host wiring (`ERP.Host`)
 
 **`WebBuilderExtensions.BuildApplication`:**
 
@@ -175,7 +175,7 @@ services.AddMediatR(config =>
 });
 ```
 
-**Controllers:** update `using` to `{Module}.Application.Commands` and `{Module}.Domain.Entities`. Controller stays in `ERP.API` for now.
+**Controllers:** update `using` to `{Module}.Application.Commands` and `{Module}.Domain.Entities`. Controller stays in `ERP.Host` for now.
 
 ---
 
@@ -198,7 +198,7 @@ foreach (var configure in ModuleModelConfigurationRegistry.Configurators)
     configure(builder);
 ```
 
-For `dotnet ef`, bootstrap configs in `ERP.API/Persistence/ApplicationDbContextFactory.cs`:
+For `dotnet ef`, bootstrap configs in `ERP.Host/Persistence/ApplicationDbContextFactory.cs`:
 
 ```csharp
 ModuleModelConfigurationRegistry.Clear();
@@ -209,7 +209,7 @@ ModuleModelConfigurationRegistry.Register(AccountingModuleExtensions.ApplyAccoun
 Verify:
 
 ```bash
-dotnet ef dbcontext info --project ERP.API/ERP.API.csproj --startup-project ERP.API/ERP.API.csproj
+dotnet ef dbcontext info --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj
 ```
 
 ---
@@ -219,7 +219,7 @@ dotnet ef dbcontext info --project ERP.API/ERP.API.csproj --startup-project ERP.
 After moving an entity, CLR type in the snapshot may change while the **table name stays the same**.
 
 ```bash
-dotnet ef migrations add {Aggregate}EntityMoveCheck --project ERP.API/ERP.API.csproj --startup-project ERP.API/ERP.API.csproj
+dotnet ef migrations add {Aggregate}EntityMoveCheck --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj
 ```
 
 Review the generated migration:
@@ -254,7 +254,7 @@ From [MODULAR_MONOLITH.md §4.3](./MODULAR_MONOLITH.md#43-dependency-rules):
 | `{Module}.Domain` | Shared / ERP.Domain bases (transitional) | EF, MediatR, other modules' Domain, Infrastructure |
 | `{Module}.Application` | Own Domain, Contracts, ERP.Application | Infrastructure, API |
 | `{Module}.Infrastructure` | Own Application/Domain, ERP.Infrastracture bases | API, other modules' Domain |
-| `ERP.API` | All `*.Infrastructure` | — |
+| `ERP.Host` | All `*.Infrastructure` | — |
 
 Copy the Accounting rules in `Tests/ERP.Architecture.Tests/ModuleBoundaryTests.cs` when adding Inventory module.
 

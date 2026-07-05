@@ -1,6 +1,6 @@
 # ERP.Persistence — persistence kernel
 
-Shared data access layer for the modular monolith: **EF Core `ApplicationDbContext`**, base repositories, the god `IUnitOfWork`, horizontal (unmigrated) handlers/repos/services, and **`ITransactionCoordinator`**. Migrations remain in **`ERP.API/Migrations/`** until a dedicated migrations project is introduced.
+Shared data access layer for the modular monolith: **EF Core `ApplicationDbContext`**, base repositories, the god `IUnitOfWork`, horizontal (unmigrated) handlers/repos/services, and **`ITransactionCoordinator`**. Migrations remain in **`ERP.Host/Migrations/`** until a dedicated migrations project is introduced.
 
 > **Namespace note (Phase 4.1.3):** The project folder is `ERP.Persistence` but most types still use the `ERP.Infrastructure.*` namespace and `RootNamespace` migration is incremental. New code in this project should prefer `ERP.Persistence` namespaces when touching files substantially.
 
@@ -39,7 +39,7 @@ ERP.Persistence/
 | `BuildingBlocks/ERP.BuildingBlocks.Application` | `ValidationBehavior`, `LoggingBehavior`, `ApiResponse` |
 | `BuildingBlocks/ERP.BuildingBlocks.Domain` | `BaseEntity`, tree bases, `Attachment` |
 
-**Host references:** `ERP.API` → `ERP.Persistence` + all `*.Infrastructure` module projects.
+**Host references:** `ERP.Host` → `ERP.Persistence` + all `*.Infrastructure` module projects.
 
 ## How to add a feature
 
@@ -61,10 +61,10 @@ For shared persistence changes:
 
 | Rule | Detail |
 |------|--------|
-| No API reference | Persistence must not reference `ERP.API`. |
+| No API reference | Persistence must not reference `ERP.Host`. |
 | Module configs | Modules register via `ModuleModelConfigurationRegistry`; context applies them in `OnModelCreating`. |
-| Migrations | Owned by host: `dotnet ef ... --project ERP.API --startup-project ERP.API`. |
-| Design-time factory | `ERP.API/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI. |
+| Migrations | Owned by host: `dotnet ef ... --project ERP.Host --startup-project ERP.Host`. |
+| Design-time factory | `ERP.Host/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI. |
 | Coordinator scope | `ITransactionCoordinator` is **scoped**; one coordinator per HTTP request. |
 
 ## Key integration points
@@ -103,7 +103,7 @@ dotnet test AAA.ERP.sln -c Release
 dotnet test Tests/ERP.Architecture.Tests/ERP.Architecture.Tests.csproj -c Release
 dotnet test Tests/ERP.IntegrationTests/ERP.IntegrationTests.csproj -c Release
 
-dotnet ef dbcontext info --project ERP.API/ERP.API.csproj --startup-project ERP.API/ERP.API.csproj
+dotnet ef dbcontext info --project ERP.Host/ERP.Host.csproj --startup-project ERP.Host/ERP.Host.csproj
 ```
 
 Architecture tests in `LayerDependencyTests` and `ModuleBoundaryTests` guard persistence layering.

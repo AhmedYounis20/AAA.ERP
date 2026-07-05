@@ -6,7 +6,7 @@ Structured logging for **AAA.ERP** uses [Serilog](https://serilog.net/) with req
 
 | Component | Location |
 |-----------|----------|
-| Host wiring | `ERP.API/Utilities/SerilogExtensions.cs` — `AddSerilogLogging()` |
+| Host wiring | `ERP.Host/Utilities/SerilogExtensions.cs` — `AddSerilogLogging()` |
 | Enrichers | `BuildingBlocks/ERP.BuildingBlocks.Application/Logging/Enrichers/` |
 | Correlation middleware | `CorrelationIdMiddleware` — header `X-Correlation-Id` |
 | Module middleware | `RequestModuleMiddleware` — Swagger module group per request |
@@ -35,7 +35,7 @@ Set the environment:
 
 ```bash
 export ASPNETCORE_ENVIRONMENT=Production
-dotnet ERP.API.dll
+dotnet ERP.Host.dll
 ```
 
 ### Example production log line (JSON)
@@ -70,7 +70,7 @@ No extra packages required (`Serilog.Formatting.Compact` is already referenced).
 **Verify locally:**
 
 ```bash
-ASPNETCORE_ENVIRONMENT=Production dotnet run --project ERP.API/ERP.API.csproj 2>&1 | head -5
+ASPNETCORE_ENVIRONMENT=Production dotnet run --project ERP.Host/ERP.Host.csproj 2>&1 | head -5
 ```
 
 Each line should be a single JSON object. Issue a request with `X-Correlation-Id: test-correlation-001` and confirm the value appears in subsequent log lines.
@@ -79,7 +79,7 @@ Each line should be a single JSON object. Issue a request with `X-Correlation-Id
 
 For a dedicated log UI, add the Seq sink package and extend configuration.
 
-1. Add package to `ERP.API.csproj`:
+1. Add package to `ERP.Host.csproj`:
 
    ```xml
    <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />

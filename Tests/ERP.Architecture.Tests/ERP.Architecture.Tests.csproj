@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ERP.API\ERP.API.csproj" />
+    <ProjectReference Include="..\..\ERP.Host\ERP.Host.csproj" />
     <ProjectReference Include="..\..\ERP.Persistence\ERP.Persistence.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />

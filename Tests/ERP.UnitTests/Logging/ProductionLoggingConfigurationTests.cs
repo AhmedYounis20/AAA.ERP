@@ -14,7 +14,7 @@ public class ProductionLoggingConfigurationTests
         var path = Path.GetFullPath(Path.Combine(
             AppContext.BaseDirectory,
             "..", "..", "..", "..", "..",
-            "ERP.API",
+            "ERP.Host",
             fileName));
 
         return File.ReadAllText(path);
@@ -53,7 +53,7 @@ public class ProductionLoggingConfigurationTests
     [Fact]
     public void Api_source_must_not_call_Log_CloseAndFlush()
     {
-        var apiRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "ERP.API"));
+        var apiRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "ERP.Host"));
         var csFiles = Directory.EnumerateFiles(apiRoot, "*.cs", SearchOption.AllDirectories)
             .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}")
                      && !p.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"));

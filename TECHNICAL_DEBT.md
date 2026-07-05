@@ -15,7 +15,7 @@ This document tracks known technical debt and code quality issues that need to b
 | 4.2.4 | Module READMEs | **Done** |
 | 4.2.5 | Products/Variants N+1 query fixes | **Done** |
 
-**Remaining Phase 4 / 3E follow-ups:** incremental namespace migration (`ERP.Domain.*` → modules), `ERP.API` → `ERP.Host` rename, solution diagram — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+**Remaining Phase 4 / 3E follow-ups:** incremental namespace migration (`ERP.Domain.*` → modules), `ERP.Host` → `ERP.Host` rename, solution diagram — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
 ## High Priority
 

@@ -16,7 +16,7 @@ dotnet test Tests/ERP.SmokeTests/ERP.SmokeTests.csproj
 
 ## Manual (with live database)
 
-Use Swagger UI (`/` when API is running) or Postman after `dotnet run --project ERP.API`.
+Use Swagger UI (`/` when API is running) or Postman after `dotnet run --project ERP.Host`.
 
 ### Auth
 

@@ -7,7 +7,7 @@ Full plan: [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)
 ## Current structure (transitional)
 
 ```
-ERP.API            → HTTP, composition root, migrations
+ERP.Host            → HTTP, composition root, migrations
 ERP.Application    → Interfaces, validators
 ERP.Domain         → Entities, commands, DTOs
 ERP.Infrastracture → Repositories, services, MediatR handlers
@@ -38,7 +38,7 @@ Shared/            → Thin shim (filter DTOs, ErrorMessages)
 | New repository implementation | `ERP.Infrastracture/Repositories/...` |
 | New service interface | `ERP.Application/Services/...` (or `Platform.*.Application` for platform) |
 | New service implementation | `ERP.Infrastracture/Services/...` (or `Platform.*.Infrastructure`) |
-| New API endpoint | `ERP.API/Controllers/...` |
+| New API endpoint | `ERP.Host/Controllers/...` |
 | EF configuration | `ERP.Infrastracture/DBConfiguration/Config/...` (legacy) or `{Module}.Infrastructure/Persistence/` (modules) |
 | Base entity / API envelope | `BuildingBlocks/ERP.BuildingBlocks.{Domain,Application}` |
 | Audit / cache / localization | `Modules/Platform/Platform.{Audit,Caching,Localization}/` |
@@ -59,12 +59,12 @@ Namespaces in BuildingBlocks still use `Shared.*` during transition to avoid mas
 
 - **Module owns** `IEntityTypeConfiguration<>` classes (e.g. `Accounting.Infrastructure/Persistence/TaxDbConfig.cs`).
 - **Module registers** configs via `ModuleModelConfigurationRegistry.Register(...)` inside `Add{Module}Module()` or `AddPlatformModules()`.
-- **Host owns** migrations in `ERP.API/Migrations/` until `ERP.Persistence` exists.
-- **Design-time:** `ERP.API/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI startup (required for `dotnet ef`).
+- **Host owns** migrations in `ERP.Host/Migrations/` until `ERP.Persistence` exists.
+- **Design-time:** `ERP.Host/Persistence/ApplicationDbContextFactory.cs` bootstraps module configs without full DI startup (required for `dotnet ef`).
 
 ```bash
-dotnet ef dbcontext info --project ERP.API --startup-project ERP.API
-dotnet ef migrations add <Name> --project ERP.API --startup-project ERP.API
+dotnet ef dbcontext info --project ERP.Host --startup-project ERP.Host
+dotnet ef migrations add <Name> --project ERP.Host --startup-project ERP.Host
 ```
 
 After adding a module aggregate, run a dry-run migration and confirm existing tables are not dropped (entity CLR type may change while table name stays the same).
@@ -82,9 +82,9 @@ builder.Services.AddProjectUtilities();
 
 | Layer | Must NOT reference |
 |-------|-------------------|
-| `ERP.Domain` | `ERP.Infrastracture`, `ERP.API` |
-| `ERP.Application` | `ERP.Infrastracture`, `ERP.API` |
-| `ERP.Infrastracture` | `ERP.API` |
+| `ERP.Domain` | `ERP.Infrastracture`, `ERP.Host` |
+| `ERP.Application` | `ERP.Infrastracture`, `ERP.Host` |
+| `ERP.Infrastracture` | `ERP.Host` |
 | `Shared` | `ERP.Domain`, `ERP.Application`, `ERP.Infrastracture` |
 | `ERP.BuildingBlocks.Domain` | `ERP.Domain`, `ERP.Application`, `ERP.Infrastracture` |
 | `ERP.BuildingBlocks.Application` | `ERP.Domain`, `ERP.Infrastracture` |

@@ -269,6 +269,20 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Host_project_should_not_use_legacy_ERP_API_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)
+            .Should()
+            .NotResideInNamespace("ERP.API")
+            .And()
+            .NotResideInNamespaceStartingWith("ERP.API.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Solution_should_not_contain_legacy_Compined_type_names()
     {
         var assemblies = new[]
@@ -276,7 +290,7 @@ public class NamespaceDebtTests
             typeof(ERP.Infrastructure.Utilities.InfrastructureExtensions).Assembly,
             typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly,
             typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly,
-            typeof(ERP.API.Controllers.Account.Entries.CombinedEntriesController).Assembly
+            typeof(ERP.Host.Controllers.Account.Entries.CombinedEntriesController).Assembly
         };
 
         foreach (var assembly in assemblies)

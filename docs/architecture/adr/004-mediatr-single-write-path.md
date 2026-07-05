@@ -11,7 +11,7 @@ The codebase uses both MediatR handlers and direct service methods for writes. M
 ## Decision
 
 - **Commands (writes):** Controller → `ISender.Send(command)` → Handler
-- **MediatR registration:** Single point in `ERP.API/Utilities/WebBuilderExtensions.cs`
+- **MediatR registration:** Single point in `ERP.Host/Utilities/WebBuilderExtensions.cs`
 - **Validators:** Registered from `ERP.Application` assembly
 - **Handlers:** Registered from `ERP.Infrastracture` assembly
 
