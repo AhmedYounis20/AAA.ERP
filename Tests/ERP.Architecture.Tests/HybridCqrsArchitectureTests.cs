@@ -1,3 +1,4 @@
+using Accounting.Api.Controllers.Entries;
 using Accounting.Api.Controllers.SubLedger;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
@@ -17,7 +18,9 @@ public class HybridCqrsArchitectureTests
         typeof(ColorsController),
         typeof(ImportTransactionsController),
         typeof(ExportTransactionsController),
-        typeof(InventoryTransferController)
+        typeof(InventoryTransferController),
+        typeof(EntriesController),
+        typeof(JournalEntriesController)
     ];
 
     [Fact]
@@ -58,7 +61,9 @@ public class HybridCqrsArchitectureTests
         var readServiceInterfaces = new[]
         {
             typeof(Accounting.Application.Services.ITaxReadService),
-            typeof(Inventory.Application.Services.IColorReadService)
+            typeof(Inventory.Application.Services.IColorReadService),
+            typeof(Accounting.Application.Services.Entries.IComplexEntryQueries),
+            typeof(Accounting.Application.Services.Entries.IJournalEntryQueries)
         };
 
         foreach (var readService in readServiceInterfaces)

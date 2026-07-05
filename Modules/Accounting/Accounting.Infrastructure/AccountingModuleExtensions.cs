@@ -1,12 +1,14 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
+using Accounting.Application.Services.Entries;
 using Accounting.Application.Services.Queries;
 using Accounting.Contracts.Integration;
 using Accounting.Infrastructure.Persistence;
 using Accounting.Infrastructure.Persistence.Attachments;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
+using Accounting.Infrastructure.Services.Entries;
 using Accounting.Infrastructure.Services.Queries;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories.Account.SubLeadgers;
@@ -53,11 +55,13 @@ public static class AccountingModuleExtensions
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IJournalEntryService, JournalEntryService>();
+        services.AddScoped<IJournalEntryQueries, JournalEntryQueries>();
         services.AddScoped<IPaymentEntryService, PaymentEntryService>();
         services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
+        services.AddScoped<IComplexEntryQueries, ComplexEntryQueries>();
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
         services.AddScoped<ICombinedEntryService, CombinedEntryService>();
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
