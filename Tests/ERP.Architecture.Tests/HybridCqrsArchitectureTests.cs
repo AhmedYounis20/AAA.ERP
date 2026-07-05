@@ -1,4 +1,6 @@
 using Accounting.Api.Controllers.Entries;
+using Accounting.Api.Controllers.ChartOfAccounts;
+using Accounting.Api.Controllers.Settings;
 using Accounting.Api.Controllers.SubLedger;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
@@ -24,7 +26,9 @@ public class HybridCqrsArchitectureTests
         typeof(PaymentEntriesController),
         typeof(ReceiptEntriesController),
         typeof(OpeningEntriesController),
-        typeof(CombinedEntriesController)
+        typeof(CombinedEntriesController),
+        typeof(FinancialPeriodsController),
+        typeof(ChartOfAccountsController)
     ];
 
     [Fact]
@@ -71,7 +75,9 @@ public class HybridCqrsArchitectureTests
             typeof(Accounting.Application.Services.Entries.IPaymentEntryQueries),
             typeof(Accounting.Application.Services.Entries.IReceiptEntryQueries),
             typeof(Accounting.Application.Services.Entries.IOpeningEntryQueries),
-            typeof(Accounting.Application.Services.Entries.ICombinedEntryQueries)
+            typeof(Accounting.Application.Services.Entries.ICombinedEntryQueries),
+            typeof(Accounting.Application.Services.IFinancialPeriodReadService),
+            typeof(Accounting.Application.Services.IChartOfAccountReadService)
         };
 
         foreach (var readService in readServiceInterfaces)

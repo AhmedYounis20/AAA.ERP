@@ -36,10 +36,12 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
+        services.AddScoped<IFinancialPeriodReadService, FinancialPeriodReadService>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<ICostCenterService, CostCenterService>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
+        services.AddScoped<IChartOfAccountReadService, ChartOfAccountReadService>();
         services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<IBankService, BankService>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();

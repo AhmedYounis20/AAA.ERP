@@ -1,112 +1,75 @@
 ﻿using Accounting.Application.Commands.FinancialPeriods;
+using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
-using Accounting.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Application.DTOs;
-using Accounting.Application.Dtos.Filters;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.Settings;
 
-/// <summary>CRUD API for financial periods and current-period queries.</summary>
+/// <summary>CRUD API for financial periods and current-period queries (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class FinancialPeriodsController : BaseController<FinancialPeriod, FinancialPeriodCreateCommand,
-    FinancialPeriodUpdateCommand>
+public class FinancialPeriodsController(
+    ISender sender,
+    IFinancialPeriodReadService reads,
+    IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> lookups) : ControllerBase
 {
-    IFinancialPeriodService _service;
-    IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> _baseQueryService;
-
-    public FinancialPeriodsController(IFinancialPeriodService service,
-        IBaseQueryService<FinancialPeriod, FinancialPeriodLookupDto> baseQueryService,
-        ISender sender)
-        : base(service, sender)
-    {
-        _service = service;
-        _baseQueryService = baseQueryService;
-    }
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] FinancialPeriodCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] FinancialPeriodCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        var result = await _service.GetDtos();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] FinancialPeriodFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] FinancialPeriodFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        var result = await _service.GetDto(id);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Returns default data for the next financial period.</summary>
     [HttpGet("nextDefaultdata")]
-    public virtual async Task<IActionResult> GetNextDefaultdata()
-    {
-        var result = await _service.GetNextDefaultdata();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetNextDefaultdata()
+        => this.ToResult(await reads.GetNextDefaultdata());
 
-    /// <summary>Returns the current active financial period.</summary>
     [HttpGet("GetCurrentFinancialPeriod")]
-    public virtual async Task<IActionResult> GetCurrentFinancialPeriod()
-    {
-        var result = await _service.GetCurrentFinancailPeriod();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> GetCurrentFinancialPeriod()
+        => this.ToResult(await reads.GetCurrentFinancialPeriod());
 
-    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public virtual async Task<IActionResult> GetLookUps()
+    public async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true
-            };
+                IsSuccess = true,
+                Result = await lookups.GetLookUps()
+            });
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
-            };
+            });
         }
-        return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] FinancialPeriodUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] FinancialPeriodUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new FinancialPeriodDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 }

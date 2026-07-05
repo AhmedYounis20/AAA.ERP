@@ -1,110 +1,74 @@
 ﻿using Accounting.Application.Commands.ChartOfAccounts;
+using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
-using ERP.BuildingBlocks.Application.DTOs;
-using Accounting.Application.Dtos.Filters;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.ChartOfAccounts;
 
-/// <summary>CRUD API for chart-of-account tree and code generation.</summary>
+/// <summary>CRUD API for chart-of-account tree and code generation (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class ChartOfAccountsController : BaseTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>
+[Authorize]
+public class ChartOfAccountsController(
+    ISender sender,
+    IChartOfAccountReadService reads,
+    IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> lookups) : ControllerBase
 {
-    IChartOfAccountService _service;
-    IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> _baseQueryService;
-    public ChartOfAccountsController(IChartOfAccountService service,
-    IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> baseQueryService,
-
-        ISender sender) : base(service, sender)
-    {
-        _service = service;
-        _baseQueryService = baseQueryService;
-    }
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] ChartOfAccountCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>
-    /// Gets all chart of accounts (no pagination - for backward compatibility)
-    /// </summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>
-    /// Gets paginated chart of accounts with entity-specific filtering
-    /// </summary>
-    /// <param name="filter">Filter parameters including AccountNature, IsActiveAccount, IsPostedAccount, etc.</param>
-    /// <param name="cancellationToken">Cancellation token</param>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] ChartOfAccountFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] ChartOfAccountFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] ChartOfAccountUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public virtual async Task<IActionResult> GetLookUps()
+    public async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(),
-                IsSuccess = true
-            };
+                IsSuccess = true,
+                Result = await lookups.GetLookUps()
+            });
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<ChartOfAccountLookupDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
-            };
+            });
         }
-        return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new ChartOfAccountDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
-    /// <summary>Generates a new child account code.</summary>
     [HttpGet("generateNewChildCode")]
     public async Task<IActionResult> GenerateNewChildCode([FromQuery] Guid? parentId)
-    {
-        return Ok(await _service.GenerateNewCodeForChild(parentId));
-    }
+        => Ok(await reads.GenerateNewChildCode(parentId));
 
-    /// <summary>Returns default data for the next account under a parent.</summary>
     [HttpGet("NextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)
-    {
-        return Ok(await _service.NextAccountDefaultData(parentId));
-    }
+        => Ok(await reads.GetNextAccountDefaultData(parentId));
 }
