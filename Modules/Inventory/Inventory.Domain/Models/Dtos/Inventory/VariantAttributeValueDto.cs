@@ -8,9 +8,9 @@ public class VariantAttributeValueDto
     public Guid VariantId { get; set; }
     public Guid AttributeDefinitionId { get; set; }
     public Guid AttributeValueId { get; set; }
-    
+
     // Navigation properties
-    public AttributeDefinitionDto? AttributeDefinition { get; set; } 
+    public AttributeDefinitionDto? AttributeDefinition { get; set; }
     public AttributeValueDto? AttributeValue { get; set; }
     public string? AttributeValueHexCode { get; set; }
     public int? AttributeValueSortOrder { get; set; }

@@ -6,8 +6,9 @@ using ERP.BuildingBlocks.Application.Constants;
 namespace Inventory.Application.Validators.Items;
 
 public class ItemPackingUnitValidator : AbstractValidator<ItemPackingUnitDto>
-{ 
-    public ItemPackingUnitValidator() {
+{
+    public ItemPackingUnitValidator()
+    {
 
         _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage(ValidationMessages.PackingUnitIsRequired2);
         _ = RuleFor(e => e.AverageCostPrice).GreaterThan(0).WithMessage(ValidationMessages.AverageCostIsRequired);

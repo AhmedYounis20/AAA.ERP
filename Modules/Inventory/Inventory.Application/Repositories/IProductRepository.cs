@@ -4,9 +4,9 @@ using Inventory.Domain.Models.Dtos;
 
 namespace Inventory.Application.Repositories
 {
-/// <summary>
-/// Repository contract for product persistence.
-/// </summary>
+    /// <summary>
+    /// Repository contract for product persistence.
+    /// </summary>
     public interface IProductRepository : IBaseTreeSettingRepository<Product>
     {
         Task<IEnumerable<ProductDto>> GetDtos();

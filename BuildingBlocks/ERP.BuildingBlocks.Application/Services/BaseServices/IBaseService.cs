@@ -17,7 +17,7 @@ namespace ERP.BuildingBlocks.Application.Services.BaseServices
 
         public Task<ApiResponse<TEntity>> ReadById(Guid id);
         public Task<ApiResponse<IEnumerable<TEntity>>> ReadAll();
-        
+
         /// <summary>
         /// Gets paginated results with filtering support
         /// </summary>

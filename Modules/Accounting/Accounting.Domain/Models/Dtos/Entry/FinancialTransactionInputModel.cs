@@ -10,7 +10,7 @@ public class ComplexFinancialTransactionDto
     public Guid CreditAccountId { get; set; }// chart  of account in financial with ComplementId  
     public decimal Amount { get; set; }
     public string? Notes { get; set; }
-    public AccountNature AccountNature { get; set; }  
+    public AccountNature AccountNature { get; set; }
     public PaymentType PaymentType { get; set; }
 
     public Guid? ChequeBankId { get; set; }
@@ -26,10 +26,10 @@ public class ComplexFinancialTransactionDto
     public string? PromissoryNumber { get; set; }
     public string? PromissoryIdentityCard { get; set; }
     public DateTime? PromissoryCollectionDate { get; set; }
-    
+
     public string? WireTransferReferenceNumber { get; set; }
     public string? AtmTransferReferenceNumber { get; set; }
-    
+
     public string? CreditCardLastDigits { get; set; }
     public bool IsPaymentTransaction { get; set; } = true;
 

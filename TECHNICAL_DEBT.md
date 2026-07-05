@@ -70,12 +70,14 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 - Some use `Id` suffix, some don't
 - Mix of `Dto` and `DTO` suffixes
 
+**Status:** Partial — Identity auth DTOs normalized to `*Dto` (Phase 6). BuildingBlocks `DTOs` folder namespace unchanged (no wire impact).
+
 ### 8. Unused Using Statements
-**Status:** Partial — `dotnet format` applied to touched projects (July 2026). Full-solution cleanup deferred.
+**Status:** **Done** (Phase 6). Full-solution `dotnet format` applied.
 
 ### 9. Consider Adding:
-- FluentValidation rule sets for different scenarios *(Phase 5 backlog)*
-- More specific exception types *(Phase 5 backlog)*
+- FluentValidation rule sets for different scenarios — **Partial** (Phase 6): shared `EntryHeaderRulesValidator` for all entry commands
+- More specific exception types — **Done** (Phase 6): `ConflictException`, `ForbiddenException` wired in `CustomExceptionHandler`
 - Request/Response logging middleware *(covered by Serilog + `LoggingBehavior`; no additional middleware required)*
 
 ### 10. Localization resource parity

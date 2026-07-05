@@ -11,4 +11,4 @@ public interface IInventoryTransferRepository : IBaseRepository<InventoryTransfe
     /// <summary>Gets with details.</summary>
     Task<InventoryTransfer?> GetWithDetails(Guid id);
     Task<IEnumerable<InventoryTransfer>> GetByStatus(InventoryTransferStatus status);
-} 
+}

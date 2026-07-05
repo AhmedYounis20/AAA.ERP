@@ -67,7 +67,7 @@ public class CacheService : ICacheService
 
             _memoryCache.Set(key, value, options);
             _cacheKeys.TryAdd(key, 0);
-            
+
             _logger.LogDebug("Cache set for key: {Key}, expiration: {Expiration}", key, expiration ?? CacheDurations.Medium);
         }
         catch (Exception ex)

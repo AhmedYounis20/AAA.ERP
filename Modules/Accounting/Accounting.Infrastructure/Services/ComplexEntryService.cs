@@ -79,10 +79,10 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
         {
             transaction.Id = Guid.NewGuid();
             transaction.ComplementId = Guid.NewGuid();
-            
+
             var debitTransaction = transaction.Adapt<FinancialTransaction>();
             var creditTransaction = transaction.Adapt<FinancialTransaction>();
-            
+
             debitTransaction.ChartOfAccountId = transaction.DebitAccountId;
             debitTransaction.Id = transaction.Id.Equals(Guid.Empty) ? Guid.NewGuid() : transaction.Id;
             creditTransaction.Id = transaction.ComplementId.Equals(Guid.Empty) ? Guid.NewGuid() : transaction.ComplementId;

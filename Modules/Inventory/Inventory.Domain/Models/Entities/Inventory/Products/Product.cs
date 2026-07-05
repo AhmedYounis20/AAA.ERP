@@ -25,14 +25,14 @@ public class Product : BaseTreeSettingEntity<Product>
     public decimal ConditionalDiscount { get; set; }
     public decimal DefaultDiscount { get; set; }
     public DiscountType DefaultDiscountType { get; set; }
-    public bool IsDiscountBasedOnSellingPrice { get;set; }
-    
+    public bool IsDiscountBasedOnSellingPrice { get; set; }
+
     public bool IsSales { get; set; }
     public bool IsPurchase { get; set; }
     public string? Model { get; set; }
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }
-        
+
     // Navigation properties
     public List<ProductCode> ProductCodes { get; set; } = [];
     public List<ProductSupplier> ProductSuppliers { get; set; } = [];
@@ -43,7 +43,7 @@ public class Product : BaseTreeSettingEntity<Product>
     public List<ProductAttachment> ProductAttachments { get; set; } = [];
     public List<Variant> Variants { get; set; } = [];
     public List<ProductAttributeDefinition> ProductAttributeDefinitions { get; set; } = [];
-    
+
     // Template properties for variants
     public List<ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnit> ProductPackingUnits { get; set; } = [];

@@ -5,7 +5,7 @@ namespace Accounting.Domain.Utility;
 public static class SD
 {
     public const string Role_Admin = "ADMIN";
-    public const string Role_Customer  = "CUSTOMER";
+    public const string Role_Customer = "CUSTOMER";
     public const string StockUnderTransfer_Branch = "00000000-0000-0000-0000-000000000001";
     public const string BankChartAccountId = "0aecd366-95fd-47b8-8516-08dc3dfcb068";
     public const string CustomerChartOfAccountId = "a8819d15-bae1-44ab-850d-08dc3dfcb068";
@@ -15,7 +15,7 @@ public static class SD
     public const string AccumlatedDepreciationId = "5b02732c-bd1f-4c9f-852a-08dc3dfcb068";
     public const string ExpensesDepreciationId = "f17c4a2d-76b2-4bb5-853d-08dc3dfcb068";
 
-    public static readonly Dictionary<FixedAssetType, string> FixedAssetsIds  = new Dictionary<FixedAssetType, string>
+    public static readonly Dictionary<FixedAssetType, string> FixedAssetsIds = new Dictionary<FixedAssetType, string>
     {
         { FixedAssetType.Lands, "2448c162-2329-418f-8522-08dc3dfcb068" },
         { FixedAssetType.Buildings, "66d631a5-021d-4cb5-8523-08dc3dfcb068" },
@@ -26,8 +26,8 @@ public static class SD
         { FixedAssetType.VehiclesAndTransportationItems, "8f2a2956-a327-4ec0-8528-08dc3dfcb068" },
         { FixedAssetType.Tools, "97a25e9d-dff3-4412-8529-08dc3dfcb068" },
     };
-    
-    public static  Dictionary<FixedAssetType, string[]> FixedAssetsDepreciationDetails  = new Dictionary<FixedAssetType, string[]>
+
+    public static Dictionary<FixedAssetType, string[]> FixedAssetsDepreciationDetails = new Dictionary<FixedAssetType, string[]>
     {
         { FixedAssetType.Lands,new string[]{"",""} },
         { FixedAssetType.Buildings, new string[]{"86c0ab17-14f7-45cc-852b-08dc3dfcb068","d45672f5-5469-4349-8549-08dc3dfcb068"} },

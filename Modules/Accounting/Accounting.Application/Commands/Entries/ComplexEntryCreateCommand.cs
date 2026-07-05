@@ -1,12 +1,13 @@
+using Accounting.Application.Commands.Common;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Domain.Models.Entities.Entries;
 using System.Text.Json.Serialization;
 
 namespace Accounting.Application.Commands.Entries;
 
-public class ComplexEntryCreateCommand : BaseCreateCommand<Entry>
+public class ComplexEntryCreateCommand : BaseCreateCommand<Entry>, IEntryHeaderCommand
 {
     [JsonIgnore]
     public EntryType Type { get; set; } = EntryType.Combined;

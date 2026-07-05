@@ -10,11 +10,11 @@ public class ProductPackingUnitSellingPriceDbConfig : IEntityTypeConfiguration<P
     {
         builder.ToTable("ProductPackingUnitSellingPrices", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
-        
+
         builder.Property(e => e.Amount)
             .HasColumnType("decimal(18,2)")
             .IsRequired();
-        
+
         builder.HasOne(e => e.ProductPackingUnit)
             .WithMany(p => p.ProductPackingUnitSellingPrices)
             .HasForeignKey(e => e.ProductPackingUnitId)

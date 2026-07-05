@@ -24,8 +24,8 @@ public class ItemDto
     public string? Version { get; set; }
     public string? CountryOfOrigin { get; set; }
     public List<Guid> SuppliersIds { get; set; } = [];
-    public List<string> BarCodes { get => ItemCodes.Where(e => e.CodeType == ItemCodeType.BarCode).Select(e=>e.Code).ToList(); }
-    [JsonIgnore] 
+    public List<string> BarCodes { get => ItemCodes.Where(e => e.CodeType == ItemCodeType.BarCode).Select(e => e.Code).ToList(); }
+    [JsonIgnore]
     public List<ItemCode> ItemCodes { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ItemSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];

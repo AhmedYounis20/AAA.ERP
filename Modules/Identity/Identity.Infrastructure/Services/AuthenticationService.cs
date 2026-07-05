@@ -60,9 +60,9 @@ public class AuthenticationService : IAuthenticationService
         return Convert.ToBase64String(randomNumber);
     }
 
-    public async Task<ApiResponse<LoginResponseDTO>> Login(LoginRequestDTO loginRequestDTO)
+    public async Task<ApiResponse<LoginResponseDto>> Login(LoginRequestDto loginRequestDTO)
     {
-        var response = new ApiResponse<LoginResponseDTO>();
+        var response = new ApiResponse<LoginResponseDto>();
 
         try
         {
@@ -99,7 +99,7 @@ public class AuthenticationService : IAuthenticationService
             _db.ApplicationUsers.Update(userFromDb);
             await _db.SaveChangesAsync();
 
-            var loginResponse = new LoginResponseDTO
+            var loginResponse = new LoginResponseDto
             {
                 Email = userFromDb.Email,
                 AccessToken = accessToken,
@@ -120,7 +120,7 @@ public class AuthenticationService : IAuthenticationService
         return response;
     }
 
-    public async Task<ApiResponse> Register(RegisterRequestDTO registerRequestDTO)
+    public async Task<ApiResponse> Register(RegisterRequestDto registerRequestDTO)
     {
         var response = new ApiResponse
         {

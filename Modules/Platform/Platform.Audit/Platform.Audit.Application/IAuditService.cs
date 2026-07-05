@@ -13,22 +13,22 @@ public interface IAuditService
     /// Creates an audit log entry
     /// </summary>
     Task LogAsync(AuditLog auditLog);
-    
+
     /// <summary>
     /// Creates an audit log entry for entity creation
     /// </summary>
     Task LogCreateAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null) where TEntity : BaseEntity;
-    
+
     /// <summary>
     /// Creates an audit log entry for entity update
     /// </summary>
     Task LogUpdateAsync<TEntity>(TEntity oldEntity, TEntity newEntity, Guid? userId = null, string? userName = null) where TEntity : BaseEntity;
-    
+
     /// <summary>
     /// Creates an audit log entry for entity deletion
     /// </summary>
     Task LogDeleteAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null) where TEntity : BaseEntity;
-    
+
     /// <summary>
     /// Gets audit logs for a specific entity
     /// </summary>
@@ -38,14 +38,14 @@ public interface IAuditService
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets audit logs with filtering
     /// </summary>
     Task<ApiResponse<PaginatedResult<AuditLog>>> GetAuditLogs(
         AuditLogFilterDto filter,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Gets a specific audit log by ID
     /// </summary>
@@ -61,27 +61,27 @@ public class AuditLogFilterDto : BaseFilterDto
     /// Filter by entity type
     /// </summary>
     public string? EntityType { get; set; }
-    
+
     /// <summary>
     /// Filter by entity ID
     /// </summary>
     public Guid? EntityId { get; set; }
-    
+
     /// <summary>
     /// Filter by action type
     /// </summary>
     public AuditAction? Action { get; set; }
-    
+
     /// <summary>
     /// Filter by user ID
     /// </summary>
     public Guid? UserId { get; set; }
-    
+
     /// <summary>
     /// Filter by timestamp from
     /// </summary>
     public DateTime? TimestampFrom { get; set; }
-    
+
     /// <summary>
     /// Filter by timestamp to
     /// </summary>

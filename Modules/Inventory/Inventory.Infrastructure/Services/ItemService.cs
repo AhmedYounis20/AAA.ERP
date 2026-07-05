@@ -81,7 +81,7 @@ public class ItemService :
 
         // Start transaction for Domain + SubDomains creation
         await _unitOfWork.BeginTransactionAsync();
-        
+
         try
         {
             Item item = new Item
@@ -155,11 +155,11 @@ public class ItemService :
                 {
                     // Rollback transaction if SubDomain creation fails
                     await _unitOfWork.RollbackAsync();
-                    return new ApiResponse<Item> 
-                    { 
-                        IsSuccess = false, 
-                        StatusCode = HttpStatusCode.InternalServerError, 
-                        Errors = subDomainResult.Errors 
+                    return new ApiResponse<Item>
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.InternalServerError,
+                        Errors = subDomainResult.Errors
                     };
                 }
             }
@@ -255,7 +255,7 @@ public class ItemService :
 
         // Start transaction for Domain + SubDomains update
         await _unitOfWork.BeginTransactionAsync();
-        
+
         try
         {
             Item item = validationResult.entity;
@@ -319,18 +319,18 @@ public class ItemService :
                 {
                     // Rollback transaction if SubDomain creation fails
                     await _unitOfWork.RollbackAsync();
-                    return new ApiResponse<Item> 
-                    { 
-                        IsSuccess = false, 
-                        StatusCode = HttpStatusCode.InternalServerError, 
-                        Errors = subDomainResult.Errors 
+                    return new ApiResponse<Item>
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.InternalServerError,
+                        Errors = subDomainResult.Errors
                     };
                 }
             }
 
             // Commit transaction - everything succeeded
             await _unitOfWork.CommitAsync();
-            
+
             item.ItemCodes = [];
             item.ItemManufacturerCompanies = [];
             item.ItemSuppliers = [];
@@ -356,7 +356,7 @@ public class ItemService :
             SupplierId = e,
             CreatedAt = DateTime.Now,
             ModifiedAt = DateTime.Now,
-        }).Where(a=>!existedItemSuppliers.Any(e=>e.SupplierId ==a.SupplierId)).ToList();
+        }).Where(a => !existedItemSuppliers.Any(e => e.SupplierId == a.SupplierId)).ToList();
 
         if (itemSupplierToRemove != null && itemSupplierToRemove.Any())
             await _itemSupplierRepository.Delete(itemSupplierToRemove);
@@ -458,14 +458,14 @@ public class ItemService :
     {
         List<ItemSellingPriceDiscount> existedItemSuppliers = await _itemSellingPriceDiscountRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSellingPriceDiscount> itemSellingPriceDiscountsToAdd = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
-            {
-                ItemId = item.Id,
-                SellingPriceId = e.SellingPriceId,
-                Discount = e.Discount,
-                DiscountType = e.DiscountType,
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now,
-        }).Where(e=> !existedItemSuppliers.Any(old=>old.SellingPriceId == e.SellingPriceId)).ToList();
+        {
+            ItemId = item.Id,
+            SellingPriceId = e.SellingPriceId,
+            Discount = e.Discount,
+            DiscountType = e.DiscountType,
+            CreatedAt = DateTime.Now,
+            ModifiedAt = DateTime.Now,
+        }).Where(e => !existedItemSuppliers.Any(old => old.SellingPriceId == e.SellingPriceId)).ToList();
 
         List<ItemSellingPriceDiscount> itemSellingPricesToUpdate = [];
         List<ItemSellingPriceDiscount> itemSellingPricesToRemove = [];
@@ -515,10 +515,10 @@ public class ItemService :
     {
         List<ItemCode> existedItemBarCodes = await _codeRepossitory.GetQuery().Where(e => e.ItemId == item.Id && e.CodeType == ItemCodeType.BarCode).ToListAsync();
         List<ItemCode> itemBarCodesToRemove = existedItemBarCodes.Where(e => !command.BarCodes.Contains(e.Code)).ToList();
-        
+
         // Get existing barcode codes for comparison
         var existingBarcodeCodes = existedItemBarCodes.Select(e => e.Code).ToList();
-        
+
         // Only add barcodes that don't already exist for this item
         List<ItemCode> itemBarCodesToAdd = command.BarCodes
             .Where(barcode => !existingBarcodeCodes.Contains(barcode))
@@ -717,7 +717,7 @@ public class ItemService :
     public async Task<ApiResponse<ItemDto?>> GetItemDtoById(Guid id)
     {
         var item = await _repository.GetDtoById(id);
-        
+
         // If this is a Domain item, get the existing SubDomain combinations
         if (item != null && item.NodeType == NodeType.Domain)
         {
@@ -735,7 +735,7 @@ public class ItemService :
             // Add the combinations to the item DTO
             item.SubDomainCombinations = subDomainCombinations;
         }
-        
+
         return new ApiResponse<ItemDto?>
         {
             StatusCode = item == null ? HttpStatusCode.NotFound : HttpStatusCode.OK,
@@ -758,7 +758,7 @@ public class ItemService :
             CreatedAt = e.CreatedAt,
             ModifiedAt = e.ModifiedAt,
             ItemCodes = e.ItemCodes
-        }).OrderBy(e=> e.Code).ToList();
+        }).OrderBy(e => e.Code).ToList();
         return new ApiResponse<List<ItemDto>>
         {
             IsSuccess = true,
@@ -769,7 +769,7 @@ public class ItemService :
     public async Task<ApiResponse<IEnumerable<ItemDto>>> GetVariants()
     {
         var items = await _repository.GetVariants();
-        
+
         return new ApiResponse<IEnumerable<ItemDto>>
         {
             IsSuccess = true,
@@ -794,13 +794,13 @@ public class ItemService :
             }
 
             var createdSubDomains = new List<Item>();
-            
+
             foreach (var combination in command.SubDomainCombinations)
             {
                 // Check if SubDomain already exists
                 var existingSubDomain = await _repository.GetQuery()
-                    .Where(i => i.ParentId == domainItemId && 
-                               i.ColorId == combination.ColorId && 
+                    .Where(i => i.ParentId == domainItemId &&
+                               i.ColorId == combination.ColorId &&
                                i.SizeId == combination.SizeId)
                     .FirstOrDefaultAsync();
 
@@ -810,7 +810,7 @@ public class ItemService :
                 // Create SubDomain name: ItemName + ColorCode + SizeCode
                 var color = await _colorRepository.Get(combination.ColorId);
                 var size = await _sizeRepository.Get(combination.SizeId);
-                
+
                 var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
                 var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";
 
@@ -840,7 +840,7 @@ public class ItemService :
                     ColorId = combination.ColorId,
                     SizeId = combination.SizeId,
                     ApplyDomainChanges = combination.ApplyDomainChanges,
-                    
+
                     // Copy properties from domain
                     ItemType = domainItem.ItemType,
                     MaxDiscount = domainItem.MaxDiscount,
@@ -851,7 +851,7 @@ public class ItemService :
                     Model = domainItem.Model,
                     Version = domainItem.Version,
                     CountryOfOrigin = domainItem.CountryOfOrigin,
-                    
+
                     // Initialize collections with generated code
                     ItemCodes = [new ItemCode
                     {
@@ -921,7 +921,7 @@ public class ItemService :
                 {
                     var color = await _colorRepository.Get(subDomain.ColorId);
                     var size = await _sizeRepository.Get(subDomain.SizeId);
-                
+
                     var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
                     var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";
 

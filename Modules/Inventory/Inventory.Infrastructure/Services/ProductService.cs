@@ -135,7 +135,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             // Prepare navigation properties using helper methods
             product.ProductCodes = CreateProductCodes(command);
-            
+
             if (command.NodeType == NodeType.Domain)
             {
                 product.Model = command.Model;
@@ -157,7 +157,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 product.ProductPurchaseTaxes = CreateProductPurchaseTaxes(command);
                 product.ProductCostCenters = CreateProductCostCenters(command);
                 product.ProductManufacturerCompanies = CreateProductManufacturerCompanies(command);
-                product.ProductPackingUnits =  CreateProductPackingUnits(command);
+                product.ProductPackingUnits = CreateProductPackingUnits(command);
                 product.InventoryThresholdScope = command.InventoryThresholdScope;
                 product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
                 product.InventoryThresholds = CreateProductInventoryThresholds(command);
@@ -174,7 +174,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             if (command.ProductAttachments != null && command.ProductAttachments.Any())
             {
                 var filteredAttachments = command.ProductAttachments.Where(e => command.NodeType == NodeType.Domain || (e.AttachmentType == AttachmentType.Picture && e.IsPrimary));
-                product.ProductAttachments =  CreateProductAttachment(filteredAttachments);
+                product.ProductAttachments = CreateProductAttachment(filteredAttachments);
             }
 
             // Prepare variants for Domain products (no database hits - prepared in memory)
@@ -250,14 +250,14 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             }
         }
 
-        return  productCodes;
+        return productCodes;
     }
 
     private List<ProductSellingPriceDiscount> CreatProductSellingPriceDiscounts(ProductCreateCommand command)
     {
         if (command.IsDiscountBasedOnSellingPrice && command.SellingPriceDiscounts?.Any() == true)
         {
-            return  command.SellingPriceDiscounts.Select(e => new ProductSellingPriceDiscount
+            return command.SellingPriceDiscounts.Select(e => new ProductSellingPriceDiscount
             {
                 SellingPriceId = e.SellingPriceId,
                 Discount = e.Discount,
@@ -335,7 +335,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     {
         if (command.ManufacturerCompaniesIds?.Any() == true)
         {
-           return command.ManufacturerCompaniesIds.Select(companyId => new ProductManufacturerCompany
+            return command.ManufacturerCompaniesIds.Select(companyId => new ProductManufacturerCompany
             {
                 ManufacturerCompanyId = companyId,
                 CreatedAt = DateTime.Now,
@@ -380,7 +380,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (productAttributeDefinitions?.Any() == true)
         {
             return productAttributeDefinitions.Select(attr => new ProductAttributeDefinition
-            { 
+            {
                 AttributeDefinitionId = attr.AttributeDefinitionId,
                 IsVariant = attr.IsVariant,
                 CreatedAt = DateTime.Now,
@@ -416,7 +416,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 attachmentData.Add((attachment, productAttachmentDto));
             }
         }
-        
+
         // Now create ProductAttachment entities with the attachment IDs
         foreach (var (attachment, productAttachmentDto) in attachmentData)
         {
@@ -459,7 +459,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         {
             Product product = validationResult.entity;
             // Restrict SubDomain updates
-            
+
             product.Name = command.Name;
             product.NameSecondLanguage = command.NameSecondLanguage;
             if (product.NodeType == NodeType.Domain)
@@ -484,8 +484,8 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 await UpdateProductPurchaseTaxes(command.PurchaseTaxIds, product.Id);
                 await UpdateProductCostCenters(product.Id, command.CostCenters);
                 await UpdateProductManufacturerCompanies(command.ManufacturerCompaniesIds, product.Id);
-                await UpdateProductSellingPriceDiscounts(product.Id,command.SellingPriceDiscounts);
-                await UpdateProductPackingUnits(product.Id,command.PackingUnits);
+                await UpdateProductSellingPriceDiscounts(product.Id, command.SellingPriceDiscounts);
+                await UpdateProductPackingUnits(product.Id, command.PackingUnits);
                 product.InventoryThresholdScope = command.InventoryThresholdScope;
                 product.InventoryThresholdBranchId = command.InventoryThresholdBranchId;
                 await UpdateProductInventoryThresholds(product.Id, command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
@@ -496,9 +496,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     await UpdateProductAttributes(product.Id, command.ProductAttributeDefinitions);
                 }
             }
-            
+
             // Handle item attachments update
-            await UpdateProductAttachments(command.ProductAttachments.Where(e=> command.NodeType == NodeType.Domain ||(e.AttachmentType == AttachmentType.Picture && e.IsPrimary) ), product.Id);
+            await UpdateProductAttachments(command.ProductAttachments.Where(e => command.NodeType == NodeType.Domain || (e.AttachmentType == AttachmentType.Picture && e.IsPrimary)), product.Id);
 
             await _repository.Update(product);
 
@@ -566,14 +566,14 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     t.VariantId != null && variantIds.Contains(t.VariantId.Value));
             }
             var attachmentsIds = await _productAttachmentRepository.GetQuery().Where(e => e.ProductId == id)
-                .Select(e=>e.AttachmentId).ToListAsync();
+                .Select(e => e.AttachmentId).ToListAsync();
             // Delete Product (cascades to ProductAttachments, Variants, etc.)
             await _repository.Delete(id);
 
             // Now safely delete orphaned Attachments (no constraint conflicts)
 
-            await _attachmentRepository.ExecuteDeleteAsync(e=> attachmentsIds.Contains(e.Id));
-            
+            await _attachmentRepository.ExecuteDeleteAsync(e => attachmentsIds.Contains(e.Id));
+
             await _unitOfWork.CommitAsync();
 
             return new ApiResponse<Product>()
@@ -603,18 +603,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             .OrderByDescending(e => e.CreatedAt)
             .Select(e => e.Code)
             .FirstOrDefaultAsync();
-        
+
         var lastSibling = await _repository.GetQuery()
             .Where(e => e.ParentId == parentId)
             .OrderByDescending(e => e.CreatedAt)
             .FirstOrDefaultAsync();
-        
-        var lastSiblingCode = lastSibling == null ? string.Empty : 
+
+        var lastSiblingCode = lastSibling == null ? string.Empty :
             await _codeRepository.GetQuery()
                 .Where(e => e.ProductId == lastSibling.Id && e.CodeType == ProductCodeType.Code)
                 .Select(e => e.Code)
                 .FirstOrDefaultAsync();
-        
+
         string code = GetNextChildCode(lastSiblingCode ?? string.Empty, parent ?? string.Empty);
         return new ApiResponse<string>
         {
@@ -689,11 +689,11 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
         return lastSiblingCode + "001";
     }
-    
+
     private async Task CreateProductAttributes(Guid productId, List<ProductAttributeDefinitionDto> productAttributeDefinitions)
     {
         var productAttributeDefinitionRepository = _productAttributeDefinitionRepository;
-        
+
         foreach (var attr in productAttributeDefinitions)
         {
             var productAttributeDefinition = new ProductAttributeDefinition
@@ -704,7 +704,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now
             };
-        
+
             await productAttributeDefinitionRepository.Add(productAttributeDefinition);
         }
     }
@@ -712,22 +712,22 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private async Task UpdateProductAttributes(Guid productId, List<ProductAttributeDefinitionDto> productAttributeDefinitions)
     {
         var productAttributeDefinitionRepository = _productAttributeDefinitionRepository;
-        
+
         // Remove existing attributes
         var existingAttributes = await productAttributeDefinitionRepository.GetQuery()
             .Where(pa => pa.ProductId == productId)
             .ToListAsync();
-        
+
         foreach (var attr in existingAttributes)
         {
             await productAttributeDefinitionRepository.Delete(attr);
         }
-        
+
         // Add new attributes
         await CreateProductAttributes(productId, productAttributeDefinitions);
     }
 
-    private  async Task CreateProductSellingPriceDiscounts(List<ProductSellingPriceDiscountDto> command,Guid productId)
+    private async Task CreateProductSellingPriceDiscounts(List<ProductSellingPriceDiscountDto> command, Guid productId)
     {
         List<ProductSellingPriceDiscount> discounts = command.Select(e => new ProductSellingPriceDiscount
         {
@@ -738,14 +738,14 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             CreatedAt = DateTime.Now,
             ModifiedAt = DateTime.Now,
         }).ToList();
-        
+
         await _productSellingPriceDiscountRepository.Add(discounts);
     }
 
     private async Task UpdateProductPackingUnits(Guid productId, List<ProductPackingUnitDto>? productPackingUnits)
     {
         var productPackingUnitRepository = _productPackingUnitRepository;
-        
+
         // Get existing packing units
         var existingPackingUnits = await productPackingUnitRepository.GetQuery()
             .Where(ppu => ppu.ProductId == productId)
@@ -779,7 +779,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         foreach (var packingUnitDto in productPackingUnits)
         {
             var existingPackingUnit = existingPackingUnits.FirstOrDefault(e => e.PackingUnitId == packingUnitDto.PackingUnitId);
-            
+
             if (existingPackingUnit == null)
             {
                 // Add new packing unit
@@ -858,7 +858,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         foreach (var priceDto in packingUnitDto.SellingPrices)
         {
             var existingPrice = existingPrices.FirstOrDefault(e => e.SellingPriceId == priceDto.SellingPriceId);
-            
+
             if (existingPrice == null)
             {
                 // Add new price
@@ -1125,7 +1125,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         if (addedCodes.Any())
             await _codeRepository.Add(addedCodes);
     }
-    
+
     private async Task UpdateProductSuppliers(List<Guid> suppliersIds, Guid productId)
     {
         var repository = _productSupplierRepository;
@@ -1258,15 +1258,15 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var productAttachments = new List<ProductAttachment>();
         foreach (var productAttachmentDto in productAttachmentDtos)
         {
-        
+
             var attachmentDto = productAttachmentDto.Attachment;
-        
+
             if (attachmentDto != null)
             {
                 var productAttachment = new ProductAttachment
                 {
                     ProductId = productId,
-                    Attachment= new Attachment
+                    Attachment = new Attachment
                     {
                         FileName = attachmentDto.FileName,
                         FileContentType = attachmentDto.ContentType,
@@ -1281,12 +1281,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     CreatedAt = DateTime.Now,
                     ModifiedAt = DateTime.Now
                 };
-        
+
                 productAttachments.Add(productAttachment);
             }
         }
-        
-        if(productAttachments.Any())
+
+        if (productAttachments.Any())
             await _productAttachmentRepository.Add(productAttachments);
     }
 
@@ -1294,12 +1294,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     {
         var productAttachments = await _productAttachmentRepository.GetQuery().Where(e => e.ProductId == productId).ToListAsync();
         var attachmentIds = productAttachments.Select(e => e.AttachmentId);
-        if(productAttachments.Any())
+        if (productAttachments.Any())
             await _productAttachmentRepository.Delete(productAttachments);
-        if(attachmentIds?.Any() == true)
-            await _attachmentRepository.ExecuteDeleteAsync(e=> attachmentIds.Contains(e.Id));
+        if (attachmentIds?.Any() == true)
+            await _attachmentRepository.ExecuteDeleteAsync(e => attachmentIds.Contains(e.Id));
     }
-    
+
     private async Task<ApiResponse<bool>> UpdateProductVariants(Product product, ProductUpdateCommand command)
     {
         try
@@ -1365,7 +1365,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 defaultVariant.IsSales = product.IsSales;
                 defaultVariant.IsPurchase = product.IsPurchase;
                 defaultVariant.IsArchived = effectiveVariantCombinations?.Any() == true;
-                
+
                 // Update suppliers
                 await UpdateVariantSuppliers(command.SuppliersIds, defaultVariant.Id);
 
@@ -1415,7 +1415,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 if (newCombinations.Contains(variantKey))
                 {
                     bool variantNeedsUpdate = false;
-                    
+
                     // This variant matches a new combination - unarchive if archived
                     if (variant.IsArchived)
                     {
@@ -1424,9 +1424,9 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     }
 
                     // Find the matching combination from command to check ApplyProductChanges
-                    var matchingCombination = effectiveVariantCombinations?.FirstOrDefault(c => 
+                    var matchingCombination = effectiveVariantCombinations?.FirstOrDefault(c =>
                         GetCombinationKey(c.AttributeValues) == variantKey);
-                    
+
                     if (matchingCombination != null)
                     {
                         // Handle ApplyProductChanges flag
@@ -1439,14 +1439,14 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                                 variant.ApplyProductChanges = true;
                                 variantNeedsUpdate = true;
                             }
-                            
+
                             // Apply product changes to this variant
                             variant.MaxDiscount = product.MaxDiscount;
                             variant.ConditionalDiscount = product.ConditionalDiscount;
                             variant.DefaultDiscount = product.DefaultDiscount;
                             variant.DefaultDiscountType = product.DefaultDiscountType;
                             variant.IsDiscountBasedOnSellingPrice = product.IsDiscountBasedOnSellingPrice;
-                            variant.IsSales= product.IsSales;
+                            variant.IsSales = product.IsSales;
                             variant.IsPurchase = product.IsPurchase;
                             variant.Model = product.Model;
                             variant.Version = product.Version;
@@ -1565,18 +1565,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 }
                 variantNumber = maxNumber + 1;
             }
-            
+
             var newVariantCommands = new List<VariantCreateCommand>();
 
             foreach (var combination in effectiveVariantCombinations ?? [])
             {
                 var combinationKey = GetCombinationKey(combination.AttributeValues);
-                
+
                 // Check if this combination already exists (not in processed combinations means it's new)
                 if (!processedCombinations.Contains(combinationKey))
                 {
                     var variantCode = $"{command.Code}-{variantNumber}";
-                    
+
                     var variantCreateCommand = new VariantCreateCommand
                     {
                         Name = combination.Name,
@@ -1666,12 +1666,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var oldSuppliers = await _variantSupplierRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
-        
+
         if (oldSuppliers.Any())
         {
             await _variantSupplierRepository.Delete(oldSuppliers);
         }
-        
+
         var variantSuppliers = new List<VariantSupplier>();
         foreach (var supplierId in suppliersIds)
         {
@@ -1684,7 +1684,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     ModifiedAt = DateTime.Now,
                 });
         }
-        
+
         if (variantSuppliers.Any())
         {
             await _variantSupplierRepository.Add(variantSuppliers);
@@ -1740,12 +1740,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var oldCompanies = await _variantManufacturerCompanyRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
-        
+
         if (oldCompanies.Any())
         {
             await _variantManufacturerCompanyRepository.Delete(oldCompanies);
         }
-        
+
         var variantManufacturerCompanies = new List<VariantManufacturerCompany>();
         foreach (var companyId in companiesIds)
         {
@@ -1758,7 +1758,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                     ModifiedAt = DateTime.Now,
                 });
         }
-        
+
         if (variantManufacturerCompanies.Any())
         {
             await _variantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
@@ -1835,17 +1835,17 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private async Task UpdateVariantSellingPriceDiscounts(List<ProductSellingPriceDiscountDto> productSellingPriceDiscounts, Guid variantId)
     {
         var variantSellingPriceDiscountRepository = _variantSellingPriceDiscountRepository;
-        
+
         // Remove existing discounts
         var existingDiscounts = await variantSellingPriceDiscountRepository.GetQuery()
             .Where(psd => psd.VariantId == variantId)
             .ToListAsync();
-        
+
         if (existingDiscounts.Any())
         {
             await variantSellingPriceDiscountRepository.Delete(existingDiscounts);
         }
-        
+
         // Add new discounts
         if (productSellingPriceDiscounts?.Any() == true)
         {
@@ -1858,7 +1858,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
             }).ToList();
-            
+
             await variantSellingPriceDiscountRepository.Add(discounts);
         }
     }
@@ -1866,7 +1866,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private async Task UpdateVariantPackingUnitsFromProduct(List<ProductPackingUnitDto>? productPackingUnits, Guid variantId)
     {
         var variantPackingUnitRepository = _variantPackingUnitRepository;
-        
+
         // Get existing variant packing units
         var existingPackingUnits = await variantPackingUnitRepository.GetQuery()
             .Where(vpu => vpu.VariantId == variantId)
@@ -1900,7 +1900,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         foreach (var packingUnitDto in productPackingUnits)
         {
             var existingPackingUnit = existingPackingUnits.FirstOrDefault(e => e.PackingUnitId == packingUnitDto.PackingUnitId);
-            
+
             if (existingPackingUnit == null)
             {
                 // Add new packing unit
@@ -1979,7 +1979,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         foreach (var priceDto in packingUnitDto.SellingPrices)
         {
             var existingPrice = existingPrices.FirstOrDefault(e => e.SellingPriceId == priceDto.SellingPriceId);
-            
+
             if (existingPrice == null)
             {
                 // Add new price
@@ -2026,7 +2026,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var result = await base.ValidateCreate(command);
         if (!result.isValid)
             return result;
-        
+
         // Only products of type Stock can have combination variants
         if (command.ProductType != ProductType.Stock && command.VariantCombinations?.Any() == true)
         {
@@ -2034,7 +2034,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             result.isValid = false;
         }
 
-        var isCodeExist = await _codeRepository.GetQuery().AnyAsync(e=>e.Code==command.Code);
+        var isCodeExist = await _codeRepository.GetQuery().AnyAsync(e => e.Code == command.Code);
         if (isCodeExist)
         {
             result.errors.Add(ErrorMessages.ProductCodeAlreadyExists);
@@ -2068,13 +2068,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             result.errors.AddRange(expiryLevelErrors);
         result.isValid = result.isValid && expiryLevelsValid;
         return result;
-        
+
     }
 
     protected override async Task<(bool isValid, List<string> errors, Product? entity)> ValidateUpdate(ProductUpdateCommand command)
     {
-        var result =  await base.ValidateUpdate(command);    
-        
+        var result = await base.ValidateUpdate(command);
+
         var isBarCodeExist = await _codeRepository.GetQuery().AnyAsync(e => command.BarCodes.Contains(e.Code) && e.ProductId != command.Id);
         if (isBarCodeExist)
         {

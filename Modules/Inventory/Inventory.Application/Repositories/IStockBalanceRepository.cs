@@ -19,4 +19,4 @@ public interface IStockBalanceRepository : IBaseRepository<StockBalance>
     /// <summary>Gets by variant packing unit and branch without inclues.</summary>
     Task<StockBalance?> GetByVariantPackingUnitAndBranchWithoutInclues(Guid variantId, Guid packingUnitId, Guid branchId);
 
-} 
+}

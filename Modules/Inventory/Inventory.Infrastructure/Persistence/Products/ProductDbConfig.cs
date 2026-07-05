@@ -18,7 +18,7 @@ public class ProductDbConfig : BaseTreeSettingEntityDbConfig<Product>
         _ = builder.Property(e => e.InventoryThresholdScope)
             .HasConversion<string>()
             .HasMaxLength(16);
-        
+
         // Indexes for frequently queried columns
         // Note: ParentId index already exists from foreign key
         _ = builder.HasIndex(e => e.ProductType);

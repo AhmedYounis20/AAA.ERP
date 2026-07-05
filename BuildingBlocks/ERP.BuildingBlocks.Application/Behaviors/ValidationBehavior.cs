@@ -7,7 +7,7 @@ using Shared.Responses;
 
 namespace Shared.Behaviors;
 
-public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,TResult>
+public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
     where TRequest : IRequest<TResult>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
@@ -16,7 +16,7 @@ public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,
     {
         _validators = validators;
     }
-    
+
     public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken)
     {
         var context = new ValidationContext<TRequest>(request);
@@ -28,7 +28,7 @@ public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,
             .SelectMany(e => e.Errors)
             .Where(e => e != null)
             .ToList();
-        
+
         if (failures.Any())
         {
             Log.Warning(
@@ -42,7 +42,7 @@ public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,
             var res = new ApiResponse<BaseEntity>();
             res.IsSuccess = false;
             res.StatusCode = System.Net.HttpStatusCode.BadRequest;
-            res.ErrorMessages = failures.Select(e=>e.ErrorMessage.ToString()).ToList();
+            res.ErrorMessages = failures.Select(e => e.ErrorMessage.ToString()).ToList();
             response = res.Adapt<TResult>();
             return response;
         }

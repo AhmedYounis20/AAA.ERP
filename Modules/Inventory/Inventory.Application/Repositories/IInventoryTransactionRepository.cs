@@ -14,4 +14,4 @@ public interface IInventoryTransactionRepository : IBaseRepository<InventoryTran
     Task<IEnumerable<InventoryTransaction>> GetByTransactionType(InventoryTransactionType transactionType);
     /// <summary>transaction after this date exist operation.</summary>
     Task<bool> TransactionAfterThisDateExist(DateTime date);
-} 
+}

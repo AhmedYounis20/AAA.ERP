@@ -1,4 +1,4 @@
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 

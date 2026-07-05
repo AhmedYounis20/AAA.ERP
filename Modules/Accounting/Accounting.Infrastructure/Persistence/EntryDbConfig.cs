@@ -22,7 +22,7 @@ namespace Accounting.Infrastructure.Persistence
                 .HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.DocumentNumber).HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.EntryDate).IsRequired().HasColumnOrder(columnNumber++);
-            
+
             // Indexes for frequently queried columns
             _ = builder.HasIndex(e => e.EntryType);
             _ = builder.HasIndex(e => e.EntryNumber);

@@ -2,7 +2,7 @@ using Accounting.Domain.OutputDtos;
 using Accounting.Application.Commands.Entries;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;

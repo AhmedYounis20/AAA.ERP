@@ -15,7 +15,7 @@ namespace Inventory.Infrastructure.Persistence.Items
             _ = builder.HasIndex(e => new { e.ItemId, e.PackingUnitId }).IsUnique();
 
             _ = builder.HasMany(e => e.ItemPackingUnitSellingPrices)
-            .WithOne(e=>e.ItemPackingUnit)
+            .WithOne(e => e.ItemPackingUnit)
             .HasForeignKey(e => e.ItemPackingUnitId)
             .OnDelete(DeleteBehavior.Cascade);
 

@@ -8,7 +8,7 @@ public class FinancialPeriodDto
     public byte PeriodTypeByMonth { get; set; } = FinancialPeriodType.OneYear;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    
+
     public bool IsEditable { get; set; }
     public bool IsDeletable { get; set; }
     public bool IsNameEditable { get; set; }

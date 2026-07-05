@@ -58,7 +58,7 @@ public class AuditService : IAuditService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task LogCreateAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null) 
+    public async Task LogCreateAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null)
         where TEntity : BaseEntity
     {
         var auditLog = new AuditLog
@@ -74,11 +74,11 @@ public class AuditService : IAuditService
         await LogAsync(auditLog);
     }
 
-    public async Task LogUpdateAsync<TEntity>(TEntity oldEntity, TEntity newEntity, Guid? userId = null, string? userName = null) 
+    public async Task LogUpdateAsync<TEntity>(TEntity oldEntity, TEntity newEntity, Guid? userId = null, string? userName = null)
         where TEntity : BaseEntity
     {
         var changedProperties = GetChangedProperties(oldEntity, newEntity);
-        
+
         var auditLog = new AuditLog
         {
             EntityType = typeof(TEntity).Name,
@@ -94,7 +94,7 @@ public class AuditService : IAuditService
         await LogAsync(auditLog);
     }
 
-    public async Task LogDeleteAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null) 
+    public async Task LogDeleteAsync<TEntity>(TEntity entity, Guid? userId = null, string? userName = null)
         where TEntity : BaseEntity
     {
         var auditLog = new AuditLog
@@ -171,13 +171,13 @@ public class AuditService : IAuditService
                 query = query.Where(a => a.Timestamp <= filter.TimestampTo.Value);
 
             if (!string.IsNullOrEmpty(filter.SearchTerm))
-                query = query.Where(a => 
-                    a.EntityType.Contains(filter.SearchTerm) || 
+                query = query.Where(a =>
+                    a.EntityType.Contains(filter.SearchTerm) ||
                     (a.UserName != null && a.UserName.Contains(filter.SearchTerm)));
 
             // Apply sorting
-            query = filter.SortDescending 
-                ? query.OrderByDescending(a => a.Timestamp) 
+            query = filter.SortDescending
+                ? query.OrderByDescending(a => a.Timestamp)
                 : query.OrderBy(a => a.Timestamp);
 
             var result = await query.ToPaginatedResultAsync(filter.PageNumber, filter.PageSize, cancellationToken);

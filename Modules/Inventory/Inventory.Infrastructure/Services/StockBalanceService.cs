@@ -161,7 +161,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 .AsNoTracking()
                 .Where(e => e.VariantId == variantId && e.IsDefaultPackingUnit)
                 .FirstOrDefaultAsync();
-            if(defaultPackingUnit == null)
+            if (defaultPackingUnit == null)
             {
                 return new ApiResponse<bool>
                 {
@@ -199,7 +199,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 // Update existing stock balance
                 var newBalance = existingStockBalance.CurrentBalance + (isReceipt ? quantity : -quantity);
                 var newTotalCost = existingStockBalance.TotalCost + (isReceipt ? quantity * unitCost : -quantity * unitCost);
-                
+
                 // Calculate new average unit cost
                 var newUnitCost = newBalance > 0 ? newTotalCost / newBalance : unitCost;
 
@@ -227,4 +227,4 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             };
         }
     }
-} 
+}

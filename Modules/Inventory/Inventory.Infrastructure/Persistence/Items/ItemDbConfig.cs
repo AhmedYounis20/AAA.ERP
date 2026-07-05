@@ -14,7 +14,7 @@ namespace Inventory.Infrastructure.Persistence.Items
 
             _ = builder.Property(e => e.ItemType).HasConversion<string>();
             _ = builder.Property(e => e.DefaultDiscountType).HasConversion<string>();
-            
+
             // Indexes for frequently queried columns
             _ = builder.HasIndex(e => e.NodeType);
             _ = builder.HasIndex(e => e.ParentId);

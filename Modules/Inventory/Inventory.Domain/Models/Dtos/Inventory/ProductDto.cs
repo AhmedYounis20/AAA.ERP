@@ -49,7 +49,7 @@ public class ProductDto
     public List<ProductCostCenterDto> CostCenters { get; set; } = [];
     public List<Guid> ManufacturerCompaniesIds { get; set; } = [];
     public List<ProductAttachmentDto> ProductAttachments { get; set; } = [];
-    public AttachmentDto? ProductPicture { get; set; } 
+    public AttachmentDto? ProductPicture { get; set; }
     public List<ProductAttributeDefinitionDto> ProductAttributeDefinitions { get; set; } = [];
     public List<ProductSellingPriceDiscountDto> SellingPriceDiscounts { get; set; } = [];
     public List<ProductPackingUnitDto> PackingUnits { get; set; } = [];
@@ -73,7 +73,7 @@ public class ProductDto
                 );
         }
     }
-    
+
     public bool HasVariants { get; set; }
     public int VariantsCount { get; set; }
     public List<VariantCombinationDto> VariantCombinations { get; set; } = [];

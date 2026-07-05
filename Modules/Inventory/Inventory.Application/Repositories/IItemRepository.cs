@@ -4,9 +4,9 @@ using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Application.Repositories
 {
-/// <summary>
-/// Repository contract for item persistence.
-/// </summary>
+    /// <summary>
+    /// Repository contract for item persistence.
+    /// </summary>
     public interface IItemRepository : IBaseTreeSettingRepository<Item>
     {
 

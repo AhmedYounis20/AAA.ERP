@@ -1,10 +1,11 @@
+using Accounting.Application.Commands.Common;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Application.Commands.OpeningEntries;
 
-public class OpeningEntryUpdateCommand : BaseUpdateCommand<Entry>
+public class OpeningEntryUpdateCommand : BaseUpdateCommand<Entry>, IEntryHeaderCommand
 {
     public string EntryNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }

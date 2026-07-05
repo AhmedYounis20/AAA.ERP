@@ -13,4 +13,4 @@ public class InventoryTransferItem : BaseEntity
     public Guid PackingUnitId { get; set; }
     public PackingUnit? PackingUnit { get; set; }
     public decimal Quantity { get; set; }
-} 
+}

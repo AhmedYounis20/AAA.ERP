@@ -1,11 +1,12 @@
+using Accounting.Application.Commands.Common;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Domain.Models.Entities.Entries;
 using System.Text.Json.Serialization;
 
 namespace Accounting.Application.Commands.Entries;
 
-public class EntryUpdateCommand : BaseUpdateCommand<Entry>
+public class EntryUpdateCommand : BaseUpdateCommand<Entry>, IEntryHeaderCommand
 {
     [JsonIgnore]
     public EntryType Type { get; set; } = EntryType.Combined;

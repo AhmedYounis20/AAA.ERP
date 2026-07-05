@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.Branches;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Utility;
+using Shared.Extensions;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;

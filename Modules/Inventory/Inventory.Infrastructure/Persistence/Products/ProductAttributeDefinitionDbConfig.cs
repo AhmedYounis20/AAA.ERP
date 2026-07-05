@@ -10,7 +10,7 @@ public class ProductAttributeDefinitionDbConfig : IEntityTypeConfiguration<Produ
     {
         builder.ToTable("ProductAttributeDefinitions", DbSchemaNames.Inventory);
         builder.HasKey(e => e.Id);
-        
+
         builder.Property(e => e.IsVariant).IsRequired();
 
         // Configure relationships

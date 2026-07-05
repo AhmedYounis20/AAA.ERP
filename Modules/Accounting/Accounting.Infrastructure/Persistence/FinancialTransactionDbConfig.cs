@@ -17,7 +17,7 @@ namespace Accounting.Infrastructure.Persistence
             _ = builder.Property(e => e.EntryId).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.ChartOfAccountId).IsRequired().HasColumnOrder(columnNumber++);
             _ = builder.Property(e => e.AccountNature).HasConversion<string>().HasColumnOrder(columnNumber++);
-            
+
             // Indexes for frequently queried columns
             _ = builder.HasIndex(e => e.EntryId);
             _ = builder.HasIndex(e => e.ChartOfAccountId);

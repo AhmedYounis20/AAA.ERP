@@ -40,6 +40,14 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
                 HttpStatusCode.Unauthorized,
                 new List<MessageTemplate> { new() { MessageKey = ErrorMessages.Unauthorized } }
             ),
+            ForbiddenException forbiddenEx => (
+                HttpStatusCode.Forbidden,
+                new List<MessageTemplate> { new() { MessageKey = forbiddenEx.Message } }
+            ),
+            ConflictException conflictEx => (
+                HttpStatusCode.Conflict,
+                new List<MessageTemplate> { new() { MessageKey = conflictEx.Message } }
+            ),
             _ => (
                 HttpStatusCode.InternalServerError,
                 new List<MessageTemplate> { new() { MessageKey = ErrorMessages.UnexpectedError } }

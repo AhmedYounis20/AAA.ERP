@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequestDTO)
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto loginRequestDTO)
     {
         var result = await _authenticationService.Login(loginRequestDTO);
         return StatusCode((int)result.StatusCode, result);
@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDTO)
     {
         var result = await _authenticationService.Register(registerRequestDTO);
         return StatusCode((int)result.StatusCode, result);

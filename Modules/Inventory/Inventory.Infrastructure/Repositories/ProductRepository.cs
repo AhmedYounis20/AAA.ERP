@@ -135,7 +135,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             VariantCombinations = variants.Select(v => new VariantCombinationDto
             {
                 Name = product.Name,
-                Id=v.Id,
+                Id = v.Id,
                 ApplyProductChanges = v.ApplyProductChanges,
                 AttributeValues = v.VariantAttributeValues
                     .ToDictionary(

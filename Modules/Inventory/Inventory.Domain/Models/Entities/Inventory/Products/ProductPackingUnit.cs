@@ -6,7 +6,7 @@ public class ProductPackingUnit : BaseEntity
 {
     public Guid ProductId { get; set; }
     public Product? Product { get; set; }
-    
+
     public Guid PackingUnitId { get; set; }
     public string? Name { get; set; }
     public int OrderNumber { get; set; }
@@ -16,7 +16,7 @@ public class ProductPackingUnit : BaseEntity
     public bool IsDefaultPurchases { get; set; }
     public decimal LastCostPrice { get; set; }
     public decimal AverageCostPrice { get; set; }
-    
+
     // Navigation properties
     public List<ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; } = [];
 }

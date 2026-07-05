@@ -1393,6 +1393,18 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 
 **Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings; ERP.Persistence retirement (future slice).
 
+#### Phase 6 — Pre-production enhancements
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| P6.1 | Consolidate `AttachmentDto` + `AttachmentsExtensions` in Shared | **Done** |
+| P6.2 | Entry header FluentValidation DRY (`IEntryHeaderCommand`) | **Done** |
+| P6.3 | Identity `*DTO` → `*Dto` naming | **Done** |
+| P6.4 | `ConflictException` / `ForbiddenException` | **Done** |
+| P6.5 | Full-solution `dotnet format` | **Done** |
+
+See [PHASE6_SIGNOFF.md](./PHASE6_SIGNOFF.md).
+
 ### Phase 3 Wave 3B — **COMPLETE**
 
 Identity module extracted from horizontal layers. Commit: `d8a16e3`.

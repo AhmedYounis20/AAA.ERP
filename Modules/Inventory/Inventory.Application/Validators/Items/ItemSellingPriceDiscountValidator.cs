@@ -6,8 +6,9 @@ using ERP.BuildingBlocks.Application.Constants;
 namespace Inventory.Application.Validators.Items;
 
 public class ItemSellingPriceDiscountValidator : AbstractValidator<ItemSellingPriceDiscountDto>
-{ 
-    public ItemSellingPriceDiscountValidator() {
+{
+    public ItemSellingPriceDiscountValidator()
+    {
 
         _ = RuleFor(e => e.SellingPriceId).NotEmpty().WithMessage(ValidationMessages.SellingPriceIsRequired);
         _ = RuleFor(e => e.Discount).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.DiscountCannotBeNegative);

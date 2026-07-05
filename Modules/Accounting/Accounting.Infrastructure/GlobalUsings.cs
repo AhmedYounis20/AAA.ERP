@@ -1,4 +1,6 @@
 global using Accounting.Domain.Utility;
+global using Shared.DTOs;
+global using Shared.Extensions;
 global using ERP.BuildingBlocks.Persistence.Data;
 global using Accounting.Application.Repositories;
 global using ERP.BuildingBlocks.Persistence.Repositories;

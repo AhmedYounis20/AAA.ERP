@@ -1,5 +1,6 @@
-using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Accounting.Application.Commands.OpeningEntries;
+using Accounting.Application.Validators.Entries;
+using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Accounting.Domain.Models.Entities.Entries;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;
@@ -10,12 +11,7 @@ public class OpeningEntryUpdateValidator : BaseUpdateValidator<OpeningEntryUpdat
 {
     public OpeningEntryUpdateValidator() : base()
     {
-        _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage(ValidationMessages.BranchIdIsRequired);
-        _ = RuleFor(e => e.CurrencyId).NotEmpty().WithMessage(ValidationMessages.CurrencyIdIsRequired);
-        _ = RuleFor(e => e.FinancialPeriodId).NotEmpty().WithMessage(ValidationMessages.FinancialPeriodIdIsRequired);
-        _ = RuleFor(e => e.Notes).MaximumLength(500).WithMessage(ValidationMessages.NotesMaximumLength);
-        _ = RuleFor(e => e.ReceiverName).MaximumLength(100).WithMessage(ValidationMessages.ReceiverNameMaximumLength);
-        _ = RuleFor(e => e.DocumentNumber).MaximumLength(100).WithMessage(ValidationMessages.DocumentNumberMaximumLength);
-        _ = RuleFor(e => e.FinancialTransactions).NotEmpty().WithMessage(ValidationMessages.EntryFinancialTransactionsRequired);
+        Include(new EntryHeaderRulesValidator());
+        RuleFor(e => e.FinancialTransactions).NotEmpty().WithMessage(ValidationMessages.EntryFinancialTransactionsRequired);
     }
 }

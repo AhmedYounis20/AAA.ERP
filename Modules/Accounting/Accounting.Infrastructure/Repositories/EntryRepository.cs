@@ -42,9 +42,9 @@ public class EntryRepository : BaseRepository<Entry>, IEntryRepository
             .ToListAsync();
     }
 
-    public  async Task<bool> EntryAfterThisDateExist(DateTime date)
+    public async Task<bool> EntryAfterThisDateExist(DateTime date)
     {
-        return await _dbSet.AnyAsync(e=>e.EntryDate >= date);
+        return await _dbSet.AnyAsync(e => e.EntryDate >= date);
     }
 
 }

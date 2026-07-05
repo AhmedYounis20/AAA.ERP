@@ -1,14 +1,14 @@
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Domain.OutputDtos;
 
-public class EntryDto 
+public class EntryDto
 {
     public Guid Id { get; set; }
-    public Guid? CreatedBy { get; set; } 
+    public Guid? CreatedBy { get; set; }
     public Guid? ModifiedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
@@ -25,5 +25,5 @@ public class EntryDto
     public Guid FinancialPeriodId { get; set; }
     public string? FinancialPeriodNumber { get; set; }
     public virtual List<AttachmentDto> Attachments { get; set; }
-    public virtual List<FinancialTransaction>  FinancialTransactions { get; set; }
+    public virtual List<FinancialTransaction> FinancialTransactions { get; set; }
 }

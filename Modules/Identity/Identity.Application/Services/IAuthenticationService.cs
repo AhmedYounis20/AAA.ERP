@@ -12,10 +12,10 @@ public interface IAuthenticationService
     Guid GetUserId();
 
     /// <summary>Authenticates a user and returns access and refresh tokens.</summary>
-    Task<ApiResponse<LoginResponseDTO>> Login(LoginRequestDTO loginRequestDTO);
+    Task<ApiResponse<LoginResponseDto>> Login(LoginRequestDto loginRequestDTO);
 
     /// <summary>Registers a new application user.</summary>
-    Task<ApiResponse> Register(RegisterRequestDTO registerRequestDTO);
+    Task<ApiResponse> Register(RegisterRequestDto registerRequestDTO);
 
     /// <summary>Refreshes an expired access token using a valid refresh token.</summary>
     Task<ApiResponse<RefreshTokenResponse>> Refresh(TokenRequestDto tokenDto);

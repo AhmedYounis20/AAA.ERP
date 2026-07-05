@@ -30,7 +30,7 @@ public class VariantAttributeValueDbConfig : IEntityTypeConfiguration<VariantAtt
 
         // Unique constraint - a variant can only have one value for each attribute definition
         builder.HasIndex(e => new { e.VariantId, e.AttributeDefinitionId }).IsUnique();
-        
+
         // Additional indexes for query optimization
         // Note: VariantId and AttributeDefinitionId are already in the unique composite index above
         // Note: AttributeDefinitionId index already exists from foreign key

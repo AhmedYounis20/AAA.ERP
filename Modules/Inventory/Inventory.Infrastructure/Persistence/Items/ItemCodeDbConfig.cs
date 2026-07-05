@@ -12,10 +12,10 @@ namespace Inventory.Infrastructure.Persistence.Items
             base.ApplyConfiguration(builder);
             builder.ToTable("ItemCodes", DbSchemaNames.Inventory);
 
-            _ = builder.HasIndex(e=>e.Code).IsUnique();
-            _ = builder.Property(e=>e.Code).IsRequired();
-            _ = builder.HasIndex(e=>e.CodeType);
-            _ = builder.Property(e=>e.CodeType).HasConversion<string>();
+            _ = builder.HasIndex(e => e.Code).IsUnique();
+            _ = builder.Property(e => e.Code).IsRequired();
+            _ = builder.HasIndex(e => e.CodeType);
+            _ = builder.Property(e => e.CodeType).HasConversion<string>();
 
             return builder;
         }

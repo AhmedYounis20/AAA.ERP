@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 
 namespace Inventory.Application.Repositories
 {
-/// <summary>
-/// Repository contract for variant persistence.
-/// </summary>
+    /// <summary>
+    /// Repository contract for variant persistence.
+    /// </summary>
     public interface IVariantRepository : IBaseRepository<Variant>
     {
         Task<IEnumerable<VariantDto>> GetDtos();

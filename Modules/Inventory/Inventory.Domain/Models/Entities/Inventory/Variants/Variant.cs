@@ -9,10 +9,10 @@ namespace Inventory.Domain.Models.Entities.Variants;
 public class Variant : BaseEntity
 {
     public string? Description { get; set; }
-    
+
     public Guid ProductId { get; set; }
     public Products.Product? Product { get; set; }
-    
+
     [NotMapped]
     public VariantCode? Code { get => VariantCodes.FirstOrDefault(e => e.CodeType == VariantCodeType.Code); }
     [NotMapped]
@@ -21,7 +21,7 @@ public class Variant : BaseEntity
     public VariantCode? EGSCode { get => VariantCodes.FirstOrDefault(e => e.CodeType == VariantCodeType.EGS); }
     [NotMapped]
     public List<VariantCode> BarCodes { get => VariantCodes.Where(e => e.CodeType == VariantCodeType.BarCode).ToList(); }
-    
+
     // Variant-specific properties (moved from Item)
     public decimal MaxDiscount { get; set; }
     public decimal ConditionalDiscount { get; set; }
@@ -33,11 +33,11 @@ public class Variant : BaseEntity
     public string? CountryOfOrigin { get; set; }
     public bool IsSales { get; set; }
     public bool IsPurchase { get; set; }
-    public bool IsArchived { get; set; } 
-    public bool IsDefault { get; set; } 
-    public bool IsUsed { get; set; } 
+    public bool IsArchived { get; set; }
+    public bool IsDefault { get; set; }
+    public bool IsUsed { get; set; }
     public bool ApplyProductChanges { get; set; }
-    
+
     // Navigation properties
     public List<VariantCode> VariantCodes { get; set; } = [];
     public List<VariantSupplier> VariantSuppliers { get; set; } = [];
