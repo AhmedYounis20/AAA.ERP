@@ -1,7 +1,7 @@
 # Hybrid CQRS — Sprint tracker
 
 > **Plan:** [HYBRID_CQRS_PLAN.md](./HYBRID_CQRS_PLAN.md) §17  
-> **Status:** Not started  
+> **Status:** Complete (M4)  
 > **Legend:** ⬜ Not started · 🔄 In progress · ✅ Done · ⏭️ Skipped
 
 ---
@@ -21,7 +21,7 @@
 | [8](#sprint-8) | 16–17 | Sub-ledgers batch 1 | ✅ |
 | [9](#sprint-9) | 18–19 | Sub-ledgers batch 2 + settings | ✅ |
 | [10](#sprint-10) | 20–21 | Inventory catalog | ✅ |
-| [11](#sprint-11) | 22–23 | Cleanup + final sign-off | ⬜ |
+| [11](#sprint-11) | 22–23 | Cleanup + final sign-off | ✅ |
 
 **Milestones:** M0 (S0) · M1 P0 (S3) · M2 P1 (S6) · M3 master data (S10) · M4 complete (S11)
 
@@ -190,12 +190,12 @@ Copy for each aggregate row below:
 
 | ID | Task | Status |
 |----|------|--------|
-| S11-1 | Retire BaseController dual DI | ⬜ |
-| S11-2 | Remove obsolete write services | ⬜ |
-| S11-3 | Arch tests fail mode (strict) | ⬜ |
-| S11-4 | Full test suite | ⬜ |
-| S11-5 | Smoke checklist | ⬜ |
-| S11-6 | HYBRID_CQRS_FINAL_SIGNOFF | ⬜ |
+| S11-1 | Retire BaseController dual DI | ✅ |
+| S11-2 | Remove obsolete write services | ⏭️ |
+| S11-3 | Arch tests fail mode (strict) | ✅ |
+| S11-4 | Full test suite | ✅ |
+| S11-5 | Smoke checklist | ✅ |
+| S11-6 | HYBRID_CQRS_FINAL_SIGNOFF | ✅ |
 
 **DoD:** **M4 program complete**
 
@@ -215,9 +215,9 @@ Copy for each aggregate row below:
 
 | Metric | Current | Target |
 |--------|---------|--------|
-| Controllers migrated | 0 / 35 | 35 |
-| P0 aggregates | 0 / 3 | 3 |
-| P1 entry types | 0 / 6 | 6 |
-| Sprint sign-offs | 0 / 12 | 12 |
+| Controllers migrated | 35 / 35 | 35 |
+| P0 aggregates | 3 / 3 | 3 |
+| P1 entry types | 6 / 6 | 6 |
+| Sprint sign-offs | 12 / 12 | 12 |
 
 _Update this table at each sprint retrospective._

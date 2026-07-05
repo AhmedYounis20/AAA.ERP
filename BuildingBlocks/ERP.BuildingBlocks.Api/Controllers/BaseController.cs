@@ -14,6 +14,11 @@ namespace ERP.BuildingBlocks.Api.Controllers;
 /// <summary>
 /// Generic CRUD controller base for entities backed by <see cref="IBaseService{TEntity,TCreate,TUpdate}"/>.
 /// </summary>
+/// <remarks>
+/// Obsolete: use hybrid CQRS controllers (<c>ISender</c> + <c>I*ReadService</c> / <c>I*Queries</c>).
+/// See ADR-012 and <c>docs/architecture/HYBRID_CQRS_PLAN.md</c>.
+/// </remarks>
+[Obsolete("Retired in hybrid CQRS (ADR-012). New controllers must use ISender + I*ReadService/I*Queries; see HYBRID_CQRS_PLAN.md.")]
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]

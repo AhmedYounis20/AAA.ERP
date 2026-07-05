@@ -10,6 +10,8 @@ namespace ERP.BuildingBlocks.Api.Controllers;
 /// <summary>
 /// CRUD base for hierarchical tree entities.
 /// </summary>
+/// <remarks>Obsolete — see <see cref="BaseController{TEntity,TCreate,TUpdate}"/>.</remarks>
+[Obsolete("Retired in hybrid CQRS (ADR-012). See HYBRID_CQRS_PLAN.md.")]
 [Route("api/[controller]")]
 [ApiController]
 public class BaseTreeController<TEntity, TCreate, TUpdate>

@@ -1,64 +1,81 @@
-using Accounting.Api.Controllers.Entries;
-using Accounting.Api.Controllers.ChartOfAccounts;
-using Accounting.Api.Controllers.Settings;
 using Accounting.Api.Controllers.SubLedger;
 using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
-using Inventory.Api.Controllers.Pricing;
-using Inventory.Api.Controllers.Stock;
-using Inventory.Api.Controllers.Transactions;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace ERP.Architecture.Tests;
 
 /// <summary>
-/// Hybrid CQRS rules for pilot controllers (see HYBRID_CQRS_PLAN.md Sprint 1).
+/// Hybrid CQRS rules for Accounting and Inventory API controllers (ADR-012, Sprint 11 strict mode).
 /// </summary>
 public class HybridCqrsArchitectureTests
 {
-    private static readonly Type[] PilotControllers =
+    private static readonly string[] ExcludedControllers =
     [
-        typeof(TaxesController),
-        typeof(ColorsController),
-        typeof(ImportTransactionsController),
-        typeof(ExportTransactionsController),
-        typeof(InventoryTransferController),
-        typeof(EntriesController),
-        typeof(JournalEntriesController),
-        typeof(PaymentEntriesController),
-        typeof(ReceiptEntriesController),
-        typeof(OpeningEntriesController),
-        typeof(CombinedEntriesController),
-        typeof(FinancialPeriodsController),
-        typeof(ChartOfAccountsController),
-        typeof(CustomersController),
-        typeof(SuppliersController),
-        typeof(BanksController),
-        typeof(BranchesController),
-        typeof(CashInBoxesController),
-        typeof(FixedAssetsController),
-        typeof(CurrenciesController),
-        typeof(CostCentersController),
-        typeof(CollectionBooksController),
-        typeof(RolesController),
-        typeof(GLSettingsController),
-        typeof(AccountGuidesController),
-        typeof(SizesController),
-        typeof(ManufacturerCompaniesController),
-        typeof(PackingUnitsController),
-        typeof(AttributeDefinitionsController),
-        typeof(AttributeValuesController),
-        typeof(SellingPricesController),
-        typeof(ProductsController),
-        typeof(ItemsController),
-        typeof(VariantsController),
-        typeof(StockBalancesController)
+        "AuthController",
+        "AuditLogsController",
+        "DbWorkController"
     ];
 
-    [Fact]
-    public void Pilot_controllers_should_not_inject_legacy_write_services()
+    private static readonly string[] LegacyCrudBaseNames =
+    [
+        "BaseController`3",
+        "BaseSettingController`3",
+        "BaseTreeSettingController`3",
+        "BaseTreeController`3"
+    ];
+
+    private static readonly Lazy<Type[]> HybridCqrsControllers = new(DiscoverHybridCqrsControllers);
+
+    private static readonly Lazy<Type[]> ReadSideContracts = new(DiscoverReadSideContracts);
+
+    private static Type[] DiscoverHybridCqrsControllers()
     {
-        foreach (var controller in PilotControllers)
+        var excluded = new HashSet<string>(ExcludedControllers, StringComparer.Ordinal);
+
+        return new[]
+            {
+                typeof(TaxesController).Assembly,
+                typeof(ColorsController).Assembly
+            }
+            .SelectMany(assembly => assembly.GetExportedTypes())
+            .Where(type => type is { IsClass: true, IsAbstract: false }
+                           && type.Name.EndsWith("Controller", StringComparison.Ordinal)
+                           && typeof(ControllerBase).IsAssignableFrom(type)
+                           && !excluded.Contains(type.Name))
+            .OrderBy(type => type.FullName, StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    private static Type[] DiscoverReadSideContracts()
+    {
+        return new[]
+            {
+                typeof(Accounting.Application.Services.ITaxReadService).Assembly,
+                typeof(Inventory.Application.Services.IColorReadService).Assembly
+            }
+            .SelectMany(assembly => assembly.GetExportedTypes())
+            .Where(type => type is { IsInterface: true, IsPublic: true }
+                           && type.Namespace?.Contains(".Application.", StringComparison.Ordinal) == true
+                           && (type.Name.Contains("ReadService", StringComparison.Ordinal)
+                               || type.Name.EndsWith("Queries", StringComparison.Ordinal))
+                           && !type.Name.Contains("BaseQuery", StringComparison.Ordinal))
+            .OrderBy(type => type.FullName, StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    [Fact]
+    public void All_accounting_and_inventory_controllers_are_enforced()
+    {
+        HybridCqrsControllers.Value.Should().HaveCountGreaterThanOrEqualTo(35,
+            "discovery should include all migrated Accounting + Inventory controllers");
+    }
+
+    [Fact]
+    public void Hybrid_controllers_should_not_inject_legacy_write_services()
+    {
+        foreach (var controller in HybridCqrsControllers.Value)
         {
             var writeServiceParams = controller.GetConstructors()
                 .SelectMany(c => c.GetParameters())
@@ -76,61 +93,49 @@ public class HybridCqrsArchitectureTests
     }
 
     [Fact]
-    public void Pilot_controllers_should_inject_ISender()
+    public void Hybrid_controllers_should_inject_ISender_when_they_have_write_actions()
     {
-        foreach (var controller in PilotControllers)
+        foreach (var controller in HybridCqrsControllers.Value)
         {
+            var hasWriteAction = controller.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Any(m => m.GetCustomAttributes<HttpPostAttribute>().Any()
+                          || m.GetCustomAttributes<HttpPutAttribute>().Any()
+                          || m.GetCustomAttributes<HttpPatchAttribute>().Any()
+                          || m.GetCustomAttributes<HttpDeleteAttribute>().Any());
+
+            if (!hasWriteAction)
+                continue;
+
             var hasSender = controller.GetConstructors()
                 .Any(c => c.GetParameters().Any(p => p.ParameterType.Name is "ISender" or "IMediator"));
 
-            hasSender.Should().BeTrue($"{controller.Name} must inject ISender for write actions.");
+            hasSender.Should().BeTrue($"{controller.Name} has write actions and must inject ISender.");
+        }
+    }
+
+    [Fact]
+    public void Hybrid_controllers_should_not_inherit_legacy_crud_base_classes()
+    {
+        foreach (var controller in HybridCqrsControllers.Value)
+        {
+            for (var baseType = controller.BaseType; baseType is not null; baseType = baseType.BaseType)
+            {
+                LegacyCrudBaseNames.Should().NotContain(baseType.Name,
+                    $"{controller.Name} must inherit ControllerBase directly, not legacy {baseType.Name}");
+            }
         }
     }
 
     [Fact]
     public void Read_service_interfaces_should_not_extend_write_base_service()
     {
-        var readServiceInterfaces = new[]
-        {
-            typeof(Accounting.Application.Services.ITaxReadService),
-            typeof(Inventory.Application.Services.IColorReadService),
-            typeof(Accounting.Application.Services.Entries.IComplexEntryQueries),
-            typeof(Accounting.Application.Services.Entries.IJournalEntryQueries),
-            typeof(Accounting.Application.Services.Entries.IPaymentEntryQueries),
-            typeof(Accounting.Application.Services.Entries.IReceiptEntryQueries),
-            typeof(Accounting.Application.Services.Entries.IOpeningEntryQueries),
-            typeof(Accounting.Application.Services.Entries.ICombinedEntryQueries),
-            typeof(Accounting.Application.Services.IFinancialPeriodReadService),
-            typeof(Accounting.Application.Services.IChartOfAccountReadService),
-            typeof(Accounting.Application.Services.ICustomerReadService),
-            typeof(Accounting.Application.Services.ISupplierReadService),
-            typeof(Accounting.Application.Services.IBankReadService),
-            typeof(Accounting.Application.Services.IBranchReadService),
-            typeof(Accounting.Application.Services.ICashInBoxReadService),
-            typeof(Accounting.Application.Services.IFixedAssetReadService),
-            typeof(Accounting.Application.Services.ICurrencyReadService),
-            typeof(Accounting.Application.Services.ICostCenterReadService),
-            typeof(Accounting.Application.Services.ICollectionBookReadService),
-            typeof(Accounting.Application.Services.IRoleReadService),
-            typeof(Accounting.Application.Services.IGLSettingReadService),
-            typeof(Accounting.Application.Services.IAccountGuideReadService),
-            typeof(Inventory.Application.Services.ISizeReadService),
-            typeof(Inventory.Application.Services.IManufacturerCompanyReadService),
-            typeof(Inventory.Application.Services.IPackingUnitReadService),
-            typeof(Inventory.Application.Services.IAttributeDefinitionReadService),
-            typeof(Inventory.Application.Services.IAttributeValueReadService),
-            typeof(Inventory.Application.Services.ISellingPriceReadService),
-            typeof(Inventory.Application.Services.IProductReadService),
-            typeof(Inventory.Application.Services.IItemReadService),
-            typeof(Inventory.Application.Services.IVariantReadService),
-            typeof(Inventory.Application.Services.IStockBalanceReadService)
-        };
+        ReadSideContracts.Value.Should().NotBeEmpty("expected read-side contracts in Application layers");
 
-        foreach (var readService in readServiceInterfaces)
+        foreach (var readService in ReadSideContracts.Value)
         {
             var hasWriteBase = readService.GetInterfaces()
                 .Any(i => i.IsGenericType
-                          && i.GetGenericTypeDefinition().FullName?.Contains("IBaseService") == true);
+                          && i.GetGenericTypeDefinition().FullName?.Contains("IBaseService", StringComparison.Ordinal) == true);
 
             hasWriteBase.Should().BeFalse($"{readService.Name} must not extend IBaseService.");
         }
