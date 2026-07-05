@@ -33,6 +33,10 @@ public static class SwaggerExtensions
                 return string.Equals(documentName, group, StringComparison.OrdinalIgnoreCase);
             });
 
+            options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+            options.CustomSchemaIds(type => type.FullName?.Replace("+", ".", StringComparison.Ordinal));
+
             options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
                 Description =

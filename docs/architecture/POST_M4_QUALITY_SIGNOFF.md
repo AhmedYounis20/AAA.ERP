@@ -24,23 +24,25 @@
 | Metric | Result |
 |--------|--------|
 | `dotnet build AAA.ERP.sln -c Release` | Green |
-| `dotnet test AAA.ERP.sln -c Release` | 118 passed, 0 skipped |
+| `dotnet test AAA.ERP.sln -c Release` | 119 passed, 0 skipped |
 | Arch tests (`ERP.Architecture.Tests`) | 54 guards, 0 skipped |
 | Integration tests | 11 passed |
 | `dotnet ef dbcontext info` | `ApplicationDbContext`, `MigrationsAssembly=ERP.Host` |
 
 ---
 
-## Intentionally deferred (Phase 5 — not blockers)
+## Intentionally deferred (Phase 5 — completed July 2026)
 
-| Item | Reason |
+See [PHASE5_SIGNOFF.md](./PHASE5_SIGNOFF.md) for ADR-007, schema runbook, and Swagger fix.
+
+| Item | Status |
 |------|--------|
-| Inventory.Domain EF navigation decoupling | Requires ADR/plan first; multi-session; shared DB acceptable today |
-| ERP.Persistence base-service retirement | Wave 3E follow-up; one cluster per slice |
-| Staging/prod `SeparateModuleSchemas` | Operator task on other environments |
-| DTO `Dto`/`DTO` naming normalization | Low priority; no wire impact |
-| FluentValidation rule sets / specific exception types | Enhancement backlog |
-| Arabic copy review for new localization keys | `ar-EG` uses English fallback for newly added keys until translated |
+| Inventory.Domain EF navigation decoupling | ✅ Done — ADR-007 |
+| Staging/prod `SeparateModuleSchemas` | Runbook ready — operator execution on target env |
+| Arabic copy for L1 localization keys | ✅ Done — `Resource.ar-EG.resx` |
+| ERP.Persistence base-service retirement | Future slice — kernel retained by design |
+| DTO `Dto`/`DTO` naming normalization | Backlog — no wire impact |
+| FluentValidation rule sets / specific exception types | Backlog |
 
 ---
 

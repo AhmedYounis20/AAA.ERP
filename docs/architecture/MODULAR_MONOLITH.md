@@ -1379,9 +1379,19 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | D6 | Doc sync (C3–C8 commit refs) | **Done** |
 | L1 | Localization keys → Platform resources | **Done** |
 
-**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. **Post-M4 quality plan complete (C1–C8, D1–D6, L1)** — see [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md). Phase 5 deferred: Inventory.Domain EF decoupling (ADR first); ERP.Persistence retirement; staging/prod schema migration.
+**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. **Post-M4 quality plan complete (C1–C8, D1–D6, L1)** — see [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md). **Phase 5 complete** — see [PHASE5_SIGNOFF.md](./PHASE5_SIGNOFF.md) (ADR-007, schema runbook, Swagger fix, Arabic L1).
 
-**Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings.
+#### Phase 5 — Inventory boundary + ops readiness
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| P5.1 | ADR-007 Inventory.Domain EF decoupling | **Done** |
+| P5.2 | `Shared.DTOs.AttachmentDto` + Swagger `CustomSchemaIds` | **Done** |
+| P5.3 | Staging/prod schema migration runbook | **Done** |
+| P5.4 | Arabic localization for L1 keys | **Done** |
+| P5.5 | Arch test `Inventory_Domain_should_not_reference_Accounting_Domain` | **Done** |
+
+**Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings; ERP.Persistence retirement (future slice).
 
 ### Phase 3 Wave 3B — **COMPLETE**
 

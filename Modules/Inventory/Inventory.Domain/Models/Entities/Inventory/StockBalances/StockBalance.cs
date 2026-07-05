@@ -1,4 +1,3 @@
-using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using Shared.BaseEntities;
@@ -12,7 +11,6 @@ public class StockBalance : BaseEntity
     public Guid PackingUnitId { get; set; }
     public PackingUnit? PackingUnit { get; set; }
     public Guid BranchId { get; set; }
-    public Branch? Branch { get; set; }
 
     public decimal CurrentBalance { get; set; }
     public decimal MinimumBalance { get; set; }

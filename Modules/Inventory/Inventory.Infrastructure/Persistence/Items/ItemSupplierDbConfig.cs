@@ -1,4 +1,5 @@
-﻿using Inventory.Domain.Models.Entities.Items;
+﻿using Accounting.Domain.Models.Entities.SubLeadgers;
+using Inventory.Domain.Models.Entities.Items;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
@@ -14,10 +15,10 @@ namespace Inventory.Infrastructure.Persistence.Items
 
             _ = builder.HasIndex(e => new { e.ItemId, e.SupplierId }).IsUnique();
 
-            _ = builder.HasOne(e => e.Supplier)
-            .WithMany()
-            .HasForeignKey(e => e.SupplierId)
-            .OnDelete(DeleteBehavior.Restrict);
+            _ = builder.HasOne<Supplier>()
+                .WithMany()
+                .HasForeignKey(e => e.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             return builder;
         }

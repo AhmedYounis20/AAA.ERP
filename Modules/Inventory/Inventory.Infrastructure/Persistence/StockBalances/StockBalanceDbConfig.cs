@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.Sizes;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,14 +22,12 @@ public class StockBalanceDbConfig : BaseEntityDbConfig<StockBalance>
         _ = builder.Property(e => e.UnitCost).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.TotalCost).IsRequired().HasColumnType("decimal(18,2)").HasColumnOrder(columnNumber++);
 
-        // Relationships
         _ = builder.HasOne(e => e.Variant).WithMany().HasForeignKey(e => e.VariantId);
         _ = builder.HasOne(e => e.PackingUnit).WithMany().HasForeignKey(e => e.PackingUnitId);
-        _ = builder.HasOne(e => e.Branch).WithMany().HasForeignKey(e => e.BranchId);
+        _ = builder.HasOne<Branch>().WithMany().HasForeignKey(e => e.BranchId);
 
-        // Unique constraint for Variant, PackingUnit, and Branch combination
         _ = builder.HasIndex(e => new { e.VariantId, e.PackingUnitId, e.BranchId }).IsUnique();
 
         return builder;
     }
-} 
+}

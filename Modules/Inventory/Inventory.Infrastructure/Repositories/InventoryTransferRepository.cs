@@ -11,8 +11,6 @@ public class InventoryTransferRepository : BaseRepository<InventoryTransfer>, II
     public async Task<InventoryTransfer?> GetWithDetails(Guid id)
     {
         return await _dbSet
-            .Include(e => e.SourceBranch)
-            .Include(e => e.DestinationBranch)
             .Include(e => e.Items)
             .ThenInclude(i => i.Variant)
             .Include(e => e.Items)

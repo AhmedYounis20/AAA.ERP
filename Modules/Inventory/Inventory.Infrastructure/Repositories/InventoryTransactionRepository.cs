@@ -17,9 +17,6 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
-            .Include(e => e.TransactionParty)
-            .Include(e => e.Branch)
-            .Include(e => e.FinancialPeriod)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
@@ -30,8 +27,6 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
-            .Include(e => e.TransactionParty)
-            .Include(e => e.Branch)
             .Where(e => e.BranchId == branchId)
             .OrderByDescending(e => e.TransactionDate)
             .ToListAsync();
@@ -44,8 +39,6 @@ public class InventoryTransactionRepository : BaseRepository<InventoryTransactio
             .ThenInclude(i => i.Variant)
             .Include(e => e.Items)
             .ThenInclude(i => i.PackingUnit)
-            .Include(e => e.TransactionParty)
-            .Include(e => e.Branch)
             .Where(e => e.TransactionType == transactionType)
             .OrderByDescending(e => e.TransactionDate)
             .ToListAsync();

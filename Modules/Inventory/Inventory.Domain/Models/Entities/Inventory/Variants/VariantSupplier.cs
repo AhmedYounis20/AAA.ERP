@@ -1,4 +1,3 @@
-using Accounting.Domain.Models.Entities.SubLeadgers;
 using Shared.BaseEntities;
 
 namespace Inventory.Domain.Models.Entities.Variants;

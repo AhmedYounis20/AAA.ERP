@@ -1,6 +1,6 @@
 using Shared.BaseEntities;
 using System.Text.Json.Serialization;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Items;

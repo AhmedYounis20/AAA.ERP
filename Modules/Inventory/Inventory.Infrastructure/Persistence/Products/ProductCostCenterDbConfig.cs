@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.CostCenters;
 using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,7 +24,7 @@ public class ProductCostCenterDbConfig : BaseEntityDbConfig<ProductCostCenter>
             .HasForeignKey(e => e.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        _ = builder.HasOne(e => e.CostCenter)
+        _ = builder.HasOne<CostCenter>()
             .WithMany()
             .HasForeignKey(e => e.CostCenterId)
             .OnDelete(DeleteBehavior.Restrict);

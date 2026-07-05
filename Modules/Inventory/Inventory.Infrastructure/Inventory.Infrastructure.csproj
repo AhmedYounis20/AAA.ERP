@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\ERP.Persistence\ERP.Persistence.csproj" />
     <ProjectReference Include="..\..\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
     <ProjectReference Include="..\..\Accounting\Accounting.Application\Accounting.Application.csproj" />
+    <ProjectReference Include="..\..\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
   </ItemGroup>
 
 </Project>

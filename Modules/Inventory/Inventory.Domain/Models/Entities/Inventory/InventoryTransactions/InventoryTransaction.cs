@@ -1,7 +1,4 @@
-﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
-using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Models.Entities.FinancialPeriods;
-using Shared.BaseEntities;
+﻿using Shared.BaseEntities;
 
 namespace Inventory.Domain.Models.Entities.InventoryTransactions;
 
@@ -12,13 +9,9 @@ public class InventoryTransaction : BaseEntity
     public string TransactionNumber { get; set; } = string.Empty;
     public string? DocumentNumber { get; set; }
     public Guid TransactionPartyId { get; set; }
-    public ChartOfAccount? TransactionParty { get; set; }
-    public Guid BranchId { get; set;}
-    public Branch? Branch { get; set; }
+    public Guid BranchId { get; set; }
     public Guid FinancialPeriodId { get; set; }
-    public FinancialPeriod? FinancialPeriod { get; set; }
     public string? Notes { get; set; }
 
     public List<InventoryTransactionItem> Items { get; set; } = [];
-
 }

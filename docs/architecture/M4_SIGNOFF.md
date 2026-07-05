@@ -57,5 +57,5 @@
 
 - **Post-M4 quality:** **Complete** — [POST_M4_QUALITY_SIGNOFF.md](./POST_M4_QUALITY_SIGNOFF.md) (D1–D6, L1)
 - **Ongoing:** 4.3.x arch test review per PR
-- **Phase 5 (deferred):** Inventory.Domain EF decoupling (ADR); ERP.Persistence retirement; ops schema on staging/prod
+- **Phase 5:** Complete — see [PHASE5_SIGNOFF.md](./PHASE5_SIGNOFF.md) (ADR-007, schema runbook, Swagger fix, Arabic L1). **Future:** ERP.Persistence retirement; ops schema execution on staging/prod
 - **Optional:** push `Refactor` and open PR when ready

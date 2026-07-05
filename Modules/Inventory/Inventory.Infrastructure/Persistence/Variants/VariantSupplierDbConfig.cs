@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,9 +18,12 @@ namespace Inventory.Infrastructure.Persistence.Variants
             .HasForeignKey(e => e.VariantId)
             .OnDelete(DeleteBehavior.Cascade);
 
+            _ = builder.HasOne<Supplier>()
+                .WithMany()
+                .HasForeignKey(e => e.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             return builder;
         }
     }
 }
-
-

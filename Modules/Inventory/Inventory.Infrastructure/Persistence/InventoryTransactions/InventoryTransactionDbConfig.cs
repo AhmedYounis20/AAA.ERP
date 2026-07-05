@@ -1,3 +1,6 @@
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,9 +24,9 @@ public class InventoryTransactionDbConfig : BaseEntityDbConfig<InventoryTransact
         _ = builder.Property(e => e.FinancialPeriodId).IsRequired().HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.Notes).HasMaxLength(1000).HasColumnOrder(columnNumber++);
 
-        _ = builder.HasOne(e => e.TransactionParty).WithMany().HasForeignKey(e => e.TransactionPartyId);
-        _ = builder.HasOne(e => e.Branch).WithMany().HasForeignKey(e => e.BranchId);
-        _ = builder.HasOne(e => e.FinancialPeriod).WithMany().HasForeignKey(e => e.FinancialPeriodId);
+        _ = builder.HasOne<ChartOfAccount>().WithMany().HasForeignKey(e => e.TransactionPartyId);
+        _ = builder.HasOne<Branch>().WithMany().HasForeignKey(e => e.BranchId);
+        _ = builder.HasOne<FinancialPeriod>().WithMany().HasForeignKey(e => e.FinancialPeriodId);
         _ = builder.HasMany(e => e.Items).WithOne().HasForeignKey(e => e.InventoryTransactionId).OnDelete(DeleteBehavior.Cascade);
 
         return builder;

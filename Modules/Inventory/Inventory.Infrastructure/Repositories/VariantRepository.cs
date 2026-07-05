@@ -1,4 +1,4 @@
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Variants;

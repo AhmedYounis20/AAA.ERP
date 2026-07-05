@@ -1,6 +1,6 @@
 using Shared.BaseEntities;
 using Inventory.Domain.Models.Entities.Items;
-using Accounting.Domain.Models.Dtos.Attachments;
+using Shared.DTOs;
 using Inventory.Domain.Models.Entities.Products;
 
 namespace Inventory.Domain.Models.Dtos;

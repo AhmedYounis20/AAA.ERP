@@ -129,6 +129,17 @@ public class ModuleBoundaryTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
     }
 
+    [Fact]
+    public void Inventory_Domain_should_not_reference_Accounting_Domain()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.Products.Product).Assembly)
+            .Should()
+            .NotHaveDependencyOn("Accounting.Domain")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
+    }
+
     private static string FormatViolationMessage(TestResult result)
     {
         if (result.IsSuccessful || result.FailingTypes is null || !result.FailingTypes.Any())

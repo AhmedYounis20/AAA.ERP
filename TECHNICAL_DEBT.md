@@ -62,7 +62,7 @@ See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 **Status:** **Done** (C1–C3). All Accounting and Inventory FluentValidation keys use `ValidationMessages` in `ERP.BuildingBlocks.Application.Constants`.
 
 ### 6. Inventory catalog → Account entity coupling
-**Status:** **Done** (Increment 8b). Supplier existence checks use `IInventoryCatalogValidationQueries` (Contracts); arch test `Inventory_catalog_services_should_not_reference_Account_domain_entities` enabled. Junction entities in `Inventory.Domain` still reference Accounting navigation types for EF — acceptable shared-database pattern.
+**Status:** **Done** (Increment 8b + Phase 5 / ADR-007). Supplier existence checks use `IInventoryCatalogValidationQueries` (Contracts); arch test `Inventory_catalog_services_should_not_reference_Account_domain_entities` enabled. Junction entities hold Guid FKs only — cross-module EF navigations configured in `Inventory.Infrastructure`; `Inventory.Domain` no longer references `Accounting.Domain`.
 
 ## Low Priority
 

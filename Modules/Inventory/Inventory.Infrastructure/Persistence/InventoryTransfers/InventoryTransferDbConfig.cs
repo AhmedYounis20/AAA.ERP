@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
@@ -16,11 +17,11 @@ public class InventoryTransferDbConfig : IEntityTypeConfiguration<InventoryTrans
             .WithOne(e => e.InventoryTransfer)
             .HasForeignKey(e => e.InventoryTransferId)
             .OnDelete(DeleteBehavior.Cascade);
-        builder.HasOne(e => e.SourceBranch)
+        builder.HasOne<Branch>()
             .WithMany()
             .HasForeignKey(e => e.SourceBranchId)
             .OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(e => e.DestinationBranch)
+        builder.HasOne<Branch>()
             .WithMany()
             .HasForeignKey(e => e.DestinationBranchId)
             .OnDelete(DeleteBehavior.Restrict);
