@@ -34,6 +34,7 @@ public static class InventoryModuleExtensions
 
         services.AddScoped<IColorRepository, ColorRepository>();
         services.AddScoped<IColorService, ColorService>();
+        services.AddScoped<IColorReadService, ColorReadService>();
         services.AddScoped<ISizeRepository, SizeRepository>();
         services.AddScoped<ISizeService, SizeService>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();

@@ -23,6 +23,7 @@ public static class AccountingModuleExtensions
 
         services.AddScoped<ITaxRepository, TaxRepository>();
         services.AddScoped<ITaxService, TaxService>();
+        services.AddScoped<ITaxReadService, TaxReadService>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();

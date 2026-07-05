@@ -22,19 +22,24 @@ Full roadmap: [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md) · EF pattern: [CONTR
 
 ## Application layer — hybrid CQRS (official pattern)
 
-**Phase 7 standard.** New features must follow this split:
+> **Authoritative plan:** [HYBRID_CQRS_PLAN.md](./HYBRID_CQRS_PLAN.md) · **ADR:** [012-hybrid-cqrs-mediatr-actions-read-services.md](./adr/012-hybrid-cqrs-mediatr-actions-read-services.md)
 
-| Operation | Path | Examples |
-|-----------|------|----------|
-| **Create / Update** (state change) | `ISender.Send(command)` → MediatR `*CommandHandler` in `{Module}.Infrastructure` | `TaxCreateCommand`, `InventoryTransactionCreateCommand` |
-| **Read / Delete / Paginate** (queries & simple deletes) | `I{Aggregate}Service` on Application, implemented in Infrastructure | `ReadAllDtosPaginated`, `GetWithItems`, `Delete(Guid)` |
+**Phase 7 / Sprint 1+ standard.** New features and migrations must follow this split:
+
+| HTTP / operation | Path | Controller injects |
+|----------------|------|-------------------|
+| **POST, PUT, PATCH, DELETE** | `ISender.Send(command)` → `*CommandHandler` | `ISender` |
+| **GET** (list, detail, paginate, lookups) | `I{Aggregate}ReadService` or `I{Aggregate}Queries` | Read service only |
 
 **Rules:**
 
 - Commands and FluentValidation validators live in `{Module}.Application` (not Domain).
-- Handlers own business rules for writes; services own persistence orchestration for reads.
-- Cross-module calls use `*.Contracts` ports only (`IAccountingIntegrationService`, `IAttachmentCrossModulePort`, …).
-- Optional later: high-traffic reads may migrate to MediatR `IQuery<T>` — not required for new CRUD.
+- Command handlers own write business rules; read services own queries and DTO projection.
+- Controllers **must not** inject write services (`I*Service` with Create/Update/Delete).
+- Cross-module calls use `*.Contracts` ports only (`IAccountingIntegrationService`, …).
+- Delete uses MediatR (`Delete{Entity}Command`) — not `service.Delete` from controller.
+
+**Pilots (reference):** `TaxesController` (Accounting), `ColorsController` (Inventory).
 
 **Base command hierarchy:** `ERP.BuildingBlocks.Application.Commands` → module commands (e.g. `BaseSubLeadgerCreateCommand` in `Accounting.Application.Commands`).
 

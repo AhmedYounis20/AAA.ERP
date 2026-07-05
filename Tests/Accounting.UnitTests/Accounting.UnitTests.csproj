@@ -23,8 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
   </ItemGroup>
 

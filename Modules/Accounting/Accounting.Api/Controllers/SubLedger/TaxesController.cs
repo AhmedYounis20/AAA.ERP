@@ -1,87 +1,81 @@
 using Accounting.Application.Commands.Taxes;
-using Accounting.Application.Services;
-using Accounting.Domain.Entities;
-using Accounting.Application.Dtos.Lookups;
-using ERP.BuildingBlocks.Application.DTOs;
 using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Dtos.Lookups;
+using Accounting.Application.Services;
+using Accounting.Application.Services.Queries;
+using Accounting.Domain.Entities;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.SubLedger;
 
-/// <summary>CRUD API for tax sub-ledger accounts.</summary>
+/// <summary>CRUD API for tax sub-ledger accounts (hybrid CQRS pilot).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class TaxesController : BaseTreeSettingController<Tax, TaxCreateCommand, TaxUpdateCommand>
+[Authorize]
+public class TaxesController(
+    ISender sender,
+    ITaxReadService reads,
+    IBaseQueryService<Tax, SubLeadgerLookupDto> lookups) : ControllerBase
 {
-    private readonly ITaxService _service;
-    private readonly ISender _sender;
-    private readonly IBaseQueryService<Tax, SubLeadgerLookupDto> _baseQueryService;
-
-    public TaxesController(ITaxService service, IBaseQueryService<Tax, SubLeadgerLookupDto> baseQueryService, ISender sender)
-        : base(service, sender)
-    {
-        _service = service;
-        _sender = sender;
-        _baseQueryService = baseQueryService;
-    }
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(TaxCreateCommand input)
-    => await CreateRecord(input);
+    public async Task<IActionResult> Create([FromBody] TaxCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
     public async Task<IActionResult> Get()
-    => await GetAllRecords();
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
     public async Task<IActionResult> GetPaginated([FromQuery] SubLeadgerFilterDto filter, CancellationToken cancellationToken)
-    => await GetAllRecordsPaginated(filter, cancellationToken);
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
-    => await GetRecord(id);
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Returns lookup rows for dropdowns.</summary>
     [HttpGet("lookups")]
-    public virtual async Task<IActionResult> GetLookUps()
+    public async Task<IActionResult> GetLookUps()
     {
-        var result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>();
         try
         {
-            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            var items = await lookups.GetLookUps(e => e.NodeType == NodeType.Domain);
+            return this.ToResult(new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
-                Result = await _baseQueryService.GetLookUps(e => e.NodeType == NodeType.Domain),
-                IsSuccess = true
-            };
+                IsSuccess = true,
+                Result = items
+            });
         }
         catch
         {
-            result = new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
+            return this.ToResult(new ApiResponse<IEnumerable<SubLeadgerLookupDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest
-            };
+            });
         }
-        return StatusCode((int)result.StatusCode, result);
     }
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, TaxUpdateCommand input)
-    => await UpdateRecord(id, input);
+    {
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
+    }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
-    => await DeleteRecord(id);
+        => this.ToResult(await sender.Send(new TaxDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
-    /// <summary>Returns default data for the next account under a parent.</summary>
     [HttpGet("NextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)
-    {
-        return Ok(await _service.GetNextSubLeadgers(parentId));
-    }
+        => this.ToResult(await reads.GetNextSubLedgers(parentId));
+
+    [HttpGet("GetLevel")]
+    public async Task<IActionResult> GetLevel([FromQuery] int level = 0)
+        => this.ToResult(await reads.GetLevel(level));
+
+    [HttpGet("GetChildren/{parentId}")]
+    public async Task<IActionResult> GetChildren(Guid parentId, [FromQuery] int level = 0)
+        => this.ToResult(await reads.GetChildren(parentId, level));
 }

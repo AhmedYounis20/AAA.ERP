@@ -1,69 +1,46 @@
 ﻿using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Colors;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Inventory.Api.Controllers.Catalog;
 
-/// <summary>CRUD API for inventory color settings.</summary>
+/// <summary>CRUD API for inventory color settings (hybrid CQRS pilot).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class ColorsController : BaseSettingController<Color, ColorCreateCommand, ColorUpdateCommand>
+[Authorize]
+public class ColorsController(ISender sender, IColorReadService reads) : ControllerBase
 {
-    private readonly IColorService _service;
-    public ColorsController(IColorService service,
-        ISender mapper) : base(service, mapper)
-    {
-        _service = service;
-    }
-
-    /// <summary>Creates a color.</summary>
     [HttpPost]
-    public virtual async Task<IActionResult> Create([FromBody] ColorCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+    public async Task<IActionResult> Create([FromBody] ColorCreateCommand input)
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all colors.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return await GetAllRecords();
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await reads.GetAll());
 
-    /// <summary>Lists colors with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] SettingFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await reads.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a color by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        return await GetRecord(id);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await reads.GetById(id));
 
-    /// <summary>Updates a color.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, [FromBody] ColorUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, [FromBody] ColorUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a color.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new ColorDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
-    /// <summary>Returns the next available color code.</summary>
     [HttpGet("nextCode")]
     public async Task<IActionResult> GetNextCode()
-    {
-        var result = await _service.GetNextCodeAsync();
-        return StatusCode((int)result.StatusCode, result);
-    }
+        => this.ToResult(await reads.GetNextCode());
 }

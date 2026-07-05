@@ -21,6 +21,13 @@
 - [ ] New commands have FluentValidation validators
 - [ ] Cross-module changes reviewed by both module owners (if applicable)
 
+## Hybrid CQRS checklist ([HYBRID_CQRS_PLAN.md](docs/architecture/HYBRID_CQRS_PLAN.md))
+
+- [ ] **POST / PUT / DELETE** → `ISender.Send(command)` only (controller does not call `service.Create/Update/Delete`)
+- [ ] **GET** → `I*ReadService` / `I*Queries` / `IBaseQueryService` only
+- [ ] Command handlers own write logic for P0/P1 aggregates (not one-line service delegates)
+- [ ] Read service interface has **no** Create/Update/Delete methods
+
 ## Module
 
 - [ ] Accounting
