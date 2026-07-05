@@ -13,7 +13,7 @@
 | [0](#sprint-0) | 1 | Kickoff — ADR, PR rules | ✅ |
 | [1](#sprint-1) | 2–3 | Pilots: Tax, Color | ✅ |
 | [2](#sprint-2) | 4–5 | Import + Export transactions | ✅ |
-| [3](#sprint-3) | 6–7 | Inventory transfers | ⬜ |
+| [3](#sprint-3) | 6–7 | Inventory transfers | ✅ |
 | [4](#sprint-4) | 8–9 | Complex + Journal entries | ⬜ |
 | [5](#sprint-5) | 10–11 | Payment + Receipt entries | ⬜ |
 | [6](#sprint-6) | 12–13 | Opening + Combined entries | ⬜ |
@@ -92,9 +92,9 @@ Copy for each aggregate row below:
 
 | Aggregate / task | A–I | Status |
 |------------------|-----|--------|
-| S3 InventoryTransfer (reads) | ⬜ | ⬜ |
-| S3 Approve/Reject commands | ⬜ | ⬜ |
-| S3 Integration tests (2 GL entries) | — | ⬜ |
+| S3 InventoryTransfer (reads + queries) | ✅ | ✅ |
+| S3 Approve/Reject commands | ✅ | ✅ |
+| S3 Integration tests (MediatR path) | — | ✅ |
 
 **DoD:** Transfer actions all via MediatR · **M1 P0 complete**
 

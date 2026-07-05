@@ -16,7 +16,8 @@ public class HybridCqrsArchitectureTests
         typeof(TaxesController),
         typeof(ColorsController),
         typeof(ImportTransactionsController),
-        typeof(ExportTransactionsController)
+        typeof(ExportTransactionsController),
+        typeof(InventoryTransferController)
     ];
 
     [Fact]

@@ -3,6 +3,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.IntegrationTests.Inventory;
@@ -119,6 +120,39 @@ public class InventoryTransferIntegrationTests : IAsyncLifetime
 
         stagingAfterApprove.Should().Be(0);
         destAfterApprove.Should().Be(25);
+
+        var entriesAfterApprove = await InventoryTestDataSeeder.CountEntriesAsync(_scope.ServiceProvider);
+        entriesAfterApprove.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task Staged_transfer_via_MediatR_create_and_approve_posts_two_gl_entries()
+    {
+        var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
+        const decimal transferQuantity = 20;
+
+        var createResult = await sender.Send(new InventoryTransferCreateCommand
+        {
+            SourceBranchId = InventoryTestIds.Branch1Id,
+            DestinationBranchId = InventoryTestIds.Branch2Id,
+            TransferType = InventoryTransferType.Conditional,
+            Items =
+            [
+                new InventoryTransferItemCreateCommand
+                {
+                    VariantId = InventoryTestIds.VariantId,
+                    PackingUnitId = InventoryTestIds.PackingUnitId,
+                    Quantity = transferQuantity
+                }
+            ]
+        });
+
+        createResult.IsSuccess.Should().BeTrue(createResult.Errors?.FirstOrDefault()?.MessageKey);
+        createResult.Result!.Status.Should().Be(InventoryTransferStatus.Pending);
+
+        var approveResult = await sender.Send(new ApproveInventoryTransferCommand(createResult.Result.Id));
+        approveResult.IsSuccess.Should().BeTrue(approveResult.Errors?.FirstOrDefault()?.MessageKey);
+        approveResult.Result!.Status.Should().Be(InventoryTransferStatus.Approved);
 
         var entriesAfterApprove = await InventoryTestDataSeeder.CountEntriesAsync(_scope.ServiceProvider);
         entriesAfterApprove.Should().Be(2);
