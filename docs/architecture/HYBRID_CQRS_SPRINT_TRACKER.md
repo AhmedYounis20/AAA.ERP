@@ -201,6 +201,23 @@ Copy for each aggregate row below:
 
 ---
 
+## Sprint 12 — Base query services & hybrid controller bases
+
+| ID | Task | Status |
+|----|------|--------|
+| S12-1 | `ISettingQueries<T>` + `ITreeSettingQueries<T>` in BuildingBlocks | ✅ |
+| S12-2 | `BaseSettingQueries` + `BaseTreeSettingQueries` in ERP.Persistence | ✅ |
+| S12-3 | Migrate all `I*ReadService` → `I*Queries` (35 controllers) | ✅ |
+| S12-4 | Restore missing `GET /search` on settings & sub-ledgers | ✅ |
+| S12-5 | `HybridSettingController` + `HybridTreeSettingController` | ✅ |
+| S12-6 | Pilot hybrid bases: Roles, ManufacturerCompanies | ✅ |
+| S12-7 | Arch tests: discover `*Queries` only | ✅ |
+| S12-8 | Update HYBRID_CQRS_PLAN §7.0, §8.4 | ✅ |
+
+**DoD:** Zero `*ReadService` in Application · 183 tests green · hybrid bases documented
+
+---
+
 ## Out of scope
 
 | Controller | Reason |

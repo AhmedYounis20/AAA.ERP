@@ -1,6 +1,6 @@
 # Hybrid CQRS Plan — MediatR for Actions, Read Services for GET
 
-> **Status:** **Proposed** — July 2026  
+> **Status:** **Implemented** — July 2026 (Sprints 0–12 complete)  
 > **Audience:** All backend developers, solution architects, tech leads  
 > **Supersedes:** Informal split in [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) § hybrid CQRS (this plan is the authoritative reference)  
 > **Related:** [ADR-004](./adr/004-mediatr-single-write-path.md) · [MEDIATR_REGISTRATION.md](./MEDIATR_REGISTRATION.md) · [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md)
@@ -36,6 +36,7 @@
     - [17.7 Sprints 4–6 — GL entries](#177-sprints-46--gl-entries-6-weeks)
     - [17.8 Sprints 7–10 — Master data waves](#178-sprints-710--master-data-waves-8-weeks)
     - [17.9 Sprint 11 — Cleanup & closure](#179-sprint-11--cleanup--closure-2-weeks)
+    - [17.11 Sprint 12 — Base query services](#1711-sprint-12--base-query-services)
     - [17.10 Milestones & checkpoints](#1710-milestones--checkpoints)
 18. [Success metrics & sign-off](#18-success-metrics--sign-off)
 19. [Related documents](#19-related-documents)
@@ -50,13 +51,13 @@ AAA.ERP uses **hybrid CQRS**:
 |---------------|------------------|----------------------|
 | **POST, PUT, PATCH** — create / update state | `ISender.Send(command)` → **Command handler** | `ISender` only |
 | **DELETE** — remove state (with business rules) | `ISender.Send(deleteCommand)` → **Command handler** | `ISender` only |
-| **GET** — list, detail, paginate, search, lookup | **`I{Aggregate}ReadService`** or **`I{Aggregate}Queries`** | Read service only |
+| **GET** — list, detail, paginate, search, lookup | **`I{Aggregate}Queries`** (extends `ISettingQueries` / `ITreeSettingQueries` when applicable) | Query service only |
 | **GET** — dropdown lookups (shared pattern) | **`IBaseQueryService<TEntity, TLookupDto>`** | Read service only |
 
 **Controller dependencies (target):**
 
 ```csharp
-public class TaxesController(ISender sender, ITaxReadService reads) : ControllerBase
+public class TaxesController(ISender sender, ITaxQueries queries) : ControllerBase
 ```
 
 **Never in controller:**
@@ -77,7 +78,7 @@ await _service.Delete(id);   // use DeleteTaxCommand via ISender instead
          ┌──────────────────────────────────────────┐
          │              API Controller               │
          │   POST/PUT/DELETE → ISender               │
-         │   GET             → I*ReadService         │
+         │   GET             → I*Queries               │
          └──────────────────────────────────────────┘
                     │                    │
          ┌──────────▼─────────┐   ┌──────▼──────────────┐
@@ -399,6 +400,62 @@ Handlers are **not** registered manually. MediatR discovers them from Infrastruc
 
 ## 7. Read side — query services (GET endpoints)
 
+### 7.0 Base query service hierarchy (post–Sprint 12)
+
+**Standard naming:** `I{Aggregate}Queries` / `{Aggregate}Queries` — `I*ReadService` is retired.
+
+| Contract | Location | Implementation | Use for |
+|----------|----------|----------------|---------|
+| `ISettingQueries<TEntity>` | `ERP.BuildingBlocks.Application` | `BaseSettingQueries<,,>` in `ERP.Persistence` | Flat settings: Currency, Role, Color, PackingUnit, … |
+| `ITreeSettingQueries<TEntity>` | `ERP.BuildingBlocks.Application` | `BaseTreeSettingQueries<,,>` in `ERP.Persistence` | Tree settings: CostCenter, Tax, Customer, Product, … |
+| `IBaseQueryService<TEntity, TDto>` | `Accounting.Application` (today) | `BaseQueryService` | Dropdown `GET .../lookups` only |
+| `I{Aggregate}Queries` (custom) | Module Application | Dedicated `{Aggregate}Queries` | ChartOfAccount, FinancialPeriod, Variant, StockBalance, entries |
+
+**Setting queries contract:**
+
+```csharp
+// ERP.BuildingBlocks.Application/Services/Queries/ISettingQueries.cs
+public interface ISettingQueries<TEntity> where TEntity : BaseSettingEntity
+{
+    Task<ApiResponse<IEnumerable<TEntity>>> GetAll();
+    Task<ApiResponse<PaginatedResult<TEntity>>> GetPaginated(SettingFilterDto filter, CancellationToken ct = default);
+    Task<ApiResponse<TEntity>> GetById(Guid id);
+    Task<ApiResponse<IEnumerable<TEntity>>> SearchByName(string query);
+}
+```
+
+**Per-aggregate interface** extends base + custom reads:
+
+```csharp
+public interface IColorQueries : ISettingQueries<Color>
+{
+    Task<ApiResponse<string>> GetNextCode();
+}
+
+// Infrastructure — transitional delegation to IColorService
+public class ColorQueries(IColorService service)
+    : BaseSettingQueries<Color, ColorCreateCommand, ColorUpdateCommand>(service),
+      IColorQueries
+{
+    public Task<ApiResponse<string>> GetNextCode() => service.GetNextCodeAsync();
+}
+```
+
+**Tree sub-ledger example:**
+
+```csharp
+public interface ICustomerQueries : ITreeSettingQueries<Customer>
+{
+    Task<ApiResponse<CustomerCreateCommand>> GetNextSubLedgers(Guid? parentId);
+}
+```
+
+**Rules:**
+
+- Base implementations **delegate to `I*Service` read methods** until handlers own all business logic (post-M4 backlog).
+- Controllers inject `I{Aggregate}Queries` only — never `I{Aggregate}Service`.
+- Custom-filter paginated endpoints accept derived `*FilterDto` types (`SubLeadgerFilterDto`, `CostCenterFilterDto`) — they inherit `SettingFilterDto`.
+
 ### 7.1 Read service interface
 
 Define **one interface per aggregate** with all GET capabilities:
@@ -515,7 +572,7 @@ public interface IImportTransactionQueries
 }
 ```
 
-Naming: `I{Aggregate}Queries` or `I{Aggregate}ReadService` — pick one per module and stay consistent.
+Naming: **`I{Aggregate}Queries`** — consistent across Accounting and Inventory (`I*ReadService` retired in Sprint 12).
 
 ### 7.5 Read patterns by endpoint type
 
@@ -546,7 +603,7 @@ namespace Accounting.Api.Controllers.SubLedger;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class TaxesController(ISender sender, ITaxReadService reads) : ControllerBase
+public class TaxesController(ISender sender, ITaxQueries queries) : ControllerBase
 {
     // ─── WRITES: MediatR only ───
 
@@ -592,7 +649,7 @@ public class TaxesController(ISender sender, ITaxReadService reads) : Controller
 | Allowed | Forbidden |
 |---------|-----------|
 | `ISender` | `I{Entity}Service` with Create/Update/Delete |
-| `I{Entity}ReadService` | `I{Entity}Repository` |
+| `I{Entity}Queries` | `I{Entity}Repository` |
 | `I{Entity}Queries` | `IApplicationDbContext` |
 | `IBaseQueryService<TEntity, TLookupDto>` | Other module's Domain types |
 | `ILogger<T>` | Direct EF / DbContext |
@@ -621,18 +678,34 @@ public static class ControllerResponseExtensions
 }
 ```
 
-### 8.4 Replacing `BaseController<TEntity, TCreate, TUpdate>`
+### 8.4 Hybrid controller bases (ADR-012 safe)
 
-**Current:** `BaseController` injects both `IBaseService` and `ISender`.
+**Obsolete (dual DI):** `BaseController`, `BaseSettingController`, `BaseTreeSettingController` — inject write `I*Service`.
 
-**Target:** Split base classes:
+**Approved (hybrid CQRS):** optional bases in `ERP.BuildingBlocks.Api` that inject **`ISender` + `I*Queries` only**:
 
 | Base class | Purpose |
 |------------|---------|
-| `ActionControllerBase` | Holds `ISender` + `SendCreate` / `SendUpdate` / `SendDelete` helpers |
-| `ReadControllerBase<TReadService>` | Optional — rarely needed; prefer explicit read service per controller |
+| `HybridSettingController<TEntity,TCreate,TUpdate>` | Standard setting CRUD GET + MediatR writes + `GET search` |
+| `HybridTreeSettingController<TEntity,TCreate,TUpdate>` | Above + `GetLevel` / `GetChildren` |
 
-Long term: **retire generic `BaseController`** in favor of explicit per-controller wiring (clearer DI). Short term: refactor `BaseController` so reads go through injected `I*ReadService` and child controllers do not re-declare services.
+```csharp
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class RolesController(ISender sender, IRoleQueries queries)
+    : HybridSettingController<Role, RoleCreateCommand, RoleUpdateCommand>(sender, queries)
+{
+    protected override IRequest<ApiResponse<Role>> BuildDeleteCommand(Guid id)
+        => new RoleDeleteCommand(id);
+}
+```
+
+Use hybrid bases when the controller has **only** standard endpoints. Keep explicit controllers when the aggregate adds lookups, `nextCode`, sub-ledger defaults, or custom DTO reads.
+
+**Replacing legacy `BaseController<TEntity, TCreate, TUpdate>`**
+
+Long term: **retire generic `BaseController`** in favor of `HybridSettingController` / `HybridTreeSettingController` or explicit per-controller wiring.
 
 ### 8.5 Auth exception — Identity module
 
@@ -1317,6 +1390,30 @@ Every aggregate in Sprints 1–10 follows these **sub-tasks** (copy into PR desc
 
 ---
 
+### 17.11 Sprint 12 — Base query services (1 week)
+
+**Sprint goal:** Replace per-aggregate `I*ReadService` duplication with shared base query contracts; restore inherited `GET /search`; add ADR-012-safe hybrid controller bases.
+
+| ID | Task | Owner | Effort | Depends on | Acceptance criteria |
+|----|------|-------|--------|------------|---------------------|
+| S12-1 | `ISettingQueries<T>` + `ITreeSettingQueries<T>` in BuildingBlocks | Host | 0.5 pd | S11-* | Contracts published |
+| S12-2 | `BaseSettingQueries` + `BaseTreeSettingQueries` in ERP.Persistence | Host | 0.5 pd | S12-1 | Delegate to `I*Service` reads |
+| S12-3 | Migrate all aggregates `I*ReadService` → `I*Queries` | Both | 2 pd | S12-2 | Zero ReadService in Application |
+| S12-4 | Add missing `GET /search` on settings & sub-ledgers | Both | 0.5 pd | S12-3 | Parity with old `BaseSettingController` |
+| S12-5 | `HybridSettingController` + `HybridTreeSettingController` | Host | 1 pd | S12-1 | No write service injection |
+| S12-6 | Pilot hybrid bases (Role, ManufacturerCompany) | Both | 0.25 pd | S12-5 | Build + arch tests green |
+| S12-7 | Arch tests: `*Queries` discovery | Host | 0.25 pd | S12-3 | No ReadService references |
+| S12-8 | Update plan §7.0, §8.4 + sprint tracker | Tech lead | 0.25 pd | S12-* | Docs current |
+
+**Sprint 12 Definition of Done:**
+
+- [x] All read contracts named `I*Queries`
+- [x] Base query services cover settings + tree settings
+- [x] Hybrid controller bases available for standard CRUD
+- [x] 183 tests green
+
+---
+
 ### 17.10 Milestones & checkpoints
 
 | Milestone | After sprint | Criteria | Review |
@@ -1326,6 +1423,7 @@ Every aggregate in Sprints 1–10 follows these **sub-tasks** (copy into PR desc
 | **M2** P1 accounting entries | Sprint 6 | All 6 entry controllers migrated | Module owner + integration tests |
 | **M3** Master data complete | Sprint 10 | All CRUD controllers except Auth/Audit/Dev | Arch tests |
 | **M4** Program complete | Sprint 11 | BaseController retired; final sign-off | Tech lead |
+| **M5** Query layer standardized | Sprint 12 | Base query services; `I*Queries` naming; hybrid controller bases | Tech lead |
 
 **Checkpoint meetings (recommended):**
 
@@ -1347,7 +1445,7 @@ Every aggregate in Sprints 1–10 follows these **sub-tasks** (copy into PR desc
 | GET endpoints via read service | ~60% | 100% |
 | POST/PUT/DELETE via MediatR | ~70% (delete excluded) | 100% |
 | Pass-through handlers (P0/P1) | ~100% | 0% |
-| `I*ReadService` naming adopted | 0 | All aggregates |
+| `I*Queries` naming adopted | 0 | All aggregates |
 | Architecture tests for hybrid CQRS | 0 | ≥4 |
 | Integration tests | Green | Green |
 
@@ -1377,4 +1475,4 @@ Every aggregate in Sprints 1–10 follows these **sub-tasks** (copy into PR desc
 
 ---
 
-**Next action:** [Sprint 0 (§17.3)](#173-sprint-0--kickoff-1-week) — ADR-012 + PR checklist → then [Sprint 1 (§17.4)](#174-sprint-1--pilots--tooling-2-weeks) — Tax + Color pilots
+**Next action:** Gradually adopt `HybridSettingController` / `HybridTreeSettingController` on remaining standard CRUD controllers; post-M5 backlog — inline write logic from `I*Service` into handlers and retire transitional service delegation.
