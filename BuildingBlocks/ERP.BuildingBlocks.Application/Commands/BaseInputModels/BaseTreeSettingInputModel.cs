@@ -1,4 +1,4 @@
-﻿namespace Domain.Account.InputModels.BaseInputModels;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 
 public class BaseTreeSettingInputModel : BaseSettingInputModel
 {

@@ -1,5 +1,5 @@
-﻿using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using Shared.BaseEntities;
 
 namespace ERP.BuildingBlocks.Application.Services.BaseServices;

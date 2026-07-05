@@ -1,7 +1,7 @@
-﻿using Shared;
+using Shared;
 using Shared.Responses;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 
 public class BaseCreateCommand<TResponse> : ICommand<ApiResponse<TResponse>> 
 {

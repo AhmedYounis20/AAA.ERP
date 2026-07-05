@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Accounting.Domain.Models.Entities.Entries;
 using System.Text.Json.Serialization;

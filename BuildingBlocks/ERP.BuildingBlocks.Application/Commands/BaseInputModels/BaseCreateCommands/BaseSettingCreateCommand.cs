@@ -1,4 +1,4 @@
-﻿namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 
 public class BaseSettingCreateCommand<TResponse> : BaseCreateCommand<TResponse>
 {

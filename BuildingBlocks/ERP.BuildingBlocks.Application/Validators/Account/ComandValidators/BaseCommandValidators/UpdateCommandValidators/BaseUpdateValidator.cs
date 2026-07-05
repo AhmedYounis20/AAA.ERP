@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using FluentValidation;
 
 namespace ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;

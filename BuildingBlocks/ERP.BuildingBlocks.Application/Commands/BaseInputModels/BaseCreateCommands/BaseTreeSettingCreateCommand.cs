@@ -1,7 +1,7 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 using Shared.BaseEntities;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 
 public class BaseTreeSettingCreateCommand<TResponse> : BaseSettingCreateCommand<TResponse>
 {

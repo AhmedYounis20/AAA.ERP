@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Products;

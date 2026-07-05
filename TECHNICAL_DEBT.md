@@ -16,9 +16,10 @@ This document tracks known technical debt and code quality issues that need to b
 | 4.2.5 | Products/Variants N+1 query fixes | **Done** |
 | 6a–6c | Namespace perimeter + `ERP.Host` rename + solution diagram | **Done** |
 | 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** (`c51317f`) |
-| 7b | `ERP.Application.Validators.Account.*` → BuildingBlocks / Accounting.Application | **Done** (uncommitted) |
+| 7b | `ERP.Application.Validators.Account.*` → BuildingBlocks / Accounting.Application | **Done** (`1e27afe`) |
+| 7c | `Domain.Account.Commands` / `InputModels` → `ERP.BuildingBlocks.Application.Commands.BaseInputModels` | **Done** (uncommitted) |
 
-**Remaining Phase 4 / namespace follow-ups:** slice **7c** (`Domain.Account.Commands` / `InputModels`), ongoing 4.3.x sprint hygiene — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+**Remaining Phase 4 / namespace follow-ups:** `Domain.Account.Models.Dtos`, `Domain.Account.DBConfiguration` / `Utility`, ongoing 4.3.x sprint hygiene — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
 ## High Priority
 

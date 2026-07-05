@@ -15,11 +15,11 @@ public class ModuleNameResolverTests
     }
 
     [Fact]
-    public void FromType_resolves_legacy_accounting_commands()
+    public void FromType_resolves_building_blocks_base_commands_as_ERP()
     {
-        ModuleNameResolver.FromType(typeof(global::Domain.Account.Commands.BaseInputModels.BaseCreateCommands.BaseCreateCommand<>)
+        ModuleNameResolver.FromType(typeof(global::ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands.BaseCreateCommand<>)
                 .GetGenericTypeDefinition())
-            .Should().Be("Accounting");
+            .Should().Be("ERP");
     }
 
     [Theory]

@@ -1,4 +1,4 @@
-﻿namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 
 public class BaseTreeUpdateCommand<TResponse> : BaseUpdateCommand<TResponse>
 {

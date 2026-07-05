@@ -1,4 +1,4 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 using Accounting.Domain.Models.Entities.GLSettings;
 
 namespace Accounting.Domain.Commands;

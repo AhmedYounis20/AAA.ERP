@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
 using Accounting.Domain.Models.Entities.Entries;

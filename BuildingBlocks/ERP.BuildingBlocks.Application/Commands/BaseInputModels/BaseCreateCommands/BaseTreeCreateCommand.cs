@@ -1,6 +1,6 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 
 public class BaseTreeCreateCommand<TResponse> : BaseCreateCommand<TResponse>
 {

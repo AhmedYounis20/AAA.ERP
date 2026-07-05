@@ -1,8 +1,8 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Shared;
 using Shared.Responses;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 
 public class BaseUpdateCommand<TResponse> : ICommand<ApiResponse<TResponse>> 
 {

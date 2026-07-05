@@ -315,6 +315,32 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_Application_base_commands_should_not_use_legacy_Domain_Account_Commands_or_InputModels_namespace()
+    {
+        var assembly = typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly;
+
+        var commandsResult = Types.InAssembly(assembly)
+            .That()
+            .ResideInNamespaceContaining("Commands")
+            .Should()
+            .NotResideInNamespaceStartingWith("Domain.Account.Commands")
+            .GetResult();
+
+        commandsResult.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", commandsResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
+
+        var inputModelsResult = Types.InAssembly(assembly)
+            .That()
+            .ResideInNamespaceContaining("BaseInputModels")
+            .Should()
+            .NotResideInNamespaceStartingWith("Domain.Account.InputModels")
+            .GetResult();
+
+        inputModelsResult.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", inputModelsResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

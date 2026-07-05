@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 namespace Accounting.Application.Commands.ChartOfAccounts;

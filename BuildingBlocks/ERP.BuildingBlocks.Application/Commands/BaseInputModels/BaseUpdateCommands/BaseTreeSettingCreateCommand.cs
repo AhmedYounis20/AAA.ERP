@@ -1,6 +1,6 @@
-﻿using Shared.BaseEntities;
+using Shared.BaseEntities;
 
-namespace Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
+namespace ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 
 public class BaseTreeSettingUpdateCommand<TResponse> : BaseSettingUpdateCommand<TResponse>
 {

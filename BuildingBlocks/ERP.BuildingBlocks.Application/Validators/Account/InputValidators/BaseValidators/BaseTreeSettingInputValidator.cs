@@ -1,4 +1,4 @@
-using Domain.Account.InputModels.BaseInputModels;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 
 namespace ERP.BuildingBlocks.Application.Validators.Account.InputValidators.BaseValidators;
 

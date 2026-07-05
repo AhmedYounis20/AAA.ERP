@@ -1332,10 +1332,10 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | Slice | Target | Status |
 |-------|--------|--------|
 | 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** — `c51317f` |
-| 7b | `ERP.Application.Validators.Account.*` → `ERP.BuildingBlocks.Application.Validators.Account.*` / `Accounting.Application.Validators.*` | **Done** (uncommitted) |
-| 7c | `Domain.Account.Commands.*` / `Domain.Account.InputModels.*` → `Accounting.Domain.*` | Next |
+| 7b | `ERP.Application.Validators.Account.*` → `ERP.BuildingBlocks.Application.Validators.Account.*` / `Accounting.Application.Validators.*` | **Done** — `1e27afe` |
+| 7c | `Domain.Account.Commands.*` / `Domain.Account.InputModels.*` → `ERP.BuildingBlocks.Application.Commands.BaseInputModels.*` | **Done** (uncommitted) |
 
-**Next:** Slice **7c** — `Domain.Account.Commands` / `InputModels` namespace cleanup; ongoing **4.3.x** sprint hygiene (arch test review, no new dependency cycles).
+**Next:** Increment **7** wrap-up or slice **7d** (`Domain.Account.Models.Dtos`); ongoing **4.3.x** sprint hygiene (arch test review, no new dependency cycles).
 
 **Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes; `Domain.Account.DBConfiguration` / `Utility` full migration in one go.
 

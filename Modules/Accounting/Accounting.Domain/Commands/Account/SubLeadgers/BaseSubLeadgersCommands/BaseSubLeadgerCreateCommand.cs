@@ -1,4 +1,4 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using Shared.BaseEntities;
 
 namespace Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
