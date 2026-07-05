@@ -1,69 +1,44 @@
 using Accounting.Application.Commands.PaymentEntries;
-using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Services.Entries;
+using ERP.BuildingBlocks.Api.Extensions;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Accounting.Api.Controllers.Entries;
 
-/// <summary>CRUD API for payment entries.</summary>
+/// <summary>CRUD API for payment entries (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
-public class PaymentEntriesController : BaseController<Entry, PaymentEntryCreateCommand, PaymentEntryUpdateCommand>
+public class PaymentEntriesController(ISender sender, IPaymentEntryQueries queries) : ControllerBase
 {
-    private IPaymentEntryService _service;
-
-    public PaymentEntriesController(IPaymentEntryService service,
-        ISender sender) : base(service, sender)
-        => _service = service;
-
-    /// <summary>Creates a new record.</summary>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] PaymentEntryCreateCommand input)
-    {
-        return await CreateRecord(input);
-    }
+        => this.ToResult(await sender.Send(input), HttpStatusCode.Created, SuccessMessages.CreatedSuccessfully);
 
-    /// <summary>Lists all records.</summary>
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        var result = await _service.GetComplexEntries();
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get()
+        => this.ToResult(await queries.GetAll());
 
-    /// <summary>Lists records with pagination and filtering.</summary>
     [HttpGet("paginated")]
-    public virtual async Task<IActionResult> GetPaginated([FromQuery] EntryFilterDto filter, CancellationToken cancellationToken)
-    {
-        return await GetAllRecordsPaginated(filter, cancellationToken);
-    }
+    public async Task<IActionResult> GetPaginated([FromQuery] EntryFilterDto filter, CancellationToken cancellationToken)
+        => this.ToResult(await queries.GetPaginated(filter, cancellationToken));
 
-    /// <summary>Gets a record by identifier.</summary>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> Get(Guid id)
-    {
-        var result = await _service.GetComplexEntryById(id);
-        return StatusCode((int)result.StatusCode, result);
-    }
+    public async Task<IActionResult> Get(Guid id)
+        => this.ToResult(await queries.GetById(id));
 
-    /// <summary>Updates an existing record.</summary>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Update(Guid id, PaymentEntryUpdateCommand input)
+    public async Task<IActionResult> Update(Guid id, PaymentEntryUpdateCommand input)
     {
-        return await UpdateRecord(id, input);
+        input.Id = id;
+        return this.ToResult(await sender.Send(input), successMessageKey: SuccessMessages.UpdatedSuccessfully);
     }
 
-    /// <summary>Deletes a record by identifier.</summary>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        return await DeleteRecord(id);
-    }
+    public async Task<IActionResult> DeleteAsync(Guid id)
+        => this.ToResult(await sender.Send(new PaymentEntryDeleteCommand(id)), successMessageKey: SuccessMessages.DeletedSuccessfully);
 
-    /// <summary>Returns the next entry number for a given date.</summary>
     [HttpGet("GetEntryNumber")]
     public async Task<IActionResult> GetEntryNumber([FromQuery] DateTime dateTime)
-    {
-        var result = await _service.GetEntryNumber(dateTime);
-        return StatusCode((int)result.StatusCode, result);
-    }
+        => this.ToResult(await queries.GetEntryNumber(dateTime));
 }

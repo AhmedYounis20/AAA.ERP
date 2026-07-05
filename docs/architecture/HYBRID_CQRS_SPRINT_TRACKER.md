@@ -14,8 +14,8 @@
 | [1](#sprint-1) | 2–3 | Pilots: Tax, Color | ✅ |
 | [2](#sprint-2) | 4–5 | Import + Export transactions | ✅ |
 | [3](#sprint-3) | 6–7 | Inventory transfers | ✅ |
-| [4](#sprint-4) | 8–9 | Complex + Journal entries | 🔄 |
-| [5](#sprint-5) | 10–11 | Payment + Receipt entries | ⬜ |
+| [4](#sprint-4) | 8–9 | Complex + Journal entries | ✅ |
+| [5](#sprint-5) | 10–11 | Payment + Receipt entries | 🔄 |
 | [6](#sprint-6) | 12–13 | Opening + Combined entries | ⬜ |
 | [7](#sprint-7) | 14–15 | Financial periods + COA | ⬜ |
 | [8](#sprint-8) | 16–17 | Sub-ledgers batch 1 | ⬜ |

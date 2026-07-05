@@ -20,7 +20,9 @@ public class HybridCqrsArchitectureTests
         typeof(ExportTransactionsController),
         typeof(InventoryTransferController),
         typeof(EntriesController),
-        typeof(JournalEntriesController)
+        typeof(JournalEntriesController),
+        typeof(PaymentEntriesController),
+        typeof(ReceiptEntriesController)
     ];
 
     [Fact]
@@ -63,7 +65,9 @@ public class HybridCqrsArchitectureTests
             typeof(Accounting.Application.Services.ITaxReadService),
             typeof(Inventory.Application.Services.IColorReadService),
             typeof(Accounting.Application.Services.Entries.IComplexEntryQueries),
-            typeof(Accounting.Application.Services.Entries.IJournalEntryQueries)
+            typeof(Accounting.Application.Services.Entries.IJournalEntryQueries),
+            typeof(Accounting.Application.Services.Entries.IPaymentEntryQueries),
+            typeof(Accounting.Application.Services.Entries.IReceiptEntryQueries)
         };
 
         foreach (var readService in readServiceInterfaces)
