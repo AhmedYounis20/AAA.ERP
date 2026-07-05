@@ -1315,7 +1315,7 @@ Month 2 (4.2.x) — **substantially complete** (uncommitted on `Refactor`):
 | 4.2.5 | Products/Variants list N+1 fixes; `CatalogListIntegrationTests` |
 | — | `InventoryTransferService` → `ITransactionCoordinator` (`Create`, `ApproveTransfer`, `RejectTransfer`) |
 
-**Next:** Increment 6 — 3E deferred follow-ups (namespace cleanup, `ERP.Host` → `ERP.Host`, solution diagram); ongoing 4.3.x sprint hygiene.
+**Next:** Increment **6c** — solution diagram + root README (this increment); ongoing 4.3.x sprint hygiene. **6a** (namespace perimeter) and **6b** (`ERP.Host` rename) complete on `Refactor`.
 
 **Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
 
