@@ -1,6 +1,6 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.ManufacturerCompanies;
-using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 
 namespace Inventory.Application.Services;
 

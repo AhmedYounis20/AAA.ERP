@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

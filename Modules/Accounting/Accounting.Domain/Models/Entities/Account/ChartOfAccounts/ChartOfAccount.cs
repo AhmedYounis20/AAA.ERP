@@ -1,7 +1,7 @@
 ﻿using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+namespace Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 public class ChartOfAccount : BaseTreeSettingEntity<ChartOfAccount>
 {

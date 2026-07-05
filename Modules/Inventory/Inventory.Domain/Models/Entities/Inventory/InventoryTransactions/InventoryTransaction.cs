@@ -1,9 +1,9 @@
-﻿using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+namespace Inventory.Domain.Models.Entities.InventoryTransactions;
 
 public class InventoryTransaction : BaseEntity
 {

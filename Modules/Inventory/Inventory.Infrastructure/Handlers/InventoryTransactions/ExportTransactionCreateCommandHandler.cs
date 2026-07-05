@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransactions;
 

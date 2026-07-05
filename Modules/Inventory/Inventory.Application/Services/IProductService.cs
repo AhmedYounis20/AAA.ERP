@@ -1,7 +1,7 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.Products;
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Dtos.Inventory;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Dtos;
 
 namespace Inventory.Application.Services;
 

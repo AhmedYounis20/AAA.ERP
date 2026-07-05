@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.CostCenters;
+namespace Accounting.Domain.Models.Entities.CostCenters;
 
 public class CostCenter : BaseTreeSettingEntity<CostCenter>
 {

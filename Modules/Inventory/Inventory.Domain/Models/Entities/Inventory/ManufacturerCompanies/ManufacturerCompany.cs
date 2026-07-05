@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+namespace Inventory.Domain.Models.Entities.ManufacturerCompanies;
 
 public class ManufacturerCompany : BaseSettingEntity
 {

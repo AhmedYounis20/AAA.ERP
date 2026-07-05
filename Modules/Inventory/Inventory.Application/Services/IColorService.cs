@@ -1,6 +1,6 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.Colors;
-using ERP.Domain.Models.Entities.Inventory.Colors;
+using Inventory.Domain.Models.Entities.Colors;
 
 namespace Inventory.Application.Services;
 

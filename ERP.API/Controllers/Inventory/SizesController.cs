@@ -1,6 +1,6 @@
 ﻿using Inventory.Application.Commands.Sizes;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Inventory.Domain.Models.Entities.Sizes;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;

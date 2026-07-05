@@ -9,7 +9,7 @@ using Identity.Infrastructure;
 using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Extensions;
 using ERP.BuildingBlocks.Application.Logging.Middleware;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.Utilities;
 using FluentValidation;
 using Microsoft.AspNetCore.Localization;

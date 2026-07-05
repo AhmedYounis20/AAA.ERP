@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Variants;
 
 namespace Inventory.Application.Repositories;
 

@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.AccountGuides;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+using Accounting.Domain.Models.Entities.AccountGuides;
 using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;

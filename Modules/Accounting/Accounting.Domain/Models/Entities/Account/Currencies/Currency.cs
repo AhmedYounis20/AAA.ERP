@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Currencies;
+namespace Accounting.Domain.Models.Entities.Currencies;
 
 public class Currency : BaseSettingEntity
 {

@@ -1,7 +1,7 @@
-﻿using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.CostCenters;
+namespace Accounting.Domain.Models.Entities.CostCenters;
 
 public class CostCenterChartOfAccount : BaseEntity
 {

@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Domain.Entities;
 

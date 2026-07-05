@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
+namespace Inventory.Domain.Models.Entities.AttributeDefinitions;
 
 public enum AttributeDataType
 {

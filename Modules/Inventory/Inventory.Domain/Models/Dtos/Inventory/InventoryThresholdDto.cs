@@ -1,6 +1,6 @@
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
 
-namespace ERP.Domain.Models.Dtos.Inventory;
+namespace Inventory.Domain.Models.Dtos;
 
 public class InventoryThresholdDto
 {

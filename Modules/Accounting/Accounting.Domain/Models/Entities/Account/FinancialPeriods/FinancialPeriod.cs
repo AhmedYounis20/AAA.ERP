@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.FinancialPeriods;
+namespace Accounting.Domain.Models.Entities.FinancialPeriods;
 
 public class FinancialPeriod : BaseEntity
 {

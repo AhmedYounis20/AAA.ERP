@@ -1,6 +1,6 @@
 ﻿using Accounting.Application.Commands.CollectionBooks;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.CollectionBooks;
+using Accounting.Domain.Models.Entities.CollectionBooks;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;

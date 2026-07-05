@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 namespace Accounting.Infrastructure.Persistence;

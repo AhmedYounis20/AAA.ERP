@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.GLSettings;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.GLSettings;

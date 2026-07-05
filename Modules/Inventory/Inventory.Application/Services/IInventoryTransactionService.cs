@@ -1,7 +1,7 @@
 using AAA.ERP.OutputDtos;
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Application.Services;
 

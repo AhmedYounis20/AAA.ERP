@@ -8,12 +8,12 @@ using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
 using Inventory.Application.Services;
 using Shared.BaseEntities;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
-using ERP.Domain.Models.Entities.Inventory.Products;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Inventory.Domain.Models.Entities.Products;
 using System.Text.RegularExpressions;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Variants;
 using ERP.Shared.BaseEntities.Attachments;
 
 namespace Inventory.Infrastructure.Services;

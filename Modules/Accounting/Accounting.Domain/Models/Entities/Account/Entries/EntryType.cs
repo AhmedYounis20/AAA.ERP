@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Account.Entries;
+﻿namespace Accounting.Domain.Models.Entities.Entries;
 
 public enum EntryType
 {

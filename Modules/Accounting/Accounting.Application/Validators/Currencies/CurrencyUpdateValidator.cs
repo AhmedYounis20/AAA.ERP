@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Currencies;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Models.Entities.Account.Currencies;
+using Accounting.Domain.Models.Entities.Currencies;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.Currencies;

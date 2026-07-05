@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.GLSettings;
+namespace Accounting.Domain.Models.Entities.GLSettings;
 
 public class GLSetting : BaseEntity
 {

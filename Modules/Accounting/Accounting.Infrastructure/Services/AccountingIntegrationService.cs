@@ -2,11 +2,11 @@ using Accounting.Contracts.Integration;
 using Domain.Account.Models.Dtos.Entry;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Commands.CombinedEntries;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Domain.Models.Entities.Account.Entries;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.Currencies;
+using Accounting.Domain.Models.Entities.Entries;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using MediatR;
 using Shared.Responses;
 

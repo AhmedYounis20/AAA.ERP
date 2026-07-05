@@ -1,6 +1,6 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Accounting.Application.Commands.OpeningEntries;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.OpeningEntries;

@@ -1,5 +1,5 @@
 using Inventory.Application.Repositories;
-using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Inventory.Infrastructure.Repositories;

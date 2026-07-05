@@ -1,7 +1,7 @@
 using AAA.ERP.OutputDtos;
 using Accounting.Application.Commands.ReceiptEntries;
-using ERP.Application.Services.BaseServices;
-using ERP.Domain.Models.Entities.Account.Entries;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
+using Accounting.Domain.Models.Entities.Entries;
 using Shared.Responses;
 
 namespace Accounting.Application.Services;

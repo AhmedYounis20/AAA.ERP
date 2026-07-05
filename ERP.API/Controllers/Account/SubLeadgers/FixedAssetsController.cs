@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.FixedAssets;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Domain.OutputDtos.Lookups;
 using Shared.DTOs.Filters;
 

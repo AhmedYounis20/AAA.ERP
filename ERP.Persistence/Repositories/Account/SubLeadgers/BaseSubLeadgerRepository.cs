@@ -1,5 +1,5 @@
 using Accounting.Application.Repositories.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace ERP.Infrastructure.Repositories.Account.SubLeadgers;

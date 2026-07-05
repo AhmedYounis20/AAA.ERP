@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Dtos.FinancialPeriods;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Dtos.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Application.Repositories;
 

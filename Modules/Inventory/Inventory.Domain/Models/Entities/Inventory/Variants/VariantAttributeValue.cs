@@ -1,8 +1,8 @@
-using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
-using ERP.Domain.Models.Entities.Inventory.Attributes;
+using Inventory.Domain.Models.Entities.AttributeDefinitions;
+using Inventory.Domain.Models.Entities.Attributes;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public class VariantAttributeValue : BaseEntity
 {

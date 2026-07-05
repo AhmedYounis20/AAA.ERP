@@ -1,5 +1,5 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.AccountGuides;
+namespace Accounting.Domain.Models.Entities.AccountGuides;
 
 public class AccountGuide : BaseSettingEntity { }

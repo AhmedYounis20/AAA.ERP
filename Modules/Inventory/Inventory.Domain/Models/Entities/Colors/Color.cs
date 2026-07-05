@@ -1,6 +1,6 @@
-﻿using Shared.BaseEntities;
+using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Colors;
+namespace Inventory.Domain.Models.Entities.Colors;
 
 public class Color : BaseSettingEntity
 {

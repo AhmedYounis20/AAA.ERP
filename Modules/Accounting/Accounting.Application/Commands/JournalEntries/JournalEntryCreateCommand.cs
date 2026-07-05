@@ -1,6 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Models.Dtos.Attachments;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Application.Commands.JournalEntries;
 

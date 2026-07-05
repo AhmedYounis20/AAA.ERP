@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Persistence.Data;
-using ERP.Application.Services.Account;
+using Accounting.Application.Services.Queries;
 using Platform.Caching.Application;
 using Mapster;
 using Microsoft.EntityFrameworkCore;

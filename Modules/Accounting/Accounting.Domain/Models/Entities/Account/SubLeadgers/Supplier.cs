@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Account.SubLeadgers;
+namespace Accounting.Domain.Models.Entities.SubLeadgers;
 
 public class Supplier : SubLeadgerBaseEntity<Supplier>
 {

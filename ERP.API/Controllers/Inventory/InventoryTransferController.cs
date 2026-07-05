@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory;
+using Inventory.Domain.Models.Entities;
 using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;

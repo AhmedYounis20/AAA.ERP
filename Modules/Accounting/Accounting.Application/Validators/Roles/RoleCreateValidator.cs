@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Roles;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Models.Entities.Account.Roles;
+using Accounting.Domain.Models.Entities.Roles;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.Roles;

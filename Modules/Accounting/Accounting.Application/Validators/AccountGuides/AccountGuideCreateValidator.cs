@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.AccountGuides;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+using Accounting.Domain.Models.Entities.AccountGuides;
 
 namespace Accounting.Application.Validators.AccountGuides;
 

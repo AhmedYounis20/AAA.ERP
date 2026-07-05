@@ -1,9 +1,9 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
 using Shared.BaseEntities;
 using Shared.Responses;
 
-namespace ERP.Application.Services.Account.SubLeadgers;
+namespace Accounting.Application.Services.SubLeadgers;
 
 public interface IBaseSubLeadgerService<TEntity, TCreateCommand, in TUpdateCommand>
     : IBaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>

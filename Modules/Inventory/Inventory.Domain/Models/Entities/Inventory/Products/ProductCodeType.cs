@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.Products;
+namespace Inventory.Domain.Models.Entities.Products;
 
 public enum ProductCodeType
 {

@@ -1,5 +1,6 @@
 ﻿using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Application.Repositories
 {

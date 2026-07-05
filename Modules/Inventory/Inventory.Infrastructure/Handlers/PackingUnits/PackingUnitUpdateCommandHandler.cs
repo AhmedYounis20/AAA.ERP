@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.PackingUnits;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Inventory.Domain.Models.Entities.PackingUnits;
 
 namespace Inventory.Infrastructure.Handlers.PackingUnits;
 

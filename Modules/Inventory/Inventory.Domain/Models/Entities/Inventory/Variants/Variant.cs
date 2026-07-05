@@ -1,10 +1,10 @@
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Entities.Items;
 
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public class Variant : BaseEntity
 {

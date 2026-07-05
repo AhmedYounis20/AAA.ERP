@@ -2,8 +2,8 @@ using Accounting.Application.Commands.CashInBoxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Domain.Account.Utility;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 
 namespace Accounting.Infrastructure.Services;

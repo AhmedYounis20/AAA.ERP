@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Inventory;
+using Inventory.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Inventory.Infrastructure.Persistence.InventoryTransfers;

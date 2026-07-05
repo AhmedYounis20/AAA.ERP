@@ -6,8 +6,8 @@ using Inventory.Application.Services;
 using ERP.Infrastructure.Services.BaseServices;
 
 using Inventory.Application.Commands.Items;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Items;
 using System.Text.RegularExpressions;
 
 namespace Inventory.Infrastructure.Services;

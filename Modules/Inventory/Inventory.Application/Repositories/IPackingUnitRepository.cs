@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Inventory.Domain.Models.Entities.PackingUnits;
 
 namespace Inventory.Application.Repositories;
 

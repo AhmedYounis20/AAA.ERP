@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public enum VariantCodeType
 {

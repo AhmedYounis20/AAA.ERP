@@ -1,4 +1,4 @@
-﻿using ERP.Domain.Models.Entities.Account.Entries;
+﻿using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

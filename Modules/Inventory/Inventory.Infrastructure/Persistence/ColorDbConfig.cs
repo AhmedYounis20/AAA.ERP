@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Inventory.Colors;
+using Inventory.Domain.Models.Entities.Colors;
 
 namespace Inventory.Infrastructure.Persistence;
 

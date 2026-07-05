@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.GLSettings;
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 using Shared.Responses;
 
 namespace Accounting.Application.Services;

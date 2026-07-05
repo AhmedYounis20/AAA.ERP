@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.CostCenters;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using FluentValidation;
 using Shared.BaseEntities;
 

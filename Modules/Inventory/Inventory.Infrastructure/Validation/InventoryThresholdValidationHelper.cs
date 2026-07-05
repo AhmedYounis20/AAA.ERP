@@ -1,5 +1,5 @@
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
 
 namespace Inventory.Infrastructure.Validation;
 

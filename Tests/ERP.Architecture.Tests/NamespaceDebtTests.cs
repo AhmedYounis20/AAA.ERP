@@ -169,11 +169,99 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_Application_base_services_should_not_use_legacy_ERP_Application_Services_BaseServices_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly)
+            .That()
+            .ResideInNamespaceContaining("BaseServices")
+            .Should()
+            .NotResideInNamespace("ERP.Application.Services.BaseServices")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Accounting_Application_horizontal_service_ports_should_not_use_legacy_ERP_Application_Services_Account_namespace()
+    {
+        var assembly = typeof(Accounting.Application.Repositories.IEntryRepository).Assembly;
+
+        var queryResult = Types.InAssembly(assembly)
+            .That()
+            .HaveName("IBaseQueryService")
+            .Should()
+            .NotResideInNamespace("ERP.Application.Services.Account")
+            .And()
+            .NotResideInNamespaceStartingWith("ERP.Application.Services.Account.")
+            .GetResult();
+
+        queryResult.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", queryResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
+
+        var subLeadgerResult = Types.InAssembly(assembly)
+            .That()
+            .HaveName("IBaseSubLeadgerService")
+            .Should()
+            .NotResideInNamespaceStartingWith("ERP.Application.Services.Account")
+            .GetResult();
+
+        subLeadgerResult.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", subLeadgerResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Accounting_Application_repositories_should_use_Accounting_Application_Repositories_namespace()
     {
         var result = Types.InAssembly(typeof(Accounting.Application.Repositories.IEntryRepository).Assembly)
             .Should()
             .NotResideInNamespaceStartingWith("ERP.Application.Repositories")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Inventory_Domain_entities_should_not_use_legacy_ERP_Domain_Models_Entities_Inventory_namespace()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.Colors.Color).Assembly)
+            .That()
+            .ResideInNamespace("Inventory.Domain.Models.Entities")
+            .Or()
+            .ResideInNamespaceStartingWith("Inventory.Domain.Models.Entities.")
+            .Should()
+            .NotResideInNamespaceStartingWith("ERP.Domain.Models.Entities.Inventory")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Accounting_Domain_entities_should_not_use_legacy_ERP_Domain_Models_Entities_Account_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .That()
+            .ResideInNamespaceStartingWith("Accounting.Domain.Models.Entities")
+            .Should()
+            .NotResideInNamespaceStartingWith("ERP.Domain.Models.Entities.Account")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Inventory_Domain_DTOs_should_not_use_legacy_ERP_Domain_Models_Dtos_Inventory_namespace()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.Colors.Color).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Dtos")
+            .Should()
+            .NotResideInNamespace("ERP.Domain.Models.Dtos.Inventory")
+            .And()
+            .NotResideInNamespaceStartingWith("ERP.Domain.Models.Dtos.Inventory.")
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(

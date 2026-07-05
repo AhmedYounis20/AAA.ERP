@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.FinancialPeriods;
 using ERP.Application.Validators.Account.InputValidators.BaseValidators;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.FinancialPeriods;

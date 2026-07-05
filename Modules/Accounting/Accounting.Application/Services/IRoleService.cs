@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Roles;
-using ERP.Application.Services.BaseServices;
-using ERP.Domain.Models.Entities.Account.Roles;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
+using Accounting.Domain.Models.Entities.Roles;
 
 namespace Accounting.Application.Services;
 

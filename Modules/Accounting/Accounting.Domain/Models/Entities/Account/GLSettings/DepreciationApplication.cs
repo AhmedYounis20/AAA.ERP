@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Account.GLSettings;
+﻿namespace Accounting.Domain.Models.Entities.GLSettings;
 
 public enum DepreciationApplication
 {

@@ -1,5 +1,5 @@
 ﻿using Domain.Account.InputModels.BaseInputModels;
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 
 namespace ERP.Domain.Commands.Account;
 

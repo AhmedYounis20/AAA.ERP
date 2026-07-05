@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Inventory.Domain.Models.Entities.Sizes;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

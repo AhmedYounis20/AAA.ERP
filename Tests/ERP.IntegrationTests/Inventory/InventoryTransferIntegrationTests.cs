@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory;
+using Inventory.Domain.Models.Entities;
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

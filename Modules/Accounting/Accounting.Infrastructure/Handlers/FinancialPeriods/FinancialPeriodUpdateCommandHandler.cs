@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Infrastructure.Handlers.FinancialPeriods;
 

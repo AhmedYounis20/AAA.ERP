@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Account.Roles;
+using Accounting.Domain.Models.Entities.Roles;
 
 namespace Accounting.Infrastructure.Persistence;
 

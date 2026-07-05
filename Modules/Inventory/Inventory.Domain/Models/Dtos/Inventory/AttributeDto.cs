@@ -1,7 +1,7 @@
 using Shared.BaseEntities;
-using ERP.Domain.Models.Entities.Inventory.AttributeDefinitions;
+using Inventory.Domain.Models.Entities.AttributeDefinitions;
 
-namespace ERP.Domain.Models.Dtos.Inventory;
+namespace Inventory.Domain.Models.Dtos;
 
 public class AttributeDto
 {

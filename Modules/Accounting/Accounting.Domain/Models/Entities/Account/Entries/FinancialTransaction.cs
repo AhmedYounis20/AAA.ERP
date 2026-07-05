@@ -1,9 +1,9 @@
-﻿using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.CollectionBooks;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.CollectionBooks;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Entries;
+namespace Accounting.Domain.Models.Entities.Entries;
 
 public class FinancialTransaction : BaseEntity
 {

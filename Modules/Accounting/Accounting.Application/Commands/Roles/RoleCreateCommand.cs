@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-using ERP.Domain.Models.Entities.Account.Roles;
+using Accounting.Domain.Models.Entities.Roles;
 
 namespace Accounting.Application.Commands.Roles;
 

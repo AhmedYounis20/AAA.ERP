@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+﻿namespace Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 public enum AccountNature
 {

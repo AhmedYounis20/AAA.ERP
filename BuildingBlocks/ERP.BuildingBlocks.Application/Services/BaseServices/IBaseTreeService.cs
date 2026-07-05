@@ -2,7 +2,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Services.BaseServices;
+namespace ERP.BuildingBlocks.Application.Services.BaseServices;
 
 public interface IBaseTreeService<TEntity, in TCreateCommand, in TUpdateCommand>
 : IBaseService<TEntity, TCreateCommand, TUpdateCommand>

@@ -1,7 +1,7 @@
 using Inventory.Application.Repositories;
 using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.Colors;
+using Inventory.Domain.Models.Entities.Colors;
 using ERP.Infrastructure.Services.BaseServices;
 
 namespace Inventory.Infrastructure.Services;

@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Inventory.Items;
+﻿namespace Inventory.Domain.Models.Entities.Items;
 
 public enum DiscountType
 {

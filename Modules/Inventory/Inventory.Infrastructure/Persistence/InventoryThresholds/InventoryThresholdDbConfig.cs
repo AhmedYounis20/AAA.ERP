@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

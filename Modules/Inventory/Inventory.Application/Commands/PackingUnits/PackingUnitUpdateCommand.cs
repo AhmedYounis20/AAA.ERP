@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Inventory.Domain.Models.Entities.PackingUnits;
 
 namespace Inventory.Application.Commands.PackingUnits;
 

@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+using Accounting.Domain.Models.Entities.AccountGuides;
 
 namespace Accounting.Application.Commands.AccountGuides;
 

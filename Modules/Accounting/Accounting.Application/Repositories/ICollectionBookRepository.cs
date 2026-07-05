@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Account.CollectionBooks;
+using Accounting.Domain.Models.Entities.CollectionBooks;
 
 namespace Accounting.Application.Repositories;
 

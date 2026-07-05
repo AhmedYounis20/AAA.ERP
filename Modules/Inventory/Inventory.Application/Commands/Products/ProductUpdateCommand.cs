@@ -1,8 +1,8 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Application.Commands.Products;
 

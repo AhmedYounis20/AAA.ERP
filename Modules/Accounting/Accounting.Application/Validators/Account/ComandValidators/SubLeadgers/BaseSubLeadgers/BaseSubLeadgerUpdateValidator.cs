@@ -1,6 +1,6 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace ERP.Application.Validators.Account.ComandValidators.SubLeadgers.BaseSubLeadgers;
 

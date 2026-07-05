@@ -1,8 +1,8 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
-using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Domain.Models.Dtos.Inventory;
+using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Domain.Models.Dtos;
 using Shared.DTOs;
 
 namespace Inventory.Application.Services;

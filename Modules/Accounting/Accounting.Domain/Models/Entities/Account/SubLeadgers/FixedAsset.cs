@@ -1,6 +1,6 @@
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
-namespace ERP.Domain.Models.Entities.Account.SubLeadgers;
+namespace Accounting.Domain.Models.Entities.SubLeadgers;
 
 public class FixedAsset : SubLeadgerBaseEntity<FixedAsset>
 {

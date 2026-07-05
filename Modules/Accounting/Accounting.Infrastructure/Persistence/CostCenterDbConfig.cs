@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 namespace Accounting.Infrastructure.Persistence;

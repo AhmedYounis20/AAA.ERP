@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Persistence.Data;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 using FluentAssertions;
 using NetArchTest.Rules;
 

@@ -1,11 +1,11 @@
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using ERP.Domain.Models.Entities.Inventory.Items;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities.Variants;
 
-namespace ERP.Domain.Models.Entities.Inventory.Products;
+namespace Inventory.Domain.Models.Entities.Products;
 
 public class Product : BaseTreeSettingEntity<Product>
 {

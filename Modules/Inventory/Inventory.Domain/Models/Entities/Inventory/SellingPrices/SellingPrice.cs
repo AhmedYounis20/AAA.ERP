@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.SellingPrices;
+namespace Inventory.Domain.Models.Entities.SellingPrices;
 
 public class SellingPrice : BaseSettingEntity
 {

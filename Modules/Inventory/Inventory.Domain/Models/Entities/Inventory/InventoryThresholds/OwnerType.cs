@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+namespace Inventory.Domain.Models.Entities.InventoryThresholds;
 
 /// <summary>
 /// Owner type of an inventory threshold: Product or Variant.

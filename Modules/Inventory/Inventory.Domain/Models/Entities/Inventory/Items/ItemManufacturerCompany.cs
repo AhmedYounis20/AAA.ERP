@@ -1,7 +1,7 @@
-﻿using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+﻿using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Items;
+namespace Inventory.Domain.Models.Entities.Items;
 
 public class ItemManufacturerCompany : BaseEntity
 {

@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+namespace Inventory.Domain.Models.Entities.InventoryTransactions;
 public enum InventoryTransactionType
 {
     Receipt = 1,  // Stock In

@@ -1,6 +1,6 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Inventory.Application.Commands.Colors;
-using ERP.Domain.Models.Entities.Inventory.Colors;
+using Inventory.Domain.Models.Entities.Colors;
 
 namespace Inventory.Application.Validators.Colors;
 

@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 
 namespace Inventory.Infrastructure.Persistence;
 

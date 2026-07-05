@@ -1,5 +1,5 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Inventory.Products;
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

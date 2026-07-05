@@ -1,8 +1,8 @@
-using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Domain.Models.Entities.PackingUnits;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+namespace Inventory.Domain.Models.Entities.InventoryTransactions;
 
 public class InventoryTransactionItem : BaseEntity
 {

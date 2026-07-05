@@ -16,11 +16,11 @@ using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
-using ERP.Domain.Models.Entities.Inventory.Items;
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Inventory.Infrastructure;

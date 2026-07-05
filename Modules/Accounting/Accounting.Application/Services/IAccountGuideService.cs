@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.AccountGuides;
-using ERP.Application.Services.BaseServices;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
+using Accounting.Domain.Models.Entities.AccountGuides;
 
 namespace Accounting.Application.Services;
 

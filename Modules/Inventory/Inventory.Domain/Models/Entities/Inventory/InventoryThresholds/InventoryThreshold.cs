@@ -1,8 +1,8 @@
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Variants;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+namespace Inventory.Domain.Models.Entities.InventoryThresholds;
 
 /// <summary>
 /// Inventory threshold for stock levels and alerts at product or variant level.

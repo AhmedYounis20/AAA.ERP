@@ -2,8 +2,8 @@ using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Commands.AttributeValues;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Attributes;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Attributes;
 using ERP.Infrastructure.Services.BaseServices;
 
 namespace Inventory.Infrastructure.Services;

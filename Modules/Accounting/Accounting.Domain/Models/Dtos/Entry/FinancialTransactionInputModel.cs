@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 namespace Domain.Account.Models.Dtos.Entry;
 

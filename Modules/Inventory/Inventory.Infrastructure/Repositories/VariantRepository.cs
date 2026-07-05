@@ -1,8 +1,8 @@
 using Domain.Account.Models.Dtos.Attachments;
 using Inventory.Application.Repositories;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Domain.Models.Entities.Inventory.Products;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Domain.Models.Entities.Products;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 using Shared.DTOs;
 using System.Linq.Expressions;

@@ -1,8 +1,8 @@
 ﻿using Shared.BaseEntities;
 using System.Text.Json.Serialization;
-using ERP.Domain.Models.Dtos.Inventory;
+using Inventory.Domain.Models.Entities.Items;
 
-namespace ERP.Domain.Models.Entities.Inventory.Items;
+namespace Inventory.Domain.Models.Dtos;
 
 public class ItemDto
 {

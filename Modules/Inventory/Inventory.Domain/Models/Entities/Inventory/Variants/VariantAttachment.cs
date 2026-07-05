@@ -1,9 +1,9 @@
-using ERP.Domain.Models.Entities.Inventory.Items;
-using ERP.Domain.Models.Entities.Inventory.Products;
+using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities.Products;
 using ERP.Shared.BaseEntities.Attachments;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public class VariantAttachment : BaseEntity
 {

@@ -1,7 +1,7 @@
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public class VariantCostCenter : BaseEntity
 {

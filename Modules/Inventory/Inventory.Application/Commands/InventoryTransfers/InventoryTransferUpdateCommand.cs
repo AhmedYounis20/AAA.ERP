@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Inventory;
+using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Application.Commands.InventoryTransfers;
 

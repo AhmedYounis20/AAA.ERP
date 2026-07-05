@@ -1,4 +1,6 @@
-﻿namespace ERP.Domain.Models.Entities.Inventory.Items;
+﻿using Inventory.Domain.Models.Entities.Items;
+
+namespace Inventory.Domain.Models.Dtos;
 
 public class ItemSellingPriceDiscountDto
 {

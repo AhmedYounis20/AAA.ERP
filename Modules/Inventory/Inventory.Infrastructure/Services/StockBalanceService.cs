@@ -3,8 +3,8 @@ using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.Variants;
 
 namespace Inventory.Infrastructure.Services;
 

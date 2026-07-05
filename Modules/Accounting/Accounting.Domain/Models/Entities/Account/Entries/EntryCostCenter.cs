@@ -1,9 +1,9 @@
-﻿using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+﻿using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.CostCenters;
 using Shared.BaseEntities;
 using System.Text.Json.Serialization;
 
-namespace ERP.Domain.Models.Entities.Account.Entries;
+namespace Accounting.Domain.Models.Entities.Entries;
 
 public class EntryCostCenter : BaseEntity
 {

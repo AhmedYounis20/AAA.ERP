@@ -1,7 +1,7 @@
 using Shared.BaseEntities;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Entities.Items;
 
-namespace ERP.Domain.Models.Entities.Inventory.Products;
+namespace Inventory.Domain.Models.Entities.Products;
 
 public class ProductSellingPriceDiscount : BaseEntity
 {

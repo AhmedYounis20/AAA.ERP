@@ -17,6 +17,8 @@ public class ModuleBoundaryTests
             .Or()
             .HaveName("InventoryTransferService")
             .Should()
+            .NotHaveDependencyOn("Accounting.Domain.Models.Entities")
+            .And()
             .NotHaveDependencyOn("ERP.Domain.Models.Entities.Account")
             .GetResult();
 
@@ -28,6 +30,8 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
             .Should()
+            .NotHaveDependencyOn("Inventory.Domain.Models.Entities")
+            .And()
             .NotHaveDependencyOn("ERP.Domain.Models.Entities.Inventory")
             .GetResult();
 
@@ -67,6 +71,8 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Accounting.Infrastructure.AccountingModuleExtensions).Assembly)
             .Should()
+            .NotHaveDependencyOn("Inventory.Domain.Models.Entities")
+            .And()
             .NotHaveDependencyOn("ERP.Domain.Models.Entities.Inventory")
             .GetResult();
 
@@ -115,6 +121,8 @@ public class ModuleBoundaryTests
             .That()
             .ResideInNamespace("Inventory.Infrastructure.Services")
             .Should()
+            .NotHaveDependencyOn("Accounting.Domain.Models.Entities")
+            .And()
             .NotHaveDependencyOn("ERP.Domain.Models.Entities.Account")
             .GetResult();
 

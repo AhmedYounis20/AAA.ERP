@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.ReceiptEntries;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Infrastructure.Handlers.ReceiptEntries;
 

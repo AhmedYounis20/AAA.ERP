@@ -1,8 +1,8 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories;
-using ERP.Domain.Models.Dtos.FinancialPeriods;
-using ERP.Domain.Models.Entities.Account.Entries;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Dtos.FinancialPeriods;
+using Accounting.Domain.Models.Entities.Entries;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Accounting.Infrastructure.Repositories;

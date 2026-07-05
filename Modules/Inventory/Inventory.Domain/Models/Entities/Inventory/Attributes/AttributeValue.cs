@@ -1,7 +1,7 @@
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Variants;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Attributes;
+namespace Inventory.Domain.Models.Entities.Attributes;
 
 public class AttributeValue : BaseSettingEntity
 {

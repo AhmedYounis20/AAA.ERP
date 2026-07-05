@@ -1,5 +1,5 @@
 using Domain.Account.InputModels.BaseInputModels;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Application.Commands.FinancialPeriods;
 

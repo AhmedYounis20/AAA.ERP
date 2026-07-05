@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.PackingUnits;
+namespace Inventory.Domain.Models.Entities.PackingUnits;
 
 public class PackingUnit : BaseSettingEntity
 {

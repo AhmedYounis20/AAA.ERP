@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Inventory.Domain.Models.Entities.Sizes;
 
 namespace Inventory.Application.Commands.Sizes;
 

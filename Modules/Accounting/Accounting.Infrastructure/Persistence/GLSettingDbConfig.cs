@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 namespace Accounting.Infrastructure.Persistence;

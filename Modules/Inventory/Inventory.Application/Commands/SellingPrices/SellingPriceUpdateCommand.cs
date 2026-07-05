@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Inventory.SellingPrices;
+using Inventory.Domain.Models.Entities.SellingPrices;
 
 namespace Inventory.Application.Commands.SellingPrices;
 

@@ -5,7 +5,7 @@ using Shared.DTOs;
 using Shared.Responses;
 using System.Linq.Expressions;
 
-namespace ERP.Application.Services.BaseServices
+namespace ERP.BuildingBlocks.Application.Services.BaseServices
 {
     public interface IBaseService<TEntity, in TCreateCommand, in TUpdateCommand>
         where TEntity : BaseEntity

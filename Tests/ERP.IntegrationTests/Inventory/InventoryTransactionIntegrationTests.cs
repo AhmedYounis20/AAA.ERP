@@ -1,9 +1,9 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Accounting.Contracts.Integration;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.Entries;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.Entries;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

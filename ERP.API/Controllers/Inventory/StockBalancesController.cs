@@ -1,6 +1,6 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.StockBalances;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Inventory.Domain.Models.Entities.Sizes;
 using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Inventory;

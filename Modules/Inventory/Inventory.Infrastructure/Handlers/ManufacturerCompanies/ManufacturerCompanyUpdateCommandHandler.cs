@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.ManufacturerCompanies;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.ManufacturerCompanies;
+using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 
 namespace Inventory.Infrastructure.Handlers.ManufacturerCompanies;
 

@@ -1,8 +1,8 @@
 using Domain.Account.Models.Dtos.Attachments;
 using Inventory.Application.Repositories;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 
 namespace Inventory.Infrastructure.Repositories;

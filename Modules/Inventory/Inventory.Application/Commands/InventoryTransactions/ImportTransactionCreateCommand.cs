@@ -1,6 +1,6 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Application.Commands.InventoryTransactions;
 

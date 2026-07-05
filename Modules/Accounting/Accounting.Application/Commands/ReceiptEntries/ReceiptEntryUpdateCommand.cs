@@ -1,7 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using Domain.Account.Models.Dtos.Attachments;
 using Domain.Account.Models.Dtos.Entry;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Application.Commands.ReceiptEntries;
 

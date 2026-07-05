@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Sizes;
+namespace Inventory.Domain.Models.Entities.Sizes;
 
 public class Size : BaseSettingEntity
 {

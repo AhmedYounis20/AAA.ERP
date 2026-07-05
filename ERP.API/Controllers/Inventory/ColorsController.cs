@@ -1,6 +1,6 @@
 ﻿using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.Colors;
+using Inventory.Domain.Models.Entities.Colors;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Inventory;

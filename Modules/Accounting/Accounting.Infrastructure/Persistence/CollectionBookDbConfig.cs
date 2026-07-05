@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Account.CollectionBooks;
+using Accounting.Domain.Models.Entities.CollectionBooks;
 
 namespace Accounting.Infrastructure.Persistence;
 

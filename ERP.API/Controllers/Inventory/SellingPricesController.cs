@@ -1,7 +1,7 @@
-﻿using ERP.Application.Services.Account;
+﻿using Accounting.Application.Services.Queries;
 using Inventory.Application.Commands.SellingPrices;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.SellingPrices;
+using Inventory.Domain.Models.Entities.SellingPrices;
 using Inventory.Domain.OutputDtos.Lookups;
 using Shared.DTOs;
 

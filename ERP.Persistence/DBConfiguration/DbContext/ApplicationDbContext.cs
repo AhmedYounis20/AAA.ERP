@@ -1,7 +1,7 @@
 using Identity.Application;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
-using ERP.Domain.Models.Entities.Inventory.Attributes;
+using Inventory.Domain.Models.Entities.Attributes;
 
 namespace Domain.Account.DBConfiguration.DbContext;
 
@@ -83,13 +83,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplic
     // Attribute system DbSets
     public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
     public DbSet<AttributeValue> AttributeValues { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductAttributeDefinition> ProductAttributeDefinitions { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.Variants.VariantAttributeValue> VariantAttributeValues { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.Products.ProductAttributeDefinition> ProductAttributeDefinitions { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.Variants.VariantAttributeValue> VariantAttributeValues { get; set; }
     
     // Product template system DbSets
-    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnit> ProductPackingUnits { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.Products.ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.InventoryThresholds.InventoryThreshold> InventoryThresholds { get; set; }
-    public DbSet<ERP.Domain.Models.Entities.Inventory.ExpiryLevels.ExpiryLevel> ExpiryLevels { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.Products.ProductSellingPriceDiscount> ProductSellingPriceDiscounts { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.Products.ProductPackingUnit> ProductPackingUnits { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.Products.ProductPackingUnitSellingPrice> ProductPackingUnitSellingPrices { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.InventoryThresholds.InventoryThreshold> InventoryThresholds { get; set; }
+    public DbSet<Inventory.Domain.Models.Entities.ExpiryLevels.ExpiryLevel> ExpiryLevels { get; set; }
 }

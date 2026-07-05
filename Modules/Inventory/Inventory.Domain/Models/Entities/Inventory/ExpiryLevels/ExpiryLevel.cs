@@ -1,9 +1,9 @@
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
-using ERP.Domain.Models.Entities.Inventory.Products;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Variants;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
+namespace Inventory.Domain.Models.Entities.ExpiryLevels;
 
 public class ExpiryLevel : BaseEntity
 {

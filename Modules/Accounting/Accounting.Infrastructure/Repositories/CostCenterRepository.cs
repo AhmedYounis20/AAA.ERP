@@ -1,5 +1,5 @@
 using Accounting.Application.Repositories;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 using System.Linq.Expressions;
 

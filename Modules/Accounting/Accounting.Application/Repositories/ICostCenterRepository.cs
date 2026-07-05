@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 
 namespace Accounting.Application.Repositories;
 

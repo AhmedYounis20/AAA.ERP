@@ -3,8 +3,8 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Entities;
 using Accounting.Application.Repositories;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 using Shared.BaseEntities;
 

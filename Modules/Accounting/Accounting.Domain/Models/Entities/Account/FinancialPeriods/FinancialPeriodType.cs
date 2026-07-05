@@ -1,4 +1,4 @@
-﻿namespace ERP.Domain.Models.Entities.Account.FinancialPeriods;
+﻿namespace Accounting.Domain.Models.Entities.FinancialPeriods;
 
 public static class FinancialPeriodType
 {

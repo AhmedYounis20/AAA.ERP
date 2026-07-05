@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.ChartOfAccounts;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using FluentValidation;
 
 namespace Accounting.Application.Validators.ChartOfAccounts;

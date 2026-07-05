@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.ChartOfAccounts;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 namespace Accounting.Infrastructure.Handlers.ChartOfAccounts;
 

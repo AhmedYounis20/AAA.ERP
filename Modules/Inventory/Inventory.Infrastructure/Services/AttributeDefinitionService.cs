@@ -1,7 +1,7 @@
 using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
-using ERP.Domain.Models.Dtos.Inventory;
-using ERP.Domain.Models.Entities.Inventory.Attributes;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Attributes;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.AttributeDefinitions;
 using Inventory.Application.Repositories;

@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.CashInBoxes;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Infrastructure.Handlers.CashInBoxes;
 

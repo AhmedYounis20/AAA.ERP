@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Roles;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.Roles;
+using Accounting.Domain.Models.Entities.Roles;
 
 namespace Accounting.Infrastructure.Handlers.Roles;
 

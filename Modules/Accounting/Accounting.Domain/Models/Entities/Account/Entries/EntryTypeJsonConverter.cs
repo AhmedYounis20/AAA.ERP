@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ERP.Domain.Models.Entities.Account.Entries;
+namespace Accounting.Domain.Models.Entities.Entries;
 
 /// <summary>
 /// Preserves legacy wire format <c>"Compined"</c> for combined entries (Phase 4.1.4).

@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Roles;
+namespace Accounting.Domain.Models.Entities.Roles;
 
 public class Role : BaseSettingEntity
 {

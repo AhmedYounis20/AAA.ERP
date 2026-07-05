@@ -1,7 +1,7 @@
 ﻿using ERP.Shared.BaseEntities.Attachments;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Entries;
+namespace Accounting.Domain.Models.Entities.Entries;
 
 public class EntryAttachment : BaseEntity
 {

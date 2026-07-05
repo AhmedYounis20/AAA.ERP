@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.SellingPrices;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.SellingPrices;
+using Inventory.Domain.Models.Entities.SellingPrices;
 
 namespace Inventory.Infrastructure.Handlers.SellingPrices;
 

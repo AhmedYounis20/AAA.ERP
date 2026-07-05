@@ -1,6 +1,6 @@
 ﻿using Accounting.Application.Commands.AccountGuides;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+using Accounting.Domain.Models.Entities.AccountGuides;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;

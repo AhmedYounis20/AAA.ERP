@@ -1,6 +1,6 @@
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Variants;
+namespace Inventory.Domain.Models.Entities.Variants;
 
 public class VariantPurchaseTax : BaseEntity
 {

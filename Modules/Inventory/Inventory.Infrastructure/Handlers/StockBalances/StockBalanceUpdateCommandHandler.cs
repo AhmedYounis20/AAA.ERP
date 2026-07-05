@@ -1,6 +1,6 @@
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
+using Inventory.Domain.Models.Entities.Sizes;
 
 namespace Inventory.Infrastructure.Handlers.StockBalances;
 

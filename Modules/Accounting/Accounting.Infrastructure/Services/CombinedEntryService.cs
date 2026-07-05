@@ -3,7 +3,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Application.Commands.Entries;
 using Accounting.Application.Commands.CombinedEntries;
-using ERP.Domain.Models.Entities.Account.Entries;
+using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;

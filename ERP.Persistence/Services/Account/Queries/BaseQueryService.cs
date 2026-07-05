@@ -1,4 +1,4 @@
-﻿using ERP.Application.Services.Account;
+﻿using Accounting.Application.Services.Queries;
 using System.Linq;
 
 namespace ERP.Infrastructure.Services.Account.Queries;

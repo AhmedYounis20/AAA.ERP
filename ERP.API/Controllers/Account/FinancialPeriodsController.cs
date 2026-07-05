@@ -1,6 +1,6 @@
 ﻿using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.OutputDtos.Lookups;
 using Shared.DTOs;
 using Shared.DTOs.Filters;

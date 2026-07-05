@@ -1,5 +1,5 @@
 using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Application.Commands.FixedAssets;
 

@@ -1,5 +1,5 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.CollectionBooks;
+namespace Accounting.Domain.Models.Entities.CollectionBooks;
 
 public class CollectionBook : BaseSettingEntity { }

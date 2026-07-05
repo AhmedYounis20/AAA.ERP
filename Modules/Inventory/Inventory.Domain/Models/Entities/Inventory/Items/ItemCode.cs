@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Items;
+namespace Inventory.Domain.Models.Entities.Items;
 
 public class ItemCode : BaseEntity
 {

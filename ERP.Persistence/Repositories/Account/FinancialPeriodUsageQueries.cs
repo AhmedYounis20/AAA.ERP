@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace ERP.Infrastructure.Repositories.Account;
 

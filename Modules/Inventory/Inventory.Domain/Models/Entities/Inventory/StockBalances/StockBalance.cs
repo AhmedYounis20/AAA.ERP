@@ -1,9 +1,9 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Inventory.Variants;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using Inventory.Domain.Models.Entities.Variants;
+using Inventory.Domain.Models.Entities.PackingUnits;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Sizes;
+namespace Inventory.Domain.Models.Entities.Sizes;
 
 public class StockBalance : BaseEntity
 {

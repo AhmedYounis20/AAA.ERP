@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Banks;
-using ERP.Application.Services.Account.SubLeadgers;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Application.Services.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Application.Services;
 

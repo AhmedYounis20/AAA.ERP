@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 namespace Accounting.Infrastructure.Persistence;

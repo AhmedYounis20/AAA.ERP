@@ -1,7 +1,7 @@
-﻿using ERP.Application.Services.Account;
+﻿using Accounting.Application.Services.Queries;
 using Inventory.Application.Commands.PackingUnits;
 using Inventory.Application.Services;
-using ERP.Domain.Models.Entities.Inventory.PackingUnits;
+using Inventory.Domain.Models.Entities.PackingUnits;
 using Inventory.Domain.OutputDtos.Lookups;
 using Shared.DTOs;
 

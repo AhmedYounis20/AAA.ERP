@@ -1,7 +1,7 @@
 ﻿using Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Domain.Models.Entities.Inventory.Items;
+namespace Inventory.Domain.Models.Entities.Items;
 
 public class Item : BaseTreeSettingEntity<Item>
 {

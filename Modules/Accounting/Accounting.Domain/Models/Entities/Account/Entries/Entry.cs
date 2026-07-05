@@ -1,9 +1,9 @@
-﻿using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+﻿using Accounting.Domain.Models.Entities.Currencies;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Account.Entries;
+namespace Accounting.Domain.Models.Entities.Entries;
 
 public class Entry : BaseEntity
 {

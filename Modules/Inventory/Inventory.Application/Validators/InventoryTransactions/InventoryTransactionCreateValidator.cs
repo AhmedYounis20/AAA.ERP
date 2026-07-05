@@ -1,6 +1,6 @@
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
 using Inventory.Application.Commands.InventoryTransactions;
-using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
 using FluentValidation;
 
 namespace Inventory.Application.Validators.InventoryTransactions;

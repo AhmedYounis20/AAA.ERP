@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.GLSettings;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 
 namespace Accounting.Infrastructure.Services;
 

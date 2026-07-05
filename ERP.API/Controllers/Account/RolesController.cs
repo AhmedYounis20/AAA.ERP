@@ -1,5 +1,5 @@
 ﻿using Accounting.Application.Commands.Roles;
-using ERP.Domain.Models.Entities.Account.Roles;
+using Accounting.Domain.Models.Entities.Roles;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;

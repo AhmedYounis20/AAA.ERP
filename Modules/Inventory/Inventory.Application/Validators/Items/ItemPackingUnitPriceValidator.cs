@@ -1,4 +1,5 @@
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Dtos;
+using Inventory.Domain.Models.Entities.Items;
 using FluentValidation;
 
 namespace Inventory.Application.Validators.Items;

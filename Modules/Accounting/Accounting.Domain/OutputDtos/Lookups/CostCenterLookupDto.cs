@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.OutputDtos.BaseDtos;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using Shared.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;

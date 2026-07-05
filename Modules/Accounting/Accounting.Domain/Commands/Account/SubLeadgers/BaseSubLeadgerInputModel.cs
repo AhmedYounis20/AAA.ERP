@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Shared;
 using Shared.BaseEntities;
 using Shared.Responses;

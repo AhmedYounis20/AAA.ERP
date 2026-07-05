@@ -1,6 +1,6 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.Items;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Entities.Items;
 
 namespace Inventory.Infrastructure.Handlers.Items;
 

@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Account.GLSettings;
+using Accounting.Domain.Models.Entities.GLSettings;
 
 namespace Accounting.Application.Commands.GLSettings;
 

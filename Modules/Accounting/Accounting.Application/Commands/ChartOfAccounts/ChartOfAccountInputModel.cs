@@ -1,5 +1,5 @@
 using Domain.Account.InputModels.BaseInputModels;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 
 namespace Accounting.Application.Commands.ChartOfAccounts;
 

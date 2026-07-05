@@ -1,5 +1,5 @@
 ﻿using AAA.ERP.OutputDtos.BaseDtos;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Shared.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;

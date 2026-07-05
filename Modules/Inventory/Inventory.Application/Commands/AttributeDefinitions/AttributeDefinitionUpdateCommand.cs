@@ -1,5 +1,5 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.Domain.Models.Entities.Inventory.Attributes;
+using Inventory.Domain.Models.Entities.Attributes;
 using Inventory.Application.Commands.AttributeValues;
 
 namespace Inventory.Application.Commands.AttributeDefinitions;

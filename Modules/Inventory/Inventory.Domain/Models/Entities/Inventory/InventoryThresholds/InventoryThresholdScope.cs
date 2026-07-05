@@ -1,4 +1,4 @@
-namespace ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
+namespace Inventory.Domain.Models.Entities.InventoryThresholds;
 
 /// <summary>
 /// Scope of an inventory threshold: All branches or a specific branch.

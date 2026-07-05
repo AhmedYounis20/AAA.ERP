@@ -1,6 +1,6 @@
 using ERP.Shared.BaseEntities.Attachments;
 
-namespace ERP.Domain.Models.Entities.Account.SubLeadgers;
+namespace Accounting.Domain.Models.Entities.SubLeadgers;
 
 public class Branch : SubLeadgerBaseEntity<Branch>
 {

@@ -1,6 +1,6 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransfers;
-using ERP.Domain.Models.Entities.Inventory;
+using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Application.Services;
 

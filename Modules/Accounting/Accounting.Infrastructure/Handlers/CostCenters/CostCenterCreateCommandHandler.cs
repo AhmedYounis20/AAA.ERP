@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.CostCenters;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 
 namespace Accounting.Infrastructure.Handlers.CostCenters;
 

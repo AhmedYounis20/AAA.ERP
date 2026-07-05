@@ -1,5 +1,5 @@
-using ERP.Domain.Models.Entities.Account.FinancialPeriods;
-namespace ERP.Domain.Models.Dtos.FinancialPeriods;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
+namespace Accounting.Domain.Models.Dtos.FinancialPeriods;
 
 public class FinancialPeriodDto
 {

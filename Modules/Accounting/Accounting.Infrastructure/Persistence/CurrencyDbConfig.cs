@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.Config.BaseConfig;
-using ERP.Domain.Models.Entities.Account.Currencies;
+using Accounting.Domain.Models.Entities.Currencies;
 
 namespace Accounting.Infrastructure.Persistence;
 

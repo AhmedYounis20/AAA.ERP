@@ -1,6 +1,6 @@
-using ERP.Application.Services.BaseServices;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.SellingPrices;
-using ERP.Domain.Models.Entities.Inventory.SellingPrices;
+using Inventory.Domain.Models.Entities.SellingPrices;
 
 namespace Inventory.Application.Services;
 

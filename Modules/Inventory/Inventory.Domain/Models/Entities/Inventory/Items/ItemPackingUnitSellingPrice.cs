@@ -1,7 +1,7 @@
-﻿using ERP.Domain.Models.Entities.Inventory.SellingPrices;
+﻿using Inventory.Domain.Models.Entities.SellingPrices;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory.Items;
+namespace Inventory.Domain.Models.Entities.Items;
 
 public class ItemPackingUnitSellingPrice : BaseEntity
 {

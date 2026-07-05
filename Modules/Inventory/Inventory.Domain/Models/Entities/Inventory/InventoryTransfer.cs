@@ -1,8 +1,8 @@
-using ERP.Domain.Models.Entities.Inventory.Items;
-using ERP.Domain.Models.Entities.Account.SubLeadgers;
+using Inventory.Domain.Models.Entities.Items;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Models.Entities.Inventory;
+namespace Inventory.Domain.Models.Entities;
 
 public enum InventoryTransferStatus
 {

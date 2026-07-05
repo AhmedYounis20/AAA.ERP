@@ -1,6 +1,6 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.Variants;
-using ERP.Domain.Models.Entities.Inventory.Variants;
+using Inventory.Domain.Models.Entities.Variants;
 
 namespace Inventory.Infrastructure.Handlers.Variants;
 

@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.CollectionBooks;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
-using ERP.Domain.Models.Entities.Account.CollectionBooks;
+using Accounting.Domain.Models.Entities.CollectionBooks;
 
 namespace Accounting.Application.Validators.CollectionBooks;
 

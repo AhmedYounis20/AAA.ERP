@@ -1,9 +1,9 @@
 using Shared.BaseEntities;
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Entities.Items;
 using Domain.Account.Models.Dtos.Attachments;
-using ERP.Domain.Models.Entities.Inventory.Products;
+using Inventory.Domain.Models.Entities.Products;
 
-namespace ERP.Domain.Models.Dtos.Inventory;
+namespace Inventory.Domain.Models.Dtos;
 
 public class ProductAttachmentDto
 {

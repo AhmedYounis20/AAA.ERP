@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.ChartOfAccounts;
-using ERP.Application.Services.BaseServices;
-using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using ERP.BuildingBlocks.Application.Services.BaseServices;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Shared.Responses;
 
 namespace Accounting.Application.Services;

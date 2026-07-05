@@ -1,4 +1,4 @@
-using ERP.Domain.Models.Dtos.Inventory;
+using Inventory.Domain.Models.Dtos;
 using FluentValidation;
 
 namespace Inventory.Application.Validators.Products;

@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.CostCenters;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using ERP.Domain.Models.Entities.Account.CostCenters;
+using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.Services.BaseServices;
 using Serilog;
 using Shared.BaseEntities;

@@ -1,6 +1,6 @@
-using ERP.Domain.Models.Entities.Inventory.Items;
+using Inventory.Domain.Models.Entities.Items;
 
-namespace ERP.Domain.Models.Dtos.Inventory;
+namespace Inventory.Domain.Models.Dtos;
 
 public class ProductSellingPriceDiscountDto
 {
