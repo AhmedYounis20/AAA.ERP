@@ -4,12 +4,17 @@ using ERP.Application.Repositories.Inventory;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Infrastructure.Persistence;
+using Inventory.Infrastructure.Persistence.ExpiryLevels;
+using Inventory.Infrastructure.Persistence.InventoryThresholds;
 using Inventory.Infrastructure.Persistence.Products;
+using Inventory.Infrastructure.Persistence.StockBalances;
 using Inventory.Infrastructure.Persistence.Variants;
 using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
+using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Infrastracture.Repositories.BaseRepositories;
@@ -62,6 +67,10 @@ public static class InventoryModuleExtensions
         services.AddScoped<IBaseRepository<VariantSellingPriceDiscount>, BaseRepository<VariantSellingPriceDiscount>>();
         services.AddScoped<IBaseRepository<VariantAttachment>, BaseRepository<VariantAttachment>>();
         services.AddScoped<IVariantAttributeValueRepository, VariantAttributeValueRepository>();
+        services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
+        services.AddScoped<IStockBalanceService, StockBalanceService>();
+        services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
+        services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
 
         return services;
     }
@@ -99,5 +108,8 @@ public static class InventoryModuleExtensions
         modelBuilder.ApplyConfiguration(new VariantPackingUnitSellingPriceDbConfig());
         modelBuilder.ApplyConfiguration(new VariantSellingPriceDiscountDbConfig());
         modelBuilder.ApplyConfiguration(new VariantAttributeValueDbConfig());
+        modelBuilder.ApplyConfiguration(new StockBalanceDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryThresholdDbConfig());
+        modelBuilder.ApplyConfiguration(new ExpiryLevelDbConfig());
     }
 }

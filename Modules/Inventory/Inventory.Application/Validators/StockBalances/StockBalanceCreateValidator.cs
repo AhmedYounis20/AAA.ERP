@@ -1,13 +1,13 @@
-using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Commands.Inventory.StockBalances;
+using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.CreateCommandValidators;
+using Inventory.Application.Commands.StockBalances;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Inventory.CommandValidators.StockBalances;
+namespace Inventory.Application.Validators.StockBalances;
 
-public class StockBalanceUpdateValidator : BaseUpdateValidator<StockBalanceUpdateCommand, StockBalance>
+public class StockBalanceCreateValidator : BaseCreateValidator<StockBalanceCreateCommand, StockBalance>
 {
-    public StockBalanceUpdateValidator()
+    public StockBalanceCreateValidator()
     {
         _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage("ItemIdIsRequired");
         _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage("PackingUnitIdIsRequired");
@@ -18,4 +18,4 @@ public class StockBalanceUpdateValidator : BaseUpdateValidator<StockBalanceUpdat
         _ = RuleFor(e => e.UnitCost).GreaterThanOrEqualTo(0).WithMessage("UnitCostMustBeGreaterThanOrEqualToZero");
         _ = RuleFor(e => e.TotalCost).GreaterThanOrEqualTo(0).WithMessage("TotalCostMustBeGreaterThanOrEqualToZero");
     }
-} 
+}

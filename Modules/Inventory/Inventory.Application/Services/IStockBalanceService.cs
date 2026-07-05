@@ -1,9 +1,8 @@
 using ERP.Application.Services.BaseServices;
-using ERP.Domain.Commands.Inventory.StockBalances;
+using Inventory.Application.Commands.StockBalances;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
-using Shared.Responses;
 
-namespace ERP.Application.Services.Inventory;
+namespace Inventory.Application.Services;
 
 public interface IStockBalanceService : IBaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
 {
@@ -13,4 +12,4 @@ public interface IStockBalanceService : IBaseService<StockBalance, StockBalanceC
     Task<ApiResponse<IEnumerable<StockBalance>>> GetByVariant(Guid variantId);
     Task<ApiResponse<decimal>> GetCurrentBalance(Guid variantId, Guid packingUnitId, Guid branchId);
     Task<ApiResponse<bool>> UpdateStockBalance(Guid variantId, Guid packingUnitId, Guid branchId, decimal quantity, decimal unitCost, bool isReceipt);
-} 
+}

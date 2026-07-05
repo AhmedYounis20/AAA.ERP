@@ -1,7 +1,7 @@
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Validation;
 
 public static class InventoryThresholdValidationHelper
 {
@@ -14,7 +14,6 @@ public static class InventoryThresholdValidationHelper
         if (thresholds == null || !thresholds.Any())
             return (true, errors);
 
-        // Scope and branch are at product/variant level: BranchId required when Scope = Branch
         if (scope == InventoryThresholdScope.Branch && !branchId.HasValue)
             errors.Add("INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH");
 
@@ -25,7 +24,6 @@ public static class InventoryThresholdValidationHelper
                 errors.Add("INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX");
         }
 
-        // All thresholds share the same scope and branch; check no overlapping ranges
         var list = thresholds
             .Where(t => t.MinQuantity < t.MaxQuantity)
             .OrderBy(x => x.MinQuantity)

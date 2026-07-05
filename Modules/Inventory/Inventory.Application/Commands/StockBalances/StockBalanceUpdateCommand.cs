@@ -1,7 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
 
-namespace ERP.Domain.Commands.Inventory.StockBalances;
+namespace Inventory.Application.Commands.StockBalances;
 
 public class StockBalanceUpdateCommand : BaseUpdateCommand<StockBalance>
 {
@@ -13,4 +13,4 @@ public class StockBalanceUpdateCommand : BaseUpdateCommand<StockBalance>
     public decimal MaximumBalance { get; set; }
     public decimal UnitCost { get; set; }
     public decimal TotalCost { get; set; }
-} 
+}

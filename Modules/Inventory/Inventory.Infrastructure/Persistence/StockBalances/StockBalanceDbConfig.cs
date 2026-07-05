@@ -2,7 +2,7 @@ using ERP.Domain.Models.Entities.Inventory.Sizes;
 using ERP.Infrastracture.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ERP.Infrastracture.DBConfiguration.Config.Inventory.StockBalances;
+namespace Inventory.Infrastructure.Persistence.StockBalances;
 
 public class StockBalanceDbConfig : BaseEntityDbConfig<StockBalance>
 {

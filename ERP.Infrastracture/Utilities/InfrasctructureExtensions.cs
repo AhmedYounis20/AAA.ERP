@@ -13,8 +13,6 @@ using ERP.Infrastracture.Repositories.Inventory;
 using ERP.Infrastracture.Services.Account.Queries;
 using ERP.Infrastracture.Services.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Inventory;
-using ERP.Domain.Models.Entities.Inventory.ExpiryLevels;
-using ERP.Domain.Models.Entities.Inventory.InventoryThresholds;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.Infrastracture.Utilities;
@@ -39,7 +37,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IExportTransactionService, ExportTransactionService>();
-        services.AddScoped<IStockBalanceService, StockBalanceService>();
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
@@ -53,9 +50,6 @@ public static class InfrasctructureExtensions
         // services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
         // services.AddScoped<IBaseRepository<InventoryTransactionVariant>, BaseRepository<InventoryTransactionVariant>>();
-        services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
-        services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
-        services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddHttpContextAccessor();

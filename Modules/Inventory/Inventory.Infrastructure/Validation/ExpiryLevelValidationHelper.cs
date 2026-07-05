@@ -1,6 +1,6 @@
 using ERP.Domain.Models.Dtos.Inventory;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Validation;
 
 public static class ExpiryLevelValidationHelper
 {
@@ -17,7 +17,6 @@ public static class ExpiryLevelValidationHelper
                 errors.Add("EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO");
         }
 
-        // Check no overlapping ranges
         var list = expiryLevels
             .Where(el => el.DaysFrom < el.DaysTo)
             .OrderBy(x => x.DaysFrom)

@@ -1,11 +1,11 @@
+using ERP.Application.Repositories;
 using ERP.Application.Repositories.Inventory;
-using ERP.Application.Services.Inventory;
-using ERP.Domain.Commands.Inventory.StockBalances;
-using ERP.Domain.Models.Entities.Inventory.Sizes;
 using ERP.Infrastracture.Services.BaseServices;
-using Shared.Responses;
+using Inventory.Application.Commands.StockBalances;
+using Inventory.Application.Services;
+using ERP.Domain.Models.Entities.Inventory.Sizes;
 
-namespace ERP.Infrastracture.Services.Inventory;
+namespace Inventory.Infrastructure.Services;
 
 public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>, IStockBalanceService
 {
