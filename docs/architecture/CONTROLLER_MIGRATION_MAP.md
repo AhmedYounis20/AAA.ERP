@@ -45,7 +45,7 @@ Maps every business controller from `ERP.Host` to its target `{Module}.Api` loca
 | 19 | `Controllers/Accounting/Entries/OpeningEntriesController.cs` | `Controllers/Entries/OpeningEntriesController.cs` | Entries |
 | 20 | `Controllers/Accounting/Entries/PaymentEntriesController.cs` | `Controllers/Entries/PaymentEntriesController.cs` | Entries |
 | 21 | `Controllers/Accounting/Entries/ReceiptEntriesController.cs` | `Controllers/Entries/ReceiptEntriesController.cs` | Entries |
-| 22 | `Controllers/Accounting/DbWorkController.cs` | `Controllers/Dev/DbWorkController.cs` | Dev (keep `[DevelopmentOnly]`) |
+| 22 | `Controllers/Accounting/DbWorkController.cs` | `Dev/DbWorkController.cs` (`ERP.Host.Dev`) | Dev (keep `[DevelopmentOnly]`) |
 
 ---
 

@@ -1,8 +1,8 @@
 # Module API migration plan
 
-> **Status:** Phases 0–4 **complete** — Phase 5 (Host slim-down) is next  
+> **Status:** Phases 0–5 **complete**  
 > **ADR:** [011-module-owned-api.md](./adr/011-module-owned-api.md)  
-> **Sign-off:** [PHASE_0_API_MIGRATION_SIGNOFF.md](./PHASE_0_API_MIGRATION_SIGNOFF.md)
+> **Sign-off:** [PHASE_5_API_MIGRATION_SIGNOFF.md](./PHASE_5_API_MIGRATION_SIGNOFF.md)
 
 Moves HTTP controllers from `ERP.Host` into per-module `*.Api` projects while preserving API routes.
 
@@ -48,11 +48,11 @@ See [PHASE_4_API_MIGRATION_SIGNOFF.md](./PHASE_4_API_MIGRATION_SIGNOFF.md).
 
 ---
 
-## Phase 5 — Host slim-down
+## Phase 5 — Host slim-down (complete)
 
-See [CONTROLLER_MIGRATION_MAP.md](./CONTROLLER_MIGRATION_MAP.md) for per-controller targets and wave schedule.
+See [PHASE_5_API_MIGRATION_SIGNOFF.md](./PHASE_5_API_MIGRATION_SIGNOFF.md).
 
 | Phase | Scope | Host controllers after |
 |-------|-------|------------------------|
 | Phase 4 | Inventory (14) | 1 (DbWork only) |
-| Phase 5 | Remove empty `ERP.Host/Controllers/` | 0 |
+| Phase 5 | Remove `ERP.Host/Controllers/`, relocate DbWork to `Dev/` | 0 under `Controllers`; 1 dev-only in `ERP.Host.Dev` |

@@ -1,19 +1,19 @@
-namespace ERP.Host.Controllers.Inventory
+namespace Inventory.Api.Controllers.Catalog
 {
     internal sealed class ColorsController;
 }
 
-namespace ERP.Host.Controllers.Accounting
+namespace Accounting.Api.Controllers.Settings
 {
     internal sealed class CurrenciesController;
 }
 
-namespace ERP.Host.Controllers.Identity
+namespace Identity.Api.Controllers
 {
     internal sealed class AuthController;
 }
 
-namespace ERP.Host.Controllers.Audit
+namespace Platform.Audit.Api.Controllers
 {
     internal sealed class AuditLogsController;
 }

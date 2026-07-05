@@ -1,4 +1,4 @@
-using ERP.Host.Controllers.Accounting;
+using ERP.Host.Dev;
 using ERP.Host.Security;
 using FluentAssertions;
 using Identity.Api.Controllers;

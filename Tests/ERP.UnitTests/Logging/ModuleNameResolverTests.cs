@@ -23,10 +23,10 @@ public class ModuleNameResolverTests
     }
 
     [Theory]
-    [InlineData(typeof(ERP.Host.Controllers.Inventory.ColorsController), "Inventory")]
-    [InlineData(typeof(ERP.Host.Controllers.Accounting.CurrenciesController), "Accounting")]
-    [InlineData(typeof(ERP.Host.Controllers.Identity.AuthController), "Identity")]
-    [InlineData(typeof(ERP.Host.Controllers.Audit.AuditLogsController), "Platform")]
+    [InlineData(typeof(Inventory.Api.Controllers.Catalog.ColorsController), "Inventory")]
+    [InlineData(typeof(Accounting.Api.Controllers.Settings.CurrenciesController), "Accounting")]
+    [InlineData(typeof(Identity.Api.Controllers.AuthController), "Identity")]
+    [InlineData(typeof(Platform.Audit.Api.Controllers.AuditLogsController), "Platform")]
     public void FromType_resolves_controller_namespace(Type type, string expectedModule)
     {
         ModuleNameResolver.FromType(type).Should().Be(expectedModule);

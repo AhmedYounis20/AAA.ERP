@@ -88,10 +88,10 @@ public class ModuleApiLayerTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Inventory.Api non-controllers → Domain", result));
     }
 
-    [Fact(Skip = "Enable when DbWork migrates or Host controllers folder is removed. Current count: 1.")]
+    [Fact]
     public void Host_should_not_contain_business_controllers()
     {
-        var hostAssembly = typeof(ERP.Host.Controllers.Accounting.DbWorkController).Assembly;
+        var hostAssembly = typeof(ERP.Host.Dev.DbWorkController).Assembly;
         var businessControllers = hostAssembly.GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && typeof(Microsoft.AspNetCore.Mvc.ControllerBase).IsAssignableFrom(t))
             .Where(t => t.Namespace?.StartsWith("ERP.Host.Controllers", StringComparison.Ordinal) == true)
@@ -105,13 +105,27 @@ public class ModuleApiLayerTests
     [Fact]
     public void Host_business_controller_count_baseline_for_ratchet()
     {
-        var hostAssembly = typeof(ERP.Host.Controllers.Accounting.DbWorkController).Assembly;
+        var hostAssembly = typeof(ERP.Host.Dev.DbWorkController).Assembly;
         var count = hostAssembly.GetTypes()
             .Count(t => t.IsClass && !t.IsAbstract && typeof(Microsoft.AspNetCore.Mvc.ControllerBase).IsAssignableFrom(t)
                 && t.Namespace?.StartsWith("ERP.Host.Controllers", StringComparison.Ordinal) == true
                 && t.Namespace != "ERP.Host.Controllers.BaseControllers");
 
-        count.Should().Be(1, "ratchet baseline — DbWork only; Host becomes composition root in Phase 5");
+        count.Should().Be(0, "ratchet baseline — Host.Controllers removed in Phase 5; business APIs live in *.Api");
+    }
+
+    [Fact]
+    public void Host_dev_tooling_should_only_contain_DbWork()
+    {
+        var hostAssembly = typeof(ERP.Host.Dev.DbWorkController).Assembly;
+        var devControllers = hostAssembly.GetTypes()
+            .Where(t => t.IsClass && !t.IsAbstract && typeof(Microsoft.AspNetCore.Mvc.ControllerBase).IsAssignableFrom(t))
+            .Where(t => t.Namespace?.StartsWith("ERP.Host.Dev", StringComparison.Ordinal) == true)
+            .Select(t => t.Name)
+            .ToList();
+
+        devControllers.Should().BeEquivalentTo(["DbWorkController"],
+            "seed import/export is the only Host-local controller; must stay [DevelopmentOnly]");
     }
 
     [Fact]
