@@ -1,6 +1,6 @@
 # AAA.ERP — Solution diagram
 
-> **Last updated:** July 2026 — post Increment **6b** (`ERP.Host` rename)  
+> **Last updated:** July 2026 — post Increment **6c** + slice **7a** (`ERP.Host` rename; Accounting command namespaces)  
 > **Canonical plan:** [MODULAR_MONOLITH.md](./MODULAR_MONOLITH.md)
 
 ## Project layout (actual)

@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
 > **Status:** In progress — **Phase 4 hardening** (post-M3); Waves 3A–3E **complete**  
-> **Last updated:** July 2026 — **M0–M3 done**; Phase 4.1.x + 4.2.4–4.2.5 + production logging runbook complete (uncommitted on `Refactor`)  
+> **Last updated:** July 2026 — **M0–M3 done**; Increment **6** complete; slice **7a** committed on `Refactor` (`c51317f`)  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -1305,7 +1305,7 @@ Month 1 (4.1.x) **complete** — structured logging, Swagger module groups, nami
 | 4.1.4 | `Compined` → `Combined`; legacy route `/api/CompinedEntries` + JSON `"Compined"` preserved |
 | 4.1.5 | `ITransactionCoordinator` in BuildingBlocks; inventory receipt/issue uses it |
 
-Month 2 (4.2.x) — **substantially complete** (uncommitted on `Refactor`):
+Month 2 (4.2.x) — **complete**:
 
 | Done | Notes |
 |------|-------|
@@ -1315,9 +1315,29 @@ Month 2 (4.2.x) — **substantially complete** (uncommitted on `Refactor`):
 | 4.2.5 | Products/Variants list N+1 fixes; `CatalogListIntegrationTests` |
 | — | `InventoryTransferService` → `ITransactionCoordinator` (`Create`, `ApproveTransfer`, `RejectTransfer`) |
 
-**Next:** Increment **6c** — solution diagram + root README (this increment); ongoing 4.3.x sprint hygiene. **6a** (namespace perimeter) and **6b** (`ERP.Host` rename) complete on `Refactor`.
+#### Increment 6 — **COMPLETE** (namespace perimeter + host rename)
 
-**Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
+| Slice | Target | Commit |
+|-------|--------|--------|
+| 6a 1–10 | Caching, Audit, Persistence ports, lookup DTOs, Identity, repository interfaces | `da534aa` |
+| 6a 11–13 | Base service interfaces → BuildingBlocks; Accounting query/sub-ledger ports; entity + DTO namespaces | `132365f` |
+| 6b | `ERP.API` → `ERP.Host` composition root | `765bdab` |
+| 6c | Root `README.md` + [SOLUTION_DIAGRAM.md](./SOLUTION_DIAGRAM.md) | `1f454cb` |
+| Fix | Solution Explorer `Host/` folder + `.vscode` launch config | `4f086d8` |
+
+Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Services.*`, legacy `ERP.Domain.Models.Entities.{Inventory,Account}.*`, `ERP.Domain.Models.Dtos.Inventory`, host project `ERP.API`.
+
+#### Increment 7 — **IN PROGRESS** (Accounting namespace debt)
+
+| Slice | Target | Status |
+|-------|--------|--------|
+| 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** — `c51317f` |
+| 7b | `ERP.Application.Validators.Account.*` → `ERP.BuildingBlocks.Application.Validators.Account.*` / `Accounting.Application.Validators.*` | **Done** (uncommitted) |
+| 7c | `Domain.Account.Commands.*` / `Domain.Account.InputModels.*` → `Accounting.Domain.*` | Next |
+
+**Next:** Slice **7c** — `Domain.Account.Commands` / `InputModels` namespace cleanup; ongoing **4.3.x** sprint hygiene (arch test review, no new dependency cycles).
+
+**Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes; `Domain.Account.DBConfiguration` / `Utility` full migration in one go.
 
 ### Phase 3 Wave 3B — **COMPLETE**
 

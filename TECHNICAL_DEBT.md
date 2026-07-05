@@ -2,7 +2,7 @@
 
 This document tracks known technical debt and code quality issues that need to be addressed.
 
-## Phase 4 completion markers (July 2026 — uncommitted on `Refactor`)
+## Phase 4 completion markers (July 2026 — `Refactor` branch)
 
 | ID | Item | Status |
 |----|------|--------|
@@ -14,8 +14,11 @@ This document tracks known technical debt and code quality issues that need to b
 | 4.2.3 | `Entry.SourceDocumentId` idempotent GL | **Done** |
 | 4.2.4 | Module READMEs | **Done** |
 | 4.2.5 | Products/Variants N+1 query fixes | **Done** |
+| 6a–6c | Namespace perimeter + `ERP.Host` rename + solution diagram | **Done** |
+| 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** (`c51317f`) |
+| 7b | `ERP.Application.Validators.Account.*` → BuildingBlocks / Accounting.Application | **Done** (uncommitted) |
 
-**Remaining Phase 4 / 3E follow-ups:** `ERP.Domain.Commands.*` horizontal command namespaces, ongoing 4.3.x sprint hygiene — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status). **6a–6c complete** on `Refactor`.
+**Remaining Phase 4 / namespace follow-ups:** slice **7c** (`Domain.Account.Commands` / `InputModels`), ongoing 4.3.x sprint hygiene — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
 ## High Priority
 
