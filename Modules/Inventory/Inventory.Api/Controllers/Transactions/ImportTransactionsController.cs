@@ -1,9 +1,7 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
-using Accounting.Application.Dtos.Filters;
-
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Transactions;
 
 /// <summary>CRUD API for stock import transactions.</summary>
 [Route("api/[controller]")]

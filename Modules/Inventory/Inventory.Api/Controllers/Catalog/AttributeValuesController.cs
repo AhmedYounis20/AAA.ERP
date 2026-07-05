@@ -3,7 +3,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Attributes;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for predefined attribute values.</summary>
 [Route("api/[controller]")]

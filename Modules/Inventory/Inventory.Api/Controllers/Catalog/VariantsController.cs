@@ -3,7 +3,7 @@ using Inventory.Application.Commands.Variants;
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for product variants.</summary>
 [Route("api/[controller]")]

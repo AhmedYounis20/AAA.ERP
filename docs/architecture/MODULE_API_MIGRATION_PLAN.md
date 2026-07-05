@@ -1,6 +1,6 @@
 # Module API migration plan
 
-> **Status:** Phases 0–3 **complete** — Phase 4 (Inventory API) is next  
+> **Status:** Phases 0–4 **complete** — Phase 5 (Host slim-down) is next  
 > **ADR:** [011-module-owned-api.md](./adr/011-module-owned-api.md)  
 > **Sign-off:** [PHASE_0_API_MIGRATION_SIGNOFF.md](./PHASE_0_API_MIGRATION_SIGNOFF.md)
 
@@ -42,7 +42,13 @@ See [PHASE_3_API_MIGRATION_SIGNOFF.md](./PHASE_3_API_MIGRATION_SIGNOFF.md).
 
 ---
 
-## Phases 4–5 — Controller extraction
+## Phase 4 — Inventory API extraction (complete)
+
+See [PHASE_4_API_MIGRATION_SIGNOFF.md](./PHASE_4_API_MIGRATION_SIGNOFF.md).
+
+---
+
+## Phase 5 — Host slim-down
 
 See [CONTROLLER_MIGRATION_MAP.md](./CONTROLLER_MIGRATION_MAP.md) for per-controller targets and wave schedule.
 

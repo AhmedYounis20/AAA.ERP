@@ -1,9 +1,7 @@
 using Inventory.Application.Services;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Domain.Models.Entities.Sizes;
-using Accounting.Application.Dtos.Filters;
-
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Stock;
 
 /// <summary>CRUD API for stock balances and quantity queries.</summary>
 [Route("api/[controller]")]

@@ -3,7 +3,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Colors;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for inventory color settings.</summary>
 [Route("api/[controller]")]

@@ -2,6 +2,7 @@ using ERP.Host.Controllers.Accounting;
 using ERP.Host.Security;
 using FluentAssertions;
 using Identity.Api.Controllers;
+using Inventory.Api.Controllers;
 using NetArchTest.Rules;
 
 namespace ERP.Architecture.Tests;
@@ -14,7 +15,7 @@ public class HostDependencyTests
     [Fact]
     public void Host_should_not_reference_Identity_Domain()
     {
-        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly)
+        var result = Types.InAssembly(typeof(DbWorkController).Assembly)
             .Should()
             .NotHaveDependencyOn("Identity.Domain")
             .GetResult();
@@ -41,7 +42,7 @@ public class HostDependencyTests
     [Fact]
     public void Inventory_transfer_controller_should_require_authorization()
     {
-        typeof(ERP.Host.Controllers.Inventory.InventoryTransferController)
+        typeof(Inventory.Api.Controllers.Transactions.InventoryTransferController)
             .GetCustomAttributes(typeof(Microsoft.AspNetCore.Authorization.AuthorizeAttribute), inherit: true)
             .Should()
             .NotBeEmpty();

@@ -39,6 +39,7 @@
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Api\ERP.BuildingBlocks.Api.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Api\Inventory.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Api\Accounting.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Api\Identity.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Contracts\Identity.Contracts.csproj" />

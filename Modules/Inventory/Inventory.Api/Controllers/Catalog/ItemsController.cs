@@ -2,9 +2,7 @@
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Items;
 using Inventory.Application.Dtos;
-using Accounting.Application.Dtos.Filters;
-
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for legacy item catalog tree.</summary>
 [Route("api/[controller]")]

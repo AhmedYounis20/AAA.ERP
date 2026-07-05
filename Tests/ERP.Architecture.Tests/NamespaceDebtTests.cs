@@ -445,7 +445,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
-        var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Api.Controllers.Catalog.ColorsController).Assembly)
             .Should()
             .NotResideInNamespace("ERP.API")
             .And()

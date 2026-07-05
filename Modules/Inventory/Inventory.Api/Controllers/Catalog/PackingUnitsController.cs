@@ -1,11 +1,10 @@
-﻿using Accounting.Application.Services.Queries;
-using Inventory.Application.Commands.PackingUnits;
+﻿using Inventory.Application.Commands.PackingUnits;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using Inventory.Application.Dtos.Lookups;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for packing unit settings and lookup queries.</summary>
 [Route("api/[controller]")]

@@ -1,9 +1,7 @@
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
-using Accounting.Application.Dtos.Filters;
-
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Transactions;
 
 /// <summary>API for inter-branch inventory transfers.</summary>
 [ApiController]

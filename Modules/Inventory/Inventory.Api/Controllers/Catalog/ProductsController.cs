@@ -2,7 +2,7 @@ using Inventory.Application.Services;
 using Inventory.Application.Commands.Products;
 using Inventory.Domain.Models.Entities.Products;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for product catalog tree.</summary>
 [Route("api/[controller]")]
@@ -63,6 +63,4 @@ public class ProductsController : BaseTreeSettingController<Product, ProductCrea
         return await DeleteRecord(id);
     }
 }
-
-
 

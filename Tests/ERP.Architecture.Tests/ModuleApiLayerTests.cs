@@ -1,6 +1,7 @@
 using Accounting.Api;
 using FluentAssertions;
 using Identity.Api;
+using Inventory.Api;
 using NetArchTest.Rules;
 
 namespace ERP.Architecture.Tests;
@@ -29,7 +30,7 @@ public class ModuleApiLayerTests
     [Fact]
     public void Module_Api_should_not_reference_own_Infrastructure()
     {
-        foreach (var assembly in new[] { IdentityApiAssemblyMarker.Assembly, AccountingApiAssemblyMarker.Assembly })
+        foreach (var assembly in new[] { IdentityApiAssemblyMarker.Assembly, AccountingApiAssemblyMarker.Assembly, InventoryApiAssemblyMarker.Assembly })
         {
             var result = Types.InAssembly(assembly)
                 .Should()
@@ -74,10 +75,23 @@ public class ModuleApiLayerTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Accounting.Api non-controllers → Domain", result));
     }
 
-    [Fact(Skip = "Enable when all business controllers migrate out of Host (Phase 4+). Current count: 15.")]
+    [Fact]
+    public void Inventory_Api_may_reference_Inventory_Domain_for_CRUD_generics_only()
+    {
+        var result = Types.InAssembly(InventoryApiAssemblyMarker.Assembly)
+            .That()
+            .DoNotHaveNameEndingWith("Controller")
+            .Should()
+            .NotHaveDependencyOn("Inventory.Domain")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(FormatViolationMessage("Inventory.Api non-controllers → Domain", result));
+    }
+
+    [Fact(Skip = "Enable when DbWork migrates or Host controllers folder is removed. Current count: 1.")]
     public void Host_should_not_contain_business_controllers()
     {
-        var hostAssembly = typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly;
+        var hostAssembly = typeof(ERP.Host.Controllers.Accounting.DbWorkController).Assembly;
         var businessControllers = hostAssembly.GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && typeof(Microsoft.AspNetCore.Mvc.ControllerBase).IsAssignableFrom(t))
             .Where(t => t.Namespace?.StartsWith("ERP.Host.Controllers", StringComparison.Ordinal) == true)
@@ -91,13 +105,13 @@ public class ModuleApiLayerTests
     [Fact]
     public void Host_business_controller_count_baseline_for_ratchet()
     {
-        var hostAssembly = typeof(ERP.Host.Controllers.Inventory.ProductsController).Assembly;
+        var hostAssembly = typeof(ERP.Host.Controllers.Accounting.DbWorkController).Assembly;
         var count = hostAssembly.GetTypes()
             .Count(t => t.IsClass && !t.IsAbstract && typeof(Microsoft.AspNetCore.Mvc.ControllerBase).IsAssignableFrom(t)
                 && t.Namespace?.StartsWith("ERP.Host.Controllers", StringComparison.Ordinal) == true
                 && t.Namespace != "ERP.Host.Controllers.BaseControllers");
 
-        count.Should().Be(15, "ratchet baseline — 14 Inventory + 1 DbWork; decrease in Phase 4");
+        count.Should().Be(1, "ratchet baseline — DbWork only; Host becomes composition root in Phase 5");
     }
 
     [Fact]

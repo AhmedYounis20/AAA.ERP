@@ -3,7 +3,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 using ERP.BuildingBlocks.Application.DTOs;
 
-namespace ERP.Host.Controllers.Inventory;
+namespace Inventory.Api.Controllers.Catalog;
 
 /// <summary>CRUD API for manufacturer company settings.</summary>
 [Route("api/[controller]")]

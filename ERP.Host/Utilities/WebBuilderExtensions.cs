@@ -20,6 +20,7 @@ using ERP.BuildingBlocks.Application.Behaviors;
 using ERP.BuildingBlocks.Application.Exceptions.Handler;
 using Accounting.Api;
 using Identity.Api;
+using Inventory.Api;
 using Platform.Audit.Api;
 
 namespace ERP.Host.Utilities;
@@ -111,6 +112,7 @@ public static class WebBuilderExtensions
 
         });
         builder.Services.AddControllers()
+            .AddApplicationPart(InventoryApiAssemblyMarker.Assembly)
             .AddApplicationPart(AccountingApiAssemblyMarker.Assembly)
             .AddApplicationPart(IdentityApiAssemblyMarker.Assembly)
             .AddApplicationPart(PlatformAuditApiAssemblyMarker.Assembly)
