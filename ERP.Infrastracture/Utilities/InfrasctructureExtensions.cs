@@ -43,7 +43,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ImportDataToSeed>();
 
         services.AddScoped( typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
-        services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<IBankService, BankService>();
         services.AddScoped<IBranchService, BranchService>();
@@ -81,7 +80,6 @@ public static class InfrasctructureExtensions
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped(typeof(IBaseSettingRepository<>), typeof(BaseSettingRepository<>));
         services.AddScoped<IFinancialPeriodUsageQueries, FinancialPeriodUsageQueries>();
-        services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
         services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();

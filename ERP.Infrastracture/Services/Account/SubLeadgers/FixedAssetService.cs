@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.FixedAssets;
@@ -14,8 +15,9 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
     private IFixedAssetRepository _repository;
     private IHttpContextAccessor _accessor;
 
-    public FixedAssetService(IUnitOfWork unitOfWork, IFixedAssetRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, SD.BankChartAccountId, SubLeadgerType.FixedAsset)
+    public FixedAssetService(IUnitOfWork unitOfWork, IFixedAssetRepository repository, IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository)
+        : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.BankChartAccountId, SubLeadgerType.FixedAsset)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
@@ -29,9 +31,8 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
             Guid fixedAssetId = Guid.Parse(SD.FixedAssetsIds[command.FixedAssetType ?? FixedAssetType.Lands]);
             ChartOfAccount? chartOfAccountParent =
-                await _unitOfWork.ChartOfAccountRepository.Get(fixedAssetId);
-            string newCode = await _unitOfWork
-                .ChartOfAccountRepository
+                await _chartOfAccountRepository.Get(fixedAssetId);
+            string newCode = await _chartOfAccountRepository
                 .GenerateNewCodeForChild(fixedAssetId);
             FixedAsset entity = command.Adapt<FixedAsset>();
             if (isDomain)
@@ -45,9 +46,9 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                 var fixedAssetsDepreciationDetails =
                     SD.FixedAssetsDepreciationDetails[command.FixedAssetType ?? FixedAssetType.Lands];
                 ChartOfAccount? accumlatedDepriciation =
-                    command.FixedAssetType == FixedAssetType.Lands ? null : await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
+                    command.FixedAssetType == FixedAssetType.Lands ? null : await _chartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
                 ChartOfAccount expensesDepriciation =
-                    command.FixedAssetType == FixedAssetType.Lands ? null : await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[1]));
+                    command.FixedAssetType == FixedAssetType.Lands ? null : await _chartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[1]));
                 entity.ChartOfAccount = new ChartOfAccount
                 {
                     Name = command.Name,
@@ -66,9 +67,8 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                 if (accumlatedDepriciation != null)
                 {
                     var accumlatedDepreciationAccount = await
-                        _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
-                    string newAccumlatedCode = await _unitOfWork
-                        .ChartOfAccountRepository
+                        _chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
+                    string newAccumlatedCode = await _chartOfAccountRepository
                         .GenerateNewCodeForChild(accumlatedDepriciation.Id);
                     entity.AccumlatedAccount =
                         new ChartOfAccount()
@@ -91,9 +91,8 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                 if (expensesDepriciation != null)
                 {
                     var expensesDepreciationAccount = await
-                        _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
-                    string newAccumlatedCode = await _unitOfWork
-                        .ChartOfAccountRepository
+                        _chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
+                    string newAccumlatedCode = await _chartOfAccountRepository
                         .GenerateNewCodeForChild(expensesDepriciation.Id);
                     entity.ExpensesAccount =
                         new ChartOfAccount()
@@ -144,9 +143,9 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
         var chartOfAccountId = Guid.Parse(SD.FixedAssetsIds[fixedAssetType]);
         var assetCodes = SD.FixedAssetsDepreciationDetails[fixedAssetType];
         string? code =
-            await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(chartOfAccountId);
-        string accumelatedCode = fixedAssetType == FixedAssetType.Lands ? "" : await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[0]));
-        string expenseCode = fixedAssetType == FixedAssetType.Lands ? "" : await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[1]));
+            await _chartOfAccountRepository.GenerateNewCodeForChild(chartOfAccountId);
+        string accumelatedCode = fixedAssetType == FixedAssetType.Lands ? "" : await _chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[0]));
+        string expenseCode = fixedAssetType == FixedAssetType.Lands ? "" : await _chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[1]));
         FixedAssetCreateCommand inputModel = Activator.CreateInstance<FixedAssetCreateCommand>();
 
         inputModel.Code = code;
@@ -194,37 +193,37 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
 
                 if (entity.ChartOfAccountId.HasValue)
                 {
-                    var account = await _unitOfWork.ChartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
+                    var account = await _chartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
                     account.Name = command.Name;
                     account.NameSecondLanguage = command.NameSecondLanguage;
-                    await _unitOfWork.ChartOfAccountRepository.Update(account);
+                    await _chartOfAccountRepository.Update(account);
                 }
 
                 if (entity.AccumlatedAccountId.HasValue)
                 {
                     var accumlatedDepreciationAccount = await
-                        _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
+                        _chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
 
                     var acculatedAccount =
-                        await _unitOfWork.ChartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
+                        await _chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
                     acculatedAccount.Name = $"{accumlatedDepreciationAccount.Name} {command.Name}";
                     acculatedAccount.NameSecondLanguage =
                         $"{accumlatedDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
-                    await _unitOfWork.ChartOfAccountRepository.Update(acculatedAccount);
+                    await _chartOfAccountRepository.Update(acculatedAccount);
                 }
 
                 if (entity.ExpensesAccountId.HasValue)
                 {
                     var expensesDepreciationAccount = await
-                        _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
+                        _chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
 
                     var acculatedAccount =
-                        await _unitOfWork.ChartOfAccountRepository.Get(entity.ExpensesAccountId
+                        await _chartOfAccountRepository.Get(entity.ExpensesAccountId
                             .Value);
                     acculatedAccount.Name = $"{expensesDepreciationAccount.Name} {command.Name}";
                     acculatedAccount.NameSecondLanguage =
                         $"{expensesDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
-                    await _unitOfWork.ChartOfAccountRepository.Update(acculatedAccount);
+                    await _chartOfAccountRepository.Update(acculatedAccount);
                 }
 
                 await _repository.Update(entity);
@@ -266,11 +265,11 @@ public class FixedAssetService : SubLeadgerService<FixedAsset, FixedAssetCreateC
                     await _repository.Delete(entity);
 
                     if (entity.ChartOfAccountId.HasValue)
-                        await _unitOfWork.ChartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
+                        await _chartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
                     if (entity.AccumlatedAccountId.HasValue)
-                        await _unitOfWork.ChartOfAccountRepository.Delete(entity.AccumlatedAccountId.Value);
+                        await _chartOfAccountRepository.Delete(entity.AccumlatedAccountId.Value);
                     if (entity.ExpensesAccountId.HasValue)
-                        await _unitOfWork.ChartOfAccountRepository.Delete(entity.ExpensesAccountId.Value);
+                        await _chartOfAccountRepository.Delete(entity.ExpensesAccountId.Value);
                 }
 
                 await _unitOfWork.CommitAsync();

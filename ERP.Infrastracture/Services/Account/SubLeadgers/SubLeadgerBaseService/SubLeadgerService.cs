@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
@@ -19,12 +20,16 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     private IHttpContextAccessor _accessor;
     private string _accountId;
     protected SubLeadgerType? _subLeadgerType;
+    protected readonly IChartOfAccountRepository _chartOfAccountRepository;
+
     public SubLeadgerService(IUnitOfWork unitOfWork, IBaseSubLeadgerRepository<TEntity> repository,
-        IHttpContextAccessor accessor, string accountId, SubLeadgerType? subLeadgerType = null) : base(repository)
+        IHttpContextAccessor accessor, IChartOfAccountRepository chartOfAccountRepository, string accountId,
+        SubLeadgerType? subLeadgerType = null) : base(repository)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;
         _repository = repository;
+        _chartOfAccountRepository = chartOfAccountRepository;
         _accountId = accountId;
         _subLeadgerType = subLeadgerType;
     }
@@ -32,7 +37,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
     public virtual async Task<ApiResponse<TCreateCommand>> GetNextSubLeadgers(Guid? parentId)
     {
         string? code =
-            await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(_accountId));
+            await _chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(_accountId));
         TCreateCommand inputModel = Activator.CreateInstance<TCreateCommand>();
 
         inputModel.Code = code;
@@ -53,9 +58,8 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
         {
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
             ChartOfAccount? chartOfAccountParent =
-                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(_accountId));
-            string newCode = await _unitOfWork
-                .ChartOfAccountRepository
+                await _chartOfAccountRepository.Get(Guid.Parse(_accountId));
+            string newCode = await _chartOfAccountRepository
                 .GenerateNewCodeForChild(Guid.Parse(_accountId));
             TEntity entity = command.Adapt<TEntity>();
             if (isDomain)
@@ -154,7 +158,7 @@ public class SubLeadgerService<TEntity, TCreateCommand, TUpdateCommand> :
                     await _repository.Delete(entity);
 
                     if (entity.ChartOfAccountId.HasValue)
-                        await _unitOfWork.ChartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
+                        await _chartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
                 }
                 await _unitOfWork.CommitAsync();
 

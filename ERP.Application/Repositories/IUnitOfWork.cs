@@ -13,7 +13,6 @@ namespace ERP.Application.Repositories;
 
 public interface IUnitOfWork
 {
-    public IChartOfAccountRepository ChartOfAccountRepository { get; }
     public ISizeRepository SizeRepository { get; }
     public IColorRepository ColorRepository { get; }
     public ICashInBoxRepository CashInBoxRepository { get; }

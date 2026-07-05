@@ -1,9 +1,9 @@
-﻿using Domain.Account.InputModels.BaseInputModels;
+using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 
-namespace ERP.Domain.Commands.Account;
+namespace Accounting.Application.Commands.ChartOfAccounts;
 
-public class ChartOfAccountInputModel : BaseTreeSettingInputModel
+public class ChartOfAccountCreateCommand : BaseTreeSettingCreateCommand<ChartOfAccount>
 {
     public string? Code { get; set; }
     public Guid AccountGuidId { get; set; }

@@ -1,9 +1,9 @@
+using Accounting.Application.Commands.ChartOfAccounts;
 using ERP.Application.Validators.Account.ComandValidators.BaseCommandValidators.UpdateCommandValidators;
-using ERP.Domain.Commands.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.ComandValidators.ChartOfAccounts;
+namespace Accounting.Application.Validators.ChartOfAccounts;
 
 public class ChartOfAccountUpdateValidator : BaseTreeSettingUpdateValidator<ChartOfAccountUpdateCommand, ChartOfAccount>
 {

@@ -1,27 +1,27 @@
-﻿using ERP.Application.Repositories.Account;
-using ERP.Domain.Commands.Account;
-using ERP.Domain.Commands.Account.ChartOfAccounts;
+using Accounting.Application.Commands.ChartOfAccounts;
+using Accounting.Application.Repositories;
+using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
+using ERP.Infrastracture.Services.BaseServices;
 
-namespace ERP.Infrastracture.Services.Account;
+namespace Accounting.Infrastructure.Services;
 
 public class ChartOfAccountService :
     BaseTreeSettingService<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>,
     IChartOfAccountService
 {
-    IChartOfAccountRepository _repository;
+    private readonly IChartOfAccountRepository _repository;
 
     public ChartOfAccountService(IChartOfAccountRepository repository) : base(repository)
         => _repository = repository;
 
-    public async Task<string> GenerateNewCodeForChild(Guid? parentId)
-        => await _repository.GenerateNewCodeForChild(parentId);
+    public Task<string> GenerateNewCodeForChild(Guid? parentId)
+        => _repository.GenerateNewCodeForChild(parentId);
 
     public async Task<ApiResponse<ChartOfAccountInputModel>> NextAccountDefaultData(Guid? parentId)
     {
         try
         {
-
             ChartOfAccount? parent = parentId is not null ? await _repository.Get(parentId ?? Guid.Empty) : null;
             ChartOfAccountInputModel inputModel = new ChartOfAccountInputModel
             {
@@ -45,7 +45,7 @@ public class ChartOfAccountService :
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            return new ApiResponse<ChartOfAccountInputModel>()
+            return new ApiResponse<ChartOfAccountInputModel>
             {
                 StatusCode = HttpStatusCode.InternalServerError,
                 IsSuccess = false,
@@ -65,7 +65,6 @@ public class ChartOfAccountService :
         }
 
         return result;
-
     }
 
     protected override async Task<(bool isValid, List<string> errors, ChartOfAccount? entity)> ValidateUpdate(ChartOfAccountUpdateCommand command)

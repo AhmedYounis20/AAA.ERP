@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.Branches;
@@ -14,8 +15,9 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
     private IUnitOfWork _unitOfWork;
     private IBranchRepository _repository;
 
-    public BranchService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor)
-        : base(unitOfWork, unitOfWork.BranchRepository, accessor, SD.BranchChartOfAccountId, SubLeadgerType.Branch)
+    public BranchService(IUnitOfWork unitOfWork, IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository)
+        : base(unitOfWork, unitOfWork.BranchRepository, accessor, chartOfAccountRepository, SD.BranchChartOfAccountId, SubLeadgerType.Branch)
     {
         _unitOfWork = unitOfWork;
         _repository = unitOfWork.BranchRepository;
@@ -29,9 +31,8 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
         {
             bool isDomain = command.NodeType.Equals(NodeType.Domain);
             ChartOfAccount? chartOfAccountParent =
-                await _unitOfWork.ChartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
-            string newCode = await _unitOfWork
-                .ChartOfAccountRepository
+                await _chartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
+            string newCode = await _chartOfAccountRepository
                 .GenerateNewCodeForChild(Guid.Parse(SD.BranchChartOfAccountId));
             Branch entity = new Branch();
 
@@ -128,10 +129,10 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 entity.Attachment = null;
                 if (entity.ChartOfAccountId.HasValue)
                 {
-                    var account = await _unitOfWork.ChartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
+                    var account = await _chartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
                     account.Name = command.Name;
                     account.NameSecondLanguage = command.NameSecondLanguage;
-                    await _unitOfWork.ChartOfAccountRepository.Update(account);
+                    await _chartOfAccountRepository.Update(account);
                 }
 
                 if ((command.Logo == null || command.Logo.Length <= 0) && entity.AttachmentId.HasValue)
@@ -216,7 +217,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
             if (entity.NodeType.Equals(NodeType.Domain))
             {
                 if (entity.ChartOfAccountId.HasValue)
-                    await _unitOfWork.ChartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
+                    await _chartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
                 if (entity.AttachmentId.HasValue)
                     await _unitOfWork.AttachmentRepository.Delete(entity.AttachmentId.Value);
             }

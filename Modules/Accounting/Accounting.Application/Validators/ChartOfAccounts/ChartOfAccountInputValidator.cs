@@ -1,8 +1,8 @@
-﻿using ERP.Application.Validators.Account.InputValidators.BaseValidators;
-using ERP.Domain.Commands.Account;
+using Accounting.Application.Commands.ChartOfAccounts;
+using ERP.Application.Validators.Account.InputValidators.BaseValidators;
 using FluentValidation;
 
-namespace ERP.Application.Validators.Account.InputValidators;
+namespace Accounting.Application.Validators.ChartOfAccounts;
 
 public class ChartOfAccountInputValidator : BaseTreeSettingInputValidator<ChartOfAccountInputModel>
 {

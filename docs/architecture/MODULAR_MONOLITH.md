@@ -980,8 +980,8 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 |------|----------------------|-----|-------|--------|
 | 7 | Currencies, GLSettings, AccountGuides | 2–3 | Dev A | Done |
 | 8 | FinancialPeriods, CostCenters, CollectionBooks | 2–3 | Dev A | Done |
-| 9 | ChartOfAccounts (tree) | 1–2 | Dev A | Next |
-| 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A |
+| 9 | ChartOfAccounts (tree) | 1–2 | Dev A | Done |
+| 10 | Sub-ledgers: Banks, CashInBoxes, Branches | 2–3 | Dev A | Next |
 | 11 | Sub-ledgers: Customers, Suppliers, Taxes, FixedAssets | 3–4 | Dev A |
 | 12 | Roles | 1 | Dev B |
 | 13 | Entries — Journal, Payment, Receipt | 2–3 | Dev A |
@@ -1261,9 +1261,9 @@ Identity module extracted from horizontal layers. Commit: `d8a16e3`.
 | Arch tests | Identity module dependency rules added |
 | `Shared/` | Retains filter DTOs + `ErrorMessages` only |
 
-### Phase 3 Wave 3C — **IN PROGRESS** (Week 8 complete)
+### Phase 3 Wave 3C — **IN PROGRESS** (Week 9 complete)
 
-Week 7–8 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters — e.g. `Entry` → `Currency`, `FinancialTransaction` → `CollectionBook`, inventory validators → `CostCenter`).
+Week 7–9 aggregates extracted into `Modules/Accounting/` (entities remain in `ERP.Domain` where referenced by unmigrated clusters).
 
 | Done | Notes |
 |------|-------|
@@ -1271,9 +1271,10 @@ Week 7–8 aggregates extracted into `Modules/Accounting/` (entities remain in `
 | GLSettings | Update-only slice: command, validators, handler, repo, service, `GLSettingDbConfig` |
 | AccountGuides | Commands, validators, handlers, repo, service, `AccountGuideDbConfig` |
 | CollectionBooks | Commands, validators, handlers, repo, service, `CollectionBookDbConfig` |
-| FinancialPeriods | Commands, input models, validators, handlers, repo, service, `FinancialPeriodDbConfig`; `IFinancialPeriodUsageQueries` port for inventory cross-checks; `EntryService` injects `IFinancialPeriodRepository` directly (removed from God `IUnitOfWork`) |
-| CostCenters | Tree aggregate + `CostCenterChartOfAccount`; validators renamed to `CostCenter*`; handlers, repo, service, dual DbConfigs |
-| Next (Week 9) | ChartOfAccounts (tree) |
+| FinancialPeriods | Commands, input models, validators, handlers, repo, service, `FinancialPeriodDbConfig`; `IFinancialPeriodUsageQueries` port; removed from God `IUnitOfWork` |
+| CostCenters | Tree aggregate + `CostCenterChartOfAccount`; validators renamed to `CostCenter*` |
+| ChartOfAccounts | Tree aggregate; custom code generation + sub-ledger validation; `ChartOfAccountInputModel` moved; `IChartOfAccountRepository` removed from God `IUnitOfWork` (injected into `SubLeadgerService` + consumers) |
+| Next (Week 10) | Sub-ledgers: Banks, CashInBoxes, Branches |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

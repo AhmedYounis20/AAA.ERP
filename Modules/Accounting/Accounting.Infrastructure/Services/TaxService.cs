@@ -14,12 +14,15 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITaxRepository _repository;
+    private readonly IChartOfAccountRepository _chartOfAccountRepository;
 
-    public TaxService(IUnitOfWork unitOfWork, ITaxRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, string.Empty, SubLeadgerType.Tax)
+    public TaxService(IUnitOfWork unitOfWork, ITaxRepository repository, IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository)
+        : base(unitOfWork, repository, accessor, chartOfAccountRepository, string.Empty, SubLeadgerType.Tax)
     {
         _unitOfWork = unitOfWork;
         _repository = repository;
+        _chartOfAccountRepository = chartOfAccountRepository;
     }
 
     public override async Task<ApiResponse<TaxCreateCommand>> GetNextSubLeadgers(Guid? parentId)
@@ -34,7 +37,7 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
             };
         }
 
-        var code = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentId);
+        var code = await _chartOfAccountRepository.GenerateNewCodeForChild(parentId);
         var inputModel = new TaxCreateCommand
         {
             Code = code,
@@ -57,8 +60,8 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
             var isDomain = command.NodeType.Equals(NodeType.Domain);
             var parentAccountId = command.ChartOfAccountId;
 
-            var chartOfAccountParent = await _unitOfWork.ChartOfAccountRepository.Get(parentAccountId);
-            var newCode = await _unitOfWork.ChartOfAccountRepository.GenerateNewCodeForChild(parentAccountId);
+            var chartOfAccountParent = await _chartOfAccountRepository.Get(parentAccountId);
+            var newCode = await _chartOfAccountRepository.GenerateNewCodeForChild(parentAccountId);
 
             var entity = command.Adapt<Tax>();
             entity.ChartOfAccountId = null;

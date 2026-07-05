@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Repositories.Inventory;
@@ -16,7 +17,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly IApplicationDbContext _context;
     private IDbContextTransaction? _sqlTransaction;
 
-    public IChartOfAccountRepository ChartOfAccountRepository { get; }
     public IEntryRepository EntryRepository { get; }
     public IAttachmentRepository AttachmentRepository { get; }
     public ICashInBoxRepository CashInBoxRepository { get; }
@@ -67,7 +67,6 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         IApplicationDbContext context,
-        IChartOfAccountRepository chartOfAccountRepository,
         IEntryRepository entryRepository,
         IAttachmentRepository attachmentRepository,
         ICashInBoxRepository cashInBoxRepository,
@@ -118,7 +117,6 @@ public class UnitOfWork : IUnitOfWork
     )
     {
         _context = context;
-        ChartOfAccountRepository = chartOfAccountRepository;
         EntryRepository = entryRepository;
         AttachmentRepository = attachmentRepository;
         CashInBoxRepository = cashInBoxRepository;

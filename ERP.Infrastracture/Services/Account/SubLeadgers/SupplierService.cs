@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.Suppliers;
@@ -13,8 +14,9 @@ public class SupplierService : SubLeadgerService<Supplier, SupplierCreateCommand
     private IUnitOfWork _unitOfWork;
     private IHttpContextAccessor _accessor;
 
-    public SupplierService(IUnitOfWork unitOfWork, ISupplierRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, SD.SupplierChartOfAccountId, SubLeadgerType.Supplier)
+    public SupplierService(IUnitOfWork unitOfWork, ISupplierRepository repository, IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository)
+        : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.SupplierChartOfAccountId, SubLeadgerType.Supplier)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;

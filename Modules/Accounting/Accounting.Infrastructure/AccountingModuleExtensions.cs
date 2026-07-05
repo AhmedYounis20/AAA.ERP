@@ -29,6 +29,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<ICostCenterService, CostCenterService>();
+        services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
+        services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
 
         return services;
     }
@@ -43,5 +45,6 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new FinancialPeriodDbConfig());
         modelBuilder.ApplyConfiguration(new CostCenterDbConfig());
         modelBuilder.ApplyConfiguration(new CostCenterChartOfAccountDbConfig());
+        modelBuilder.ApplyConfiguration(new ChartOfAccountDbConfig());
     }
 }

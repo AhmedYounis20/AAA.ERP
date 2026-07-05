@@ -1,3 +1,4 @@
+using Accounting.Application.Repositories;
 using ERP.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.Customers;
@@ -13,8 +14,9 @@ public class CustomerService : SubLeadgerService<Customer, CustomerCreateCommand
     private IUnitOfWork _unitOfWork;
     private IHttpContextAccessor _accessor;
 
-    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository repository, IHttpContextAccessor accessor)
-        : base(unitOfWork, repository, accessor, SD.CustomerChartOfAccountId, SubLeadgerType.Customer)
+    public CustomerService(IUnitOfWork unitOfWork, ICustomerRepository repository, IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository)
+        : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.CustomerChartOfAccountId, SubLeadgerType.Customer)
     {
         _unitOfWork = unitOfWork;
         _accessor = accessor;

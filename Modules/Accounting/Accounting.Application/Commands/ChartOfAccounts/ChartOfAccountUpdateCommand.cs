@@ -1,10 +1,9 @@
-using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
+using Domain.Account.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
-using Shared.Responses;
 
-namespace ERP.Domain.Commands.Account.ChartOfAccounts;
+namespace Accounting.Application.Commands.ChartOfAccounts;
 
-public class ChartOfAccountCreateCommand : BaseTreeSettingCreateCommand<ChartOfAccount>
+public class ChartOfAccountUpdateCommand : BaseTreeSettingUpdateCommand<ChartOfAccount>
 {
     public string? Code { get; set; }
     public Guid AccountGuidId { get; set; }
