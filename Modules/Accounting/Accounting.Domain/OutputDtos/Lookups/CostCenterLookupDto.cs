@@ -1,4 +1,4 @@
-﻿using AAA.ERP.OutputDtos.BaseDtos;
+using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
 using Accounting.Domain.Models.Entities.CostCenters;
 using Shared.DTOs;
 

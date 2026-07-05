@@ -1,5 +1,5 @@
 global using Shared.BaseEntities;
-global using AAA.ERP.OutputDtos;
+global using Accounting.Domain.OutputDtos;
 global using Accounting.Domain.Utility;
 global using ERP.BuildingBlocks.Persistence.Data;
 global using Accounting.Application.Repositories;

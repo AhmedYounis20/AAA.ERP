@@ -1,4 +1,4 @@
-﻿namespace AAA.ERP.OutputDtos.BaseDtos;
+namespace ERP.BuildingBlocks.Application.DTOs.BaseDtos;
 
 public class BaseTreeDto:BaseDto
 {

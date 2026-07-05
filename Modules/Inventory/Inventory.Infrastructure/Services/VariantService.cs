@@ -1,6 +1,6 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
-using Accounting.Application.Repositories.Account.SubLeadgers;
+using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
@@ -31,7 +31,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
     private readonly IProductRepository _productRepository;
     private readonly IBaseRepository<InventoryThreshold> _inventoryThresholdRepository;
     private readonly IBaseRepository<ExpiryLevel> _expiryLevelRepository;
-    private readonly ISupplierRepository _supplierRepository;
+    private readonly IInventoryCatalogValidationQueries _catalogValidationQueries;
     private readonly IBaseRepository<VariantSupplier> _variantSupplierRepository;
     private readonly IBaseRepository<VariantSalesTax> _variantSalesTaxRepository;
     private readonly IBaseRepository<VariantPurchaseTax> _variantPurchaseTaxRepository;
@@ -52,7 +52,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         IProductRepository productRepository,
         IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
         IBaseRepository<ExpiryLevel> expiryLevelRepository,
-        ISupplierRepository supplierRepository,
+        IInventoryCatalogValidationQueries catalogValidationQueries,
         IBaseRepository<VariantSupplier> variantSupplierRepository,
         IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
         IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
@@ -73,7 +73,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         _productRepository = productRepository;
         _inventoryThresholdRepository = inventoryThresholdRepository;
         _expiryLevelRepository = expiryLevelRepository;
-        _supplierRepository = supplierRepository;
+        _catalogValidationQueries = catalogValidationQueries;
         _variantSupplierRepository = variantSupplierRepository;
         _variantSalesTaxRepository = variantSalesTaxRepository;
         _variantPurchaseTaxRepository = variantPurchaseTaxRepository;
@@ -428,8 +428,8 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Verify all suppliers exist
         if (command.SuppliersIds?.Any() == true)
         {
-            var existedSuppliersCount = await _supplierRepository.GetQuery()
-                .CountAsync(e => command.SuppliersIds.Contains(e.Id));
+            var existedSuppliersCount = await _catalogValidationQueries
+                .CountExistingSuppliersAsync(command.SuppliersIds);
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
                 validationResult.isValid = false;
@@ -499,8 +499,8 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Verify all suppliers exist
         if (command.SuppliersIds?.Any() == true)
         {
-            var existedSuppliersCount = await _supplierRepository.GetQuery()
-                .CountAsync(e => command.SuppliersIds.Contains(e.Id));
+            var existedSuppliersCount = await _catalogValidationQueries
+                .CountExistingSuppliersAsync(command.SuppliersIds);
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
                 validationResult.isValid = false;

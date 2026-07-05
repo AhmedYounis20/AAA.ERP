@@ -399,6 +399,36 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_Application_base_dtos_should_not_use_legacy_AAA_ERP_OutputDtos_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly)
+            .That()
+            .ResideInNamespaceContaining("DTOs")
+            .Should()
+            .NotResideInNamespaceStartingWith("AAA.ERP.OutputDtos")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Accounting_Domain_output_dtos_should_not_use_legacy_AAA_ERP_OutputDtos_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .That()
+            .ResideInNamespaceContaining("OutputDtos")
+            .Should()
+            .NotResideInNamespace("AAA.ERP.OutputDtos")
+            .And()
+            .NotResideInNamespaceStartingWith("AAA.ERP.OutputDtos.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

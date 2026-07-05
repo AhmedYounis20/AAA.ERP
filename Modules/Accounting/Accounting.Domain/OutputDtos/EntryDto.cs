@@ -3,7 +3,7 @@ using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 
-namespace AAA.ERP.OutputDtos;
+namespace Accounting.Domain.OutputDtos;
 
 public class EntryDto 
 {

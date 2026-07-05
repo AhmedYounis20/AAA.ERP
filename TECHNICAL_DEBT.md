@@ -2,7 +2,9 @@
 
 This document tracks known technical debt and code quality issues that need to be addressed.
 
-## Phase 4 completion markers (July 2026 — `Refactor` branch)
+## Phase 4 completion markers (July 2026 — `Refactor` branch) — **M4 COMPLETE**
+
+See [M4_SIGNOFF.md](docs/architecture/M4_SIGNOFF.md).
 
 | ID | Item | Status |
 |----|------|--------|
@@ -10,18 +12,16 @@ This document tracks known technical debt and code quality issues that need to b
 | 4.1.3 | `Infrastracture` → `Infrastructure` namespaces in `ERP.Persistence` | **Done** |
 | 4.1.4 | `Compined` → `Combined` types; legacy route/JSON preserved | **Done** |
 | 4.1.5 | `ITransactionCoordinator` for cross-module ACID | **Done** (transactions + transfers) |
-| 4.2.1 | ADR-006 SQL schemas | **Deferred** |
+| 4.2.1 | ADR-006 SQL schemas | **Closed — deferred** |
 | 4.2.3 | `Entry.SourceDocumentId` idempotent GL | **Done** |
 | 4.2.4 | Module READMEs | **Done** |
 | 4.2.5 | Products/Variants N+1 query fixes | **Done** |
 | 6a–6c | Namespace perimeter + `ERP.Host` rename + solution diagram | **Done** |
-| 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** (`c51317f`) |
-| 7b | `ERP.Application.Validators.Account.*` → BuildingBlocks / Accounting.Application | **Done** (`1e27afe`) |
-| 7c | `Domain.Account.Commands` / `InputModels` → `ERP.BuildingBlocks.Application.Commands.BaseInputModels` | **Done** (`5374da1`) |
-| 7d | `Domain.Account.Models.Dtos` → Accounting.Domain / Identity.Application | **Done** (`2e6a5c6`) |
-| 7e | `Domain.Account.DBConfiguration` / `Utility` → `ERP.Infrastructure` / `Accounting.Domain.Utility` | **Done** (`adf08cb`) |
+| 7a–7e | `Domain.Account.*` namespace retirement | **Done** |
+| 8a | `AAA.ERP.OutputDtos` namespace retirement | **Done** |
+| 8b | Inventory catalog → Accounting via Contracts query port | **Done** |
 
-**Remaining Phase 4 / namespace follow-ups:** optional push/PR; migration designer entity strings (`Domain.Account.Models.Entities.*` in historical snapshots) intentionally unchanged; ongoing 4.3.x — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+**Ongoing:** 4.3.x arch test review per PR — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
 ## High Priority
 
@@ -51,7 +51,7 @@ This document tracks known technical debt and code quality issues that need to b
 **Recommendation:** Replace with `ErrorMessages` constants.
 
 ### 6. Inventory catalog → Account entity coupling
-**Status:** Arch test skipped (`Inventory_catalog_services_should_not_reference_Account_domain_entities`). Product/Variant services still reference Account entities for cost centers/taxes until decoupling.
+**Status:** **Done** (Increment 8b). Supplier existence checks use `IInventoryCatalogValidationQueries` (Contracts); arch test `Inventory_catalog_services_should_not_reference_Account_domain_entities` enabled. Junction entities in `Inventory.Domain` still reference Accounting navigation types for EF — acceptable shared-database pattern.
 
 ## Low Priority
 
@@ -80,3 +80,5 @@ This document tracks known technical debt and code quality issues that need to b
 - [x] Commented out code in BaseRepository - **Removed in Phase 13**
 - [x] God `IUnitOfWork` repository properties - **Removed in Wave 3E**
 - [x] Horizontal `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` projects - **Retired in Wave 3E**
+- [x] `AAA.ERP.OutputDtos` legacy namespace - **Retired in Increment 8a**
+- [x] Skipped inventory catalog arch test - **Enabled in Increment 8b**

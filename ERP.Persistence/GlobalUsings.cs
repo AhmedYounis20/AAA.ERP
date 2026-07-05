@@ -11,7 +11,7 @@ global using ERP.BuildingBlocks.Application.Services.BaseServices;
 global using Mapster;
 global using Shared.Responses;
 global using System.Net;
-global using AAA.ERP.OutputDtos;
+global using Accounting.Domain.OutputDtos;
 global using ERP.Infrastructure.Services.BaseServices;
 global using System.Numerics;
 global using Accounting.Domain.Utility;

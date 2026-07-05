@@ -5,7 +5,7 @@ using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 
-namespace AAA.ERP.OutputDtos;
+namespace Accounting.Domain.OutputDtos;
 
 public class ComplexEntryDto 
 {

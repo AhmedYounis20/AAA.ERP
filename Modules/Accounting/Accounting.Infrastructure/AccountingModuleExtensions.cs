@@ -56,6 +56,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
         services.AddScoped<ICombinedEntryService, CombinedEntryService>();
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
+        services.AddScoped<IInventoryCatalogValidationQueries, InventoryCatalogValidationQueries>();
 
         return services;
     }

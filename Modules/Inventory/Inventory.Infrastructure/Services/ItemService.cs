@@ -1,5 +1,4 @@
-﻿using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account.SubLeadgers;
+﻿using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
@@ -24,7 +23,7 @@ public class ItemService :
     IBaseRepository<ItemManufacturerCompany> _itemManufacturerCompanyRepository { get; set; }
     IColorRepository _colorRepository { get; set; }
     ISizeRepository _sizeRepository { get; set; }
-    ISupplierRepository _supplierRepository { get; set; }
+    IInventoryCatalogValidationQueries _catalogValidationQueries { get; set; }
     IUnitOfWork _unitOfWork { get; set; }
 
     public ItemService(
@@ -37,7 +36,7 @@ public class ItemService :
         IBaseRepository<ItemManufacturerCompany> itemManufacturerCompanyRepository,
         IColorRepository colorRepository,
         ISizeRepository sizeRepository,
-        ISupplierRepository supplierRepository,
+        IInventoryCatalogValidationQueries catalogValidationQueries,
         IUnitOfWork unitOfWork) : base(repository)
     {
         _repository = repository;
@@ -49,7 +48,7 @@ public class ItemService :
         _itemManufacturerCompanyRepository = itemManufacturerCompanyRepository;
         _colorRepository = colorRepository;
         _sizeRepository = sizeRepository;
-        _supplierRepository = supplierRepository;
+        _catalogValidationQueries = catalogValidationQueries;
         _unitOfWork = unitOfWork;
     }
 
@@ -594,7 +593,7 @@ public class ItemService :
             }
         }
 
-        var existedSuppliersCount = await _supplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
+        var existedSuppliersCount = await _catalogValidationQueries.CountExistingSuppliersAsync(command.SuppliersIds ?? []);
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;
@@ -651,7 +650,7 @@ public class ItemService :
             }
         }
 
-        var existedSuppliersCount = await _supplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
+        var existedSuppliersCount = await _catalogValidationQueries.CountExistingSuppliersAsync(command.SuppliersIds ?? []);
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;

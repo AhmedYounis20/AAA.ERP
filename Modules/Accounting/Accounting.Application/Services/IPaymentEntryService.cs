@@ -1,4 +1,4 @@
-using AAA.ERP.OutputDtos;
+using Accounting.Domain.OutputDtos;
 using Accounting.Application.Commands.PaymentEntries;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Accounting.Domain.Models.Entities.Entries;

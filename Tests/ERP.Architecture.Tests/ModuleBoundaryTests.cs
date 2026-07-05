@@ -114,7 +114,7 @@ public class ModuleBoundaryTests
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));
     }
 
-    [Fact(Skip = "Enable after Product/Variant cost-center and tax decoupling (Phase 3)")]
+    [Fact]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {
         var result = Types.InAssembly(typeof(Inventory.Infrastructure.Services.ProductService).Assembly)

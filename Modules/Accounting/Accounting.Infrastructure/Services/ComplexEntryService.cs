@@ -1,4 +1,4 @@
-using AAA.ERP.OutputDtos;
+using Accounting.Domain.OutputDtos;
 using Accounting.Domain.Models.Dtos.Entry;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;

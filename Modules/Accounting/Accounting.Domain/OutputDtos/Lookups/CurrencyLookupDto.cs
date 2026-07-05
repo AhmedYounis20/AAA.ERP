@@ -1,4 +1,4 @@
-﻿using AAA.ERP.OutputDtos.BaseDtos;
+using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
 using Shared.DTOs;
 
 namespace Accounting.Domain.OutputDtos.Lookups;

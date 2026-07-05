@@ -1,4 +1,4 @@
-﻿using AAA.ERP.OutputDtos.BaseDtos;
+using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
 using Shared.BaseEntities;
 using Shared.DTOs;
 

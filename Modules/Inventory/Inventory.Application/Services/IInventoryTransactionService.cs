@@ -1,4 +1,4 @@
-using AAA.ERP.OutputDtos;
+using Accounting.Domain.OutputDtos;
 using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Domain.Models.Entities.InventoryTransactions;

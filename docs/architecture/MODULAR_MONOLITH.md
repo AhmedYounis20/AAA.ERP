@@ -1,7 +1,7 @@
 # Modular Monolith Architecture Plan — AAA.ERP
 
-> **Status:** In progress — **Phase 4 hardening** (post-M3); Waves 3A–3E **complete**  
-> **Last updated:** July 2026 — **M0–M3 done**; Increment **6** complete; slice **7a** committed on `Refactor` (`c51317f`)  
+> **Status:** **M4 complete** — Phase 4 hardening done; Waves 3A–3E **complete**  
+> **Last updated:** July 2026 — Increments **6–7** complete; [M4 sign-off](./M4_SIGNOFF.md)  
 > **Audience:** Developers, solution architects, tech leads
 
 ---
@@ -1120,7 +1120,7 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 - [x] Structured logging in production — [PRODUCTION_LOGGING.md](../ops/PRODUCTION_LOGGING.md) runbook; `appsettings.Production.json` (Compact JSON + enrichers)
 - [x] Naming debt resolved — `Infrastructure` / `Combined` (legacy route + JSON wire preserved)
 - [x] Module READMEs complete — `Modules/{Accounting,Inventory,Identity,Platform}/README.md`, `ERP.Persistence/README.md`
-- [ ] Optional schemas deployed (if ADR approved) — **deferred** per [ADR-006](./adr/006-sql-schema-separation.md)
+- [x] Optional schemas deployed (if ADR approved) — **closed deferred** per [ADR-006](./adr/006-sql-schema-separation.md)
 - [x] Onboarding doc: new feature in under 1 day — module READMEs + [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md)
 
 ---
@@ -1133,7 +1133,7 @@ Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in move
 | **M1** Phase 1 complete | 28 Aug 2026 | 7 Aug 2026 | **Done** — integration tests in CI |
 | **M2** Phase 2 complete | 16 Oct 2026 | 4 Sep 2026 | **Done** — Tax pilot; [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) |
 | **M3** Phase 3 complete | 9 Apr 2027 | 12 Dec 2026 | **Done** — Waves 3A–3E; horizontal layers retired (`1a4242e`) |
-| **M4** Phase 4 baseline | 4 Jun 2027 | 6 Feb 2027 | **In progress** — logging runbook, READMEs, perf, coordinator |
+| **M4** Phase 4 baseline | 4 Jun 2027 | 6 Feb 2027 | **Done** — [M4_SIGNOFF.md](./M4_SIGNOFF.md) |
 
 **Go/no-go checkpoints:**
 
@@ -1293,7 +1293,7 @@ Taxes vertical slice pilot complete. Playbook: [MODULE_TEMPLATE.md](./MODULE_TEM
 
 Waves 3A (BuildingBlocks + Platform), 3B (Identity), 3C (Accounting), 3D (Inventory), 3E (retire horizontal layers). Last committed milestone: Wave 3E — `1a4242e`.
 
-### Phase 4 — **IN PROGRESS** (post-M3 hardening)
+### Phase 4 — **COMPLETE (M4)**
 
 Month 1 (4.1.x) **complete** — structured logging, Swagger module groups, naming debt (`Infrastructure`, `Combined`), `ITransactionCoordinator`.
 
@@ -1337,9 +1337,17 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | 7d | `Domain.Account.Models.Dtos.*` → `Accounting.Domain.Models.Dtos.*` / `Identity.Application.Models.Dtos` | **Done** — `2e6a5c6` |
 | 7e | `Domain.Account.DBConfiguration` / `Utility` → `ERP.Infrastructure.*` / `Accounting.Domain.Utility` | **Done** — `adf08cb` |
 
-**Next:** Optional push/PR (30 commits on `Refactor`); ongoing **4.3.x** sprint hygiene. Historical EF migration designer strings still reference `Domain.Account.Models.Entities.*` (snapshot identity — intentional).
+#### Increment 8 — **COMPLETE** (M4 wrap-up)
 
-**Deferred / out of scope:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes.
+| Slice | Target | Status |
+|-------|--------|--------|
+| 8a | `AAA.ERP.OutputDtos` → `Accounting.Domain.OutputDtos` / BuildingBlocks base DTOs | **Done** (uncommitted) |
+| 8b | Inventory catalog supplier validation via `IInventoryCatalogValidationQueries` | **Done** (uncommitted) |
+| 8c | M4 sign-off + Phase 4 docs marked complete | **Done** (uncommitted) |
+
+**Next:** Optional push/PR; ongoing **4.3.x** sprint hygiene.
+
+**Deferred / closed:** 4.2.2 SQL schemas (ADR-006); microservices split; API route breaking changes; EF migration designer entity strings.
 
 ### Phase 3 Wave 3B — **COMPLETE**
 

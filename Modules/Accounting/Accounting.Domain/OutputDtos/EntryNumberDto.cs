@@ -1,6 +1,6 @@
-﻿using AAA.ERP.OutputDtos.BaseDtos;
+using ERP.BuildingBlocks.Application.DTOs.BaseDtos;
 
-namespace AAA.ERP.OutputDtos;
+namespace Accounting.Domain.OutputDtos;
 
 public class EntryNumberDto 
 {
