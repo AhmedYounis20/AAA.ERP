@@ -1,5 +1,5 @@
 using Domain.Account.Models.Dtos.Attachments;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Variants;
 using ERP.Domain.Models.Entities.Inventory.Products;

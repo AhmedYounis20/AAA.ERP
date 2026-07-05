@@ -1,7 +1,7 @@
 using Accounting.Contracts.Integration;
 using Domain.Account.DBConfiguration.DbContext;
 using ERP.Application.Repositories;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Services;

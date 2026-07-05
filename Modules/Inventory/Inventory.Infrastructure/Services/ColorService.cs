@@ -1,4 +1,4 @@
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Colors;

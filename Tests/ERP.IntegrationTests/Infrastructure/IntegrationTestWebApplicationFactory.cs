@@ -1,6 +1,6 @@
 using Domain.Account.DBConfiguration.DbContext;
 using ERP.BuildingBlocks.Persistence.Data;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;

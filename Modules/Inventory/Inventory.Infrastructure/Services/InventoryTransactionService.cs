@@ -1,6 +1,6 @@
 using Accounting.Contracts.Integration;
 using ERP.Application.Repositories;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;

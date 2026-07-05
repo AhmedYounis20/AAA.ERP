@@ -1,7 +1,7 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Entities.Inventory.InventoryTransactions;
 
-namespace ERP.Application.Repositories.Inventory;
+namespace Inventory.Application.Repositories;
 
 public interface IInventoryTransactionRepository : IBaseRepository<InventoryTransaction>
 {

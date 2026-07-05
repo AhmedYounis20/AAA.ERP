@@ -153,6 +153,22 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Inventory_Application_repositories_should_use_Inventory_Application_Repositories_namespace()
+    {
+        var result = Types.InAssembly(typeof(Inventory.Application.Repositories.IColorRepository).Assembly)
+            .That()
+            .HaveNameStartingWith("I")
+            .And()
+            .HaveNameEndingWith("Repository")
+            .Should()
+            .ResideInNamespace("Inventory.Application.Repositories")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Unexpected namespace: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Solution_should_not_contain_legacy_Compined_type_names()
     {
         var assemblies = new[]

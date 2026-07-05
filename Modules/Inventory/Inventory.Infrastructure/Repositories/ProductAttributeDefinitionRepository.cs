@@ -1,4 +1,4 @@
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 

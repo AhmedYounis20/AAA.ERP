@@ -4,7 +4,7 @@ using ERP.Domain.Models.Dtos.Inventory;
 using Shared.DTOs;
 using System.Linq.Expressions;
 
-namespace ERP.Application.Repositories.Inventory
+namespace Inventory.Application.Repositories
 {
     public interface IVariantRepository : IBaseRepository<Variant>
     {

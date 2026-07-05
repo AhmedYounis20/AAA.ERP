@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Infrastructure.Persistence;

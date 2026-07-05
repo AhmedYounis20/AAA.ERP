@@ -1,5 +1,5 @@
 using ERP.Application.Repositories;
-using ERP.Application.Repositories.Inventory;
+using Inventory.Application.Repositories;
 using Inventory.Application.Commands.AttributeValues;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Dtos.Inventory;

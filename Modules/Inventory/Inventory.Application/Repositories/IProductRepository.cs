@@ -2,7 +2,7 @@ using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Entities.Inventory.Products;
 using ERP.Domain.Models.Dtos.Inventory;
 
-namespace ERP.Application.Repositories.Inventory
+namespace Inventory.Application.Repositories
 {
     public interface IProductRepository : IBaseTreeSettingRepository<Product>
     {
