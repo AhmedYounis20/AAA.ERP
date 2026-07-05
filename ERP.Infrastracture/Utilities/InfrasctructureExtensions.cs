@@ -1,5 +1,4 @@
 using Accounting.Contracts.Integration;
-using AAA.ERP.Services.Impelementation;
 using ERP.Infrastracture.Services.Accounting;
 using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.Account.SubLeadgers;
@@ -60,7 +59,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<IPaymentEntryService, PaymentEntryService>();
         services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<ICompinedEntryService, CompinedEntryService>();
-        services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<IPackingUnitService, PackingUnitService>();
         services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();
@@ -93,7 +91,6 @@ public static class InfrasctructureExtensions
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IEntryRepository, EntryRepository>();
-        services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();

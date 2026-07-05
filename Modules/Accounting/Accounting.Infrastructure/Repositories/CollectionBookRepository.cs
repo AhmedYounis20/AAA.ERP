@@ -1,10 +1,10 @@
-﻿using ERP.Application.Repositories.Account;
+using Accounting.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.CollectionBooks;
 using ERP.Infrastracture.Repositories.BaseRepositories;
 
-namespace ERP.Infrastracture.Repositories.Account;
+namespace Accounting.Infrastructure.Repositories;
 
 public class CollectionBookRepository : BaseSettingRepository<CollectionBook>, ICollectionBookRepository
 {
-    public CollectionBookRepository(ApplicationDbContext context) : base(context) { }
+    public CollectionBookRepository(IApplicationDbContext context) : base(context) { }
 }

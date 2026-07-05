@@ -1,5 +1,5 @@
-﻿using ERP.Domain.Commands.Account.CollectionBooks;
-using ERP.Domain.Models.Entities.Account.AccountGuides;
+﻿using Accounting.Application.Commands.CollectionBooks;
+using Accounting.Application.Services;
 using ERP.Domain.Models.Entities.Account.CollectionBooks;
 using Shared.DTOs;
 
