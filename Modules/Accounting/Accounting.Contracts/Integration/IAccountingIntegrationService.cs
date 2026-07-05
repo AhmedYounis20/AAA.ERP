@@ -2,6 +2,9 @@ using Shared.Responses;
 
 namespace Accounting.Contracts.Integration;
 
+/// <summary>
+/// Application service contract for accounting integration.
+/// </summary>
 public interface IAccountingIntegrationService
 {
     Task<ApiResponse<FinancialPeriodInfo>> GetOpenPeriodForDateAsync(

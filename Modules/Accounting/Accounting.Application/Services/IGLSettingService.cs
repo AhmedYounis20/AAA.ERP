@@ -4,6 +4,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for g l setting.
+/// </summary>
 public interface IGLSettingService
 {
     Task<ApiResponse<GLSetting>> Update(GlSettingUpdateCommand command);

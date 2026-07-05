@@ -6,6 +6,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for complex entry.
+/// </summary>
 public interface IComplexEntryService : IBaseService<Entry, ComplexEntryCreateCommand, ComplexEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);

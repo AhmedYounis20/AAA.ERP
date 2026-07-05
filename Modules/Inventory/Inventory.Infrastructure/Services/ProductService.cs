@@ -15,6 +15,7 @@ using Inventory.Domain.Models.Entities.Products;
 using System.Text.RegularExpressions;
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Shared.BaseEntities.Attachments;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -588,7 +589,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             {
                 IsSuccess = validationResult.isValid,
                 Errors = [new MessageTemplate(){
-                        MessageKey = "OPERATION_FAILD"
+                        MessageKey = ErrorMessages.OPERATION_FAILD
                     }],
                 StatusCode = HttpStatusCode.InternalServerError
             };
@@ -2029,33 +2030,33 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         // Only products of type Stock can have combination variants
         if (command.ProductType != ProductType.Stock && command.VariantCombinations?.Any() == true)
         {
-            result.errors.Add("Variant combinations are only allowed for products of type Stock");
+            result.errors.Add(ErrorMessages.VariantCombinationsAreOnlyAllowedForProductsOfTypeStock);
             result.isValid = false;
         }
 
         var isCodeExist = await _codeRepository.GetQuery().AnyAsync(e=>e.Code==command.Code);
         if (isCodeExist)
         {
-            result.errors.Add("Product code already exists");
+            result.errors.Add(ErrorMessages.ProductCodeAlreadyExists);
             result.isValid = false;
         }
 
         var isGs1Exist = await _codeRepository.GetQuery().AnyAsync(e => e.Code == command.Gs1Code);
         if (isGs1Exist)
         {
-            result.errors.Add("Product GS1 already exists");
+            result.errors.Add(ErrorMessages.ProductGS1AlreadyExists);
             result.isValid = false;
         }
         var isEgsExist = await _codeRepository.GetQuery().AnyAsync(e => e.Code == command.EGSCode);
         if (isEgsExist)
         {
-            result.errors.Add("Product EGS already exists");
+            result.errors.Add(ErrorMessages.ProductEGSAlreadyExists);
             result.isValid = false;
         }
         var isBarCodeExist = await _codeRepository.GetQuery().AnyAsync(e => command.BarCodes.Contains(e.Code));
         if (isBarCodeExist)
         {
-            result.errors.Add("One of barcodes  already exists");
+            result.errors.Add(ErrorMessages.OneOfBarcodesAlreadyExists);
             result.isValid = false;
         }
         var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
@@ -2077,7 +2078,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         var isBarCodeExist = await _codeRepository.GetQuery().AnyAsync(e => command.BarCodes.Contains(e.Code) && e.ProductId != command.Id);
         if (isBarCodeExist)
         {
-            result.errors.Add("One of barcodes is associated with another product");
+            result.errors.Add(ErrorMessages.OneOfBarcodesIsAssociatedWithAnotherProduct);
             result.isValid = false;
         }
         var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);

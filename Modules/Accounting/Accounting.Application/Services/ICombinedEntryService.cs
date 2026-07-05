@@ -6,6 +6,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for combined entry.
+/// </summary>
 public interface ICombinedEntryService : IBaseService<Entry, CombinedEntryCreateCommand, CombinedEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);

@@ -1,6 +1,7 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using Shared.DTOs;
+using Shared.Constants;
 
 namespace ERP.Host.Controllers.BaseControllers
 {
@@ -31,7 +32,7 @@ namespace ERP.Host.Controllers.BaseControllers
         {
             var result = await _sender.Send(input);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.Success = new MessageTemplate { MessageKey = "CreatedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.CreatedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -61,7 +62,7 @@ namespace ERP.Host.Controllers.BaseControllers
             input.Id = id;
             var result = await _sender.Send(input);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.Success = new MessageTemplate { MessageKey = "UpdatedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.UpdatedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -69,7 +70,7 @@ namespace ERP.Host.Controllers.BaseControllers
         {
             var result = await _service.Delete(id);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-            result.Success = new MessageTemplate { MessageKey = "DeletedSuccessfully" };
+            result.Success = new MessageTemplate { MessageKey = SuccessMessages.DeletedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -80,7 +81,7 @@ namespace ERP.Host.Controllers.BaseControllers
         {
             var result = await _service.Create(entities);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.Success = new MessageTemplate { MessageKey = "BulkCreatedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.BulkCreatedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -91,7 +92,7 @@ namespace ERP.Host.Controllers.BaseControllers
         {
             var result = await _service.Update(entities);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.Success = new MessageTemplate { MessageKey = "BulkUpdatedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.BulkUpdatedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
 
@@ -102,7 +103,7 @@ namespace ERP.Host.Controllers.BaseControllers
         {
             var result = await _service.Delete(entities);
             if (result.IsSuccess && string.IsNullOrEmpty(result.SuccessMessage))
-                result.Success = new MessageTemplate { MessageKey = "BulkDeletedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.BulkDeletedSuccessfully };
             return StatusCode((int)result.StatusCode, result);
         }
     }

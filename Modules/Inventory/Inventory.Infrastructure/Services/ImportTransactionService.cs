@@ -3,6 +3,7 @@ using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -44,7 +45,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction, Import
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionNotFound" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.TransactionNotFound } }
             };
         }
 
@@ -54,7 +55,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction, Import
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "TransactionIsNotImportTransaction" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.TransactionIsNotImportTransaction } }
             };
         }
 

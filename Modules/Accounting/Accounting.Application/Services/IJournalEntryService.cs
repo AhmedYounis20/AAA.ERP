@@ -6,6 +6,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for journal entry.
+/// </summary>
 public interface IJournalEntryService : IBaseService<Entry, JournalEntryCreateCommand, JournalEntryUpdateCommand>
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);

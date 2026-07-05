@@ -1,5 +1,6 @@
 using Inventory.Domain.Models.Dtos;
 using FluentValidation;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Application.Validators.Variants;
 
@@ -7,8 +8,8 @@ public class VariantCostCenterValidator : AbstractValidator<VariantCostCenterDto
 {
     public VariantCostCenterValidator()
     {
-        _ = RuleFor(e => e.CostCenterId).NotEmpty().WithMessage("CostCenterIsRequired");
-        _ = RuleFor(e => e.Percent).GreaterThanOrEqualTo(0).WithMessage("PercentCannotBeNegative");
-        _ = RuleFor(e => e.Percent).LessThanOrEqualTo(100).WithMessage("PercentCannotExceed100");
+        _ = RuleFor(e => e.CostCenterId).NotEmpty().WithMessage(ValidationMessages.CostCenterIsRequired);
+        _ = RuleFor(e => e.Percent).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.PercentCannotBeNegative);
+        _ = RuleFor(e => e.Percent).LessThanOrEqualTo(100).WithMessage(ValidationMessages.PercentCannotExceed100);
     }
 }

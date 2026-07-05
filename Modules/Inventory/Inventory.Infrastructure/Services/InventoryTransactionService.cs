@@ -5,6 +5,7 @@ using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -216,7 +217,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                     {
                         IsSuccess = false,
                         StatusCode = HttpStatusCode.BadRequest,
-                        Errors = [new MessageTemplate { MessageKey = "InsufficientStockBalance" }]
+                        Errors = [new MessageTemplate { MessageKey = ErrorMessages.InsufficientStockBalance }]
                     };
                 }
             }
@@ -236,7 +237,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
                 unitCost,
                 isReceipt);
             if (!updateResult.IsSuccess)
-                throw new Exception("Failed To Add Stock Balance");
+                throw new Exception(ErrorMessages.FailedToAddStockBalance);
         }
 
         var totalAmount = command.Items.Sum(i => i.TotalCost);
@@ -281,7 +282,7 @@ public class InventoryTransactionService : BaseService<InventoryTransaction, Inv
         if (!periodResult.IsSuccess)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
+            validationResult.errors.Add(ErrorMessages.FinancialPeriodNotFound);
         }
 
         return validationResult;

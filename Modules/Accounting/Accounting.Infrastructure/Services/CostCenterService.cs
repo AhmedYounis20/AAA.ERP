@@ -5,6 +5,7 @@ using Accounting.Domain.Models.Entities.CostCenters;
 using ERP.Infrastructure.Services.BaseServices;
 using Serilog;
 using Shared.BaseEntities;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -96,7 +97,7 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
         if (accounts.Count() != command.ChartOfAccounts.Count)
         {
             result.isValid = false;
-            result.errors.Add("SomeChartOfAcountsNotExisted");
+            result.errors.Add(ErrorMessages.SomeChartOfAcountsNotExisted);
         }
 
         return result;
@@ -179,14 +180,14 @@ public class CostCenterService : BaseTreeSettingService<CostCenter, CostCenterCr
             if (chartOfAccountsExists.Count() != command.ChartOfAccounts.Count())
             {
                 result.isValid = false;
-                result.errors.Add("SomeChartOfAcountsNotExisted");
+                result.errors.Add(ErrorMessages.SomeChartOfAcountsNotExisted);
             }
         }
 
         if (result.entity.NodeType != command.NodeType)
         {
             result.isValid = false;
-            result.errors.Add("CannotChangeNodeType");
+            result.errors.Add(ErrorMessages.CannotChangeNodeType);
         }
 
         result.entity = oldCostCenter;

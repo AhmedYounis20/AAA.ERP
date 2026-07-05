@@ -4,4 +4,7 @@ using Accounting.Domain.Models.Entities.CostCenters;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for cost center.
+/// </summary>
 public interface ICostCenterService : IBaseTreeSettingService<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>;

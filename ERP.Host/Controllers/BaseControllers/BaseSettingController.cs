@@ -1,5 +1,6 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
+using Shared.Constants;
 
 namespace ERP.Host.Controllers.BaseControllers;
 
@@ -36,7 +37,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
     //    {
     //        result.Success = new MessageTemplate
     //        {
-    //            MessageKey = "AddedSuccessfullyWithName",
+    //            MessageKey = SuccessMessages.AddedSuccessfullyWithName,
     //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
     //        };
     //    }
@@ -51,7 +52,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
     //    {
     //        result.Success = new MessageTemplate
     //        {
-    //            MessageKey = "UpdatedSuccessfullyWithName",
+    //            MessageKey = SuccessMessages.UpdatedSuccessfullyWithName,
     //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
     //        };
     //    }
@@ -65,7 +66,7 @@ public class BaseSettingController<TEntity, TCreate, TUpdate>
     //    {
     //        result.Success = new MessageTemplate
     //        {
-    //            MessageKey = "DeletedSuccessfullyWithName",
+    //            MessageKey = SuccessMessages.DeletedSuccessfullyWithName,
     //            Args = new object?[] { CurrentLanguage == "en" ? result.Result?.NameSecondLanguage : result.Result?.Name }!
     //        };
     //    }

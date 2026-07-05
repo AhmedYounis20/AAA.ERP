@@ -5,6 +5,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services.SubLeadgers;
 
+/// <summary>
+/// Application service contract for base sub leadger.
+/// </summary>
 public interface IBaseSubLeadgerService<TEntity, TCreateCommand, in TUpdateCommand>
     : IBaseTreeSettingService<TEntity, TCreateCommand, TUpdateCommand>
     where TEntity : BaseTreeSettingEntity<TEntity>

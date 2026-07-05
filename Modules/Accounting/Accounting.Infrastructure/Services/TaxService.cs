@@ -7,6 +7,7 @@ using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;
 using Shared.BaseEntities;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -33,7 +34,7 @@ public class TaxService : SubLeadgerService<Tax, TaxCreateCommand, TaxUpdateComm
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "ParentIdIsRequired" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.ParentIdIsRequired }]
             };
         }
 

@@ -3,6 +3,7 @@ using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Colors;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -99,7 +100,7 @@ public class ColorService
         if (colorValueExists)
         {
             isValid = false;
-            errors.Add("ColorValueIsDuplicate");
+            errors.Add(ErrorMessages.ColorValueIsDuplicate);
         }
 
         return (isValid, errors);

@@ -4,4 +4,7 @@ using Accounting.Application.Services.SubLeadgers;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for tax.
+/// </summary>
 public interface ITaxService : IBaseSubLeadgerService<Tax, TaxCreateCommand, TaxUpdateCommand>;

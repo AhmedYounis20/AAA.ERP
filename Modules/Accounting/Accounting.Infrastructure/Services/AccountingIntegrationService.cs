@@ -9,6 +9,7 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using MediatR;
 using Shared.Responses;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -61,7 +62,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound }]
             };
         }
 
@@ -91,7 +92,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
             };
         }
 
@@ -117,7 +118,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "PartyAccountNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.PartyAccountNotFound }]
             };
         }
 
@@ -150,7 +151,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "DefaultCurrencyNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.DefaultCurrencyNotFound }]
             };
         }
 
@@ -162,7 +163,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
                 Errors = branchAccountResult.Errors ??
-                         [new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" }]
+                         [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
             };
         }
 
@@ -242,7 +243,7 @@ public class AccountingIntegrationService : IAccountingIntegrationService
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = "DefaultCurrencyNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.DefaultCurrencyNotFound }]
             };
         }
 

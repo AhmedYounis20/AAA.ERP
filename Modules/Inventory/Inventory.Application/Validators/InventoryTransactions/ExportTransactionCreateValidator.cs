@@ -1,5 +1,6 @@
 using Inventory.Application.Commands.InventoryTransactions;
 using FluentValidation;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Application.Validators.InventoryTransactions;
 
@@ -9,19 +10,19 @@ public class ExportTransactionCreateValidator : AbstractValidator<ExportTransact
     {
         RuleFor(x => x.TransactionDate)
             .NotEmpty()
-            .WithMessage("Transaction date is required");
+            .WithMessage(ValidationMessages.TransactionDateIsRequired);
 
         RuleFor(x => x.TransactionPartyId)
             .NotEmpty()
-            .WithMessage("Transaction party is required");
+            .WithMessage(ValidationMessages.TransactionPartyIsRequired);
 
         RuleFor(x => x.BranchId)
             .NotEmpty()
-            .WithMessage("Branch is required");
+            .WithMessage(ValidationMessages.BranchIsRequired);
 
         RuleFor(x => x.Items)
             .NotEmpty()
-            .WithMessage("At least one item is required");
+            .WithMessage(ValidationMessages.AtLeastOneItemIsRequired);
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }

@@ -7,6 +7,7 @@ using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -109,7 +110,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.Found,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound } }
             };
         }
 
@@ -250,7 +251,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
         if (financialPeriod == null || command.FinancialPeriodId != financialPeriod.Id)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
+            validationResult.errors.Add(ErrorMessages.FinancialPeriodNotFound);
         }
 
         var entryWithSameNumber = await _dbContext.Set<Entry>()
@@ -259,7 +260,7 @@ public class ComplexEntryService : BaseService<Entry, ComplexEntryCreateCommand,
         if (entryWithSameNumber != null)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ExistedEntryWithSameNumber");
+            validationResult.errors.Add(ErrorMessages.EntryNumberExists);
         }
 
         return validationResult;

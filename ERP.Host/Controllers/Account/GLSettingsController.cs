@@ -5,6 +5,7 @@ using Accounting.Domain.Commands;
 using Accounting.Domain.Models.Entities.GLSettings;
 using Mapster;
 using Shared.Responses;
+using Shared.Constants;
 
 namespace ERP.Host.Controllers.Account;
 
@@ -51,7 +52,7 @@ public class GLSettingsController : ControllerBase
 
             if (result.IsSuccess)
             {
-                result.Success = new MessageTemplate { MessageKey = "UpdatedSuccessfully" };
+                result.Success = new MessageTemplate { MessageKey = SuccessMessages.UpdatedSuccessfully };
             }
 
             return StatusCode((int)result.StatusCode, result);

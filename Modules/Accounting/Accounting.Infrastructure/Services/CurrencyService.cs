@@ -3,6 +3,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Currencies;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -24,7 +25,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
         if (await _repository.IsExitedCurrencySymbol(command.Symbol))
         {
             result.isValid = false;
-            result.errors.Add("CurrencySymbolIsExisted");
+            result.errors.Add(ErrorMessages.CurrencySymbolIsExisted);
         }
 
         if (command.IsDefault)
@@ -33,7 +34,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
             if (defaultCurrency != null)
             {
                 result.isValid = false;
-                result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
+                result.errors.Add(ErrorMessages.DefaultCurrencyIsAlreadyExistedWithName);
             }
         }
 
@@ -51,7 +52,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
         if (currencyWithSameSymbol is not null && currencyWithSameSymbol.Id != command.Id)
         {
             result.isValid = false;
-            result.errors.Add("CurrencySymbolIsExisted");
+            result.errors.Add(ErrorMessages.CurrencySymbolIsExisted);
         }
 
         if (command.IsDefault)
@@ -60,7 +61,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
             if (defaultCurrency != null && defaultCurrency.Id != command.Id)
             {
                 result.isValid = false;
-                result.errors.Add("DefaultCurrencyIsAlreadyExistedWithName");
+                result.errors.Add(ErrorMessages.DefaultCurrencyIsAlreadyExistedWithName);
             }
         }
 
@@ -73,7 +74,7 @@ public class CurrencyService : BaseSettingService<Currency, CurrencyCreateComman
         if (result.entity is not null && result.entity.IsDefault)
         {
             result.isValid = false;
-            result.errors.Add("DefaultCurrencyCannotBeDeleted");
+            result.errors.Add(ErrorMessages.DefaultCurrencyCannotBeDeleted);
         }
 
         return result;

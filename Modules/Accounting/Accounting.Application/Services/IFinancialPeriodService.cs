@@ -6,6 +6,9 @@ using Shared.Responses;
 
 namespace Accounting.Application.Services;
 
+/// <summary>
+/// Application service contract for financial period.
+/// </summary>
 public interface IFinancialPeriodService : IBaseService<FinancialPeriod, FinancialPeriodCreateCommand, FinancialPeriodUpdateCommand>
 {
     Task<ApiResponse<FinancialPeriod>> GetCurrentFinancailPeriod();

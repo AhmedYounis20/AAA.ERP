@@ -1,5 +1,6 @@
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Validation;
 
@@ -15,13 +16,13 @@ public static class InventoryThresholdValidationHelper
             return (true, errors);
 
         if (scope == InventoryThresholdScope.Branch && !branchId.HasValue)
-            errors.Add("INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH");
+            errors.Add(ErrorMessages.INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH);
 
         for (var i = 0; i < thresholds.Count; i++)
         {
             var t = thresholds[i];
             if (t.MinQuantity >= t.MaxQuantity)
-                errors.Add("INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX");
+                errors.Add(ErrorMessages.INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX);
         }
 
         var list = thresholds
@@ -33,7 +34,7 @@ public static class InventoryThresholdValidationHelper
             var a = list[i];
             var b = list[i + 1];
             if (a.MaxQuantity > b.MinQuantity)
-                errors.Add("INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP");
+                errors.Add(ErrorMessages.INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP);
         }
 
         return (errors.Count == 0, errors.Distinct().ToList());

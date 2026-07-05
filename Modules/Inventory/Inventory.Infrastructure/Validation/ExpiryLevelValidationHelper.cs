@@ -1,4 +1,5 @@
 using Inventory.Domain.Models.Dtos;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Validation;
 
@@ -14,7 +15,7 @@ public static class ExpiryLevelValidationHelper
         {
             var el = expiryLevels[i];
             if (el.DaysFrom >= el.DaysTo)
-                errors.Add("EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO");
+                errors.Add(ErrorMessages.EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO);
         }
 
         var list = expiryLevels
@@ -26,7 +27,7 @@ public static class ExpiryLevelValidationHelper
             var a = list[i];
             var b = list[i + 1];
             if (a.DaysTo > b.DaysFrom)
-                errors.Add("EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP");
+                errors.Add(ErrorMessages.EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP);
         }
 
         return (errors.Count == 0, errors.Distinct().ToList());

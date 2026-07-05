@@ -2,6 +2,7 @@ using ERP.BuildingBlocks.Application.Validators.Account.ComandValidators.BaseCom
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Domain.Models.Entities.Sizes;
 using FluentValidation;
+using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Application.Validators.StockBalances;
 
@@ -9,13 +10,13 @@ public class StockBalanceCreateValidator : BaseCreateValidator<StockBalanceCreat
 {
     public StockBalanceCreateValidator()
     {
-        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage("ItemIdIsRequired");
-        _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage("PackingUnitIdIsRequired");
-        _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage("BranchIdIsRequired");
-        _ = RuleFor(e => e.CurrentBalance).GreaterThanOrEqualTo(0).WithMessage("CurrentBalanceMustBeGreaterThanOrEqualToZero");
-        _ = RuleFor(e => e.MinimumBalance).GreaterThanOrEqualTo(0).WithMessage("MinimumBalanceMustBeGreaterThanOrEqualToZero");
-        _ = RuleFor(e => e.MaximumBalance).GreaterThanOrEqualTo(0).WithMessage("MaximumBalanceMustBeGreaterThanOrEqualToZero");
-        _ = RuleFor(e => e.UnitCost).GreaterThanOrEqualTo(0).WithMessage("UnitCostMustBeGreaterThanOrEqualToZero");
-        _ = RuleFor(e => e.TotalCost).GreaterThanOrEqualTo(0).WithMessage("TotalCostMustBeGreaterThanOrEqualToZero");
+        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage(ValidationMessages.ItemIdIsRequired);
+        _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage(ValidationMessages.PackingUnitIdIsRequired);
+        _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage(ValidationMessages.BranchIdIsRequired);
+        _ = RuleFor(e => e.CurrentBalance).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.CurrentBalanceMustBeGreaterThanOrEqualToZero);
+        _ = RuleFor(e => e.MinimumBalance).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.MinimumBalanceMustBeGreaterThanOrEqualToZero);
+        _ = RuleFor(e => e.MaximumBalance).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.MaximumBalanceMustBeGreaterThanOrEqualToZero);
+        _ = RuleFor(e => e.UnitCost).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.UnitCostMustBeGreaterThanOrEqualToZero);
+        _ = RuleFor(e => e.TotalCost).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.TotalCostMustBeGreaterThanOrEqualToZero2);
     }
 }

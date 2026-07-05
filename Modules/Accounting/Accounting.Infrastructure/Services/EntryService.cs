@@ -10,6 +10,7 @@ using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
 using ERP.Shared.BaseEntities.Attachments;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -55,7 +56,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             var entry = command.Adapt<Entry>();
             var entryNumberResult = await GetEntryNumber(entry.EntryDate);
             if (entryNumberResult.IsSuccess == false || entryNumberResult.Result == null)
-                throw new Exception("FaildToGenerateEntryNubmer");
+                throw new Exception(ErrorMessages.FaildToGenerateEntryNubmer);
 
             var entryNumber = entryNumberResult.Result;
             entry.EntryNumber = entryNumber.EntryNumber;
@@ -362,7 +363,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.Found,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound } }
             };
         }
 
@@ -397,7 +398,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         if (financialPeriod == null || command.FinancialPeriodId != financialPeriod.Id)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("NotFoundCurrentFinancialPeriod");
+            validationResult.errors.Add(ErrorMessages.FinancialPeriodNotFound);
         }
 
         var entryWithSameNumber = await _unitOfWork.Set<Entry>()
@@ -406,7 +407,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         if (entryWithSameNumber != null)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ExistedEntryWithSameNumber");
+            validationResult.errors.Add(ErrorMessages.EntryNumberExists);
         }
 
         return validationResult;

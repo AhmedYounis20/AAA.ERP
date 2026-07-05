@@ -8,6 +8,7 @@ using Inventory.Application.Commands.Items;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Items;
 using System.Text.RegularExpressions;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 public class ItemService :
@@ -173,7 +174,7 @@ public class ItemService :
             // Rollback transaction on any exception
             await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
-            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "OPERATION_FAILD" } } };
+            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.OPERATION_FAILD } } };
         }
     }
 
@@ -341,7 +342,7 @@ public class ItemService :
             // Rollback transaction on any exception
             await _unitOfWork.RollbackAsync();
             Console.WriteLine($"{ex}");
-            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "OPERATION_FAILD" } } };
+            return new ApiResponse<Item> { IsSuccess = false, StatusCode = HttpStatusCode.InternalServerError, Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.OPERATION_FAILD } } };
         }
     }
 
@@ -544,7 +545,7 @@ public class ItemService :
         {
 
             validationResult.isValid = false;
-            validationResult.errors.Add("ITEM_CODE_IS_DUPLICATED");
+            validationResult.errors.Add(ErrorMessages.ItemCodeDuplicated);
         }
 
         if (command.Gs1Code is not null)
@@ -553,7 +554,7 @@ public class ItemService :
             if (checkRepeatedGs1Code)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ITEM_GS1_CODE_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.ITEM_GS1_CODE_IS_DUPLICATED);
             }
         }
 
@@ -563,24 +564,24 @@ public class ItemService :
             if (checkRepeatedEgsCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ITEM_EGS_CODE_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.ITEM_EGS_CODE_IS_DUPLICATED);
             }
         }
 
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_BARCODES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_BARCODES);
         }
         if (command.SuppliersIds != null && command.SuppliersIds.Count != command.SuppliersIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS);
         }
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Count != command.ManufacturerCompaniesIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES);
         }
 
         if (command.BarCodes is not null)
@@ -589,7 +590,7 @@ public class ItemService :
             if (checkRepeatedBarCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ITEM_ONE_OF_BARCODES_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.ItemBarcodeDuplicated);
             }
         }
 
@@ -597,14 +598,14 @@ public class ItemService :
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.SupplierNotFound);
         }
 
         var existedManufacturerCompany = await _itemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Any() && command.ManufacturerCompaniesIds.Count > existedManufacturerCompany)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.ManufacturerNotFound);
         }
 
         // Prevent SubDomain as parent
@@ -614,7 +615,7 @@ public class ItemService :
             if (parent != null && parent.NodeType == NodeType.SubDomain)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("CANNOT_SET_SUBDOMAIN_AS_PARENT");
+                validationResult.errors.Add(ErrorMessages.CannotSetSubDomainAsParent);
             }
         }
 
@@ -627,17 +628,17 @@ public class ItemService :
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_BARCODES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_BARCODES);
         }
         if (command.SuppliersIds != null && command.SuppliersIds.Count != command.SuppliersIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS);
         }
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Count != command.ManufacturerCompaniesIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES);
         }
 
         if (command.BarCodes is not null)
@@ -646,7 +647,7 @@ public class ItemService :
             if (checkRepeatedBarCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ITEM_ONE_OF_BARCODES_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.ItemBarcodeDuplicated);
             }
         }
 
@@ -654,14 +655,14 @@ public class ItemService :
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.SupplierNotFound);
         }
 
         var existedManufacturerCompany = await _itemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Any() && command.ManufacturerCompaniesIds.Count > existedManufacturerCompany)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.ManufacturerNotFound);
         }
 
         // Prevent SubDomain as parent
@@ -671,7 +672,7 @@ public class ItemService :
             if (parent != null && parent.NodeType == NodeType.SubDomain)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("CANNOT_SET_SUBDOMAIN_AS_PARENT");
+                validationResult.errors.Add(ErrorMessages.CannotSetSubDomainAsParent);
             }
         }
         return validationResult;
@@ -788,7 +789,7 @@ public class ItemService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InvalidDomainItem" } }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.InvalidDomainItem } }
                 };
             }
 
@@ -905,7 +906,7 @@ public class ItemService :
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "InvalidDomainItem" } }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.InvalidDomainItem } }
                 };
             }
 

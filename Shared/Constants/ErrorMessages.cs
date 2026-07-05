@@ -46,6 +46,65 @@ public static class ErrorMessages
     public const string MaxLengthExceeded = "MaxLengthExceeded";
     public const string MinLengthNotMet = "MinLengthNotMet";
     public const string InvalidRange = "InvalidRange";
+
+    // Service / domain message keys
+    public const string AttributeValueNotFound = "AttributeValueNotFound";
+    public const string BranchOrBranchAccountNotFound = "BranchOrBranchAccountNotFound";
+    public const string CannotChangeNodeType = "CannotChangeNodeType";
+    public const string ChartOfAccountUpdateSubLeadgerName = "ChartOfAccountUpdateSubLeadgerName";
+    public const string ChartOfAccountUpdateSubLeadgerNameSecondLanguage = "ChartOfAccountUpdateSubLeadgerNameSecondLanguage";
+    public const string ColorValueIsDuplicate = "ColorValueIsDuplicate";
+    public const string CurrencySymbolIsExisted = "CurrencySymbolIsExisted";
+    public const string DefaultCurrencyCannotBeDeleted = "DefaultCurrencyCannotBeDeleted";
+    public const string DefaultCurrencyIsAlreadyExistedWithName = "DefaultCurrencyIsAlreadyExistedWithName";
+    public const string DefaultCurrencyNotFound = "DefaultCurrencyNotFound";
+    public const string DefaultPackingUnitNotFound = "DefaultPackingUnitNotFound";
+    public const string DistinationBranchNotFound = "DistinationBranchNotFound";
+    public const string EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO = "EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO";
+    public const string EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP = "EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP";
+    public const string FaildToGenerateEntryNubmer = "FaildToGenerateEntryNubmer";
+    public const string FaildToGetUsedPackingUnit = "FaildToGetUsedPackingUnit";
+    public const string FailedToAddStockBalance = "Failed To Add Stock Balance";
+    public const string FinancialPeriodIsUsedInEntries = "FinancialPeriodIsUsedInEntries";
+    public const string FinancialPeriodIsUsedInInventoryTransactions = "FinancialPeriodIsUsedInInventoryTransactions";
+    public const string FinancialPeriodWithYearNumberIsExisted = "FinancialPeriodWithYearNumberIsExisted";
+    public const string FinancialTransactionIsUsedInEntriesCannotUpdateYearName = "FinancialTransactionIsUsedInEntriesCannotUpdateYearName";
+    public const string FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName = "FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName";
+    public const string INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH = "INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH";
+    public const string INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX = "INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX";
+    public const string INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP = "INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP";
+    public const string ITEM_EGS_CODE_IS_DUPLICATED = "ITEM_EGS_CODE_IS_DUPLICATED";
+    public const string ITEM_GS1_CODE_IS_DUPLICATED = "ITEM_GS1_CODE_IS_DUPLICATED";
+    public const string InsufficientStockBalance = "InsufficientStockBalance";
+    public const string InvalidDomainItem = "InvalidDomainItem";
+    public const string NotLastPeriod = "NotLastPeriod";
+    public const string OPERATION_FAILD = "OPERATION_FAILD";
+    public const string OneOfBarcodesAlreadyExists = "One of barcodes  already exists";
+    public const string OneOfBarcodesIsAssociatedWithAnotherProduct = "One of barcodes is associated with another product";
+    public const string PLEASE_PROVIDE_NON_DUPLICATE_BARCODES = "PLEASE_PROVIDE_NON_DUPLICATE_BARCODES";
+    public const string PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES = "PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES";
+    public const string PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS = "PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS";
+    public const string PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND";
+    public const string ParentIdIsRequired = "ParentIdIsRequired";
+    public const string PartyAccountNotFound = "PartyAccountNotFound";
+    public const string ProductEGSAlreadyExists = "Product EGS already exists";
+    public const string ProductGS1AlreadyExists = "Product GS1 already exists";
+    public const string ProductCodeAlreadyExists = "Product code already exists";
+    public const string SomeChartOfAcountsNotExisted = "SomeChartOfAcountsNotExisted";
+    public const string ThereAreEntriesAfterNewEndDate = "ThereAreEntriesAfterNewEndDate";
+    public const string ThereAreInventoryTrasnsactionsAfterNewEndDate = "ThereAreInventoryTrasnsactionsAfterNewEndDate";
+    public const string TransactionIsNotExportTransaction = "TransactionIsNotExportTransaction";
+    public const string TransactionIsNotImportTransaction = "TransactionIsNotImportTransaction";
+    public const string TransactionNotFound = "TransactionNotFound";
+    public const string TransferIsNotPending = "TransferIsNotPending";
+    public const string TransferNotFound = "TransferNotFound";
+    public const string VARIANT_CODE_IS_DUPLICATED = "VARIANT_CODE_IS_DUPLICATED";
+    public const string VARIANT_EGS_CODE_IS_DUPLICATED = "VARIANT_EGS_CODE_IS_DUPLICATED";
+    public const string VARIANT_GS1_CODE_IS_DUPLICATED = "VARIANT_GS1_CODE_IS_DUPLICATED";
+    public const string VARIANT_ONE_OF_BARCODES_IS_DUPLICATED = "VARIANT_ONE_OF_BARCODES_IS_DUPLICATED";
+    public const string VariantCombinationsAreOnlyAllowedForProductsOfTypeStock = "Variant combinations are only allowed for products of type Stock";
+    public const string VariantNotFound = "VariantNotFound";
+    public const string VariantWithNowStockBalance = "VariantWithNowStockBalance";
 }
 
 /// <summary>
@@ -60,5 +119,8 @@ public static class SuccessMessages
     public const string BulkUpdatedSuccessfully = "BulkUpdatedSuccessfully";
     public const string BulkDeletedSuccessfully = "BulkDeletedSuccessfully";
     public const string OperationSuccessful = "OperationSuccessful";
+    public const string AddedSuccessfullyWithName = "AddedSuccessfullyWithName";
+    public const string DeletedSuccessfullyWithName = "DeletedSuccessfullyWithName";
+    public const string UpdatedSuccessfullyWithName = "UpdatedSuccessfullyWithName";
 }
 

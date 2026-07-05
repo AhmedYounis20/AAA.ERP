@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using ERP.Shared.BaseEntities.Attachments;
 using Shared.DTOs;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -368,7 +369,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (checkRepeatedCode)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("VARIANT_CODE_IS_DUPLICATED");
+            validationResult.errors.Add(ErrorMessages.VARIANT_CODE_IS_DUPLICATED);
         }
 
         // Check Gs1Code uniqueness
@@ -378,7 +379,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (checkRepeatedGs1Code)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("VARIANT_GS1_CODE_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.VARIANT_GS1_CODE_IS_DUPLICATED);
             }
         }
 
@@ -389,7 +390,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (checkRepeatedEgsCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("VARIANT_EGS_CODE_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.VARIANT_EGS_CODE_IS_DUPLICATED);
             }
         }
 
@@ -397,7 +398,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_BARCODES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_BARCODES);
         }
 
         // Check if any barcode already exists
@@ -407,7 +408,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (checkRepeatedBarCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("VARIANT_ONE_OF_BARCODES_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.VARIANT_ONE_OF_BARCODES_IS_DUPLICATED);
             }
         }
 
@@ -415,14 +416,14 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (command.SuppliersIds != null && command.SuppliersIds.Count != command.SuppliersIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS);
         }
 
         // Check for duplicate manufacturer companies
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Count != command.ManufacturerCompaniesIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES);
         }
 
         // Verify all suppliers exist
@@ -433,7 +434,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
+                validationResult.errors.Add(ErrorMessages.SupplierNotFound);
             }
         }
 
@@ -444,7 +445,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (product == null)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PRODUCT_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.PRODUCT_NOT_FOUND);
         }
 
         var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);
@@ -467,7 +468,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_BARCODES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_BARCODES);
         }
 
         // Check if any barcode already exists for other variants
@@ -478,7 +479,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (checkRepeatedBarCode)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("VARIANT_ONE_OF_BARCODES_IS_DUPLICATED");
+                validationResult.errors.Add(ErrorMessages.VARIANT_ONE_OF_BARCODES_IS_DUPLICATED);
             }
         }
 
@@ -486,14 +487,14 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (command.SuppliersIds != null && command.SuppliersIds.Count != command.SuppliersIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS);
         }
 
         // Check for duplicate manufacturer companies
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Count != command.ManufacturerCompaniesIds.Distinct().Count())
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES");
+            validationResult.errors.Add(ErrorMessages.PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES);
         }
 
         // Verify all suppliers exist
@@ -504,7 +505,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
                 validationResult.isValid = false;
-                validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
+                validationResult.errors.Add(ErrorMessages.SupplierNotFound);
             }
         }
 
@@ -515,7 +516,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         if (product == null)
         {
             validationResult.isValid = false;
-            validationResult.errors.Add("PRODUCT_NOT_FOUND");
+            validationResult.errors.Add(ErrorMessages.PRODUCT_NOT_FOUND);
         }
 
         var (thresholdsValid, thresholdErrors) = InventoryThresholdValidationHelper.ValidateThresholds(command.InventoryThresholds, command.InventoryThresholdScope, command.InventoryThresholdBranchId);

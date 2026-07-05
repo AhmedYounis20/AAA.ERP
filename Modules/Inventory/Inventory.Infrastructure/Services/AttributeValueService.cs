@@ -5,6 +5,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Dtos;
 using Inventory.Domain.Models.Entities.Attributes;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -215,7 +216,7 @@ public class AttributeValueService
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
-                    Errors = [new MessageTemplate { MessageKey = "AttributeValueNotFound" }]
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.AttributeValueNotFound }]
                 };
             }
 
@@ -258,7 +259,7 @@ public class AttributeValueService
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
-                    Errors = [new MessageTemplate { MessageKey = "AttributeValueNotFound" }]
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.AttributeValueNotFound }]
                 };
             }
 

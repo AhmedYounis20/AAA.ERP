@@ -6,6 +6,7 @@ using Inventory.Application.Repositories;
 using Accounting.Domain.Models.Dtos.FinancialPeriods;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -80,7 +81,7 @@ public class FinancialPeriodService :
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.NotFound,
-                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "NotFoundCurrentFinancialPeriod" } }
+                Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound } }
             };
         }
 
@@ -145,7 +146,7 @@ public class FinancialPeriodService :
         if (isExisted)
         {
             result.isValid = false;
-            result.errors.Add("FinancialPeriodWithYearNumberIsExisted");
+            result.errors.Add(ErrorMessages.FinancialPeriodWithYearNumberIsExisted);
         }
 
         return result;
@@ -164,7 +165,7 @@ public class FinancialPeriodService :
             if (isUsedInEntries)
             {
                 result.isValid = false;
-                result.errors.Add("FinancialTransactionIsUsedInEntriesCannotUpdateYearName");
+                result.errors.Add(ErrorMessages.FinancialTransactionIsUsedInEntriesCannotUpdateYearName);
                 return result;
             }
 
@@ -172,7 +173,7 @@ public class FinancialPeriodService :
             if (isUsedInInventoryTransactions)
             {
                 result.isValid = false;
-                result.errors.Add("FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName");
+                result.errors.Add(ErrorMessages.FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName);
                 return result;
             }
         }
@@ -184,14 +185,14 @@ public class FinancialPeriodService :
             if (!isLast)
             {
                 result.isValid = false;
-                result.errors.Add("NotLastPeriod");
+                result.errors.Add(ErrorMessages.NotLastPeriod);
             }
 
             var isEntryAfterDateExist = await _entryRepository.EntryAfterThisDateExist(newEndDate);
             if (isEntryAfterDateExist)
             {
                 result.isValid = false;
-                result.errors.Add("ThereAreEntriesAfterNewEndDate");
+                result.errors.Add(ErrorMessages.ThereAreEntriesAfterNewEndDate);
                 return result;
             }
 
@@ -199,7 +200,7 @@ public class FinancialPeriodService :
             if (isInventoryTransactionAfterDateExist)
             {
                 result.isValid = false;
-                result.errors.Add("ThereAreInventoryTrasnsactionsAfterNewEndDate");
+                result.errors.Add(ErrorMessages.ThereAreInventoryTrasnsactionsAfterNewEndDate);
                 return result;
             }
         }
@@ -286,14 +287,14 @@ public class FinancialPeriodService :
         if (!isLast)
         {
             result.isValid = false;
-            result.errors.Add("NotLastPeriod");
+            result.errors.Add(ErrorMessages.NotLastPeriod);
         }
 
         var isEntryAfterDateExist = await _repository.IsUsedInEntries(id);
         if (isEntryAfterDateExist)
         {
             result.isValid = false;
-            result.errors.Add("FinancialPeriodIsUsedInEntries");
+            result.errors.Add(ErrorMessages.FinancialPeriodIsUsedInEntries);
             return result;
         }
 
@@ -301,7 +302,7 @@ public class FinancialPeriodService :
         if (isInventoryTransactionAfterDateExist)
         {
             result.isValid = false;
-            result.errors.Add("FinancialPeriodIsUsedInInventoryTransactions");
+            result.errors.Add(ErrorMessages.FinancialPeriodIsUsedInInventoryTransactions);
             return result;
         }
 

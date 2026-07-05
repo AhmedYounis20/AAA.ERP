@@ -8,6 +8,7 @@ using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -67,7 +68,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             return new ApiResponse<InventoryTransfer>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
             };
         }
 
@@ -129,7 +130,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse
                 {
                     IsSuccess = false,
-                    Errors = [new MessageTemplate { MessageKey = "FaildToGetUsedPackingUnit" }],
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.FaildToGetUsedPackingUnit }],
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -143,7 +144,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 return new ApiResponse
                 {
                     IsSuccess = false,
-                    Errors = [new MessageTemplate { MessageKey = "VariantWithNowStockBalance" }],
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.VariantWithNowStockBalance }],
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -164,7 +165,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                     return new ApiResponse
                     {
                         IsSuccess = false,
-                        Errors = [new MessageTemplate { MessageKey = "DistinationBranchNotFound" }],
+                        Errors = [new MessageTemplate { MessageKey = ErrorMessages.DistinationBranchNotFound }],
                         StatusCode = HttpStatusCode.BadRequest
                     };
                 }
@@ -252,7 +253,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(command.Id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferNotFound" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
 
         transfer.SourceBranchId = command.SourceBranchId;
         transfer.DestinationBranchId = command.DestinationBranchId;
@@ -276,7 +277,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferNotFound" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
         return new ApiResponse<InventoryTransfer> { IsSuccess = true, Result = transfer };
     }
 
@@ -295,9 +296,9 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.Get(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferNotFound" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
         if (transfer.Status != InventoryTransferStatus.Pending)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferIsNotPending" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferIsNotPending }] };
 
         transfer.Status = InventoryTransferStatus.Approved;
         transfer.ApprovedAt = DateTime.UtcNow;
@@ -309,7 +310,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             return new ApiResponse<InventoryTransfer>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
             };
         }
 
@@ -357,9 +358,9 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
     {
         var transfer = await _repository.GetWithDetails(id);
         if (transfer == null)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferNotFound" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferNotFound }] };
         if (transfer.Status != InventoryTransferStatus.Pending)
-            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = "TransferIsNotPending" }] };
+            return new ApiResponse<InventoryTransfer> { IsSuccess = false, Errors = [new MessageTemplate { MessageKey = ErrorMessages.TransferIsNotPending }] };
 
         transfer.Status = InventoryTransferStatus.Rejected;
         transfer.ApprovedAt = DateTime.UtcNow;
@@ -371,7 +372,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             return new ApiResponse<InventoryTransfer>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = "BranchOrBranchAccountNotFound" }]
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
             };
         }
 

@@ -3,6 +3,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.Infrastructure.Services.BaseServices;
+using Shared.Constants;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -61,7 +62,7 @@ public class ChartOfAccountService :
         if (chartOfAccount != null)
         {
             result.isValid = false;
-            result.errors.Add("ChartOfAccoutWithSameCodeExist");
+            result.errors.Add(ErrorMessages.ChartOfAccountCodeExists);
         }
 
         return result;
@@ -76,17 +77,17 @@ public class ChartOfAccountService :
             if (command.Code != chartOfAccount.Code)
             {
                 result.isValid = false;
-                result.errors.Add("ChartOfAccountCodeCannotBeChanged");
+                result.errors.Add(ErrorMessages.ChartOfAccountCodeCannotChange);
             }
             if (chartOfAccount.IsCreatedFromSubLeadger && command.Name != chartOfAccount.Name)
             {
                 result.isValid = false;
-                result.errors.Add("ChartOfAccountUpdateSubLeadgerName");
+                result.errors.Add(ErrorMessages.ChartOfAccountUpdateSubLeadgerName);
             }
             else if (chartOfAccount.IsCreatedFromSubLeadger && command.NameSecondLanguage != chartOfAccount.NameSecondLanguage)
             {
                 result.isValid = false;
-                result.errors.Add("ChartOfAccountUpdateSubLeadgerNameSecondLanguage");
+                result.errors.Add(ErrorMessages.ChartOfAccountUpdateSubLeadgerNameSecondLanguage);
             }
         }
 
@@ -101,12 +102,12 @@ public class ChartOfAccountService :
             if (result.entity.IsCreatedFromSubLeadger)
             {
                 result.isValid = false;
-                result.errors.Add("ChartOfAccountCreatedFomSubLeadger");
+                result.errors.Add(ErrorMessages.ChartOfAccountFromSubLeadger);
             }
             if (result.entity.IsSubLeadgerBaseAccount)
             {
                 result.isValid = false;
-                result.errors.Add("ChartOfAccountBaseSubLeadgerAccount");
+                result.errors.Add(ErrorMessages.ChartOfAccountIsSubLeadgerBase);
             }
         }
 

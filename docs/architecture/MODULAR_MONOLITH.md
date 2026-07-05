@@ -1353,7 +1353,7 @@ Retired from production: `ERP.Application.Repositories.*`, `ERP.Application.Serv
 | 9b | DbConfig schemas + Identity + `SeparateModuleSchemas` migration | **Done** — `f256151` |
 | 9c | Dev DB migration applied | **Done** — July 2026 |
 
-**Next:** **Option C** quality debt (one cluster per slice — e.g. Accounting validator `ErrorMessages`); ongoing **4.3.x** sprint hygiene. Push/PR optional when ready (`Refactor` ~33 commits ahead).
+**Next:** Ongoing **4.3.x** sprint hygiene; optional push/PR when ready. Quality debt C1–C5 complete — see [TECHNICAL_DEBT.md](../../TECHNICAL_DEBT.md).
 
 **Deferred / closed:** microservices split; API route breaking changes; EF migration designer entity strings.
 

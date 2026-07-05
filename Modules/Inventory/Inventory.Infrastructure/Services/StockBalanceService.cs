@@ -5,6 +5,7 @@ using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Sizes;
 using Inventory.Domain.Models.Entities.Variants;
+using Shared.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -151,7 +152,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "VariantNotFound" } }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.VariantNotFound } }
                 };
             }
 
@@ -166,7 +167,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = "DefaultPackingUnitNotFound" } }
+                    Errors = new List<MessageTemplate> { new MessageTemplate { MessageKey = ErrorMessages.DefaultPackingUnitNotFound } }
                 };
             }
 
