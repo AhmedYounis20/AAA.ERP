@@ -11,7 +11,7 @@ namespace ERP.Architecture.Tests;
 /// </summary>
 public class LayerDependencyTests
 {
-    private const string InfrastructureAssembly = "ERP.Infrastracture";
+    private const string InfrastructureAssembly = "ERP.Persistence";
     private const string ApiAssembly = "ERP.API";
 
     [Fact]

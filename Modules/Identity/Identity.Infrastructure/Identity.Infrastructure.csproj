@@ -14,7 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
     <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
-    <ProjectReference Include="..\..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\..\ERP.Persistence\ERP.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

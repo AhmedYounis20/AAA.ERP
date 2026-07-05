@@ -4,16 +4,19 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ERP.Persistence</RootNamespace>
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\ERP.Application\ERP.Application.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
     <ProjectReference Include="..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\Modules\Inventory\Inventory.Domain\Inventory.Domain.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
-    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\Modules\Platform\Platform.Localization\Platform.Localization.csproj" />
     <ProjectReference Include="..\Shared\ERP.Shared.csproj" />
   </ItemGroup>

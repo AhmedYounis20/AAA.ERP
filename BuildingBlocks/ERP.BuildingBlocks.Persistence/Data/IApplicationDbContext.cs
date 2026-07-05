@@ -1,4 +1,3 @@
-using ERP.Domain.Models.Entities.Inventory.Items;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;

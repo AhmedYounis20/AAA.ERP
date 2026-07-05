@@ -2,6 +2,7 @@ using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using ERP.Application.Repositories;
+using ERP.Application.Repositories.Inventory;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Infrastracture.Services.BaseServices;
@@ -14,12 +15,18 @@ public class FinancialPeriodService :
     private readonly IFinancialPeriodRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEntryRepository _entryRepository;
+    private readonly IInventoryTransactionRepository _inventoryTransactionRepository;
 
-    public FinancialPeriodService(IFinancialPeriodRepository repository, IUnitOfWork unitOfWork, IEntryRepository entryRepository) : base(repository)
+    public FinancialPeriodService(
+        IFinancialPeriodRepository repository,
+        IUnitOfWork unitOfWork,
+        IEntryRepository entryRepository,
+        IInventoryTransactionRepository inventoryTransactionRepository) : base(repository)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _entryRepository = entryRepository;
+        _inventoryTransactionRepository = inventoryTransactionRepository;
     }
 
     public override async Task<ApiResponse<FinancialPeriod>> Create(FinancialPeriodCreateCommand command,
@@ -188,7 +195,7 @@ public class FinancialPeriodService :
                 return result;
             }
 
-            var isInventoryTransactionAfterDateExist = await _unitOfWork.InventoryTransactionRepository.TransactionAfterThisDateExist(newEndDate);
+            var isInventoryTransactionAfterDateExist = await _inventoryTransactionRepository.TransactionAfterThisDateExist(newEndDate);
             if (isInventoryTransactionAfterDateExist)
             {
                 result.isValid = false;

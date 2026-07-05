@@ -1,9 +1,10 @@
-using ERP.Application.Repositories;
+using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Infrastracture.Services.BaseServices;
 using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
 using ERP.Domain.Models.Entities.Inventory.Sizes;
+using ERP.Domain.Models.Entities.Inventory.Variants;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -11,16 +12,16 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
 {
     private readonly IStockBalanceRepository _repository;
     private readonly IVariantRepository _variantRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
 
     public StockBalanceService(
         IStockBalanceRepository repository,
         IVariantRepository variantRepository,
-        IUnitOfWork unitOfWork) : base(repository)
+        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository) : base(repository)
     {
         _repository = repository;
         _variantRepository = variantRepository;
-        _unitOfWork = unitOfWork;
+        _variantPackingUnitRepository = variantPackingUnitRepository;
     }
 
     public async Task<ApiResponse<StockBalance>> GetByVariantAndBranch(Guid variantId, Guid branchId)
@@ -155,7 +156,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
             }
 
             // Get the default packing unit for the variant
-            var defaultPackingUnit = await _unitOfWork.VariantPackingUnitRepository.GetQuery()
+            var defaultPackingUnit = await _variantPackingUnitRepository.GetQuery()
                 .AsNoTracking()
                 .Where(e => e.VariantId == variantId && e.IsDefaultPackingUnit)
                 .FirstOrDefaultAsync();

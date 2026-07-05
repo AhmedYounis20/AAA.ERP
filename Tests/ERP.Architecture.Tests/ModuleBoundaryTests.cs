@@ -39,7 +39,7 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
             .Should()
-            .NotHaveDependencyOn("ERP.Infrastracture")
+            .NotHaveDependencyOn("ERP.Persistence")
             .And()
             .NotHaveDependencyOn("Accounting.Infrastructure")
             .And()
@@ -54,7 +54,7 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Accounting.Application.Commands.Taxes.TaxCreateCommand).Assembly)
             .Should()
-            .NotHaveDependencyOn("ERP.Infrastracture")
+            .NotHaveDependencyOn("ERP.Persistence")
             .And()
             .NotHaveDependencyOn("Accounting.Infrastructure")
             .GetResult();
@@ -89,7 +89,7 @@ public class ModuleBoundaryTests
     {
         var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
             .Should()
-            .NotHaveDependencyOn("ERP.Infrastracture")
+            .NotHaveDependencyOn("ERP.Persistence")
             .And()
             .NotHaveDependencyOn("Inventory.Infrastructure")
             .GetResult();

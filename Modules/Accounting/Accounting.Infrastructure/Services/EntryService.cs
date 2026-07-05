@@ -4,6 +4,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Domain.Account.Models.Dtos.Attachments;
 using ERP.Application.Repositories;
+using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
@@ -19,19 +20,22 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
     private readonly IFinancialPeriodRepository _financialPeriodRepository;
     private readonly IBaseRepository<FinancialTransaction> _financialTransactionRepository;
     private readonly IBaseRepository<EntryAttachment> _entryAttachmentRepository;
+    private readonly IAttachmentRepository _attachmentRepository;
 
     public EntryService(
         IEntryRepository repository,
         IUnitOfWork unitOfWork,
         IFinancialPeriodRepository financialPeriodRepository,
         IBaseRepository<FinancialTransaction> financialTransactionRepository,
-        IBaseRepository<EntryAttachment> entryAttachmentRepository) : base(repository)
+        IBaseRepository<EntryAttachment> entryAttachmentRepository,
+        IAttachmentRepository attachmentRepository) : base(repository)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _financialPeriodRepository = financialPeriodRepository;
         _financialTransactionRepository = financialTransactionRepository;
         _entryAttachmentRepository = entryAttachmentRepository;
+        _attachmentRepository = attachmentRepository;
     }
 
     public override async Task<ApiResponse<Entry>> Create(EntryCreateCommand command, bool isValidate = true)
@@ -217,7 +221,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
         if (deletedAttachments.Any())
         {
             await _entryAttachmentRepository.Delete(deletedEntryAttachments);
-            await _unitOfWork.AttachmentRepository.Delete(deletedAttachments);
+            await _attachmentRepository.Delete(deletedAttachments);
         }
 
         var newEntryAttachments = newAttachments.Select(e =>
@@ -231,7 +235,7 @@ public class EntryService : BaseService<Entry, EntryCreateCommand, EntryUpdateCo
             await _entryAttachmentRepository.Add(newEntryAttachments);
 
         if (updatedAttachments.Any())
-            await _unitOfWork.AttachmentRepository.Update(updatedAttachments);
+            await _attachmentRepository.Update(updatedAttachments);
     }
 
     private EntryAttachment CreateEntryAttachment(Attachment attachment)

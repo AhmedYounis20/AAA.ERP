@@ -1,5 +1,6 @@
 using Accounting.Contracts.Integration;
 using Domain.Account.DBConfiguration.DbContext;
+using ERP.Application.Repositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Infrastracture.Services.BaseServices;
 using Inventory.Application.Commands.InventoryTransfers;
@@ -13,17 +14,20 @@ namespace Inventory.Infrastructure.Services;
 public class InventoryTransferService : BaseService<InventoryTransfer, InventoryTransferCreateCommand, InventoryTransferUpdateCommand>, IInventoryTransferService
 {
     private readonly IInventoryTransferRepository _repository;
+    private readonly IStockBalanceRepository _stockBalanceRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ApplicationDbContext _dbContext;
     private readonly IAccountingIntegrationService _accountingIntegration;
 
     public InventoryTransferService(
         IInventoryTransferRepository repository,
+        IStockBalanceRepository stockBalanceRepository,
         IUnitOfWork unitOfWork,
         ApplicationDbContext dbContext,
         IAccountingIntegrationService accountingIntegration) : base(repository)
     {
         _repository = repository;
+        _stockBalanceRepository = stockBalanceRepository;
         _unitOfWork = unitOfWork;
         _dbContext = dbContext;
         _accountingIntegration = accountingIntegration;
@@ -151,7 +155,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
             sourceStock.CurrentBalance -= quantity;
             sourceStock.TotalCost -= quantity * sourceStock.UnitCost;
             sourceStock.ModifiedAt = DateTime.Now;
-            await _unitOfWork.StockBalanceRepository.Update(sourceStock);
+            await _stockBalanceRepository.Update(sourceStock);
 
             var destinationBranchResult = await _accountingIntegration.GetBranchAccountAsync(destinationId);
             var destinationStock = await _dbContext.Set<StockBalance>()
@@ -184,7 +188,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                     ModifiedAt = DateTime.Now,
                     CurrentBalance = quantity
                 };
-                await _unitOfWork.StockBalanceRepository.Add(destinationStock);
+                await _stockBalanceRepository.Add(destinationStock);
             }
             else
             {
@@ -195,7 +199,7 @@ public class InventoryTransferService : BaseService<InventoryTransfer, Inventory
                 destinationStock.ModifiedAt = DateTime.Now;
                 destinationStock.UnitCost = (destinationStock.TotalCost + ((defaultPackingUnit?.AverageCostPrice ?? 0) * quantity)) / destinationStock.CurrentBalance;
                 destinationStock.TotalCost = destinationStock.UnitCost * destinationStock.CurrentBalance;
-                await _unitOfWork.StockBalanceRepository.Update(destinationStock);
+                await _stockBalanceRepository.Update(destinationStock);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using ERP.Application.Repositories;
+using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using Inventory.Application.Services;
@@ -16,13 +17,40 @@ public class ItemService :
 
     IItemRepository _repository { get; set; }
     IBaseRepository<ItemCode> _codeRepossitory { get; set; }
+    IBaseRepository<ItemSupplier> _itemSupplierRepository { get; set; }
+    IBaseRepository<ItemPackingUnit> _itemPackingUnitRepository { get; set; }
+    IBaseRepository<ItemPackingUnitSellingPrice> _itemPackingUnitSellingPriceRepository { get; set; }
+    IBaseRepository<ItemSellingPriceDiscount> _itemSellingPriceDiscountRepository { get; set; }
+    IBaseRepository<ItemManufacturerCompany> _itemManufacturerCompanyRepository { get; set; }
+    IColorRepository _colorRepository { get; set; }
+    ISizeRepository _sizeRepository { get; set; }
+    ISupplierRepository _supplierRepository { get; set; }
     IUnitOfWork _unitOfWork { get; set; }
 
-    public ItemService(IItemRepository repository, IUnitOfWork unitOfWork) : base(repository)
+    public ItemService(
+        IItemRepository repository,
+        IBaseRepository<ItemCode> itemCodeRepository,
+        IBaseRepository<ItemSupplier> itemSupplierRepository,
+        IBaseRepository<ItemPackingUnit> itemPackingUnitRepository,
+        IBaseRepository<ItemPackingUnitSellingPrice> itemPackingUnitSellingPriceRepository,
+        IBaseRepository<ItemSellingPriceDiscount> itemSellingPriceDiscountRepository,
+        IBaseRepository<ItemManufacturerCompany> itemManufacturerCompanyRepository,
+        IColorRepository colorRepository,
+        ISizeRepository sizeRepository,
+        ISupplierRepository supplierRepository,
+        IUnitOfWork unitOfWork) : base(repository)
     {
         _repository = repository;
+        _codeRepossitory = itemCodeRepository;
+        _itemSupplierRepository = itemSupplierRepository;
+        _itemPackingUnitRepository = itemPackingUnitRepository;
+        _itemPackingUnitSellingPriceRepository = itemPackingUnitSellingPriceRepository;
+        _itemSellingPriceDiscountRepository = itemSellingPriceDiscountRepository;
+        _itemManufacturerCompanyRepository = itemManufacturerCompanyRepository;
+        _colorRepository = colorRepository;
+        _sizeRepository = sizeRepository;
+        _supplierRepository = supplierRepository;
         _unitOfWork = unitOfWork;
-        _codeRepossitory = _unitOfWork.ItemCodeRepository;
     }
 
     public async Task<ApiResponse<string>> GeNextCode(Guid? parentId = null)
@@ -320,7 +348,7 @@ public class ItemService :
 
     private async Task UpdateSuppliers(IItemCommand command, Item item)
     {
-        List<ItemSupplier> existedItemSuppliers = await _unitOfWork.ItemSupplierRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
+        List<ItemSupplier> existedItemSuppliers = await _itemSupplierRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSupplier> itemSupplierToRemove = existedItemSuppliers.Where(e => !command.SuppliersIds.Contains(e.SupplierId)).ToList();
         List<ItemSupplier> itemSuppliersToAdd = command.SuppliersIds.Select(e => new ItemSupplier
         {
@@ -331,14 +359,14 @@ public class ItemService :
         }).Where(a=>!existedItemSuppliers.Any(e=>e.SupplierId ==a.SupplierId)).ToList();
 
         if (itemSupplierToRemove != null && itemSupplierToRemove.Any())
-            await _unitOfWork.ItemSupplierRepository.Delete(itemSupplierToRemove);
+            await _itemSupplierRepository.Delete(itemSupplierToRemove);
         if (itemSuppliersToAdd != null && itemSuppliersToAdd.Any())
-            await _unitOfWork.ItemSupplierRepository.Add(itemSuppliersToAdd);
+            await _itemSupplierRepository.Add(itemSuppliersToAdd);
     }
 
     private async Task UpdateItemPackingUnits(IItemCommand command, Item item)
     {
-        List<ItemPackingUnit> existedItemPackingUnits = await _unitOfWork.ItemPackingUnitRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
+        List<ItemPackingUnit> existedItemPackingUnits = await _itemPackingUnitRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemPackingUnit> itemPackingUnitsToRemove = existedItemPackingUnits.Where(e => !command.PackingUnits.Any(p => p.PackingUnitId == e.PackingUnitId)).ToList();
         List<ItemPackingUnit> itemPackingUnitsToAdd = [];
         foreach (var itempackingUnit in command.PackingUnits)
@@ -381,7 +409,7 @@ public class ItemService :
                 existedItemPackingUnit.IsDefaultPurchases = itempackingUnit.IsDefaultPurchases;
                 existedItemPackingUnit.OrderNumber = itempackingUnit.OrderNumber;
 
-                await _unitOfWork.ItemPackingUnitRepository.Update(existedItemPackingUnit);
+                await _itemPackingUnitRepository.Update(existedItemPackingUnit);
 
                 await UpdatePackingUnitSellingPrices(itempackingUnit, existedItemPackingUnit);
 
@@ -389,14 +417,14 @@ public class ItemService :
         }
 
         if (itemPackingUnitsToRemove != null && itemPackingUnitsToRemove.Any())
-            await _unitOfWork.ItemPackingUnitRepository.Delete(itemPackingUnitsToRemove);
+            await _itemPackingUnitRepository.Delete(itemPackingUnitsToRemove);
         if (itemPackingUnitsToAdd != null && itemPackingUnitsToAdd.Any())
-            await _unitOfWork.ItemPackingUnitRepository.Add(itemPackingUnitsToAdd);
+            await _itemPackingUnitRepository.Add(itemPackingUnitsToAdd);
     }
 
     private async Task UpdatePackingUnitSellingPrices(ItemPackingUnitDto itempackingUnit, ItemPackingUnit? existedItemPackingUnit)
     {
-        var existedPackingUnitPrices = await _unitOfWork.ItemPackingUnitSellingPriceRepository.GetQuery().Where(e => e.ItemPackingUnitId == existedItemPackingUnit.Id).ToListAsync();
+        var existedPackingUnitPrices = await _itemPackingUnitSellingPriceRepository.GetQuery().Where(e => e.ItemPackingUnitId == existedItemPackingUnit.Id).ToListAsync();
         List<ItemPackingUnitSellingPrice> packingUnitPricesToAdd = [];
         List<ItemPackingUnitSellingPrice> packingUnitPricesToUpdate = [];
         foreach (var packingUnitPrice in itempackingUnit.SellingPrices)
@@ -422,13 +450,13 @@ public class ItemService :
             }
         }
 
-        await _unitOfWork.ItemPackingUnitSellingPriceRepository.Add(packingUnitPricesToAdd);
-        await _unitOfWork.ItemPackingUnitSellingPriceRepository.Update(packingUnitPricesToUpdate);
+        await _itemPackingUnitSellingPriceRepository.Add(packingUnitPricesToAdd);
+        await _itemPackingUnitSellingPriceRepository.Update(packingUnitPricesToUpdate);
     }
 
     private async Task UpdateSellingPriceDiscounts(IItemCommand command, Item item)
     {
-        List<ItemSellingPriceDiscount> existedItemSuppliers = await _unitOfWork.ItemSellingPriceDiscountRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
+        List<ItemSellingPriceDiscount> existedItemSuppliers = await _itemSellingPriceDiscountRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemSellingPriceDiscount> itemSellingPriceDiscountsToAdd = command.SellingPriceDiscounts.Select(e => new ItemSellingPriceDiscount
             {
                 ItemId = item.Id,
@@ -457,17 +485,17 @@ public class ItemService :
         }
 
         if (itemSellingPriceDiscountsToAdd != null && itemSellingPriceDiscountsToAdd.Any())
-            await _unitOfWork.ItemSellingPriceDiscountRepository.Add(itemSellingPriceDiscountsToAdd);
+            await _itemSellingPriceDiscountRepository.Add(itemSellingPriceDiscountsToAdd);
         if (itemSellingPricesToUpdate != null && itemSellingPricesToUpdate.Any())
-            await _unitOfWork.ItemSellingPriceDiscountRepository.Update(itemSellingPricesToUpdate);
+            await _itemSellingPriceDiscountRepository.Update(itemSellingPricesToUpdate);
         if (itemSellingPricesToRemove != null && itemSellingPricesToRemove.Any())
-            await _unitOfWork.ItemSellingPriceDiscountRepository.Delete(itemSellingPricesToRemove);
+            await _itemSellingPriceDiscountRepository.Delete(itemSellingPricesToRemove);
     }
 
 
     private async Task UpdateManufacturerCompanies(IItemCommand command, Item item)
     {
-        List<ItemManufacturerCompany> existedItemManufacturerCompanies = await _unitOfWork.ItemManufacturerCompanyRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
+        List<ItemManufacturerCompany> existedItemManufacturerCompanies = await _itemManufacturerCompanyRepository.GetQuery().Where(e => e.ItemId == item.Id).ToListAsync();
         List<ItemManufacturerCompany> itemManufacturerCompaniesToRemove = existedItemManufacturerCompanies.Where(e => !command.SuppliersIds.Contains(e.ManufacturerCompanyId)).ToList();
         List<ItemManufacturerCompany> itemManufacturerCompaniesToAdd = command.ManufacturerCompaniesIds.Select(e => new ItemManufacturerCompany
         {
@@ -478,14 +506,14 @@ public class ItemService :
         }).Where(a => !existedItemManufacturerCompanies.Any(e => e.ManufacturerCompanyId == a.ManufacturerCompanyId)).ToList();
 
         if (itemManufacturerCompaniesToRemove != null && itemManufacturerCompaniesToRemove.Any())
-            await _unitOfWork.ItemManufacturerCompanyRepository.Delete(itemManufacturerCompaniesToRemove);
+            await _itemManufacturerCompanyRepository.Delete(itemManufacturerCompaniesToRemove);
         if (itemManufacturerCompaniesToAdd != null && itemManufacturerCompaniesToAdd.Any())
-            await _unitOfWork.ItemManufacturerCompanyRepository.Add(itemManufacturerCompaniesToAdd);
+            await _itemManufacturerCompanyRepository.Add(itemManufacturerCompaniesToAdd);
     }
 
     private async Task UpdateBarCodes(IItemCommand command, Item item)
     {
-        List<ItemCode> existedItemBarCodes = await _unitOfWork.ItemCodeRepository.GetQuery().Where(e => e.ItemId == item.Id && e.CodeType == ItemCodeType.BarCode).ToListAsync();
+        List<ItemCode> existedItemBarCodes = await _codeRepossitory.GetQuery().Where(e => e.ItemId == item.Id && e.CodeType == ItemCodeType.BarCode).ToListAsync();
         List<ItemCode> itemBarCodesToRemove = existedItemBarCodes.Where(e => !command.BarCodes.Contains(e.Code)).ToList();
         
         // Get existing barcode codes for comparison
@@ -504,9 +532,9 @@ public class ItemService :
             }).ToList();
 
         if (itemBarCodesToRemove != null && itemBarCodesToRemove.Any())
-            await _unitOfWork.ItemCodeRepository.Delete(itemBarCodesToRemove);
+            await _codeRepossitory.Delete(itemBarCodesToRemove);
         if (itemBarCodesToAdd != null && itemBarCodesToAdd.Any())
-            await _unitOfWork.ItemCodeRepository.Add(itemBarCodesToAdd);
+            await _codeRepossitory.Add(itemBarCodesToAdd);
     }
 
     protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ItemCreateCommand command)
@@ -566,14 +594,14 @@ public class ItemService :
             }
         }
 
-        var existedSuppliersCount = await _unitOfWork.SupplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
+        var existedSuppliersCount = await _supplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;
             validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
         }
 
-        var existedManufacturerCompany = await _unitOfWork.ItemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
+        var existedManufacturerCompany = await _itemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Any() && command.ManufacturerCompaniesIds.Count > existedManufacturerCompany)
         {
             validationResult.isValid = false;
@@ -623,14 +651,14 @@ public class ItemService :
             }
         }
 
-        var existedSuppliersCount = await _unitOfWork.SupplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
+        var existedSuppliersCount = await _supplierRepository.GetQuery().CountAsync(e => command.SuppliersIds != null && command.SuppliersIds.Contains(e.Id));
         if (command.SuppliersIds != null && command.SuppliersIds.Any() && command.SuppliersIds.Count > existedSuppliersCount)
         {
             validationResult.isValid = false;
             validationResult.errors.Add("ONE_OF_SUPPLIERS_NOT_FOUND");
         }
 
-        var existedManufacturerCompany = await _unitOfWork.ItemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
+        var existedManufacturerCompany = await _itemManufacturerCompanyRepository.GetQuery().CountAsync(e => command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Contains(e.Id));
         if (command.ManufacturerCompaniesIds != null && command.ManufacturerCompaniesIds.Any() && command.ManufacturerCompaniesIds.Count > existedManufacturerCompany)
         {
             validationResult.isValid = false;
@@ -780,8 +808,8 @@ public class ItemService :
                     continue; // Skip if already exists
 
                 // Create SubDomain name: ItemName + ColorCode + SizeCode
-                var color = await _unitOfWork.ColorRepository.Get(combination.ColorId);
-                var size = await _unitOfWork.SizeRepository.Get(combination.SizeId);
+                var color = await _colorRepository.Get(combination.ColorId);
+                var size = await _sizeRepository.Get(combination.SizeId);
                 
                 var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
                 var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";
@@ -891,8 +919,8 @@ public class ItemService :
                 // Sync properties from domain to subdomain
                 if (subDomain.ApplyDomainChanges)
                 {
-                    var color = await _unitOfWork.ColorRepository.Get(subDomain.ColorId);
-                    var size = await _unitOfWork.SizeRepository.Get(subDomain.SizeId);
+                    var color = await _colorRepository.Get(subDomain.ColorId);
+                    var size = await _sizeRepository.Get(subDomain.SizeId);
                 
                     var subDomainName = $"{domainItem.Name} - {color?.Code} - {size?.Code}";
                     var subDomainNameSecondLanguage = $"{domainItem.NameSecondLanguage} - {color?.Code} - {size?.Code}";

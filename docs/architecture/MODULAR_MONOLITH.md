@@ -1029,13 +1029,55 @@ Migrate aggregates in dependency order. **~1–2 pd per simple aggregate; 3–5 
 | 3E.6 | Full regression test suite | L | Dev A+B | All green |
 | 3E.7 | Update README, solution diagram | S | Tech lead | Docs current |
 
+**Week 23 (complete):** Audit complete; God `IUnitOfWork` slimmed to transaction coordinator (0 repository properties).
+
+**Week 24 (complete):** Horizontal `ERP.Domain`, `ERP.Application`, `ERP.Infrastracture` removed from solution. Persistence kernel extracted; domain split into module projects.
+
+##### Week 23 — horizontal layer audit (post-3D)
+
+| Project | `.cs` files | Still contains (summary) |
+|---------|-------------|--------------------------|
+| `ERP.Domain` | 164 | All Account + Inventory entities, DTOs, base commands, `SD.cs`, lookups |
+| `ERP.Application` | 41 | `IApplicationDbContext`, `ModuleModelConfigurationRegistry`, base service/repo ports, `IUnitOfWork` (transaction-only), inventory repo interfaces, `IFinancialPeriodUsageQueries` |
+| `ERP.Infrastracture` | 25 | `ApplicationDbContext`, slim `UnitOfWork`, base services (`BaseService`, `BaseTreeSettingService`, …), `SubLeadgerService`, `BaseQueryService`, `AttachmentRepository`, `FinancialPeriodUsageQueries`, seed utilities, base DbConfig classes |
+
+##### Week 23 — `IUnitOfWork` consumer map (after slimming)
+
+| Consumer | UoW usage |
+|----------|-----------|
+| `ItemService` | Transactions only (`Begin`/`Commit`/`Rollback`); all repos injected |
+| `ProductService` | Transactions only; all repos injected |
+| `VariantService` | Transactions only; all repos injected |
+| `InventoryTransactionService` | Transactions only; `IInventoryTransactionRepository` injected |
+| `InventoryTransferService` | Transactions only; `IStockBalanceRepository` injected |
+| `StockBalanceService` | No UoW (repos injected) |
+| `AttributeDefinitionService` | Transactions only |
+| `AttributeValueService` | `SaveChanges()` only |
+| `EntryService` | Transactions, `Set<T>()`, `SaveChanges()`; `IAttachmentRepository` injected |
+| `FinancialPeriodService` | `IInventoryTransactionRepository` injected (cross-module date check) |
+| `BranchService` | Transactions; `IAttachmentRepository` injected |
+| `CostCenterService`, `FixedAssetService`, `TaxService` | Transactions only |
+| `SubLeadgerService` + sub-ledger services | Transactions only (repos injected since 3C) |
+
+**Week 23 — 3E.5 deliverable:** `IUnitOfWork` reduced from 43 repository properties to **0** — retains `Set<T>()`, `BeginTransactionAsync`, `CommitAsync`, `RollbackAsync`, `SaveChanges()` only. Repository implementations remain registered in module DI (`InventoryModuleExtensions`, `AccountingModuleExtensions`); horizontal `InfrasctructureExtensions` registers `IAttachmentRepository` and generic `IBaseRepository<>` only.
+
+##### Week 24 — horizontal layer retirement
+
+| Removed from solution | Replacement |
+|-----------------------|-------------|
+| `ERP.Domain` | `Accounting.Domain` (account entities/DTOs/commands/output) + `Inventory.Domain` (inventory entities/DTOs/lookups) + `ERP.BuildingBlocks.Application` (base commands/DTOs/validators) |
+| `ERP.Application` | `ERP.BuildingBlocks.Application` (base repo/service ports, validators) + `ERP.BuildingBlocks.Persistence` (`IApplicationDbContext`, `ModuleModelConfigurationRegistry`, `IUnitOfWork`) + module Application projects (inventory/account repo ports) |
+| `ERP.Infrastracture` | `ERP.Persistence` (renamed; `ApplicationDbContext`, `UnitOfWork`, base repos/services, `SubLeadgerService`, seed utilities) |
+
+Namespaces intentionally preserved (`ERP.Domain.*`, `ERP.Application.*`) in moved files to limit churn — physical projects now match module boundaries.
+
 **Phase 3 exit criteria (M3):**
 
-- [ ] No horizontal `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` projects
-- [ ] Every controller backed by a module
-- [ ] God `IUnitOfWork` removed or empty
-- [ ] All arch tests green
-- [ ] Full API smoke suite passes
+- [x] No horizontal `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` projects
+- [x] Every controller backed by a module
+- [x] God `IUnitOfWork` removed or empty *(Week 23: transaction coordinator only)*
+- [x] All arch tests green
+- [x] Full API smoke suite passes
 
 ---
 
@@ -1301,7 +1343,19 @@ Inventory module scaffolded (`Inventory.Application`, `Inventory.Infrastructure`
 | Week 20 | InventoryTransactions — commands, validators, 6 handlers, `InventoryTransactionService`, import/export facades, `InventoryTransactionRepository`, `InventoryTransaction*DbConfig`; accounting via `Accounting.Contracts` only |
 | Week 21 | InventoryTransfers — commands, 2 handlers, `InventoryTransferService`, `InventoryTransferRepository`, `InventoryTransfer*DbConfig`; approve/reject flows; accounting via `Accounting.Contracts` only |
 | Week 22 | Legacy Items — commands, validators, 2 handlers, `ItemService`, `ItemRepository`, 7 Item DbConfigs, junction `IBaseRepository<>` registrations; `IItemRepository` stays in `ERP.Application` |
-| God `IUnitOfWork` | Item/transaction/transfer/stock repos remain on UoW |
+| God `IUnitOfWork` | Item/transaction/transfer/stock repos remain on UoW *(slimmed Week 23 — see Wave 3E)* |
+
+### Phase 3 Wave 3E — **COMPLETE** (Weeks 23–24)
+
+God `IUnitOfWork` slimmed to transaction coordinator; horizontal projects removed from solution.
+
+| Done | Notes |
+|------|-------|
+| Week 23 — 3E.5 | Removed all 43 repository properties from `IUnitOfWork`; consumers inject `I*Repository` directly |
+| Week 24 — 3E.1–3E.4 | `ERP.Domain` / `ERP.Application` / `ERP.Infrastracture` deleted; `ERP.Persistence` + `ERP.BuildingBlocks.Persistence` + `Inventory.Domain` added |
+| Domain split | Account cluster → `Accounting.Domain`; inventory cluster → `Inventory.Domain` (namespaces preserved) |
+| Persistence kernel | `ApplicationDbContext`, `UnitOfWork`, base infra → `ERP.Persistence`; abstractions → `ERP.BuildingBlocks.Persistence` |
+| Verification | Build + 62 tests green; EF DbContext info OK |
 
 ### Phase 3 Wave 3A — **COMPLETE**
 

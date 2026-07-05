@@ -10,7 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\Accounting.Domain\Accounting.Domain.csproj" />
-    <ProjectReference Include="..\..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\..\ERP.Persistence\ERP.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

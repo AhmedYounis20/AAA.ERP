@@ -18,7 +18,7 @@ public class ApiControllerDependencyTests
             .And()
             .DoNotHaveName("DbworkController")
             .Should()
-            .NotHaveDependencyOn("ERP.Infrastracture")
+            .NotHaveDependencyOn("ERP.Persistence")
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue(FormatViolationMessage(result));

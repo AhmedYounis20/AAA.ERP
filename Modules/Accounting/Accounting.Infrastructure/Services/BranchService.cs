@@ -2,6 +2,8 @@ using Accounting.Application.Commands.Branches;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Domain.Account.Utility;
+using ERP.Application.Repositories;
+using ERP.Application.Repositories.Account;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastracture.Services.Account.SubLeadgers.SubLeadgerBaseService;
@@ -15,13 +17,19 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBranchRepository _repository;
+    private readonly IAttachmentRepository _attachmentRepository;
 
-    public BranchService(IUnitOfWork unitOfWork, IBranchRepository repository, IHttpContextAccessor accessor,
-        IChartOfAccountRepository chartOfAccountRepository)
+    public BranchService(
+        IUnitOfWork unitOfWork,
+        IBranchRepository repository,
+        IHttpContextAccessor accessor,
+        IChartOfAccountRepository chartOfAccountRepository,
+        IAttachmentRepository attachmentRepository)
         : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.BranchChartOfAccountId, SubLeadgerType.Branch)
     {
         _unitOfWork = unitOfWork;
         _repository = repository;
+        _attachmentRepository = attachmentRepository;
     }
 
     public override async Task<ApiResponse<Branch>> Create(BranchCreateCommand command, bool isValidate = true)
@@ -62,7 +70,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                         FileContentType = command.Logo.ContentType,
                         FileName = command.Logo.FileName
                     };
-                    attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
+                    attachment = await _attachmentRepository.Add(attachment);
                     entity.AttachmentId = attachment.Id;
                 }
             }
@@ -134,7 +142,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
 
             if ((command.Logo == null || command.Logo.Length <= 0) && entity.AttachmentId.HasValue)
             {
-                await _unitOfWork.AttachmentRepository.Delete(entity.AttachmentId.Value);
+                await _attachmentRepository.Delete(entity.AttachmentId.Value);
                 entity.AttachmentId = null;
             }
             else if (!entity.AttachmentId.HasValue && command.Logo != null && command.Logo.Length > 0)
@@ -145,16 +153,16 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                     FileContentType = command.Logo.ContentType,
                     FileName = command.Logo.FileName
                 };
-                attachment = await _unitOfWork.AttachmentRepository.Add(attachment);
+                attachment = await _attachmentRepository.Add(attachment);
                 entity.AttachmentId = attachment.Id;
             }
             else if (entity.AttachmentId.HasValue && command.Logo != null && command.Logo.Length > 0)
             {
-                Attachment attachment = await _unitOfWork.AttachmentRepository.Get(entity.AttachmentId.Value);
+                Attachment attachment = await _attachmentRepository.Get(entity.AttachmentId.Value);
                 attachment.FileData = command.Logo.ToArray();
                 attachment.FileName = command.Logo.FileName;
                 attachment.FileContentType = command.Logo.ContentType;
-                attachment = await _unitOfWork.AttachmentRepository.Update(attachment);
+                attachment = await _attachmentRepository.Update(attachment);
             }
 
             entity = await _repository.Update(entity);
@@ -215,7 +223,7 @@ public class BranchService : SubLeadgerService<Branch, BranchCreateCommand, Bran
                 if (entity.ChartOfAccountId.HasValue)
                     await _chartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
                 if (entity.AttachmentId.HasValue)
-                    await _unitOfWork.AttachmentRepository.Delete(entity.AttachmentId.Value);
+                    await _attachmentRepository.Delete(entity.AttachmentId.Value);
             }
 
             await _unitOfWork.CommitAsync();

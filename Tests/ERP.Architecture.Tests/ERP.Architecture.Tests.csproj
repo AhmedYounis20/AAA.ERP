@@ -23,13 +23,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ERP.API\ERP.API.csproj" />
-    <ProjectReference Include="..\..\ERP.Application\ERP.Application.csproj" />
-    <ProjectReference Include="..\..\ERP.Domain\ERP.Domain.csproj" />
-    <ProjectReference Include="..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\ERP.Persistence\ERP.Persistence.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Domain\Inventory.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Inventory\Inventory.Infrastructure\Inventory.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />

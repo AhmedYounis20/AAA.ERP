@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Inventory.Application\Inventory.Application.csproj" />
-    <ProjectReference Include="..\..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\..\..\ERP.Persistence\ERP.Persistence.csproj" />
     <ProjectReference Include="..\..\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
+    <ProjectReference Include="..\..\Accounting\Accounting.Application\Accounting.Application.csproj" />
   </ItemGroup>
 
 </Project>

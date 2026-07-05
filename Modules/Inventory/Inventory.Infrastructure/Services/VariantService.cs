@@ -1,4 +1,6 @@
 using ERP.Application.Repositories;
+using ERP.Application.Repositories.Account;
+using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Infrastracture.Services.BaseServices;
@@ -27,16 +29,62 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
     private readonly IProductAttributeDefinitionRepository _productAttributeDefinitionRepository;
     private readonly IVariantAttributeValueRepository _variantAttributeValueRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IBaseRepository<InventoryThreshold> _inventoryThresholdRepository;
+    private readonly IBaseRepository<ExpiryLevel> _expiryLevelRepository;
+    private readonly ISupplierRepository _supplierRepository;
+    private readonly IBaseRepository<VariantSupplier> _variantSupplierRepository;
+    private readonly IBaseRepository<VariantSalesTax> _variantSalesTaxRepository;
+    private readonly IBaseRepository<VariantPurchaseTax> _variantPurchaseTaxRepository;
+    private readonly IBaseRepository<VariantCostCenter> _variantCostCenterRepository;
+    private readonly IBaseRepository<VariantManufacturerCompany> _variantManufacturerCompanyRepository;
+    private readonly IBaseRepository<VariantSellingPriceDiscount> _variantSellingPriceDiscountRepository;
+    private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
+    private readonly IBaseRepository<VariantPackingUnitSellingPrice> _variantPackingUnitSellingPriceRepository;
+    private readonly IBaseRepository<VariantAttachment> _variantAttachmentRepository;
+    private readonly IAttachmentRepository _attachmentRepository;
 
-    public VariantService(IUnitOfWork unitOfWork) : base(unitOfWork.VariantRepository)
+    public VariantService(
+        IVariantRepository repository,
+        IBaseRepository<VariantCode> codeRepository,
+        IAttributeValueRepository attributeValueRepository,
+        IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
+        IVariantAttributeValueRepository variantAttributeValueRepository,
+        IProductRepository productRepository,
+        IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
+        IBaseRepository<ExpiryLevel> expiryLevelRepository,
+        ISupplierRepository supplierRepository,
+        IBaseRepository<VariantSupplier> variantSupplierRepository,
+        IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
+        IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
+        IBaseRepository<VariantCostCenter> variantCostCenterRepository,
+        IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository,
+        IBaseRepository<VariantSellingPriceDiscount> variantSellingPriceDiscountRepository,
+        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
+        IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
+        IBaseRepository<VariantAttachment> variantAttachmentRepository,
+        IAttachmentRepository attachmentRepository,
+        IUnitOfWork unitOfWork) : base(repository)
     {
-        _repository = unitOfWork.VariantRepository;
+        _repository = repository;
+        _codeRepository = codeRepository;
+        _attributeValueRepository = attributeValueRepository;
+        _productAttributeDefinitionRepository = productAttributeDefinitionRepository;
+        _variantAttributeValueRepository = variantAttributeValueRepository;
+        _productRepository = productRepository;
+        _inventoryThresholdRepository = inventoryThresholdRepository;
+        _expiryLevelRepository = expiryLevelRepository;
+        _supplierRepository = supplierRepository;
+        _variantSupplierRepository = variantSupplierRepository;
+        _variantSalesTaxRepository = variantSalesTaxRepository;
+        _variantPurchaseTaxRepository = variantPurchaseTaxRepository;
+        _variantCostCenterRepository = variantCostCenterRepository;
+        _variantManufacturerCompanyRepository = variantManufacturerCompanyRepository;
+        _variantSellingPriceDiscountRepository = variantSellingPriceDiscountRepository;
+        _variantPackingUnitRepository = variantPackingUnitRepository;
+        _variantPackingUnitSellingPriceRepository = variantPackingUnitSellingPriceRepository;
+        _variantAttachmentRepository = variantAttachmentRepository;
+        _attachmentRepository = attachmentRepository;
         _unitOfWork = unitOfWork;
-        _codeRepository = _unitOfWork.VariantCodeRepository;
-        _attributeValueRepository = _unitOfWork.AttributeValueRepository;
-        _productAttributeDefinitionRepository = _unitOfWork.ProductAttributeDefinitionRepository;
-        _variantAttributeValueRepository = _unitOfWork.VariantAttributeValueRepository;
-        _productRepository = _unitOfWork.ProductRepository;
     }
     public virtual async Task<ApiResponse<PaginatedResult<VariantDto>>> ReadAllDtosPaginated(
         SettingFilterDto filter,
@@ -306,8 +354,8 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
     public override async Task<ApiResponse<Variant>> Delete(Guid id, bool isValidate = true)
     {
-        await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t => t.VariantId == id);
-        await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t => t.VariantId == id);
+        await _inventoryThresholdRepository.ExecuteDeleteAsync(t => t.VariantId == id);
+        await _expiryLevelRepository.ExecuteDeleteAsync(t => t.VariantId == id);
         return await base.Delete(id, isValidate);
     }
 
@@ -380,7 +428,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Verify all suppliers exist
         if (command.SuppliersIds?.Any() == true)
         {
-            var existedSuppliersCount = await _unitOfWork.SupplierRepository.GetQuery()
+            var existedSuppliersCount = await _supplierRepository.GetQuery()
                 .CountAsync(e => command.SuppliersIds.Contains(e.Id));
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
@@ -451,7 +499,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Verify all suppliers exist
         if (command.SuppliersIds?.Any() == true)
         {
-            var existedSuppliersCount = await _unitOfWork.SupplierRepository.GetQuery()
+            var existedSuppliersCount = await _supplierRepository.GetQuery()
                 .CountAsync(e => command.SuppliersIds.Contains(e.Id));
             if (command.SuppliersIds.Count > existedSuppliersCount)
             {
@@ -500,7 +548,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             CreatedAt = now,
             ModifiedAt = now
         }).ToList();
-        await _unitOfWork.InventoryThresholdRepository.Add(entities);
+        await _inventoryThresholdRepository.Add(entities);
     }
 
     private async Task CreateVariantExpiryLevels(Guid variantId, List<ExpiryLevelDto> expiryLevels)
@@ -518,12 +566,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             CreatedAt = now,
             ModifiedAt = now
         }).ToList();
-        await _unitOfWork.ExpiryLevelRepository.Add(entities);
+        await _expiryLevelRepository.Add(entities);
     }
 
     private async Task UpdateVariantInventoryThresholds(Guid variantId, List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId)
     {
-        var repository = _unitOfWork.InventoryThresholdRepository;
+        var repository = _inventoryThresholdRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
@@ -551,7 +599,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
     private async Task UpdateVariantExpiryLevels(Guid variantId, List<ExpiryLevelDto>? expiryLevels)
     {
-        var repository = _unitOfWork.ExpiryLevelRepository;
+        var repository = _expiryLevelRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
@@ -985,14 +1033,14 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (variantSuppliers.Any())
         {
-            await _unitOfWork.VariantSupplierRepository.Add(variantSuppliers);
+            await _variantSupplierRepository.Add(variantSuppliers);
         }
     }
 
     private async Task UpdateVariantSuppliers(VariantUpdateCommand command, Guid variantId)
     {
         // Get existing supplier IDs to determine which ones to add
-        var existingSupplierIds = await _unitOfWork.VariantSupplierRepository.GetQuery()
+        var existingSupplierIds = await _variantSupplierRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .Select(e => e.SupplierId)
             .ToListAsync();
@@ -1000,7 +1048,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Remove suppliers not in the new list using native ExecuteDeleteAsync
         if (existingSupplierIds.Any())
         {
-            await _unitOfWork.VariantSupplierRepository.ExecuteDeleteAsync(
+            await _variantSupplierRepository.ExecuteDeleteAsync(
                 vs => vs.VariantId == variantId && !command.SuppliersIds.Contains(vs.SupplierId));
         }
         
@@ -1017,7 +1065,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (suppliersToAdd.Any())
         {
-            await _unitOfWork.VariantSupplierRepository.Add(suppliersToAdd);
+            await _variantSupplierRepository.Add(suppliersToAdd);
         }
     }
 
@@ -1032,7 +1080,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         }).ToList();
 
         if (variantSalesTaxes.Any())
-            await _unitOfWork.VariantSalesTaxRepository.Add(variantSalesTaxes);
+            await _variantSalesTaxRepository.Add(variantSalesTaxes);
     }
 
     private async Task CreateVariantPurchaseTaxes(VariantCreateCommand command, Guid variantId)
@@ -1046,7 +1094,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         }).ToList();
 
         if (variantPurchaseTaxes.Any())
-            await _unitOfWork.VariantPurchaseTaxRepository.Add(variantPurchaseTaxes);
+            await _variantPurchaseTaxRepository.Add(variantPurchaseTaxes);
     }
 
     private async Task CreateVariantCostCenters(VariantCreateCommand command, Guid variantId)
@@ -1062,13 +1110,13 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
         if (variantCostCenters.Any())
         {
-            await _unitOfWork.VariantCostCenterRepository.Add(variantCostCenters);
+            await _variantCostCenterRepository.Add(variantCostCenters);
         }
     }
 
     private async Task UpdateVariantCostCenters(VariantUpdateCommand command, Guid variantId)
     {
-        var existingCostCenters = await _unitOfWork.VariantCostCenterRepository.GetQuery()
+        var existingCostCenters = await _variantCostCenterRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
 
@@ -1105,30 +1153,30 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
         if (costCentersToRemove.Any())
         {
-            await _unitOfWork.VariantCostCenterRepository.Delete(costCentersToRemove);
+            await _variantCostCenterRepository.Delete(costCentersToRemove);
         }
 
         if (costCentersToUpdate.Any())
         {
-            await _unitOfWork.VariantCostCenterRepository.Update(costCentersToUpdate);
+            await _variantCostCenterRepository.Update(costCentersToUpdate);
         }
 
         if (costCentersToAdd.Any())
         {
-            await _unitOfWork.VariantCostCenterRepository.Add(costCentersToAdd);
+            await _variantCostCenterRepository.Add(costCentersToAdd);
         }
     }
 
     private async Task UpdateVariantSalesTaxes(VariantUpdateCommand command, Guid variantId)
     {
-        var existingTaxIds = await _unitOfWork.VariantSalesTaxRepository.GetQuery()
+        var existingTaxIds = await _variantSalesTaxRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .Select(e => e.TaxId)
             .ToListAsync();
 
         if (existingTaxIds.Any())
         {
-            await _unitOfWork.VariantSalesTaxRepository.ExecuteDeleteAsync(
+            await _variantSalesTaxRepository.ExecuteDeleteAsync(
                 vst => vst.VariantId == variantId && !command.SalesTaxIds.Contains(vst.TaxId));
         }
 
@@ -1143,19 +1191,19 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             }).ToList();
 
         if (taxesToAdd.Any())
-            await _unitOfWork.VariantSalesTaxRepository.Add(taxesToAdd);
+            await _variantSalesTaxRepository.Add(taxesToAdd);
     }
 
     private async Task UpdateVariantPurchaseTaxes(VariantUpdateCommand command, Guid variantId)
     {
-        var existingTaxIds = await _unitOfWork.VariantPurchaseTaxRepository.GetQuery()
+        var existingTaxIds = await _variantPurchaseTaxRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .Select(e => e.TaxId)
             .ToListAsync();
 
         if (existingTaxIds.Any())
         {
-            await _unitOfWork.VariantPurchaseTaxRepository.ExecuteDeleteAsync(
+            await _variantPurchaseTaxRepository.ExecuteDeleteAsync(
                 vpt => vpt.VariantId == variantId && !command.PurchaseTaxIds.Contains(vpt.TaxId));
         }
 
@@ -1170,7 +1218,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             }).ToList();
 
         if (taxesToAdd.Any())
-            await _unitOfWork.VariantPurchaseTaxRepository.Add(taxesToAdd);
+            await _variantPurchaseTaxRepository.Add(taxesToAdd);
     }
 
     private async Task CreateVariantManufacturerCompanies(VariantCreateCommand command, Guid variantId)
@@ -1189,14 +1237,14 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (variantManufacturerCompanies.Any())
         {
-            await _unitOfWork.VariantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
+            await _variantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
         }
     }
 
     private async Task UpdateVariantManufacturerCompanies(VariantUpdateCommand command, Guid variantId)
     {
         // Get existing company IDs to determine which ones to add
-        var existingCompanyIds = await _unitOfWork.VariantManufacturerCompanyRepository.GetQuery()
+        var existingCompanyIds = await _variantManufacturerCompanyRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .Select(e => e.ManufacturerCompanyId)
             .ToListAsync();
@@ -1204,7 +1252,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Remove companies not in the new list using native ExecuteDeleteAsync
         if (existingCompanyIds.Any())
         {
-            await _unitOfWork.VariantManufacturerCompanyRepository.ExecuteDeleteAsync(
+            await _variantManufacturerCompanyRepository.ExecuteDeleteAsync(
                 vmc => vmc.VariantId == variantId && !command.ManufacturerCompaniesIds.Contains(vmc.ManufacturerCompanyId));
         }
         
@@ -1221,7 +1269,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (companiesToAdd.Any())
         {
-            await _unitOfWork.VariantManufacturerCompanyRepository.Add(companiesToAdd);
+            await _variantManufacturerCompanyRepository.Add(companiesToAdd);
         }
     }
 
@@ -1239,13 +1287,13 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (discounts.Any())
         {
-            await _unitOfWork.VariantSellingPriceDiscountRepository.Add(discounts);
+            await _variantSellingPriceDiscountRepository.Add(discounts);
         }
     }
 
     private async Task UpdateVariantSellingPriceDiscounts(VariantUpdateCommand command, Guid variantId)
     {
-        var existingDiscounts = await _unitOfWork.VariantSellingPriceDiscountRepository.GetQuery()
+        var existingDiscounts = await _variantSellingPriceDiscountRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
         
@@ -1282,17 +1330,17 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (discountsToRemove.Any())
         {
-            await _unitOfWork.VariantSellingPriceDiscountRepository.Delete(discountsToRemove);
+            await _variantSellingPriceDiscountRepository.Delete(discountsToRemove);
         }
         
         if (discountsToUpdate.Any())
         {
-            await _unitOfWork.VariantSellingPriceDiscountRepository.Update(discountsToUpdate);
+            await _variantSellingPriceDiscountRepository.Update(discountsToUpdate);
         }
         
         if (discountsToAdd.Any())
         {
-            await _unitOfWork.VariantSellingPriceDiscountRepository.Add(discountsToAdd);
+            await _variantSellingPriceDiscountRepository.Add(discountsToAdd);
         }
     }
 
@@ -1327,13 +1375,13 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         
         if (packingUnits.Any())
         {
-            await _unitOfWork.VariantPackingUnitRepository.Add(packingUnits);
+            await _variantPackingUnitRepository.Add(packingUnits);
         }
     }
 
     private async Task UpdateVariantPackingUnits(VariantUpdateCommand command, Guid variantId)
     {
-        var variantPackingUnitRepository = _unitOfWork.VariantPackingUnitRepository;
+        var variantPackingUnitRepository = _variantPackingUnitRepository;
         
         // Get existing packing units
         var existingPackingUnits = await variantPackingUnitRepository.GetQuery()
@@ -1422,7 +1470,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
     private async Task UpdateVariantPackingUnitSellingPrices(VariantPackingUnitDto packingUnitDto, VariantPackingUnit existingPackingUnit)
     {
-        var existingPrices = await _unitOfWork.VariantPackingUnitSellingPriceRepository.GetQuery()
+        var existingPrices = await _variantPackingUnitSellingPriceRepository.GetQuery()
             .Where(e => e.VariantPackingUnitId == existingPackingUnit.Id)
             .ToListAsync();
 
@@ -1435,7 +1483,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
         // Remove prices that are no longer in the packing unit
         if (pricesToRemove.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Delete(pricesToRemove);
+            await _variantPackingUnitSellingPriceRepository.Delete(pricesToRemove);
         }
 
         foreach (var priceDto in packingUnitDto.SellingPrices)
@@ -1465,12 +1513,12 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
         if (pricesToAdd.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Add(pricesToAdd);
+            await _variantPackingUnitSellingPriceRepository.Add(pricesToAdd);
         }
 
         if (pricesToUpdate.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Update(pricesToUpdate);
+            await _variantPackingUnitSellingPriceRepository.Update(pricesToUpdate);
         }
     }
 
@@ -1517,20 +1565,20 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
         if (variantAttachmentsToAdd.Any())
         {
-            await _unitOfWork.VariantAttachmentRepository.BulkInsertAsync(variantAttachmentsToAdd);
+            await _variantAttachmentRepository.BulkInsertAsync(variantAttachmentsToAdd);
         }
     }
 
     private async Task UpdateVariantAttachmentsMethod(List<VariantAttachmentDto> variantAttachmentDtos, Guid variantId)
     {
         // Get attachment IDs first
-        var attachmentIds = await _unitOfWork.VariantAttachmentRepository.GetQuery()
+        var attachmentIds = await _variantAttachmentRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .Select(e => e.AttachmentId)
             .ToListAsync();
         
         // Delete VariantAttachment relationships first
-        await _unitOfWork.VariantAttachmentRepository.ExecuteDeleteAsync(va => va.VariantId == variantId);
+        await _variantAttachmentRepository.ExecuteDeleteAsync(va => va.VariantId == variantId);
         
         // Delete attachments using traditional load-and-delete (most compatible approach)
         if (attachmentIds.Any())
@@ -1538,10 +1586,10 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
             foreach (var attachmentId in attachmentIds)
             {
                 // Load the entity first, then delete it (avoids any EF Core ExecuteDeleteAsync issues)
-                var attachment = await _unitOfWork.AttachmentRepository.Get(attachmentId);
+                var attachment = await _attachmentRepository.Get(attachmentId);
                 if (attachment != null)
                 {
-                    await _unitOfWork.AttachmentRepository.Delete(attachment);
+                    await _attachmentRepository.Delete(attachment);
                 }
             }
         }
@@ -1553,7 +1601,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
     private async Task CreateVariantAttributes(Guid variantId, List<VariantAttributeValueDto> variantAttributes)
     {
-        var variantAttributeValueRepository = _unitOfWork.VariantAttributeValueRepository;
+        var variantAttributeValueRepository = _variantAttributeValueRepository;
         
         foreach (var attr in variantAttributes)
         {
@@ -1569,7 +1617,7 @@ public class VariantService : BaseService<Variant, VariantCreateCommand, Variant
 
     private async Task UpdateVariantAttributes(Guid variantId, List<VariantAttributeValueDto> variantAttributes)
     {
-        var variantAttributeValueRepository = _unitOfWork.VariantAttributeValueRepository;
+        var variantAttributeValueRepository = _variantAttributeValueRepository;
         
         // Remove existing attributes using native EF Core ExecuteDeleteAsync
         await variantAttributeValueRepository.ExecuteDeleteAsync(va => va.VariantId == variantId);

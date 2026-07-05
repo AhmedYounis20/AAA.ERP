@@ -15,7 +15,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\ERP.Persistence\ERP.Persistence.csproj" />
     <ProjectReference Include="..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Inventory\Inventory.Infrastructure\Inventory.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Identity\Identity.Application\Identity.Application.csproj" />

@@ -22,7 +22,7 @@ public class MediatRRegistrationTests
             .Count(type => type.GetInterfaces().Any(IsRequestHandlerInterface));
 
         handlerCount.Should().BeGreaterThanOrEqualTo(MinimumHorizontalHandlerCount,
-            $"expected at least {MinimumHorizontalHandlerCount} IRequestHandler implementations in ERP.Infrastracture");
+            $"expected at least {MinimumHorizontalHandlerCount} IRequestHandler implementations in ERP.Persistence");
     }
 
     [Fact]

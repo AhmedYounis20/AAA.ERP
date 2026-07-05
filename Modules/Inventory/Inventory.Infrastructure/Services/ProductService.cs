@@ -1,4 +1,5 @@
 using ERP.Application.Repositories;
+using ERP.Application.Repositories.Account;
 using ERP.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Infrastracture.Services.BaseServices;
@@ -21,16 +22,87 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 {
     private readonly IProductRepository _repository;
     private readonly IBaseRepository<ProductCode> _codeRepository;
+    private readonly IVariantRepository _variantRepository;
+    private readonly IVariantAttributeValueRepository _variantAttributeValueRepository;
+    private readonly IBaseRepository<InventoryThreshold> _inventoryThresholdRepository;
+    private readonly IBaseRepository<ExpiryLevel> _expiryLevelRepository;
+    private readonly IBaseRepository<ProductAttachment> _productAttachmentRepository;
+    private readonly IAttachmentRepository _attachmentRepository;
+    private readonly IProductAttributeDefinitionRepository _productAttributeDefinitionRepository;
+    private readonly IBaseRepository<ProductSellingPriceDiscount> _productSellingPriceDiscountRepository;
+    private readonly IBaseRepository<ProductPackingUnit> _productPackingUnitRepository;
+    private readonly IBaseRepository<ProductPackingUnitSellingPrice> _productPackingUnitSellingPriceRepository;
+    private readonly IBaseRepository<ProductCostCenter> _productCostCenterRepository;
+    private readonly IBaseRepository<ProductManufacturerCompany> _productManufacturerCompanyRepository;
+    private readonly IBaseRepository<ProductSupplier> _productSupplierRepository;
+    private readonly IBaseRepository<ProductSalesTax> _productSalesTaxRepository;
+    private readonly IBaseRepository<ProductPurchaseTax> _productPurchaseTaxRepository;
+    private readonly IBaseRepository<VariantSupplier> _variantSupplierRepository;
+    private readonly IBaseRepository<VariantSalesTax> _variantSalesTaxRepository;
+    private readonly IBaseRepository<VariantPurchaseTax> _variantPurchaseTaxRepository;
+    private readonly IBaseRepository<VariantManufacturerCompany> _variantManufacturerCompanyRepository;
+    private readonly IBaseRepository<VariantCostCenter> _variantCostCenterRepository;
+    private readonly IBaseRepository<VariantSellingPriceDiscount> _variantSellingPriceDiscountRepository;
+    private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
+    private readonly IBaseRepository<VariantPackingUnitSellingPrice> _variantPackingUnitSellingPriceRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVariantService _variantService;
 
     public ProductService(
+        IProductRepository repository,
+        IBaseRepository<ProductCode> codeRepository,
+        IVariantRepository variantRepository,
+        IVariantAttributeValueRepository variantAttributeValueRepository,
+        IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
+        IBaseRepository<ExpiryLevel> expiryLevelRepository,
+        IBaseRepository<ProductAttachment> productAttachmentRepository,
+        IAttachmentRepository attachmentRepository,
+        IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
+        IBaseRepository<ProductSellingPriceDiscount> productSellingPriceDiscountRepository,
+        IBaseRepository<ProductPackingUnit> productPackingUnitRepository,
+        IBaseRepository<ProductPackingUnitSellingPrice> productPackingUnitSellingPriceRepository,
+        IBaseRepository<ProductCostCenter> productCostCenterRepository,
+        IBaseRepository<ProductManufacturerCompany> productManufacturerCompanyRepository,
+        IBaseRepository<ProductSupplier> productSupplierRepository,
+        IBaseRepository<ProductSalesTax> productSalesTaxRepository,
+        IBaseRepository<ProductPurchaseTax> productPurchaseTaxRepository,
+        IBaseRepository<VariantSupplier> variantSupplierRepository,
+        IBaseRepository<VariantSalesTax> variantSalesTaxRepository,
+        IBaseRepository<VariantPurchaseTax> variantPurchaseTaxRepository,
+        IBaseRepository<VariantManufacturerCompany> variantManufacturerCompanyRepository,
+        IBaseRepository<VariantCostCenter> variantCostCenterRepository,
+        IBaseRepository<VariantSellingPriceDiscount> variantSellingPriceDiscountRepository,
+        IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
+        IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IUnitOfWork unitOfWork,
-        IVariantService variantService) : base(unitOfWork.ProductRepository)
+        IVariantService variantService) : base(repository)
     {
-        _repository = unitOfWork.ProductRepository;
+        _repository = repository;
+        _codeRepository = codeRepository;
+        _variantRepository = variantRepository;
+        _variantAttributeValueRepository = variantAttributeValueRepository;
+        _inventoryThresholdRepository = inventoryThresholdRepository;
+        _expiryLevelRepository = expiryLevelRepository;
+        _productAttachmentRepository = productAttachmentRepository;
+        _attachmentRepository = attachmentRepository;
+        _productAttributeDefinitionRepository = productAttributeDefinitionRepository;
+        _productSellingPriceDiscountRepository = productSellingPriceDiscountRepository;
+        _productPackingUnitRepository = productPackingUnitRepository;
+        _productPackingUnitSellingPriceRepository = productPackingUnitSellingPriceRepository;
+        _productCostCenterRepository = productCostCenterRepository;
+        _productManufacturerCompanyRepository = productManufacturerCompanyRepository;
+        _productSupplierRepository = productSupplierRepository;
+        _productSalesTaxRepository = productSalesTaxRepository;
+        _productPurchaseTaxRepository = productPurchaseTaxRepository;
+        _variantSupplierRepository = variantSupplierRepository;
+        _variantSalesTaxRepository = variantSalesTaxRepository;
+        _variantPurchaseTaxRepository = variantPurchaseTaxRepository;
+        _variantManufacturerCompanyRepository = variantManufacturerCompanyRepository;
+        _variantCostCenterRepository = variantCostCenterRepository;
+        _variantSellingPriceDiscountRepository = variantSellingPriceDiscountRepository;
+        _variantPackingUnitRepository = variantPackingUnitRepository;
+        _variantPackingUnitSellingPriceRepository = variantPackingUnitSellingPriceRepository;
         _unitOfWork = unitOfWork;
-        _codeRepository = _unitOfWork.ProductCodeRepository;
         _variantService = variantService;
     }
 
@@ -479,27 +551,27 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t => t.ProductId == id);
-            await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t => t.ProductId == id);
-            var variantIds = await _unitOfWork.VariantRepository.GetQuery()
+            await _inventoryThresholdRepository.ExecuteDeleteAsync(t => t.ProductId == id);
+            await _expiryLevelRepository.ExecuteDeleteAsync(t => t.ProductId == id);
+            var variantIds = await _variantRepository.GetQuery()
                 .Where(v => v.ProductId == id)
                 .Select(v => v.Id)
                 .ToListAsync();
             if (variantIds.Count > 0)
             {
-                await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
+                await _inventoryThresholdRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIds.Contains(t.VariantId.Value));
-                await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t =>
+                await _expiryLevelRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIds.Contains(t.VariantId.Value));
             }
-            var attachmentsIds = await _unitOfWork.ProductAttachmentRepository.GetQuery().Where(e => e.ProductId == id)
+            var attachmentsIds = await _productAttachmentRepository.GetQuery().Where(e => e.ProductId == id)
                 .Select(e=>e.AttachmentId).ToListAsync();
             // Delete Product (cascades to ProductAttachments, Variants, etc.)
             await _repository.Delete(id);
 
             // Now safely delete orphaned Attachments (no constraint conflicts)
 
-            await _unitOfWork.AttachmentRepository.ExecuteDeleteAsync(e=> attachmentsIds.Contains(e.Id));
+            await _attachmentRepository.ExecuteDeleteAsync(e=> attachmentsIds.Contains(e.Id));
             
             await _unitOfWork.CommitAsync();
 
@@ -619,7 +691,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     
     private async Task CreateProductAttributes(Guid productId, List<ProductAttributeDefinitionDto> productAttributeDefinitions)
     {
-        var productAttributeDefinitionRepository = _unitOfWork.ProductAttributeDefinitionRepository;
+        var productAttributeDefinitionRepository = _productAttributeDefinitionRepository;
         
         foreach (var attr in productAttributeDefinitions)
         {
@@ -638,7 +710,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductAttributes(Guid productId, List<ProductAttributeDefinitionDto> productAttributeDefinitions)
     {
-        var productAttributeDefinitionRepository = _unitOfWork.ProductAttributeDefinitionRepository;
+        var productAttributeDefinitionRepository = _productAttributeDefinitionRepository;
         
         // Remove existing attributes
         var existingAttributes = await productAttributeDefinitionRepository.GetQuery()
@@ -666,12 +738,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             ModifiedAt = DateTime.Now,
         }).ToList();
         
-        await _unitOfWork.ProductSellingPriceDiscountRepository.Add(discounts);
+        await _productSellingPriceDiscountRepository.Add(discounts);
     }
 
     private async Task UpdateProductPackingUnits(Guid productId, List<ProductPackingUnitDto>? productPackingUnits)
     {
-        var productPackingUnitRepository = _unitOfWork.ProductPackingUnitRepository;
+        var productPackingUnitRepository = _productPackingUnitRepository;
         
         // Get existing packing units
         var existingPackingUnits = await productPackingUnitRepository.GetQuery()
@@ -766,7 +838,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductPackingUnitSellingPrices(ProductPackingUnitDto packingUnitDto, ProductPackingUnit existingPackingUnit)
     {
-        var existingPrices = await _unitOfWork.ProductPackingUnitSellingPriceRepository.GetQuery()
+        var existingPrices = await _productPackingUnitSellingPriceRepository.GetQuery()
             .Where(e => e.ProductPackingUnitId == existingPackingUnit.Id)
             .ToListAsync();
 
@@ -779,7 +851,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         // Remove prices that are no longer in the command
         if (pricesToRemove.Any())
         {
-            await _unitOfWork.ProductPackingUnitSellingPriceRepository.Delete(pricesToRemove);
+            await _productPackingUnitSellingPriceRepository.Delete(pricesToRemove);
         }
 
         foreach (var priceDto in packingUnitDto.SellingPrices)
@@ -809,18 +881,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
         if (pricesToAdd.Any())
         {
-            await _unitOfWork.ProductPackingUnitSellingPriceRepository.Add(pricesToAdd);
+            await _productPackingUnitSellingPriceRepository.Add(pricesToAdd);
         }
 
         if (pricesToUpdate.Any())
         {
-            await _unitOfWork.ProductPackingUnitSellingPriceRepository.Update(pricesToUpdate);
+            await _productPackingUnitSellingPriceRepository.Update(pricesToUpdate);
         }
     }
 
     private async Task UpdateProductSellingPriceDiscounts(Guid productId, List<ProductSellingPriceDiscountDto> productSellingPriceDiscounts)
     {
-        var repository = _unitOfWork.ProductSellingPriceDiscountRepository;
+        var repository = _productSellingPriceDiscountRepository;
 
         // Load existing discounts for this product once
         var existingDiscounts = await repository.GetQuery()
@@ -894,7 +966,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductCostCenters(Guid productId, List<ProductCostCenterDto>? productCostCenters)
     {
-        var repository = _unitOfWork.ProductCostCenterRepository;
+        var repository = _productCostCenterRepository;
 
         var existingCostCenters = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
@@ -961,7 +1033,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductManufacturerCompanies(List<Guid> companiesIds, Guid productId)
     {
-        var repository = _unitOfWork.ProductManufacturerCompanyRepository;
+        var repository = _productManufacturerCompanyRepository;
         var existingCompanies = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -1017,7 +1089,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             .Distinct()
             .ToHashSet();
 
-        var oldEntities = await _unitOfWork.ProductCodeRepository
+        var oldEntities = await _codeRepository
             .GetQuery()
             .Where(e =>
                 e.ProductId == productId &&
@@ -1034,7 +1106,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             .ToList();
 
         if (removedEntities.Any())
-            await _unitOfWork.ProductCodeRepository.Delete(removedEntities);
+            await _codeRepository.Delete(removedEntities);
 
         // 2️⃣ Add newly added barcodes
         var addedCodes = newCodes
@@ -1050,12 +1122,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             .ToList();
 
         if (addedCodes.Any())
-            await _unitOfWork.ProductCodeRepository.Add(addedCodes);
+            await _codeRepository.Add(addedCodes);
     }
     
     private async Task UpdateProductSuppliers(List<Guid> suppliersIds, Guid productId)
     {
-        var repository = _unitOfWork.ProductSupplierRepository;
+        var repository = _productSupplierRepository;
         var existingSuppliers = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -1105,7 +1177,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductSalesTaxes(List<Guid> salesTaxIds, Guid productId)
     {
-        var repository = _unitOfWork.ProductSalesTaxRepository;
+        var repository = _productSalesTaxRepository;
         var existingTaxes = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -1140,7 +1212,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductPurchaseTaxes(List<Guid> purchaseTaxIds, Guid productId)
     {
-        var repository = _unitOfWork.ProductPurchaseTaxRepository;
+        var repository = _productPurchaseTaxRepository;
         var existingTaxes = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -1214,17 +1286,17 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         }
         
         if(productAttachments.Any())
-            await _unitOfWork.ProductAttachmentRepository.Add(productAttachments);
+            await _productAttachmentRepository.Add(productAttachments);
     }
 
     private async Task DeleteOldProductAttachments(Guid productId)
     {
-        var productAttachments = await _unitOfWork.ProductAttachmentRepository.GetQuery().Where(e => e.ProductId == productId).ToListAsync();
+        var productAttachments = await _productAttachmentRepository.GetQuery().Where(e => e.ProductId == productId).ToListAsync();
         var attachmentIds = productAttachments.Select(e => e.AttachmentId);
         if(productAttachments.Any())
-            await _unitOfWork.ProductAttachmentRepository.Delete(productAttachments);
+            await _productAttachmentRepository.Delete(productAttachments);
         if(attachmentIds?.Any() == true)
-            await _unitOfWork.AttachmentRepository.ExecuteDeleteAsync(e=> attachmentIds.Contains(e.Id));
+            await _attachmentRepository.ExecuteDeleteAsync(e=> attachmentIds.Contains(e.Id));
     }
     
     private async Task<ApiResponse<bool>> UpdateProductVariants(Product product, ProductUpdateCommand command)
@@ -1235,7 +1307,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             var effectiveVariantCombinations = product.ProductType == ProductType.Stock ? command.VariantCombinations : null;
 
             // Get all existing variants for this product
-            var existingVariants = await _unitOfWork.VariantRepository.GetByProductIdAsync(product.Id);
+            var existingVariants = await _variantRepository.GetByProductIdAsync(product.Id);
 
             // Get variant attribute values for all existing non-default variants in a single batched query
             var variantAttributeValuesMap = new Dictionary<Guid, Dictionary<Guid, Guid>>();
@@ -1246,7 +1318,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             if (nonDefaultVariantIds.Any())
             {
-                var allVariantAttributeValues = await _unitOfWork.VariantAttributeValueRepository
+                var allVariantAttributeValues = await _variantAttributeValueRepository
                     .GetQuery()
                     .Where(vav => nonDefaultVariantIds.Contains(vav.VariantId))
                     .ToListAsync();
@@ -1454,23 +1526,23 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
             if (variantsToDelete.Any())
             {
                 var variantIdsToDelete = variantsToDelete.Select(v => v.Id).ToList();
-                await _unitOfWork.InventoryThresholdRepository.ExecuteDeleteAsync(t =>
+                await _inventoryThresholdRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIdsToDelete.Contains(t.VariantId.Value));
-                await _unitOfWork.ExpiryLevelRepository.ExecuteDeleteAsync(t =>
+                await _expiryLevelRepository.ExecuteDeleteAsync(t =>
                     t.VariantId != null && variantIdsToDelete.Contains(t.VariantId.Value));
-                await _unitOfWork.VariantRepository.Delete(variantsToDelete);
+                await _variantRepository.Delete(variantsToDelete);
             }
 
             // Archive used variants
             if (variantsToArchive.Any())
             {
-                await _unitOfWork.VariantRepository.Update(variantsToArchive);
+                await _variantRepository.Update(variantsToArchive);
             }
 
             // Update variants (includes unarchiving and applying product changes)
             if (variantsToUpdate.Any())
             {
-                await _unitOfWork.VariantRepository.Update(variantsToUpdate);
+                await _variantRepository.Update(variantsToUpdate);
             }
 
             // Create new variants for combinations that don't exist
@@ -1590,13 +1662,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantSuppliers(List<Guid> suppliersIds, Guid variantId)
     {
-        var oldSuppliers = await _unitOfWork.VariantSupplierRepository.GetQuery()
+        var oldSuppliers = await _variantSupplierRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
         
         if (oldSuppliers.Any())
         {
-            await _unitOfWork.VariantSupplierRepository.Delete(oldSuppliers);
+            await _variantSupplierRepository.Delete(oldSuppliers);
         }
         
         var variantSuppliers = new List<VariantSupplier>();
@@ -1614,18 +1686,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         
         if (variantSuppliers.Any())
         {
-            await _unitOfWork.VariantSupplierRepository.Add(variantSuppliers);
+            await _variantSupplierRepository.Add(variantSuppliers);
         }
     }
 
     private async Task UpdateVariantSalesTaxes(List<Guid> salesTaxIds, Guid variantId)
     {
-        var oldTaxes = await _unitOfWork.VariantSalesTaxRepository.GetQuery()
+        var oldTaxes = await _variantSalesTaxRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
 
         if (oldTaxes.Any())
-            await _unitOfWork.VariantSalesTaxRepository.Delete(oldTaxes);
+            await _variantSalesTaxRepository.Delete(oldTaxes);
 
         if (salesTaxIds?.Any() == true)
         {
@@ -1636,18 +1708,18 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
             }).ToList();
-            await _unitOfWork.VariantSalesTaxRepository.Add(variantSalesTaxes);
+            await _variantSalesTaxRepository.Add(variantSalesTaxes);
         }
     }
 
     private async Task UpdateVariantPurchaseTaxes(List<Guid> purchaseTaxIds, Guid variantId)
     {
-        var oldTaxes = await _unitOfWork.VariantPurchaseTaxRepository.GetQuery()
+        var oldTaxes = await _variantPurchaseTaxRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
 
         if (oldTaxes.Any())
-            await _unitOfWork.VariantPurchaseTaxRepository.Delete(oldTaxes);
+            await _variantPurchaseTaxRepository.Delete(oldTaxes);
 
         if (purchaseTaxIds?.Any() == true)
         {
@@ -1658,19 +1730,19 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
             }).ToList();
-            await _unitOfWork.VariantPurchaseTaxRepository.Add(variantPurchaseTaxes);
+            await _variantPurchaseTaxRepository.Add(variantPurchaseTaxes);
         }
     }
 
     private async Task UpdateVariantManufacturerCompanies(List<Guid> companiesIds, Guid variantId)
     {
-        var oldCompanies = await _unitOfWork.VariantManufacturerCompanyRepository.GetQuery()
+        var oldCompanies = await _variantManufacturerCompanyRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
         
         if (oldCompanies.Any())
         {
-            await _unitOfWork.VariantManufacturerCompanyRepository.Delete(oldCompanies);
+            await _variantManufacturerCompanyRepository.Delete(oldCompanies);
         }
         
         var variantManufacturerCompanies = new List<VariantManufacturerCompany>();
@@ -1688,13 +1760,13 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         
         if (variantManufacturerCompanies.Any())
         {
-            await _unitOfWork.VariantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
+            await _variantManufacturerCompanyRepository.Add(variantManufacturerCompanies);
         }
     }
 
     private async Task UpdateVariantCostCenters(List<ProductCostCenterDto>? productCostCenters, Guid variantId)
     {
-        var repository = _unitOfWork.VariantCostCenterRepository;
+        var repository = _variantCostCenterRepository;
 
         var existingCostCenters = await repository.GetQuery()
             .Where(e => e.VariantId == variantId)
@@ -1761,7 +1833,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantSellingPriceDiscounts(List<ProductSellingPriceDiscountDto> productSellingPriceDiscounts, Guid variantId)
     {
-        var variantSellingPriceDiscountRepository = _unitOfWork.VariantSellingPriceDiscountRepository;
+        var variantSellingPriceDiscountRepository = _variantSellingPriceDiscountRepository;
         
         // Remove existing discounts
         var existingDiscounts = await variantSellingPriceDiscountRepository.GetQuery()
@@ -1792,7 +1864,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantPackingUnitsFromProduct(List<ProductPackingUnitDto>? productPackingUnits, Guid variantId)
     {
-        var variantPackingUnitRepository = _unitOfWork.VariantPackingUnitRepository;
+        var variantPackingUnitRepository = _variantPackingUnitRepository;
         
         // Get existing variant packing units
         var existingPackingUnits = await variantPackingUnitRepository.GetQuery()
@@ -1887,7 +1959,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantPackingUnitSellingPrices(ProductPackingUnitDto packingUnitDto, VariantPackingUnit existingPackingUnit)
     {
-        var existingPrices = await _unitOfWork.VariantPackingUnitSellingPriceRepository.GetQuery()
+        var existingPrices = await _variantPackingUnitSellingPriceRepository.GetQuery()
             .Where(e => e.VariantPackingUnitId == existingPackingUnit.Id)
             .ToListAsync();
 
@@ -1900,7 +1972,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         // Remove prices that are no longer in the product packing unit
         if (pricesToRemove.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Delete(pricesToRemove);
+            await _variantPackingUnitSellingPriceRepository.Delete(pricesToRemove);
         }
 
         foreach (var priceDto in packingUnitDto.SellingPrices)
@@ -1930,12 +2002,12 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
         if (pricesToAdd.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Add(pricesToAdd);
+            await _variantPackingUnitSellingPriceRepository.Add(pricesToAdd);
         }
 
         if (pricesToUpdate.Any())
         {
-            await _unitOfWork.VariantPackingUnitSellingPriceRepository.Update(pricesToUpdate);
+            await _variantPackingUnitSellingPriceRepository.Update(pricesToUpdate);
         }
     }
 
@@ -2042,7 +2114,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductInventoryThresholds(Guid productId, List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId)
     {
-        var repository = _unitOfWork.InventoryThresholdRepository;
+        var repository = _inventoryThresholdRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -2087,7 +2159,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateProductExpiryLevels(Guid productId, List<ExpiryLevelDto>? expiryLevels)
     {
-        var repository = _unitOfWork.ExpiryLevelRepository;
+        var repository = _expiryLevelRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.ProductId == productId)
             .ToListAsync();
@@ -2112,7 +2184,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantExpiryLevels(List<ExpiryLevelDto>? expiryLevels, Guid variantId)
     {
-        var repository = _unitOfWork.ExpiryLevelRepository;
+        var repository = _expiryLevelRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
@@ -2137,7 +2209,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
     private async Task UpdateVariantInventoryThresholds(List<InventoryThresholdDto>? inventoryThresholds, InventoryThresholdScope? scope, Guid? branchId, Guid variantId)
     {
-        var repository = _unitOfWork.InventoryThresholdRepository;
+        var repository = _inventoryThresholdRepository;
         var existing = await repository.GetQuery()
             .Where(e => e.VariantId == variantId)
             .ToListAsync();
