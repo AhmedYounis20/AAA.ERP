@@ -1,5 +1,5 @@
 using Accounting.Domain.Entities;
-using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
+using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 
 namespace Accounting.Application.Commands.Taxes;
 

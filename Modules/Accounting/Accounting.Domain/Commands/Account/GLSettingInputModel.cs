@@ -1,7 +1,7 @@
 ﻿using Domain.Account.InputModels.BaseInputModels;
 using Accounting.Domain.Models.Entities.GLSettings;
 
-namespace ERP.Domain.Commands.Account;
+namespace Accounting.Domain.Commands;
 
 public class GLSettingInputModel : BaseInputModel
 {

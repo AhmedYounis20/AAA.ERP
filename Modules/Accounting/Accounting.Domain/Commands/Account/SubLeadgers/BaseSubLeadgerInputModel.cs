@@ -3,7 +3,7 @@ using Shared;
 using Shared.BaseEntities;
 using Shared.Responses;
 
-namespace ERP.Domain.Commands.Account.SubLeadgers;
+namespace Accounting.Domain.Commands.SubLeadgers;
 
 public class BaseSubLeadgerInputModel : ICommand<ApiResponse<CashInBox>>
 {

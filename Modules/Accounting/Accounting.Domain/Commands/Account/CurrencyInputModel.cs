@@ -1,6 +1,6 @@
 ﻿using Domain.Account.InputModels.BaseInputModels;
 
-namespace ERP.Domain.Commands.Account;
+namespace Accounting.Domain.Commands;
 
 public class CurrencyInputModel : BaseSettingInputModel
 {

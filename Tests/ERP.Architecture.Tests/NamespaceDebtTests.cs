@@ -269,6 +269,22 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Accounting_Domain_commands_should_not_use_legacy_ERP_Domain_Commands_Account_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Commands")
+            .Should()
+            .NotResideInNamespace("ERP.Domain.Commands.Account")
+            .And()
+            .NotResideInNamespaceStartingWith("ERP.Domain.Commands.Account.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

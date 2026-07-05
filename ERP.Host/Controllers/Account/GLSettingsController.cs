@@ -1,7 +1,7 @@
 ﻿using Accounting.Application.Commands.GLSettings;
 using Accounting.Application.Services;
 using Accounting.Application.Validators.GLSettings;
-using ERP.Domain.Commands.Account;
+using Accounting.Domain.Commands;
 using Accounting.Domain.Models.Entities.GLSettings;
 using Mapster;
 using Shared.Responses;

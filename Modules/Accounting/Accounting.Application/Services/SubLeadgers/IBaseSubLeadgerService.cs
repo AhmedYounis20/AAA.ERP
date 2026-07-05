@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Services.BaseServices;
-using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
+using Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 using Shared.BaseEntities;
 using Shared.Responses;
 

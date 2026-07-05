@@ -1,7 +1,7 @@
 using Domain.Account.Commands.BaseInputModels.BaseCreateCommands;
 using Shared.BaseEntities;
 
-namespace ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
+namespace Accounting.Domain.Commands.SubLeadgers.BaseSubLeadgersCommands;
 
 public class BaseSubLeadgerCreateCommand<TEntity> : BaseTreeSettingCreateCommand<TEntity> where TEntity : BaseSettingEntity
 {
