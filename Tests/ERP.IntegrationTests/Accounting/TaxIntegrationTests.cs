@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Domain.Entities;
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.IntegrationTests.Infrastructure;

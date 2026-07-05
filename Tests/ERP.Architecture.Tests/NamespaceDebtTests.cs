@@ -371,6 +371,34 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Persistence_kernel_should_not_use_legacy_Domain_Account_DBConfiguration_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.Infrastructure.DBConfiguration.DbContext.ApplicationDbContext).Assembly)
+            .Should()
+            .NotResideInNamespaceStartingWith("Domain.Account.DBConfiguration")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
+    public void Accounting_Domain_utility_should_not_use_legacy_Domain_Account_Utility_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+            .That()
+            .ResideInNamespaceContaining("Utility")
+            .Should()
+            .NotResideInNamespace("Domain.Account.Utility")
+            .And()
+            .NotResideInNamespaceStartingWith("Domain.Account.Utility.")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
         var result = Types.InAssembly(typeof(ERP.Host.Controllers.Inventory.ColorsController).Assembly)

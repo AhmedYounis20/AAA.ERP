@@ -1,7 +1,7 @@
 global using System.Linq.Expressions;
 global using ERP.BuildingBlocks.Persistence.Data;
-global using Domain.Account.DBConfiguration.DbContext;
-global using Domain.Account.Utility;
+global using ERP.Infrastructure.DBConfiguration.DbContext;
+global using Accounting.Domain.Utility;
 global using Shared.Responses;
 global using System.Net;
 global using Microsoft.EntityFrameworkCore;

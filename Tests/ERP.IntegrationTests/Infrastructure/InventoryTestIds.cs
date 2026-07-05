@@ -1,4 +1,4 @@
-using Domain.Account.Utility;
+using Accounting.Domain.Utility;
 
 namespace ERP.IntegrationTests.Infrastructure;
 

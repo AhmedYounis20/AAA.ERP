@@ -1,8 +1,8 @@
-﻿using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.BaseEntities;
 
-namespace Domain.Account.DBConfiguration.Config.BaseConfig;
+namespace ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 
 public class BaseSettingEntityDbConfig<TEntity> : BaseEntityDbConfig<TEntity> where TEntity : BaseSettingEntity
 {

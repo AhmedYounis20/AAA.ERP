@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
 using Inventory.Domain.Models.Entities.Attributes;
 
-namespace Domain.Account.DBConfiguration.DbContext;
+namespace ERP.Infrastructure.DBConfiguration.DbContext;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IApplicationDbContext
 {

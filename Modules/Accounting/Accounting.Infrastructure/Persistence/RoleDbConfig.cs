@@ -1,4 +1,4 @@
-using Domain.Account.DBConfiguration.Config.BaseConfig;
+using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
 using Accounting.Domain.Models.Entities.Roles;
 
 namespace Accounting.Infrastructure.Persistence;

@@ -1,10 +1,10 @@
 using System.Reflection;
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace Domain.Account.Utility;
+namespace ERP.Infrastructure.Utilities;
 
 public class ExportDataToSeed
 {

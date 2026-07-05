@@ -1,5 +1,5 @@
 using Accounting.Contracts.Integration;
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using ERP.Infrastructure.Services.BaseServices;

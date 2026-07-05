@@ -18,9 +18,6 @@ public static class ModuleNameResolver
         if (ns.StartsWith("Platform.", StringComparison.Ordinal))
             return "Platform";
 
-        if (ns.StartsWith("Domain.Account.", StringComparison.Ordinal))
-            return "Accounting";
-
         if (ns.Contains(".Controllers.Inventory", StringComparison.Ordinal))
             return "Inventory";
 

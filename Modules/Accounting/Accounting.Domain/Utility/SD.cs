@@ -1,6 +1,6 @@
-﻿using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
-namespace Domain.Account.Utility;
+namespace Accounting.Domain.Utility;
 
 public static class SD
 {

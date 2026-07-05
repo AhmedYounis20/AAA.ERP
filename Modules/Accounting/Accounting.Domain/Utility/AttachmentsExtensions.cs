@@ -1,7 +1,7 @@
 using Accounting.Domain.Models.Dtos.Attachments;
 using ERP.Shared.BaseEntities.Attachments;
 
-namespace Domain.Account.Utility;
+namespace Accounting.Domain.Utility;
 
 public static class AttachmentsExtensions
 {

@@ -1,4 +1,4 @@
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

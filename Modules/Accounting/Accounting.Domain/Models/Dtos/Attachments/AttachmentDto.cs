@@ -1,4 +1,4 @@
-using Domain.Account.Utility;
+using Accounting.Domain.Utility;
 
 namespace Accounting.Domain.Models.Dtos.Attachments;
 

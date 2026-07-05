@@ -1,7 +1,7 @@
 using System.Drawing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
-namespace Domain.Account.Utility;
+namespace Accounting.Domain.Utility;
 
 public static class FileMethods
 {

@@ -18,9 +18,10 @@ This document tracks known technical debt and code quality issues that need to b
 | 7a | `ERP.Domain.Commands.Account.*` → `Accounting.Domain.Commands.*` | **Done** (`c51317f`) |
 | 7b | `ERP.Application.Validators.Account.*` → BuildingBlocks / Accounting.Application | **Done** (`1e27afe`) |
 | 7c | `Domain.Account.Commands` / `InputModels` → `ERP.BuildingBlocks.Application.Commands.BaseInputModels` | **Done** (`5374da1`) |
-| 7d | `Domain.Account.Models.Dtos` → Accounting.Domain / Identity.Application | **Done** (uncommitted) |
+| 7d | `Domain.Account.Models.Dtos` → Accounting.Domain / Identity.Application | **Done** (`2e6a5c6`) |
+| 7e | `Domain.Account.DBConfiguration` / `Utility` → `ERP.Infrastructure` / `Accounting.Domain.Utility` | **Done** (uncommitted) |
 
-**Remaining Phase 4 / namespace follow-ups:** slice **7e** (`Domain.Account.DBConfiguration` / `Utility`), ongoing 4.3.x sprint hygiene — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
+**Remaining Phase 4 / namespace follow-ups:** Increment **7** wrap-up; migration designer entity strings (`Domain.Account.Models.Entities.*` in historical snapshots) intentionally unchanged; ongoing 4.3.x — see [MODULAR_MONOLITH.md §16](docs/architecture/MODULAR_MONOLITH.md#16-phase-status).
 
 ## High Priority
 

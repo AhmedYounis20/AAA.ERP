@@ -1,10 +1,10 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Text.Json.Serialization;
 using Accounting.Application.Validators.Taxes;
 using Accounting.Infrastructure;
 using Inventory.Application.Validators.Colors;
 using Inventory.Infrastructure;
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using Identity.Infrastructure;
 using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Extensions;

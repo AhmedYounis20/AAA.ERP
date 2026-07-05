@@ -1,4 +1,4 @@
-using Domain.Account.DBConfiguration.DbContext;
+using ERP.Infrastructure.DBConfiguration.DbContext;
 using ERP.BuildingBlocks.Persistence.Data;
 using Inventory.Application.Repositories;
 using Microsoft.AspNetCore.Hosting;

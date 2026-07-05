@@ -1,5 +1,5 @@
-﻿using Domain.Account.DBConfiguration.DbContext;
-using Domain.Account.Utility;
+using ERP.Infrastructure.DBConfiguration.DbContext;
+using Accounting.Domain.Utility;
 using ERP.Infrastructure.Utilities;
 
 namespace ERP.Host.Controllers.Account;
