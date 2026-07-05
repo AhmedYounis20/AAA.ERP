@@ -1,5 +1,4 @@
-using ERP.Application.Data;
-using ERP.Application.Services.Caching;
+using ERP.BuildingBlocks.Persistence.Data;
 using ERP.Domain.Models.Entities.Account.Entries;
 using FluentAssertions;
 using NetArchTest.Rules;
@@ -104,7 +103,7 @@ public class LayerDependencyTests
     [Fact]
     public void Identity_Application_should_not_reference_Infrastructure_or_API()
     {
-        var result = Types.InAssembly(typeof(global::ERP.Application.Services.Identity.IAuthenticationService).Assembly)
+        var result = Types.InAssembly(typeof(global::Identity.Application.IAuthenticationService).Assembly)
             .Should()
             .NotHaveDependencyOn(InfrastructureAssembly)
             .And()

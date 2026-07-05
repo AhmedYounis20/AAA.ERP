@@ -1,6 +1,6 @@
 using Shared.Responses;
 
-namespace ERP.Application.Repositories;
+namespace ERP.BuildingBlocks.Persistence.Repositories;
 
 /// <summary>
 /// Coordinates cross-module ACID operations (Phase 4 — MODULAR_MONOLITH.md §6.4).

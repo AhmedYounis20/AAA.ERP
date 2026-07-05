@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.Data;
+namespace ERP.BuildingBlocks.Persistence.Data;
 
 public static class ModuleModelConfigurationRegistry
 {

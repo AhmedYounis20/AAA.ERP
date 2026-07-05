@@ -1,7 +1,7 @@
 ﻿using AAA.ERP.OutputDtos.BaseDtos;
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Accounting.Domain.OutputDtos.Lookups;
 
 public class CurrencyLookupDto : LookupDto
 {

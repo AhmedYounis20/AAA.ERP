@@ -2,7 +2,7 @@
 using ERP.Domain.Models.Entities.Account.CostCenters;
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Accounting.Domain.OutputDtos.Lookups;
 
 public class CostCenterLookupDto : LookupDto
 {

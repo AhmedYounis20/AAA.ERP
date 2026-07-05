@@ -1,5 +1,5 @@
 using System.Net;
-using ERP.Application.Repositories;
+using ERP.BuildingBlocks.Persistence.Repositories;
 using Shared.Responses;
 
 namespace ERP.Infrastructure.Repositories;

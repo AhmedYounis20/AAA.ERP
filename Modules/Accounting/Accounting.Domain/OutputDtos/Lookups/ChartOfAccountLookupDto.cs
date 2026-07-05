@@ -2,7 +2,7 @@
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Accounting.Domain.OutputDtos.Lookups;
 
 public class ChartOfAccountLookupDto : LookupDto
 {

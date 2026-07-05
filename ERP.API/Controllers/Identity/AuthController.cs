@@ -1,5 +1,5 @@
 ﻿using Domain.Account.Models.Dtos;
-using ERP.Application.Services.Identity;
+using Identity.Application;
 using Shared.Responses;
 
 namespace ERP.API.Controllers.Identity;

@@ -21,4 +21,5 @@ global using Accounting.Application.Commands.Suppliers;
 global using Accounting.Application.Commands.FixedAssets;
 global using Accounting.Application.Services;
 global using ERP.Domain.Models.Entities.Account.SubLeadgers;
-global using ERP.Domain.OutputDtos.Lookups;
+global using Accounting.Domain.OutputDtos.Lookups;
+global using Inventory.Domain.OutputDtos.Lookups;

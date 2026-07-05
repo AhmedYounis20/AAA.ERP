@@ -1,7 +1,7 @@
 using Domain.Account.Models.Dtos;
 using Shared.Responses;
 
-namespace ERP.Application.Services.Identity;
+namespace Identity.Application;
 
 public interface IAuthenticationService
 {

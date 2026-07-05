@@ -1,4 +1,4 @@
-using ERP.Application.Services.Identity;
+using Identity.Application;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Shared.BaseEntities.Identity;
 using ERP.Domain.Models.Entities.Inventory.Attributes;

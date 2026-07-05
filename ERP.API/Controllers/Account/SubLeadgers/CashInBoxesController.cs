@@ -2,7 +2,7 @@ using Accounting.Application.Commands.CashInBoxes;
 using Accounting.Application.Services;
 using ERP.API.Controllers.BaseControllers;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Domain.OutputDtos.Lookups;
+using Accounting.Domain.OutputDtos.Lookups;
 using Shared.DTOs.Filters;
 
 namespace ERP.API.Controllers.Account.SubLeadgers;

@@ -4,7 +4,7 @@ using Accounting.Contracts.Integration;
 using Accounting.Infrastructure.Persistence;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using ERP.Application.Repositories.SubLeadgers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

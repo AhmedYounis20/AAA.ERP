@@ -1,6 +1,6 @@
 using Accounting.Contracts.Integration;
 using Domain.Account.Models.Dtos.Entry;
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Commands.CombinedEntries;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.Currencies;

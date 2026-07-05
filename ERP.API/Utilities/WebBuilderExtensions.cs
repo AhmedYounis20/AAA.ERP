@@ -6,7 +6,7 @@ using Inventory.Application.Validators.Colors;
 using Inventory.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
 using Identity.Infrastructure;
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Extensions;
 using ERP.BuildingBlocks.Application.Logging.Middleware;
 using ERP.Domain.Models.Entities.Account.Entries;

@@ -1,6 +1,6 @@
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using ERP.Application.Services.Account;
-using ERP.Application.Services.Caching;
+using Platform.Caching.Application;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;

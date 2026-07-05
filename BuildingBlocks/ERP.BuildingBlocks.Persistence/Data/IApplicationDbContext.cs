@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Data;
+namespace ERP.BuildingBlocks.Persistence.Data;
 
 public interface IApplicationDbContext : IDisposable
 {

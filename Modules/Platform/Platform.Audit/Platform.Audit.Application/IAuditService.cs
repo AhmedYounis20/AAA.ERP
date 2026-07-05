@@ -2,7 +2,7 @@ using Shared.BaseEntities;
 using Shared.DTOs;
 using Shared.Responses;
 
-namespace ERP.Application.Services.Audit;
+namespace Platform.Audit.Application;
 
 /// <summary>
 /// Service for managing audit logs

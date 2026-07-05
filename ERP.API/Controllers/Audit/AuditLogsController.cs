@@ -1,4 +1,4 @@
-using ERP.Application.Services.Audit;
+using Platform.Audit.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

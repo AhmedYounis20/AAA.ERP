@@ -1,11 +1,12 @@
 ﻿global using System.Linq.Expressions;
-global using ERP.Application.Data;
+global using ERP.BuildingBlocks.Persistence.Data;
 global using ERP.Application.Repositories.BaseRepositories;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Storage;
 global using Shared.BaseEntities;
 global using Domain.Account.DBConfiguration.DbContext;
 global using ERP.Application.Repositories;
+global using ERP.BuildingBlocks.Persistence.Repositories;
 global using ERP.Application.Services.BaseServices;
 global using Mapster;
 global using Shared.Responses;

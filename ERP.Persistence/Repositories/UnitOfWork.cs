@@ -1,5 +1,3 @@
-using ERP.Application.Repositories;
-
 namespace ERP.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork

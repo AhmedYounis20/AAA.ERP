@@ -1,5 +1,5 @@
 using Domain.Account.Services.Identity;
-using ERP.Application.Services.Identity;
+using Identity.Application;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure;

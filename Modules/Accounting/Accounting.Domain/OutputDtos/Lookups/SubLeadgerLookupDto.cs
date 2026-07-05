@@ -2,7 +2,7 @@
 using Shared.BaseEntities;
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Accounting.Domain.OutputDtos.Lookups;
 
 public class SubLeadgerLookupDto : LookupDto 
 {

@@ -2,7 +2,7 @@
 using Accounting.Application.Services;
 using Accounting.Application.Validators.Currencies;
 using ERP.Domain.Models.Entities.Account.Currencies;
-using ERP.Domain.OutputDtos.Lookups;
+using Accounting.Domain.OutputDtos.Lookups;
 using Shared.DTOs;
 
 namespace ERP.API.Controllers.Account;

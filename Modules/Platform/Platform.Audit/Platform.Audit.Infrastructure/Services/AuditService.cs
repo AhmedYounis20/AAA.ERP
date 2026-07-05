@@ -1,6 +1,6 @@
-using ERP.Application.Data;
-using ERP.Application.Services.Audit;
-using ERP.Application.Services.Identity;
+using ERP.BuildingBlocks.Persistence.Data;
+using Platform.Audit.Application;
+using Identity.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseEntities;
 
-namespace ERP.Application.Repositories;
+namespace ERP.BuildingBlocks.Persistence.Repositories;
 
 /// <summary>
 /// Transaction coordinator for cross-aggregate writes. Repository access is via direct DI injection.

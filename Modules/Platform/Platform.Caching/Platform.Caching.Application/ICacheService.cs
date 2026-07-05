@@ -1,4 +1,4 @@
-namespace ERP.Application.Services.Caching;
+namespace Platform.Caching.Application;
 
 /// <summary>
 /// Service for caching data with various operations

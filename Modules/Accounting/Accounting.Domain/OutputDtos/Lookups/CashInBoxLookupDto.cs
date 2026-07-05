@@ -1,6 +1,6 @@
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Accounting.Domain.OutputDtos.Lookups;
 
 public class CashInBoxLookupDto : LookupDto
 {

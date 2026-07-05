@@ -1,5 +1,5 @@
 using Domain.Account.DBConfiguration.DbContext;
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using ERP.Application.Repositories.Inventory;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -12,7 +12,7 @@ using Moq;
 namespace ERP.IntegrationTests.Infrastructure;
 
 /// <summary>
-/// Uses SQLite in-memory so <see cref="ERP.Application.Repositories.IUnitOfWork"/> transactions
+/// Uses SQLite in-memory so <see cref="ERP.BuildingBlocks.Persistence.Repositories.IUnitOfWork"/> transactions
 /// (rollback on GL failure) behave like production SQL Server.
 /// </summary>
 public sealed class IntegrationTestWebApplicationFactory : WebApplicationFactory<Program>, IDisposable

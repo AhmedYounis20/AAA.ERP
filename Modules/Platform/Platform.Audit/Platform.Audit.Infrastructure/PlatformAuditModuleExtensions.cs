@@ -1,5 +1,5 @@
-using ERP.Application.Data;
-using ERP.Application.Services.Audit;
+using ERP.BuildingBlocks.Persistence.Data;
+using Platform.Audit.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Platform.Audit.Infrastructure.Persistence;

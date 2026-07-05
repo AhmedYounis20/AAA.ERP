@@ -1,8 +1,9 @@
 global using Shared.BaseEntities;
 global using AAA.ERP.OutputDtos;
 global using Domain.Account.Utility;
-global using ERP.Application.Data;
+global using ERP.BuildingBlocks.Persistence.Data;
 global using ERP.Application.Repositories;
+global using ERP.BuildingBlocks.Persistence.Repositories;
 global using Mapster;
 global using MediatR;
 global using Microsoft.AspNetCore.Http;

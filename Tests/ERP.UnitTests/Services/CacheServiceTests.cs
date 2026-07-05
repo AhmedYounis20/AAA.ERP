@@ -1,4 +1,4 @@
-using ERP.Application.Services.Caching;
+using Platform.Caching.Application;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;

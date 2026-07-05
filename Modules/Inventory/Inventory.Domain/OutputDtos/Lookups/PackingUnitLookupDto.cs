@@ -1,6 +1,6 @@
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Inventory.Domain.OutputDtos.Lookups;
 
 public class PackingUnitLookupDto : LookupDto
 {

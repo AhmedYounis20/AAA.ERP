@@ -1,7 +1,7 @@
 using Accounting.Infrastructure;
 using Inventory.Infrastructure;
 using Domain.Account.DBConfiguration.DbContext;
-using ERP.Application.Data;
+using ERP.BuildingBlocks.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;

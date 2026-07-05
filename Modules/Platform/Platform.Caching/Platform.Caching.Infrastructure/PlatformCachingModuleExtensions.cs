@@ -1,4 +1,4 @@
-using ERP.Application.Services.Caching;
+using Platform.Caching.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Platform.Caching.Infrastructure.Services;
 

@@ -2,7 +2,7 @@ using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Services;
 using Accounting.Domain.Entities;
 using ERP.API.Controllers.BaseControllers;
-using ERP.Domain.OutputDtos.Lookups;
+using Accounting.Domain.OutputDtos.Lookups;
 using Shared.DTOs;
 using Shared.DTOs.Filters;
 

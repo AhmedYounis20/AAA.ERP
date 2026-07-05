@@ -1,7 +1,7 @@
 using Shared.BaseEntities;
 using Shared.DTOs;
 
-namespace ERP.Domain.OutputDtos.Lookups;
+namespace Inventory.Domain.OutputDtos.Lookups;
 
 public class ItemLookupDto : LookupDto
 {

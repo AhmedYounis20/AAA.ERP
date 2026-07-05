@@ -1,4 +1,4 @@
-namespace ERP.Application.Services.Identity;
+namespace Identity.Application;
 
 public interface ICurrentUser
 {
