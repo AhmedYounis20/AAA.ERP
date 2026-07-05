@@ -65,7 +65,9 @@ public static class AccountingModuleExtensions
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IComplexEntryQueries, ComplexEntryQueries>();
         services.AddScoped<IOpeningEntryService, OpeningEntryService>();
+        services.AddScoped<IOpeningEntryQueries, OpeningEntryQueries>();
         services.AddScoped<ICombinedEntryService, CombinedEntryService>();
+        services.AddScoped<ICombinedEntryQueries, CombinedEntryQueries>();
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<IInventoryCatalogValidationQueries, InventoryCatalogValidationQueries>();
         services.AddScoped<IInventoryAccountingDisplayQueries, InventoryAccountingDisplayQueries>();

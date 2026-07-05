@@ -9,6 +9,7 @@ namespace Accounting.Api.Controllers.Entries;
 /// <summary>CRUD API for payment entries (hybrid CQRS).</summary>
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class PaymentEntriesController(ISender sender, IPaymentEntryQueries queries) : ControllerBase
 {
     [HttpPost]
