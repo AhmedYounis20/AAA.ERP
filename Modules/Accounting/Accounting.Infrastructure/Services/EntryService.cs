@@ -5,7 +5,7 @@ using Accounting.Application.Services;
 using Domain.Account.Models.Dtos.Attachments;
 using ERP.Application.Repositories;
 using ERP.Application.Repositories.Account;
-using ERP.Application.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Entities.Account.Entries;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 using ERP.Infrastructure.Services.BaseServices;

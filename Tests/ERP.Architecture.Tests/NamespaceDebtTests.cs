@@ -139,6 +139,20 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void BuildingBlocks_Application_base_repositories_should_not_use_legacy_ERP_Application_Repositories_BaseRepositories_namespace()
+    {
+        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly)
+            .That()
+            .ResideInNamespaceContaining("BaseRepositories")
+            .Should()
+            .NotResideInNamespace("ERP.Application.Repositories.BaseRepositories")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Solution_should_not_contain_legacy_Compined_type_names()
     {
         var assemblies = new[]

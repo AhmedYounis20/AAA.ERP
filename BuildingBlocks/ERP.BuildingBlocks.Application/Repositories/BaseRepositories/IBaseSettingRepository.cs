@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Application.Repositories.BaseRepositories;
+namespace ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 
 public interface IBaseSettingRepository<TEntity>
     : IBaseRepository<TEntity>, IDisposable where TEntity : BaseSettingEntity

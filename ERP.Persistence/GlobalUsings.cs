@@ -1,6 +1,6 @@
 ﻿global using System.Linq.Expressions;
 global using ERP.BuildingBlocks.Persistence.Data;
-global using ERP.Application.Repositories.BaseRepositories;
+global using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Storage;
 global using Shared.BaseEntities;

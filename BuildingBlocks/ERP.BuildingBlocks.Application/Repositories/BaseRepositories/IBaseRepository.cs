@@ -4,7 +4,7 @@ using Shared.DTOs;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace ERP.Application.Repositories.BaseRepositories
+namespace ERP.BuildingBlocks.Application.Repositories.BaseRepositories
 {
     public interface IBaseRepository<TEntity>
         : IDisposable where TEntity : BaseEntity

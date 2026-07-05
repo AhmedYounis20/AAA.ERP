@@ -1,6 +1,6 @@
 ﻿using Shared.BaseEntities;
 
-namespace ERP.Application.Repositories.BaseRepositories
+namespace ERP.BuildingBlocks.Application.Repositories.BaseRepositories
 {
     public interface IBaseTreeRepository<TEntity>
         : IBaseRepository<TEntity>,

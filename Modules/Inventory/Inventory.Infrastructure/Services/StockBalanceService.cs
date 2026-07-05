@@ -1,4 +1,4 @@
-using ERP.Application.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.Application.Repositories.Inventory;
 using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Application.Commands.StockBalances;

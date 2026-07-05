@@ -1,4 +1,4 @@
-using ERP.Application.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
 
