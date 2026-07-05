@@ -2,7 +2,7 @@ using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Entities;
-using ERP.Application.Repositories;
+using Accounting.Application.Repositories;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;

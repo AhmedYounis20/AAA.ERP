@@ -2,7 +2,7 @@ using Accounting.Application.Commands.Suppliers;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Domain.Account.Utility;
-using ERP.Application.Repositories.SubLeadgers;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastructure.Services.Account.SubLeadgers.SubLeadgerBaseService;

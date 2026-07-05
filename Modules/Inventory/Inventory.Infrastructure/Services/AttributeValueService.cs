@@ -1,4 +1,4 @@
-using ERP.Application.Repositories;
+using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Commands.AttributeValues;
 using Inventory.Application.Services;

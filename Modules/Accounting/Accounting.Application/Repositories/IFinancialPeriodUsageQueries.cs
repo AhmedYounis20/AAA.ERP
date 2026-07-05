@@ -1,4 +1,4 @@
-namespace ERP.Application.Repositories;
+namespace Accounting.Application.Repositories;
 
 public interface IFinancialPeriodUsageQueries
 {

@@ -1,6 +1,6 @@
 global using Domain.Account.Utility;
 global using ERP.BuildingBlocks.Persistence.Data;
-global using ERP.Application.Repositories;
+global using Accounting.Application.Repositories;
 global using ERP.BuildingBlocks.Persistence.Repositories;
 global using Mapster;
 global using MediatR;

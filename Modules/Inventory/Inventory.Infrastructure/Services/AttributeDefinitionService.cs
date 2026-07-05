@@ -1,4 +1,4 @@
-using ERP.Application.Repositories;
+using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using ERP.Domain.Models.Dtos.Inventory;
 using ERP.Domain.Models.Entities.Inventory.Attributes;

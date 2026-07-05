@@ -1,4 +1,4 @@
-using ERP.Application.Repositories.SubLeadgers;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using ERP.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastructure.Repositories.Account.SubLeadgers;
 

@@ -5,7 +5,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Storage;
 global using Shared.BaseEntities;
 global using Domain.Account.DBConfiguration.DbContext;
-global using ERP.Application.Repositories;
+global using Accounting.Application.Repositories;
 global using ERP.BuildingBlocks.Persistence.Repositories;
 global using ERP.Application.Services.BaseServices;
 global using Mapster;

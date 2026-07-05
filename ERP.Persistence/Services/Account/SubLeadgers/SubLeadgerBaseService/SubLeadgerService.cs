@@ -1,5 +1,5 @@
 using Accounting.Application.Repositories;
-using ERP.Application.Repositories.Account.SubLeadgers;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Domain.Commands.Account.SubLeadgers.BaseSubLeadgersCommands;
 using ERP.Domain.Models.Entities.Account.ChartOfAccounts;

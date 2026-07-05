@@ -1,5 +1,5 @@
-﻿using ERP.Application.Repositories;
-using ERP.Application.Repositories.SubLeadgers;
+﻿using Accounting.Application.Repositories;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;

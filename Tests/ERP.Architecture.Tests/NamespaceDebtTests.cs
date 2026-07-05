@@ -169,6 +169,18 @@ public class NamespaceDebtTests
     }
 
     [Fact]
+    public void Accounting_Application_repositories_should_use_Accounting_Application_Repositories_namespace()
+    {
+        var result = Types.InAssembly(typeof(Accounting.Application.Repositories.IEntryRepository).Assembly)
+            .Should()
+            .NotResideInNamespaceStartingWith("ERP.Application.Repositories")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue(
+            $"Legacy namespace still present: {string.Join(", ", result.FailingTypes?.Select(t => t.FullName) ?? [])}");
+    }
+
+    [Fact]
     public void Solution_should_not_contain_legacy_Compined_type_names()
     {
         var assemblies = new[]

@@ -1,4 +1,4 @@
-﻿using ERP.Application.Repositories.Account;
+﻿using Accounting.Application.Repositories.Account;
 using ERP.Infrastructure.Repositories.BaseRepositories;
 using ERP.Shared.BaseEntities.Attachments;
 

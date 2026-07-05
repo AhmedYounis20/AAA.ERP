@@ -1,8 +1,7 @@
-using ERP.Application.Repositories;
-using ERP.Application.Repositories.Account;
-using ERP.Application.Repositories.Account.SubLeadgers;
+using Accounting.Application.Repositories;
+using Accounting.Application.Repositories.Account;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using Inventory.Application.Repositories;
-using ERP.Application.Repositories.SubLeadgers;
 using ERP.Application.Services.Account.SubLeadgers;
 using ERP.Infrastructure.Repositories;
 using ERP.Infrastructure.Repositories.Account;

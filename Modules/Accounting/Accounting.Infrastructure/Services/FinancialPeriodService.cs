@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.FinancialPeriods;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using ERP.Application.Repositories;
+using Accounting.Application.Repositories;
 using Inventory.Application.Repositories;
 using ERP.Domain.Models.Dtos.FinancialPeriods;
 using ERP.Domain.Models.Entities.Account.FinancialPeriods;
