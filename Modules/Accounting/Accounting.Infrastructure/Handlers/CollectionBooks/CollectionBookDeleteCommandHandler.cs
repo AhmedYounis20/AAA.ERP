@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.CollectionBooks;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.CollectionBooks;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.CollectionBooks;
 
-public class CollectionBookDeleteCommandHandler(ICollectionBookService service)
-    : ICommandHandler<CollectionBookDeleteCommand, ApiResponse<CollectionBook>>
-{
-    public Task<ApiResponse<CollectionBook>> Handle(CollectionBookDeleteCommand request, CancellationToken cancellationToken)
-        => service.Delete(request.Id);
-}
+public sealed class CollectionBookDeleteCommandHandler(ICollectionBookRepository repository)
+    : BaseSettingDeleteHandler<CollectionBook, CollectionBookDeleteCommand>(repository);

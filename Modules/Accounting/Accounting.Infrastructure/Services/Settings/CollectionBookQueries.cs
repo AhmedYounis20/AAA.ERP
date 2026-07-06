@@ -1,4 +1,4 @@
-using Accounting.Application.Commands.CollectionBooks;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.CollectionBooks;
 using ERP.Infrastructure.Services.Queries;
@@ -6,8 +6,8 @@ using ERP.Infrastructure.Services.Queries;
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Collection book read queries. Transitional: delegates to <see cref="ICollectionBookService"/> until write methods are removed.
+/// Collection book read queries.
 /// </summary>
-public class CollectionBookQueries(ICollectionBookService collectionBookService)
-    : BaseSettingQueries<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>(collectionBookService),
+public class CollectionBookQueries(ICollectionBookRepository repository)
+    : BaseSettingRepositoryQueries<CollectionBook>(repository),
       ICollectionBookQueries;

@@ -36,7 +36,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<IAccountGuideQueries, AccountGuideQueries>();
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
-        services.AddScoped<ICollectionBookService, CollectionBookService>();
         services.AddScoped<ICollectionBookQueries, CollectionBookQueries>();
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
         services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();

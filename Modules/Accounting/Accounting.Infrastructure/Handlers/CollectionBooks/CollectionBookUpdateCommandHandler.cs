@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.CollectionBooks;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.CollectionBooks;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.CollectionBooks;
 
-public class CollectionBookUpdateCommandHandler(ICollectionBookService service)
-    : ICommandHandler<CollectionBookUpdateCommand, ApiResponse<CollectionBook>>
-{
-    public Task<ApiResponse<CollectionBook>> Handle(CollectionBookUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class CollectionBookUpdateCommandHandler(ICollectionBookRepository repository)
+    : BaseSettingUpdateHandler<CollectionBook, CollectionBookUpdateCommand>(repository);
