@@ -12,16 +12,19 @@ namespace Inventory.Infrastructure.Services;
 
 public class ExportTransactionService : BaseService<InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>, IExportTransactionService
 {
+    private readonly IInventoryTransactionWorkflowService _inventoryTransactionWorkflow;
     private readonly IInventoryTransactionService _inventoryTransactionService;
     private readonly IInventoryTransactionRepository _repository;
     private readonly IInventoryAccountingDisplayQueries _displayQueries;
 
     public ExportTransactionService(
+        IInventoryTransactionWorkflowService inventoryTransactionWorkflow,
         IInventoryTransactionService inventoryTransactionService,
         IInventoryTransactionRepository repository,
         IInventoryAccountingDisplayQueries displayQueries)
         : base(repository)
     {
+        _inventoryTransactionWorkflow = inventoryTransactionWorkflow;
         _inventoryTransactionService = inventoryTransactionService;
         _repository = repository;
         _displayQueries = displayQueries;
@@ -39,7 +42,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
             Items = command.Items
         };
 
-        return await _inventoryTransactionService.Create(baseCommand);
+        return await _inventoryTransactionWorkflow.Create(baseCommand, isValidate);
     }
 
     public async Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)

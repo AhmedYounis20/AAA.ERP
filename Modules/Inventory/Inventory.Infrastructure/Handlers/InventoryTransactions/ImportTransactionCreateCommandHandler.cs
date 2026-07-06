@@ -4,7 +4,7 @@ using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransactions;
 
-public class ImportTransactionCreateCommandHandler(IInventoryTransactionService inventoryTransactionService)
+public class ImportTransactionCreateCommandHandler(IInventoryTransactionWorkflowService workflow)
     : ICommandHandler<ImportTransactionCreateCommand, ApiResponse<InventoryTransaction>>
 {
     public Task<ApiResponse<InventoryTransaction>> Handle(
@@ -21,6 +21,6 @@ public class ImportTransactionCreateCommandHandler(IInventoryTransactionService 
             Items = command.Items
         };
 
-        return inventoryTransactionService.Create(baseCommand);
+        return workflow.Create(baseCommand);
     }
 }

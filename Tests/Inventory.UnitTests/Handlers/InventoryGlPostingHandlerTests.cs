@@ -7,7 +7,7 @@ using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
-using Inventory.Infrastructure.Services;
+using Inventory.Infrastructure.Workflows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
@@ -17,7 +17,7 @@ using ERP.BuildingBlocks.Application.Responses;
 namespace Inventory.UnitTests.Handlers;
 
 /// <summary>
-/// Unit tests for receipt/issue GL posting via <see cref="InventoryTransactionService"/>
+/// Unit tests for receipt/issue GL posting via <see cref="InventoryTransactionWorkflowService"/>
 /// with mocked accounting boundary and persistence.
 /// </summary>
 public class InventoryGlPostingHandlerTests
@@ -199,7 +199,7 @@ public class InventoryGlPostingHandlerTests
     result.Errors.Should().Contain(e => e.MessageKey == ErrorMessages.PartyAccountNotFound);
   }
 
-  private InventoryTransactionService CreateService()
+  private InventoryTransactionWorkflowService CreateService()
     => new(_repository.Object, _stockBalance.Object, _coordinator.Object, _accounting.Object);
 
   private InventoryTransactionCreateCommand CreateCommand(

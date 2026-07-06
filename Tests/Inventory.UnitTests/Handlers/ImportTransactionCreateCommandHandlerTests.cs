@@ -13,8 +13,8 @@ public class ImportTransactionCreateCommandHandlerTests
     [Fact]
     public async Task Handle_MapsToReceiptAndCallsInventoryTransactionService()
     {
-        var inventoryTransactionService = new Mock<IInventoryTransactionService>();
-        inventoryTransactionService
+        var workflow = new Mock<IInventoryTransactionWorkflowService>();
+        workflow
             .Setup(s => s.Create(It.IsAny<InventoryTransactionCreateCommand>(), true))
             .ReturnsAsync(new ApiResponse<InventoryTransaction>
             {
@@ -22,7 +22,7 @@ public class ImportTransactionCreateCommandHandlerTests
                 Result = new InventoryTransaction { Id = Guid.NewGuid() }
             });
 
-        var handler = new ImportTransactionCreateCommandHandler(inventoryTransactionService.Object);
+        var handler = new ImportTransactionCreateCommandHandler(workflow.Object);
         var command = new ImportTransactionCreateCommand
         {
             TransactionDate = DateTime.UtcNow,
@@ -34,7 +34,7 @@ public class ImportTransactionCreateCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
-        inventoryTransactionService.Verify(s => s.Create(
+        workflow.Verify(s => s.Create(
             It.Is<InventoryTransactionCreateCommand>(c =>
                 c.TransactionType == InventoryTransactionType.Receipt),
             true), Times.Once);

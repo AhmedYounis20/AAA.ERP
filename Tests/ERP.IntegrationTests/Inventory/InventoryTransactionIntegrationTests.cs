@@ -31,11 +31,11 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Receipt_increases_stock_and_creates_gl_entry()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        var workflow = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionWorkflowService>();
         const decimal quantity = 5;
         const decimal totalCost = 50;
 
-        var result = await service.Create(new InventoryTransactionCreateCommand
+        var result = await workflow.Create(new InventoryTransactionCreateCommand
         {
             TransactionType = InventoryTransactionType.Receipt,
             TransactionDate = InventoryTestIds.TransactionDate,
@@ -73,10 +73,10 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Receipt_gl_failure_rolls_back_stock_and_entry()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        var workflow = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionWorkflowService>();
         var invalidPartyId = Guid.Parse("99999999-9999-9999-9999-999999999999");
 
-        var result = await service.Create(new InventoryTransactionCreateCommand
+        var result = await workflow.Create(new InventoryTransactionCreateCommand
         {
             TransactionType = InventoryTransactionType.Receipt,
             TransactionDate = InventoryTestIds.TransactionDate,
@@ -115,9 +115,9 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
         await using var scope = factory.Services.CreateAsyncScope();
         await InventoryTestDataSeeder.SeedAsync(scope.ServiceProvider, initialStockBalance: 2);
 
-        var service = scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        var workflow = scope.ServiceProvider.GetRequiredService<IInventoryTransactionWorkflowService>();
 
-        var result = await service.Create(new InventoryTransactionCreateCommand
+        var result = await workflow.Create(new InventoryTransactionCreateCommand
         {
             TransactionType = InventoryTransactionType.Issue,
             TransactionDate = InventoryTestIds.TransactionDate,
@@ -150,10 +150,10 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Receipt_gl_lines_match_expected_branch_and_party_accounts()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        var workflow = _scope.ServiceProvider.GetRequiredService<IInventoryTransactionWorkflowService>();
         const decimal totalCost = 120;
 
-        var result = await service.Create(new InventoryTransactionCreateCommand
+        var result = await workflow.Create(new InventoryTransactionCreateCommand
         {
             TransactionType = InventoryTransactionType.Receipt,
             TransactionDate = InventoryTestIds.TransactionDate,
@@ -210,11 +210,11 @@ public class InventoryTransactionIntegrationTests : IAsyncLifetime
         await using var scope = factory.Services.CreateAsyncScope();
         await InventoryTestDataSeeder.SeedAsync(scope.ServiceProvider, initialStockBalance: 20);
 
-        var service = scope.ServiceProvider.GetRequiredService<IInventoryTransactionService>();
+        var workflow = scope.ServiceProvider.GetRequiredService<IInventoryTransactionWorkflowService>();
         const decimal issueQuantity = 8;
         const decimal totalCost = 80;
 
-        var result = await service.Create(new InventoryTransactionCreateCommand
+        var result = await workflow.Create(new InventoryTransactionCreateCommand
         {
             TransactionType = InventoryTransactionType.Issue,
             TransactionDate = InventoryTestIds.TransactionDate,

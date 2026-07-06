@@ -16,6 +16,7 @@ using Inventory.Infrastructure.Persistence.Variants;
 using Inventory.Infrastructure.Repositories;
 using Inventory.Infrastructure.Services;
 using Inventory.Infrastructure.Services.Transactions;
+using Inventory.Infrastructure.Workflows;
 using Inventory.Contracts.Integration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,6 +87,7 @@ public static class InventoryModuleExtensions
         services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
         services.AddScoped<IFinancialPeriodInventoryUsageQueries, FinancialPeriodInventoryUsageQueries>();
         services.AddScoped<IInventoryQueryService, FinancialPeriodInventoryUsageQueries>();
+        services.AddScoped<IInventoryTransactionWorkflowService, InventoryTransactionWorkflowService>();
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IImportTransactionQueries, ImportTransactionQueries>();

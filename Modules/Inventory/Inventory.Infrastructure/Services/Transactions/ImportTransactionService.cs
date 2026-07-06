@@ -12,16 +12,19 @@ namespace Inventory.Infrastructure.Services;
 
 public class ImportTransactionService : BaseService<InventoryTransaction, ImportTransactionCreateCommand, ImportTransactionUpdateCommand>, IImportTransactionService
 {
+    private readonly IInventoryTransactionWorkflowService _inventoryTransactionWorkflow;
     private readonly IInventoryTransactionService _inventoryTransactionService;
     private readonly IInventoryTransactionRepository _repository;
     private readonly IInventoryAccountingDisplayQueries _displayQueries;
 
     public ImportTransactionService(
+        IInventoryTransactionWorkflowService inventoryTransactionWorkflow,
         IInventoryTransactionService inventoryTransactionService,
         IInventoryTransactionRepository repository,
         IInventoryAccountingDisplayQueries displayQueries)
         : base(repository)
     {
+        _inventoryTransactionWorkflow = inventoryTransactionWorkflow;
         _inventoryTransactionService = inventoryTransactionService;
         _repository = repository;
         _displayQueries = displayQueries;
@@ -39,7 +42,7 @@ public class ImportTransactionService : BaseService<InventoryTransaction, Import
             Items = command.Items
         };
 
-        return await _inventoryTransactionService.Create(baseCommand);
+        return await _inventoryTransactionWorkflow.Create(baseCommand);
     }
 
     public async Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
