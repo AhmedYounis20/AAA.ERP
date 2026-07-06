@@ -1,18 +1,16 @@
 using Accounting.Application.Commands.CashInBoxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Utility;
-using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Infrastructure.Services.SubLeadgers;
+using Accounting.Domain.Utility;
 
 namespace Accounting.Infrastructure.Services;
 
-public class CashInBoxService : SubLeadgerService<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>, ICashInBoxService
+public class CashInBoxService(IChartOfAccountRepository chartOfAccountRepository) : ICashInBoxService
 {
-    public CashInBoxService(IUnitOfWork unitOfWork, ICashInBoxRepository repository, IHttpContextAccessor accessor,
-        IChartOfAccountRepository chartOfAccountRepository)
-        : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.CashInBoxChartOfAccountId, SubLeadgerType.CashInBox)
-    {
-    }
+    public Task<ApiResponse<CashInBoxCreateCommand>> GetNextSubLeadgers(Guid? parentId)
+        => SubLeadgers.SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<CashInBox, CashInBoxCreateCommand>(
+            chartOfAccountRepository,
+            Guid.Parse(SD.CashInBoxChartOfAccountId),
+            parentId);
 }

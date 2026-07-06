@@ -1,10 +1,14 @@
 using Accounting.Application.Commands.CashInBoxes;
-using Accounting.Application.Services.SubLeadgers;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for cash in box.
+/// Cash-in-box default-data helper. CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface ICashInBoxService : IBaseSubLeadgerService<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>;
+public interface ICashInBoxService
+{
+    Task<ApiResponse<CashInBoxCreateCommand>> GetNextSubLeadgers(Guid? parentId);
+}
