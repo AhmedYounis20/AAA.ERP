@@ -38,7 +38,6 @@ public class ItemsController(ISender sender, IItemQueries queries) : ControllerB
         => this.ToResult(await queries.GetNextCode(parentId));
 
     /// <summary>Gets a record by identifier.</summary>
-    
     [HttpGet("search")]
     public async Task<IActionResult> Search([FromQuery] string query)
         => this.ToResult(await queries.SearchByName(query));

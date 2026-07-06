@@ -12,20 +12,16 @@ namespace Accounting.Infrastructure.Services;
 /// <summary>
 /// Chart-of-account read queries.
 /// </summary>
-public class ChartOfAccountQueries(IChartOfAccountRepository repository) : IChartOfAccountQueries
+public class ChartOfAccountQueries(IChartOfAccountRepository repository)
+    : BaseTreeSettingRepositoryQueries<ChartOfAccount>(repository),
+      IChartOfAccountQueries
 {
     private readonly BaseEntityRepositoryQueries<ChartOfAccount> _entityQueries = new(repository);
-
-    public Task<ApiResponse<IEnumerable<ChartOfAccount>>> GetAll()
-        => _entityQueries.GetAll();
 
     public Task<ApiResponse<PaginatedResult<ChartOfAccount>>> GetPaginated(
         ChartOfAccountFilterDto filter,
         CancellationToken cancellationToken = default)
         => _entityQueries.GetPaginated(filter, cancellationToken);
-
-    public Task<ApiResponse<ChartOfAccount>> GetById(Guid id)
-        => _entityQueries.GetById(id);
 
     public Task<string> GenerateNewChildCode(Guid? parentId)
         => repository.GenerateNewCodeForChild(parentId);
