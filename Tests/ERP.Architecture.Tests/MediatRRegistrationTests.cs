@@ -12,7 +12,7 @@ public class MediatRRegistrationTests
 {
     private const int MinimumHorizontalHandlerCount = 0;
     private const int MinimumAccountingHandlerCount = 38;
-    private const int MinimumInventoryHandlerCount = 30;
+    private const int MinimumInventoryHandlerCount = 27;
 
     [Fact]
     public void Infrastructure_assembly_contains_command_handlers()

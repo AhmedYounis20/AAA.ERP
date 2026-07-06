@@ -3,52 +3,6 @@ using ERP.BuildingBlocks.Application.DTOs;
 namespace ERP.BuildingBlocks.Application.DTOs.Filters;
 
 /// <summary>
-/// Filter DTO for Items
-/// </summary>
-public class ItemFilterDto : TreeFilterDto
-{
-    /// <summary>
-    /// Search by item code
-    /// </summary>
-    public string? Code { get; set; }
-
-    /// <summary>
-    /// Filter by item type
-    /// </summary>
-    public int? ItemType { get; set; }
-
-    /// <summary>
-    /// Filter by node type (Category, Domain, SubDomain)
-    /// </summary>
-    public int? NodeType { get; set; }
-
-    /// <summary>
-    /// Filter by supplier
-    /// </summary>
-    public Guid? SupplierId { get; set; }
-
-    /// <summary>
-    /// Filter by manufacturer company
-    /// </summary>
-    public Guid? ManufacturerCompanyId { get; set; }
-
-    /// <summary>
-    /// Search by barcode
-    /// </summary>
-    public string? Barcode { get; set; }
-
-    /// <summary>
-    /// Filter by color (for SubDomain items)
-    /// </summary>
-    public Guid? ColorId { get; set; }
-
-    /// <summary>
-    /// Filter by size (for SubDomain items)
-    /// </summary>
-    public Guid? SizeId { get; set; }
-}
-
-/// <summary>
 /// Filter DTO for Inventory Transactions
 /// </summary>
 public class InventoryTransactionFilterDto : BaseFilterDto

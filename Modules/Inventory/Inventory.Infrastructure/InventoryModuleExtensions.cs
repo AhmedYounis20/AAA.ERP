@@ -7,7 +7,6 @@ using Inventory.Application.Services.Transactions;
 using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Persistence.ExpiryLevels;
 using Inventory.Infrastructure.Persistence.InventoryThresholds;
-using Inventory.Infrastructure.Persistence.Items;
 using Inventory.Infrastructure.Persistence.Products;
 using Inventory.Infrastructure.Persistence.InventoryTransactions;
 using Inventory.Infrastructure.Persistence.InventoryTransfers;
@@ -22,7 +21,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Inventory.Domain.Models.Entities.ExpiryLevels;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
-using Inventory.Domain.Models.Entities.Items;
 using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.Infrastructure.Repositories.BaseRepositories;
@@ -94,15 +92,6 @@ public static class InventoryModuleExtensions
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddScoped<IInventoryTransferWorkflowService, InventoryTransferWorkflowService>();
         services.AddScoped<IInventoryTransferQueries, InventoryTransferQueries>();
-        services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<IItemWorkflowService, ItemWorkflowService>();
-        services.AddScoped<IItemQueries, ItemQueries>();
-        services.AddScoped<IBaseRepository<ItemCode>, BaseRepository<ItemCode>>();
-        services.AddScoped<IBaseRepository<ItemSupplier>, BaseRepository<ItemSupplier>>();
-        services.AddScoped<IBaseRepository<ItemManufacturerCompany>, BaseRepository<ItemManufacturerCompany>>();
-        services.AddScoped<IBaseRepository<ItemPackingUnit>, BaseRepository<ItemPackingUnit>>();
-        services.AddScoped<IBaseRepository<ItemPackingUnitSellingPrice>, BaseRepository<ItemPackingUnitSellingPrice>>();
-        services.AddScoped<IBaseRepository<ItemSellingPriceDiscount>, BaseRepository<ItemSellingPriceDiscount>>();
 
         return services;
     }
@@ -147,12 +136,5 @@ public static class InventoryModuleExtensions
         modelBuilder.ApplyConfiguration(new InventoryTransactionItemDbConfig());
         modelBuilder.ApplyConfiguration(new InventoryTransferDbConfig());
         modelBuilder.ApplyConfiguration(new InventoryTransferItemDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemCodeDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemSupplierDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemManufacturerCompanyDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemPackingUnitDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemPackingUnitSellingPriceDbConfig());
-        modelBuilder.ApplyConfiguration(new ItemSellingPriceDiscountDbConfig());
     }
 }

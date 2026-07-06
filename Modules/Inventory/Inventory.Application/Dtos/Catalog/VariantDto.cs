@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using ERP.BuildingBlocks.Application.DTOs;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Variants;
-using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.Products;
 
 namespace Inventory.Application.Dtos;

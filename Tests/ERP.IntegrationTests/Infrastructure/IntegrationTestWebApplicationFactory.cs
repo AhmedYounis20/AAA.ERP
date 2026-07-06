@@ -1,13 +1,11 @@
 using ERP.Infrastructure.DBConfiguration.DbContext;
 using ERP.BuildingBlocks.Persistence.Data;
-using Inventory.Application.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Moq;
 
 namespace ERP.IntegrationTests.Infrastructure;
 
@@ -44,9 +42,6 @@ public sealed class IntegrationTestWebApplicationFactory : WebApplicationFactory
 
             services.AddScoped<ApplicationDbContext>(sp => sp.GetRequiredService<IntegrationTestDbContext>());
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<IntegrationTestDbContext>());
-
-            services.RemoveAll<IItemRepository>();
-            services.AddScoped(_ => new Mock<IItemRepository>().Object);
         });
     }
 

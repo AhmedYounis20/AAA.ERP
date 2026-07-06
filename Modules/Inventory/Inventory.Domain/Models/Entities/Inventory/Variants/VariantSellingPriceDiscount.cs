@@ -1,4 +1,4 @@
-using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.SellingPrices;
 using ERP.BuildingBlocks.Domain.Entities;
 

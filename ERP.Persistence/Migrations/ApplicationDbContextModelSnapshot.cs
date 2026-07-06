@@ -22,7 +22,7 @@ namespace ERP.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Accounting.Domain.Entities.Tax", b =>
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1414,7 +1414,7 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("Suppliers", "accounting");
                 });
 
-            modelBuilder.Entity("ERP.Shared.BaseEntities.Attachments.Attachment", b =>
+            modelBuilder.Entity("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1448,6 +1448,81 @@ namespace ERP.Persistence.Migrations
                     b.HasIndex("CreatedAt");
 
                     b.ToTable("Attachments", "accounting");
+                });
+
+            modelBuilder.Entity("Identity.Domain.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", "identity");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Attributes.AttributeDefinition", b =>
@@ -1922,360 +1997,6 @@ namespace ERP.Persistence.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("InventoryTransferItems", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.Item", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(3);
-
-                    b.Property<bool>("ApplyDomainChanges")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("ColorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("ConditionalDiscount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CountryOfOrigin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("DefaultDiscount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DefaultDiscountType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDiscountBasedOnSellingPrice")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ItemType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MaxDiscount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Model")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(2);
-
-                    b.Property<int>("NodeType")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(4);
-
-                    b.Property<Guid?>("SizeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.HasIndex("NodeType");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("ParentId", "NodeType");
-
-                    b.ToTable("Items", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemCode", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CodeType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("CodeType");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("ItemCodes", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemManufacturerCompany", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ManufacturerCompanyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("ManufacturerCompanyId");
-
-                    b.HasIndex("ItemId", "ManufacturerCompanyId")
-                        .IsUnique();
-
-                    b.ToTable("ItemManufacturerCompanies", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemPackingUnit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<decimal>("AverageCostPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDefaultPackingUnit")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDefaultPurchases")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDefaultSales")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("LastCostPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("PackingUnitId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("PartsCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("PackingUnitId");
-
-                    b.HasIndex("ItemId", "PackingUnitId")
-                        .IsUnique();
-
-                    b.ToTable("ItemPackingUnits", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemPackingUnitSellingPrice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ItemPackingUnitId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SellingPriceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("SellingPriceId");
-
-                    b.HasIndex("ItemPackingUnitId", "SellingPriceId")
-                        .IsUnique();
-
-                    b.ToTable("ItemPackingUnitSellingPrices", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemSellingPriceDiscount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DiscountType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SellingPriceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("SellingPriceId");
-
-                    b.HasIndex("ItemId", "SellingPriceId")
-                        .IsUnique();
-
-                    b.ToTable("ItemSellingPriceDiscounts", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemSupplier", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("SupplierId");
-
-                    b.HasIndex("ItemId", "SupplierId")
-                        .IsUnique();
-
-                    b.ToTable("ItemSuppliers", "inventory");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.ManufacturerCompanies.ManufacturerCompany", b =>
@@ -3614,6 +3335,8 @@ namespace ERP.Persistence.Migrations
 
                     b.HasIndex("CreatedAt");
 
+                    b.HasIndex("SupplierId");
+
                     b.HasIndex("VariantId");
 
                     b.ToTable("VariantSuppliers", "inventory");
@@ -3752,7 +3475,7 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", "identity");
                 });
 
-            modelBuilder.Entity("Shared.BaseEntities.AuditLog", b =>
+            modelBuilder.Entity("Platform.Audit.Application.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3819,88 +3542,13 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("AuditLogs", "platform");
                 });
 
-            modelBuilder.Entity("Shared.BaseEntities.Identity.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", "identity");
-                });
-
-            modelBuilder.Entity("Accounting.Domain.Entities.Tax", b =>
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
                 {
                     b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Accounting.Domain.Entities.Tax", null)
+                    b.HasOne("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
@@ -3979,7 +3627,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Accounting.Domain.Models.Entities.Entries.EntryAttachment", b =>
                 {
-                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4059,7 +3707,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Branch", b =>
                 {
-                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -4188,29 +3836,23 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransaction", b =>
                 {
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", "Branch")
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Domain.Models.Entities.FinancialPeriods.FinancialPeriod", "FinancialPeriod")
+                    b.HasOne("Accounting.Domain.Models.Entities.FinancialPeriods.FinancialPeriod", null)
                         .WithMany()
                         .HasForeignKey("FinancialPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "TransactionParty")
+                    b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", null)
                         .WithMany()
                         .HasForeignKey("TransactionPartyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("FinancialPeriod");
-
-                    b.Navigation("TransactionParty");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransactionItem", b =>
@@ -4240,21 +3882,17 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.InventoryTransfer", b =>
                 {
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", "DestinationBranch")
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("DestinationBranchId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", "SourceBranch")
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("SourceBranchId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("DestinationBranch");
-
-                    b.Navigation("SourceBranch");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.InventoryTransferItem", b =>
@@ -4284,119 +3922,6 @@ namespace ERP.Persistence.Migrations
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.Item", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemCode", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", "Item")
-                        .WithMany("ItemCodes")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemManufacturerCompany", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", "Item")
-                        .WithMany("ItemManufacturerCompanies")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory.Domain.Models.Entities.ManufacturerCompanies.ManufacturerCompany", "ManufacturerCompany")
-                        .WithMany()
-                        .HasForeignKey("ManufacturerCompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("ManufacturerCompany");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemPackingUnit", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", "Item")
-                        .WithMany("ItemPackingUnitPrices")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory.Domain.Models.Entities.PackingUnits.PackingUnit", "PackingUnit")
-                        .WithMany()
-                        .HasForeignKey("PackingUnitId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("PackingUnit");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemPackingUnitSellingPrice", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.ItemPackingUnit", "ItemPackingUnit")
-                        .WithMany("ItemPackingUnitSellingPrices")
-                        .HasForeignKey("ItemPackingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory.Domain.Models.Entities.SellingPrices.SellingPrice", "SellingPrice")
-                        .WithMany()
-                        .HasForeignKey("SellingPriceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ItemPackingUnit");
-
-                    b.Navigation("SellingPrice");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemSellingPriceDiscount", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", "Item")
-                        .WithMany("ItemSellingPriceDiscounts")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory.Domain.Models.Entities.SellingPrices.SellingPrice", "SellingPrice")
-                        .WithMany()
-                        .HasForeignKey("SellingPriceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("SellingPrice");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemSupplier", b =>
-                {
-                    b.HasOne("Inventory.Domain.Models.Entities.Items.Item", "Item")
-                        .WithMany("ItemSuppliers")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Supplier");
-                });
-
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Products.Product", b =>
                 {
                     b.HasOne("Inventory.Domain.Models.Entities.Products.Product", null)
@@ -4406,7 +3931,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Products.ProductAttachment", b =>
                 {
-                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -4455,7 +3980,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Products.ProductCostCenter", b =>
                 {
-                    b.HasOne("Accounting.Domain.Models.Entities.CostCenters.CostCenter", "CostCenter")
+                    b.HasOne("Accounting.Domain.Models.Entities.CostCenters.CostCenter", null)
                         .WithMany()
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -4466,8 +3991,6 @@ namespace ERP.Persistence.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CostCenter");
 
                     b.Navigation("Product");
                 });
@@ -4559,7 +4082,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Sizes.StockBalance", b =>
                 {
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", "Branch")
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", null)
                         .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4576,8 +4099,6 @@ namespace ERP.Persistence.Migrations
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Branch");
 
                     b.Navigation("PackingUnit");
 
@@ -4597,7 +4118,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Variants.VariantAttachment", b =>
                 {
-                    b.HasOne("ERP.Shared.BaseEntities.Attachments.Attachment", "Attachment")
+                    b.HasOne("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", "Attachment")
                         .WithMany()
                         .HasForeignKey("AttachmentId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -4654,7 +4175,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Variants.VariantCostCenter", b =>
                 {
-                    b.HasOne("Accounting.Domain.Models.Entities.CostCenters.CostCenter", "CostCenter")
+                    b.HasOne("Accounting.Domain.Models.Entities.CostCenters.CostCenter", null)
                         .WithMany()
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -4665,8 +4186,6 @@ namespace ERP.Persistence.Migrations
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CostCenter");
 
                     b.Navigation("Variant");
                 });
@@ -4771,6 +4290,12 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Variants.VariantSupplier", b =>
                 {
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Supplier", null)
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Inventory.Domain.Models.Entities.Variants.Variant", "Variant")
                         .WithMany("VariantSuppliers")
                         .HasForeignKey("VariantId")
@@ -4791,7 +4316,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Shared.BaseEntities.Identity.ApplicationUser", null)
+                    b.HasOne("Identity.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4800,7 +4325,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Shared.BaseEntities.Identity.ApplicationUser", null)
+                    b.HasOne("Identity.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4815,7 +4340,7 @@ namespace ERP.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shared.BaseEntities.Identity.ApplicationUser", null)
+                    b.HasOne("Identity.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4824,7 +4349,7 @@ namespace ERP.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Shared.BaseEntities.Identity.ApplicationUser", null)
+                    b.HasOne("Identity.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4867,24 +4392,6 @@ namespace ERP.Persistence.Migrations
             modelBuilder.Entity("Inventory.Domain.Models.Entities.InventoryTransfer", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.Item", b =>
-                {
-                    b.Navigation("ItemCodes");
-
-                    b.Navigation("ItemManufacturerCompanies");
-
-                    b.Navigation("ItemPackingUnitPrices");
-
-                    b.Navigation("ItemSellingPriceDiscounts");
-
-                    b.Navigation("ItemSuppliers");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Items.ItemPackingUnit", b =>
-                {
-                    b.Navigation("ItemPackingUnitSellingPrices");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.Products.Product", b =>

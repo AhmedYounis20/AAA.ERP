@@ -2,7 +2,7 @@ using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands
 using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Products;
-using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Application.Commands.Products;
 

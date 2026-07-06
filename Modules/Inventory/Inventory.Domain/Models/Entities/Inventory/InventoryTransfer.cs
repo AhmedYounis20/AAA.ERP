@@ -1,4 +1,3 @@
-using Inventory.Domain.Models.Entities.Items;
 using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Inventory.Domain.Models.Entities;

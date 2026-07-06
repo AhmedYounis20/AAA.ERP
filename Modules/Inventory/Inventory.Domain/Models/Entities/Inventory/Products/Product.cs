@@ -2,7 +2,7 @@ using Inventory.Domain.Models.Entities.ExpiryLevels;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using ERP.BuildingBlocks.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.Variants;
 
 namespace Inventory.Domain.Models.Entities.Products;

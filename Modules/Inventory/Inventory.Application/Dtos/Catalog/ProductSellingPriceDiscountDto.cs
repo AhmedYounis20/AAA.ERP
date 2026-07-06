@@ -1,4 +1,4 @@
-using Inventory.Domain.Models.Entities.Items;
+using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Application.Dtos;
 

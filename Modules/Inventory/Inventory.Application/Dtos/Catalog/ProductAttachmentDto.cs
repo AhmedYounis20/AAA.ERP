@@ -1,5 +1,4 @@
 using ERP.BuildingBlocks.Domain.Entities;
-using Inventory.Domain.Models.Entities.Items;
 using ERP.BuildingBlocks.Application.DTOs;
 using Inventory.Domain.Models.Entities.Products;
 

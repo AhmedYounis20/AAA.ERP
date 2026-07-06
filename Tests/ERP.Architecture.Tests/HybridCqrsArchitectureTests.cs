@@ -88,7 +88,7 @@ public class HybridCqrsArchitectureTests
     [Fact]
     public void All_accounting_and_inventory_controllers_are_enforced()
     {
-        HybridCqrsControllers.Value.Should().HaveCountGreaterThanOrEqualTo(35,
+        HybridCqrsControllers.Value.Should().HaveCountGreaterThanOrEqualTo(34,
             "discovery should include all migrated Accounting + Inventory controllers");
     }
 
