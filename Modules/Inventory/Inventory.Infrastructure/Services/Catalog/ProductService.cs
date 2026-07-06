@@ -46,7 +46,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
     private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
     private readonly IBaseRepository<VariantPackingUnitSellingPrice> _variantPackingUnitSellingPriceRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IVariantService _variantService;
+    private readonly IVariantProductOperations _variantProductOperations;
 
     public ProductService(
         IProductRepository repository,
@@ -75,7 +75,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
         IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IUnitOfWork unitOfWork,
-        IVariantService variantService) : base(repository)
+        IVariantProductOperations variantProductOperations) : base(repository)
     {
         _repository = repository;
         _codeRepository = codeRepository;
@@ -103,7 +103,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
         _variantPackingUnitRepository = variantPackingUnitRepository;
         _variantPackingUnitSellingPriceRepository = variantPackingUnitSellingPriceRepository;
         _unitOfWork = unitOfWork;
-        _variantService = variantService;
+        _variantProductOperations = variantProductOperations;
     }
 
     public override async Task<ApiResponse<Product>> Create(ProductCreateCommand command, bool isValidate = true)
@@ -178,7 +178,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             // Prepare variants for Domain products (no database hits - prepared in memory)
             if (command.NodeType == NodeType.Domain)
-                product.Variants = _variantService.PrepareVariantsForProduct(command);
+                product.Variants = _variantProductOperations.PrepareVariantsForProduct(command);
 
             // Single database hit - EF will cascade insert all navigation properties including variants
             await _repository.Add(product);
@@ -1629,7 +1629,7 @@ public class ProductService : BaseTreeSettingService<Product, ProductCreateComma
 
             if (newVariantCommands.Any())
             {
-                var bulkCreateResult = await _variantService.CreateVariantsBulkForProductUpdate(newVariantCommands, false);
+                var bulkCreateResult = await _variantProductOperations.CreateVariantsBulkForProductUpdate(newVariantCommands, false);
                 if (!bulkCreateResult.IsSuccess)
                 {
                     return new ApiResponse<bool>
