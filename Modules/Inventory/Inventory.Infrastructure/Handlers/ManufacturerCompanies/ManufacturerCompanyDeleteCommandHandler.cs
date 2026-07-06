@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.ManufacturerCompanies;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.ManufacturerCompanies;
 
-public class ManufacturerCompanyDeleteCommandHandler(IManufacturerCompanyService manufacturerCompanyService)
-    : ICommandHandler<ManufacturerCompanyDeleteCommand, ApiResponse<ManufacturerCompany>>
-{
-    public Task<ApiResponse<ManufacturerCompany>> Handle(ManufacturerCompanyDeleteCommand request, CancellationToken cancellationToken)
-        => manufacturerCompanyService.Delete(request.Id);
-}
+public sealed class ManufacturerCompanyDeleteCommandHandler(IManufacturerCompanyRepository repository)
+    : BaseSettingDeleteHandler<ManufacturerCompany, ManufacturerCompanyDeleteCommand>(repository);

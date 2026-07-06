@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.ManufacturerCompanies;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.ManufacturerCompanies;
 
-public class ManufacturerCompanyUpdateCommandHandler(IManufacturerCompanyService service)
-    : ICommandHandler<ManufacturerCompanyUpdateCommand, ApiResponse<ManufacturerCompany>>
-{
-    public Task<ApiResponse<ManufacturerCompany>> Handle(ManufacturerCompanyUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class ManufacturerCompanyUpdateCommandHandler(IManufacturerCompanyRepository repository)
+    : BaseSettingUpdateHandler<ManufacturerCompany, ManufacturerCompanyUpdateCommand>(repository);
