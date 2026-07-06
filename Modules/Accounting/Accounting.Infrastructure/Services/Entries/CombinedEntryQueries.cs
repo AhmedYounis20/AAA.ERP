@@ -3,20 +3,20 @@ using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Dtos;
+using Accounting.Domain.Models.Entities.Entries;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
-using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Infrastructure.Services.Entries;
 
 /// <summary>
-/// Combined entry reads. Transitional: delegates to <see cref="ICombinedEntryService"/>.
+/// Combined entry reads.
 /// </summary>
-public class CombinedEntryQueries(ICombinedEntryService combinedEntryService, IEntryService entryService)
+public class CombinedEntryQueries(IComplexEntryService complexEntryService, IEntryService entryService)
     : ICombinedEntryQueries
 {
     public Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetAll()
-        => combinedEntryService.GetComplexEntries();
+        => complexEntryService.GetComplexEntries(EntryType.Combined);
 
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
@@ -24,8 +24,8 @@ public class CombinedEntryQueries(ICombinedEntryService combinedEntryService, IE
         => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
-        => combinedEntryService.GetComplexEntryById(id);
+        => complexEntryService.GetComplexEntryById(id, EntryType.Combined);
 
     public Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
-        => combinedEntryService.GetEntryNumber(dateTime);
+        => complexEntryService.GetEntryNumber(dateTime);
 }

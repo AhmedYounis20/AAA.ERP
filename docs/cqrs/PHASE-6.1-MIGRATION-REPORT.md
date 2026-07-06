@@ -41,7 +41,7 @@ Phase 6.1 begins ADR-013 cleanup by removing seven transitional `I*Service` type
 
 ## Next Steps (Phase 6.2+)
 
-- Migrate entry-group `*Queries` off slim read services (`IJournalEntryService`, etc.)
+- Migrate entry-group `*Queries` off slim read services — see `PHASE-6.2-MIGRATION-REPORT.md`
 - Migrate inventory transaction `*Queries` off `IImportTransactionService` / `IExportTransactionService`
 - Migrate catalog `*Queries` (Item, Product, Variant) off write-capable services once workflow extraction completes
 - Update `MediatRRegistrationTests` baselines if handler consolidation changes counts

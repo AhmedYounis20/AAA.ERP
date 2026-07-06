@@ -10,7 +10,7 @@ using Accounting.Domain.Models.Entities.Entries;
 namespace Accounting.Infrastructure.Services.Entries;
 
 /// <summary>
-/// Complex entry reads. Transitional: delegates to <see cref="IComplexEntryService"/>.
+/// Complex entry reads.
 /// </summary>
 public class ComplexEntryQueries(IComplexEntryService complexEntryService, IEntryService entryService)
     : IComplexEntryQueries

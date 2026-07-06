@@ -3,20 +3,20 @@ using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Dtos;
+using Accounting.Domain.Models.Entities.Entries;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
-using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Infrastructure.Services.Entries;
 
 /// <summary>
-/// Receipt entry reads. Transitional: delegates to <see cref="IReceiptEntryService"/>.
+/// Receipt entry reads.
 /// </summary>
-public class ReceiptEntryQueries(IReceiptEntryService receiptEntryService, IEntryService entryService)
+public class ReceiptEntryQueries(IComplexEntryService complexEntryService, IEntryService entryService)
     : IReceiptEntryQueries
 {
     public Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetAll()
-        => receiptEntryService.GetComplexEntries();
+        => complexEntryService.GetComplexEntries(EntryType.Receipt);
 
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
@@ -24,8 +24,8 @@ public class ReceiptEntryQueries(IReceiptEntryService receiptEntryService, IEntr
         => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
-        => receiptEntryService.GetComplexEntryById(id);
+        => complexEntryService.GetComplexEntryById(id, EntryType.Receipt);
 
     public Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
-        => receiptEntryService.GetEntryNumber(dateTime);
+        => complexEntryService.GetEntryNumber(dateTime);
 }

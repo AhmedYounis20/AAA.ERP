@@ -60,11 +60,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<IFixedAssetQueries, FixedAssetQueries>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleQueries, RoleQueries>();
-        services.AddScoped<IJournalEntryService, JournalEntryService>();
         services.AddScoped<IJournalEntryQueries, JournalEntryQueries>();
-        services.AddScoped<IPaymentEntryService, PaymentEntryService>();
         services.AddScoped<IPaymentEntryQueries, PaymentEntryQueries>();
-        services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<IReceiptEntryQueries, ReceiptEntryQueries>();
         services.AddScoped<IEntryRepository, EntryRepository>();
         services.AddScoped<IEntryWorkflowService, EntryWorkflowService>();
@@ -72,9 +69,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IComplexEntryQueries, ComplexEntryQueries>();
-        services.AddScoped<IOpeningEntryService, OpeningEntryService>();
         services.AddScoped<IOpeningEntryQueries, OpeningEntryQueries>();
-        services.AddScoped<ICombinedEntryService, CombinedEntryService>();
         services.AddScoped<ICombinedEntryQueries, CombinedEntryQueries>();
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<IInventoryCatalogValidationQueries, InventoryCatalogValidationQueries>();

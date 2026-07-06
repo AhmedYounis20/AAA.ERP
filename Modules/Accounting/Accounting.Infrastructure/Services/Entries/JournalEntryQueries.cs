@@ -3,20 +3,19 @@ using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Dtos;
+using Accounting.Domain.Models.Entities.Entries;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
-using Accounting.Domain.Models.Entities.Entries;
 
 namespace Accounting.Infrastructure.Services.Entries;
 
 /// <summary>
-/// Journal entry reads. Transitional: delegates to <see cref="IJournalEntryService"/>.
+/// Journal entry reads.
 /// </summary>
-public class JournalEntryQueries(IJournalEntryService journalEntryService, IEntryService entryService)
-    : IJournalEntryQueries
+public class JournalEntryQueries(IEntryService entryService) : IJournalEntryQueries
 {
     public Task<ApiResponse<IEnumerable<EntryDto>>> GetAll()
-        => journalEntryService.GetDto();
+        => entryService.Get(EntryType.Journal);
 
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
@@ -24,8 +23,8 @@ public class JournalEntryQueries(IJournalEntryService journalEntryService, IEntr
         => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<EntryDto>> GetById(Guid id)
-        => journalEntryService.GetDto(id);
+        => entryService.Get(id, EntryType.Journal);
 
     public Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
-        => journalEntryService.GetEntryNumber(dateTime);
+        => entryService.GetEntryNumber(dateTime);
 }
