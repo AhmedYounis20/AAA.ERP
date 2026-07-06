@@ -14,7 +14,9 @@ Phase 5.3 extracts `InventoryTransferService` write logic into `InventoryTransfe
 |------|--------|---------|
 | InventoryTransfer | *(this commit)* | `InventoryTransferWorkflowService`; `IInventoryTransferService` read-only |
 
-**Next in order (Phase 5.4):** `AttributeDefinition` workflow.
+**Next in order (Phase 5.4):** `AttributeDefinition` workflow — **done in Phase 5.4 commit.**
+
+**Next in order (Phase 5.5):** `Variant` workflow.
 
 ---
 
