@@ -45,7 +45,6 @@ public static class InventoryModuleExtensions
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
         services.AddScoped<IManufacturerCompanyQueries, ManufacturerCompanyQueries>();
         services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
-        services.AddScoped<ISellingPriceService, SellingPriceService>();
         services.AddScoped<ISellingPriceQueries, SellingPriceQueries>();
         services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
         services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();

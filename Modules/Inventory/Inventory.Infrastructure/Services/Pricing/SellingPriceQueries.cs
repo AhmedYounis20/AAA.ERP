@@ -1,6 +1,8 @@
+using System.Net;
 using ERP.BuildingBlocks.Application.Responses;
 using Inventory.Application.Commands.SellingPrices;
 using Inventory.Application.Dtos;
+using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.SellingPrices;
 using ERP.Infrastructure.Services.Queries;
@@ -8,12 +10,32 @@ using ERP.Infrastructure.Services.Queries;
 namespace Inventory.Infrastructure.Services;
 
 /// <summary>
-/// Selling price read queries. Transitional: delegates to <see cref="ISellingPriceService"/> until write methods are removed.
+/// Selling price read queries.
 /// </summary>
-public class SellingPriceQueries(ISellingPriceService sellingPriceService)
-    : BaseSettingQueries<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>(sellingPriceService),
+public class SellingPriceQueries(ISellingPriceRepository repository)
+    : BaseSettingRepositoryQueries<SellingPrice>(repository),
       ISellingPriceQueries
 {
-    public Task<ApiResponse<IEnumerable<SellingPriceDto>>> GetDtos()
-        => sellingPriceService.GetDtos();
+    public async Task<ApiResponse<IEnumerable<SellingPriceDto>>> GetDtos()
+    {
+        try
+        {
+            var entities = await repository.GetDtos();
+            return new ApiResponse<IEnumerable<SellingPriceDto>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = entities
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<IEnumerable<SellingPriceDto>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
+            };
+        }
+    }
 }

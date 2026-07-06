@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.SellingPrices;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.SellingPrices;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.SellingPrices;
 
-public class SellingPriceUpdateCommandHandler(ISellingPriceService service)
-    : ICommandHandler<SellingPriceUpdateCommand, ApiResponse<SellingPrice>>
-{
-    public Task<ApiResponse<SellingPrice>> Handle(SellingPriceUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class SellingPriceUpdateCommandHandler(ISellingPriceRepository repository)
+    : BaseSettingUpdateHandler<SellingPrice, SellingPriceUpdateCommand>(repository);

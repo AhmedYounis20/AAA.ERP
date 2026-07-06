@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.SellingPrices;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.SellingPrices;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.SellingPrices;
 
-public class SellingPriceCreateCommandHandler(ISellingPriceService service)
-    : ICommandHandler<SellingPriceCreateCommand, ApiResponse<SellingPrice>>
-{
-    public Task<ApiResponse<SellingPrice>> Handle(SellingPriceCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
-}
+public sealed class SellingPriceCreateCommandHandler(ISellingPriceRepository repository)
+    : BaseSettingCreateHandler<SellingPrice, SellingPriceCreateCommand>(repository);
