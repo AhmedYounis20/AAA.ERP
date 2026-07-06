@@ -1,4 +1,4 @@
-using Accounting.Application.Commands.Roles;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Roles;
 using ERP.Infrastructure.Services.Queries;
@@ -6,8 +6,8 @@ using ERP.Infrastructure.Services.Queries;
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Role read queries. Transitional: delegates to <see cref="IRoleService"/> until write methods are removed.
+/// Role read queries.
 /// </summary>
-public class RoleQueries(IRoleService roleService)
-    : BaseSettingQueries<Role, RoleCreateCommand, RoleUpdateCommand>(roleService),
+public class RoleQueries(IRoleRepository repository)
+    : BaseSettingRepositoryQueries<Role>(repository),
       IRoleQueries;

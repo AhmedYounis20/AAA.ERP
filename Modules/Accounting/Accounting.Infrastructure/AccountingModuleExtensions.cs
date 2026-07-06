@@ -66,7 +66,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<IFixedAssetQueries, FixedAssetQueries>();
         services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IRoleQueries, RoleQueries>();
         services.AddScoped<IJournalEntryService, JournalEntryService>();
         services.AddScoped<IJournalEntryQueries, JournalEntryQueries>();

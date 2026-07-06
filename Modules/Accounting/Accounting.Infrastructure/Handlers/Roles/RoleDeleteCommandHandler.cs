@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.Roles;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.Roles;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.Roles;
 
-public class RoleDeleteCommandHandler(IRoleService service)
-    : ICommandHandler<RoleDeleteCommand, ApiResponse<Role>>
-{
-    public Task<ApiResponse<Role>> Handle(RoleDeleteCommand request, CancellationToken cancellationToken)
-        => service.Delete(request.Id);
-}
+public sealed class RoleDeleteCommandHandler(IRoleRepository repository)
+    : BaseSettingDeleteHandler<Role, RoleDeleteCommand>(repository);

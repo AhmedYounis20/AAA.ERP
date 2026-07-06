@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.Roles;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.Roles;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.Roles;
 
-public class RoleUpdateCommandHandler(IRoleService service)
-    : ICommandHandler<RoleUpdateCommand, ApiResponse<Role>>
-{
-    public Task<ApiResponse<Role>> Handle(RoleUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class RoleUpdateCommandHandler(IRoleRepository repository)
+    : BaseSettingUpdateHandler<Role, RoleUpdateCommand>(repository);
