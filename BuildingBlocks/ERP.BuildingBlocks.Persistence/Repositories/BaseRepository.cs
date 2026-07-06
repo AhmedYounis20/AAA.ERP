@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using ERP.BuildingBlocks.Application.DTOs;
-
-namespace ERP.Infrastructure.Repositories.BaseRepositories;
+﻿namespace ERP.BuildingBlocks.Persistence.Repositories;
 
 public class BaseRepository<TEntity>
     : IBaseRepository<TEntity> where TEntity : BaseEntity

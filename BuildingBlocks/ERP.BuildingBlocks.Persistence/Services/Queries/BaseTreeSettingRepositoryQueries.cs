@@ -6,7 +6,7 @@ using ERP.BuildingBlocks.Application.Responses;
 using ERP.BuildingBlocks.Application.Services.Queries;
 using ERP.BuildingBlocks.Domain.Entities;
 
-namespace ERP.Infrastructure.Services.Queries;
+namespace ERP.BuildingBlocks.Persistence.Services.Queries;
 
 /// <summary>
 /// Read queries for tree setting entities using the repository directly (post-CQRS write migration).

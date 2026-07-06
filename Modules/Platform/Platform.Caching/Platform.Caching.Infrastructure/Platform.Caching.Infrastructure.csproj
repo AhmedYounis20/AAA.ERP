@@ -9,9 +9,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Platform.Caching.Application\Platform.Caching.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
-    <ProjectReference Include="..\..\..\Accounting\Accounting.Application\Accounting.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

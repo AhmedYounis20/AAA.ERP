@@ -23,7 +23,7 @@ using Inventory.Domain.Models.Entities.ExpiryLevels;
 using Inventory.Domain.Models.Entities.InventoryThresholds;
 using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Variants;
-using ERP.Infrastructure.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Inventory.Infrastructure;
 

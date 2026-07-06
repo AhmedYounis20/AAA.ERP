@@ -2,14 +2,12 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
-using Accounting.Application.Services.Queries;
 using Accounting.Contracts.Integration;
 using Accounting.Infrastructure.Persistence;
 using Accounting.Infrastructure.Persistence.Attachments;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
 using Accounting.Infrastructure.Services.Entries;
-using Accounting.Infrastructure.Services.Queries;
 using Accounting.Infrastructure.Workflows;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories.Account.SubLeadgers;
@@ -75,7 +73,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<IInventoryAccountingDisplayQueries, InventoryAccountingDisplayQueries>();
         services.AddScoped<IAttachmentCrossModulePort, AttachmentCrossModulePort>();
         services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-        services.AddScoped(typeof(IBaseQueryService<,>), typeof(BaseQueryService<,>));
 
         return services;
     }

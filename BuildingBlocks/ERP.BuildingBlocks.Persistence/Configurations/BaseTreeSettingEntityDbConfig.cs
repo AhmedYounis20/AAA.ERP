@@ -1,8 +1,8 @@
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+namespace ERP.BuildingBlocks.Persistence.Configurations;
 
 public class BaseTreeSettingEntityDbConfig<TEntity> : BaseSettingEntityDbConfig<TEntity> where TEntity : BaseTreeSettingEntity<TEntity>
 {

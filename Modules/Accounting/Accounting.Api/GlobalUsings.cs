@@ -10,5 +10,5 @@ global using ERP.BuildingBlocks.Application.Responses;
 global using Accounting.Application.Dtos.Filters;
 global using Accounting.Application.Dtos.Lookups;
 global using Accounting.Application.Services;
-global using Accounting.Application.Services.Queries;
+global using ERP.BuildingBlocks.Application.Services.Queries;
 global using Accounting.Domain.Utility;

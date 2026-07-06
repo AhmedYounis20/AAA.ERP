@@ -1,6 +1,6 @@
 using Accounting.Domain.Models.Entities.CostCenters;
 using Inventory.Domain.Models.Entities.Products;
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
 

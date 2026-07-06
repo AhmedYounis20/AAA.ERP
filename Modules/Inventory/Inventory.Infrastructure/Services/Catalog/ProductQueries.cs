@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.BuildingBlocks.Application.Responses;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 using Inventory.Application.Dtos;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;

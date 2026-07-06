@@ -1,7 +1,6 @@
 ﻿using Inventory.Application.Commands.PackingUnits;
 using Inventory.Application.Dtos.Lookups;
 using Inventory.Application.Services;
-using Accounting.Application.Services.Queries;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;

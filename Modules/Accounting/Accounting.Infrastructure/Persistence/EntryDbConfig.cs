@@ -2,7 +2,7 @@
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
 

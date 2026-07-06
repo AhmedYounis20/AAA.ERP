@@ -5,7 +5,7 @@ using Inventory.Application.Dtos;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.SellingPrices;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Inventory.Infrastructure.Services;
 

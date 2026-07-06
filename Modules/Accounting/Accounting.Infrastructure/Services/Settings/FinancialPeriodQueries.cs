@@ -6,7 +6,7 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 

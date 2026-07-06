@@ -5,7 +5,7 @@ using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Domain.Utility;
 using Accounting.Infrastructure.Services.SubLeadgers;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 

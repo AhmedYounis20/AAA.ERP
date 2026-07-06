@@ -10,4 +10,4 @@ global using ERP.BuildingBlocks.Domain.Entities;
 global using Inventory.Application.Dtos;
 global using Inventory.Application.Dtos.Lookups;
 global using Inventory.Application.Services;
-global using Accounting.Application.Services.Queries;
+global using ERP.BuildingBlocks.Application.Services.Queries;

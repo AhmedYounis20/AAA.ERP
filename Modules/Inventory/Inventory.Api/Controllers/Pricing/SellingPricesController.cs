@@ -2,7 +2,6 @@
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.SellingPrices;
 using Inventory.Application.Dtos.Lookups;
-using Accounting.Application.Services.Queries;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Responses;

@@ -1,11 +1,6 @@
-using Accounting.Application.Services.Queries;
-using ERP.BuildingBlocks.Domain.Entities;
-using System.Linq.Expressions;
+namespace ERP.BuildingBlocks.Persistence.Services.Queries;
 
-namespace Accounting.Infrastructure.Services.Queries;
-
-public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto>
-    where TEntity : BaseEntity
+public class BaseQueryService<TEntity, TDto> : IBaseQueryService<TEntity, TDto>    where TEntity : BaseEntity
     where TDto : class
 {
     private readonly IApplicationDbContext _dbContext;

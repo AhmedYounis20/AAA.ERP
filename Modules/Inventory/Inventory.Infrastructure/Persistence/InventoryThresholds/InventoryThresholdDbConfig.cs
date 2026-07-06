@@ -1,5 +1,5 @@
 using Inventory.Domain.Models.Entities.InventoryThresholds;
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;
 

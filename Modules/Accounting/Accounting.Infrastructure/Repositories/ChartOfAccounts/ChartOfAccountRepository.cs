@@ -1,7 +1,7 @@
 using System.Numerics;
 using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
-using ERP.Infrastructure.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Accounting.Infrastructure.Repositories;
 

@@ -1,4 +1,4 @@
-﻿namespace ERP.Infrastructure.Repositories.BaseRepositories;
+﻿namespace ERP.BuildingBlocks.Persistence.Repositories;
 
 public class BaseTreeSettingRepository<TEntity>
     : BaseSettingRepository<TEntity>,

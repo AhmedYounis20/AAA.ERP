@@ -198,7 +198,7 @@ public class NamespaceDebtTests
     }
 
     [Fact]
-    public void Accounting_Application_horizontal_service_ports_should_not_use_legacy_ERP_Application_Services_Account_namespace()
+    public void IBaseQueryService_should_not_reside_in_Accounting_Application_namespace()
     {
         var assembly = typeof(Accounting.Application.Repositories.IEntryRepository).Assembly;
 
@@ -206,6 +206,10 @@ public class NamespaceDebtTests
             .That()
             .HaveName("IBaseQueryService")
             .Should()
+            .NotResideInNamespace("Accounting.Application.Services.Queries")
+            .And()
+            .NotResideInNamespaceStartingWith("Accounting.Application.Services.Queries.")
+            .And()
             .NotResideInNamespace("ERP.Application.Services.Account")
             .And()
             .NotResideInNamespaceStartingWith("ERP.Application.Services.Account.")

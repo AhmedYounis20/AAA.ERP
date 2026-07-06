@@ -3,7 +3,7 @@ using ERP.BuildingBlocks.Application.Responses;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.Sizes;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Inventory.Infrastructure.Services;
 

@@ -1,4 +1,4 @@
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using Inventory.Domain.Models.Entities.ManufacturerCompanies;
 using ERP.BuildingBlocks.Persistence;
 

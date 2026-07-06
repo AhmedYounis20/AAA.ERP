@@ -1,6 +1,5 @@
 ﻿using Accounting.Application.Commands.AccountGuides;
 using Accounting.Application.Services;
-using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;

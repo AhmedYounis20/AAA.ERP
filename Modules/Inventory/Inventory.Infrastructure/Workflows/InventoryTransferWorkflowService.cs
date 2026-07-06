@@ -1,5 +1,4 @@
 using Accounting.Contracts.Integration;
-using ERP.Infrastructure.DBConfiguration.DbContext;
 using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
@@ -17,7 +16,7 @@ public class InventoryTransferWorkflowService(
     IInventoryTransferRepository repository,
     IStockBalanceRepository stockBalanceRepository,
     ITransactionCoordinator transactionCoordinator,
-    ApplicationDbContext dbContext,
+    IApplicationDbContext dbContext,
     IAccountingIntegrationService accountingIntegration) : IInventoryTransferWorkflowService
 {
     public Task<ApiResponse<InventoryTransfer>> Create(InventoryTransferCreateCommand command)

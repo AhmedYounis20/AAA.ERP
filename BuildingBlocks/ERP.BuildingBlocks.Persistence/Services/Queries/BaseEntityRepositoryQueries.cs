@@ -3,17 +3,15 @@ using System.Net;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.BuildingBlocks.Application.Responses;
-using ERP.BuildingBlocks.Application.Services.Queries;
 using ERP.BuildingBlocks.Domain.Entities;
 
-namespace ERP.Infrastructure.Services.Queries;
+namespace ERP.BuildingBlocks.Persistence.Services.Queries;
 
 /// <summary>
-/// Read queries for setting entities using the repository directly (post-CQRS write migration).
+/// Read queries for base entities using the repository directly (post-CQRS write migration).
 /// </summary>
-public class BaseSettingRepositoryQueries<TEntity>(IBaseSettingRepository<TEntity> repository)
-    : ISettingQueries<TEntity>
-    where TEntity : BaseSettingEntity
+public class BaseEntityRepositoryQueries<TEntity>(IBaseRepository<TEntity> repository)
+    where TEntity : BaseEntity
 {
     public async Task<ApiResponse<IEnumerable<TEntity>>> GetAll()
     {
@@ -39,7 +37,7 @@ public class BaseSettingRepositoryQueries<TEntity>(IBaseSettingRepository<TEntit
     }
 
     public async Task<ApiResponse<PaginatedResult<TEntity>>> GetPaginated(
-        SettingFilterDto filter,
+        BaseFilterDto filter,
         CancellationToken cancellationToken = default)
     {
         try
@@ -103,29 +101,6 @@ public class BaseSettingRepositoryQueries<TEntity>(IBaseSettingRepository<TEntit
         catch (Exception ex)
         {
             return new ApiResponse<TEntity>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest,
-                Errors = new List<MessageTemplate> { new() { MessageKey = ex.Message } }
-            };
-        }
-    }
-
-    public async Task<ApiResponse<IEnumerable<TEntity>>> SearchByName(string query)
-    {
-        try
-        {
-            var entities = await repository.Search(query);
-            return new ApiResponse<IEnumerable<TEntity>>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.Created,
-                Result = entities
-            };
-        }
-        catch (Exception ex)
-        {
-            return new ApiResponse<IEnumerable<TEntity>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,

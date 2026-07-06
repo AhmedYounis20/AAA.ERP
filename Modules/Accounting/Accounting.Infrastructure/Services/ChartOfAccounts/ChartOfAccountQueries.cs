@@ -5,7 +5,7 @@ using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 

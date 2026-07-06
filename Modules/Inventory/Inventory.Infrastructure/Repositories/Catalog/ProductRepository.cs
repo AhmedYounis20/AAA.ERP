@@ -3,7 +3,7 @@ using Inventory.Application.Repositories;
 using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.Products;
 using Inventory.Domain.Models.Entities.Variants;
-using ERP.Infrastructure.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Inventory.Infrastructure.Repositories;
 

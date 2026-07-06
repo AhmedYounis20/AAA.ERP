@@ -2,7 +2,7 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Dtos.FinancialPeriods;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
-using ERP.Infrastructure.Repositories.BaseRepositories;
+using ERP.BuildingBlocks.Persistence.Repositories;
 using Inventory.Contracts.Integration;
 
 namespace Accounting.Infrastructure.Repositories;

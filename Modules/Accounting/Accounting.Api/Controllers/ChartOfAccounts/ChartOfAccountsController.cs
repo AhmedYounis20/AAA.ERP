@@ -2,7 +2,6 @@
 using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Services;
-using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;

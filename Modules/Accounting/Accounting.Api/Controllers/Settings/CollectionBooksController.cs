@@ -1,6 +1,5 @@
 ﻿using Accounting.Application.Commands.CollectionBooks;
 using Accounting.Application.Services;
-using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.CollectionBooks;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;

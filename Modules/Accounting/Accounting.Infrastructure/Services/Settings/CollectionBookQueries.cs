@@ -1,7 +1,7 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.CollectionBooks;
-using ERP.Infrastructure.Services.Queries;
+using ERP.BuildingBlocks.Persistence.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 

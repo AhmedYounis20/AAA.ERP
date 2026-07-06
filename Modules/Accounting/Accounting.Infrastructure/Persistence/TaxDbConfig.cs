@@ -1,5 +1,5 @@
 using Accounting.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using ERP.BuildingBlocks.Persistence;
 
 namespace Accounting.Infrastructure.Persistence;

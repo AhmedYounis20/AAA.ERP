@@ -1,4 +1,4 @@
-using ERP.Infrastructure.DBConfiguration.Config.BaseConfig;
+using ERP.BuildingBlocks.Persistence.Configurations;
 using Accounting.Domain.Models.Entities.CollectionBooks;
 using ERP.BuildingBlocks.Persistence;
 

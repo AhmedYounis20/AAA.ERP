@@ -1,7 +1,6 @@
 ﻿using Accounting.Application.Commands.Currencies;
 using Accounting.Application.Dtos.Lookups;
 using Accounting.Application.Services;
-using Accounting.Application.Services.Queries;
 using Accounting.Domain.Models.Entities.Currencies;
 using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;

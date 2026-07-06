@@ -1,10 +1,10 @@
-﻿using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Domain.Entities;
 using System.Linq.Expressions;
 
-namespace Accounting.Application.Services.Queries;
+namespace ERP.BuildingBlocks.Application.Services.Queries;
 
 /// <summary>
-/// Application service contract for base query.
+/// Application service contract for base lookup queries.
 /// </summary>
 public interface IBaseQueryService<TEntity, TDto> where TEntity : BaseEntity where TDto : class
 {
