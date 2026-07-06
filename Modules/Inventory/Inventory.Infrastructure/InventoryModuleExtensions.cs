@@ -92,13 +92,10 @@ public static class InventoryModuleExtensions
         services.AddScoped<IInventoryQueryService, FinancialPeriodInventoryUsageQueries>();
         services.AddScoped<IInventoryTransactionWorkflowService, InventoryTransactionWorkflowService>();
         services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
-        services.AddScoped<IImportTransactionService, ImportTransactionService>();
         services.AddScoped<IImportTransactionQueries, ImportTransactionQueries>();
-        services.AddScoped<IExportTransactionService, ExportTransactionService>();
         services.AddScoped<IExportTransactionQueries, ExportTransactionQueries>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
         services.AddScoped<IInventoryTransferWorkflowService, InventoryTransferWorkflowService>();
-        services.AddScoped<IInventoryTransferService, InventoryTransferService>();
         services.AddScoped<IInventoryTransferQueries, InventoryTransferQueries>();
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IItemWorkflowService, ItemWorkflowService>();

@@ -31,8 +31,7 @@ Phase 6.2 removes five transitional typed entry services that only forwarded rea
 
 ---
 
-## Next Steps (Phase 6.3+)
+## Next Steps (Phase 6.4+)
 
-- Migrate inventory transaction `*Queries` off `IImportTransactionService` / `IExportTransactionService`
 - Migrate catalog `*Queries` (Item, Product, Variant) off write-capable services
 - Consider inlining `IComplexEntryService` read logic into `ComplexEntryQueries` (optional follow-up)
