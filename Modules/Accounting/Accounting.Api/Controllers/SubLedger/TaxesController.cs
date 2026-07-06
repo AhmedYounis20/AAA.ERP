@@ -20,7 +20,7 @@ public class TaxesController(
     ISender sender,
     ITaxQueries queries,
     IBaseQueryService<Tax, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<Tax, TaxCreateCommand, TaxUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<Tax, TaxCreateCommand, TaxUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Tax>> BuildDeleteCommand(Guid id)
         => new TaxDeleteCommand(id);

@@ -14,7 +14,7 @@ namespace Accounting.Api.Controllers.Settings;
 [ApiController]
 [Authorize]
 public class RolesController(ISender sender, IRoleQueries queries)
-    : HybridSettingController<Role, RoleCreateCommand, RoleUpdateCommand>(sender, queries)
+    : BaseSettingController<Role, RoleCreateCommand, RoleUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Role>> BuildDeleteCommand(Guid id)
         => new RoleDeleteCommand(id);

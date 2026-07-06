@@ -51,7 +51,7 @@ public class ModuleApiLayerTests
     [Fact]
     public void BuildingBlocks_Api_should_not_reference_Persistence()
     {
-        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Api.Controllers.HybridSettingController<,,>).Assembly)
+        var result = Types.InAssembly(typeof(ERP.BuildingBlocks.Api.Controllers.BaseSettingController<,,>).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Persistence")
             .And()

@@ -20,7 +20,7 @@ public class BanksController(
     ISender sender,
     IBankQueries queries,
     IBaseQueryService<Bank, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<Bank, BankCreateCommand, BankUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<Bank, BankCreateCommand, BankUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Bank>> BuildDeleteCommand(Guid id)
         => new BankDeleteCommand(id);

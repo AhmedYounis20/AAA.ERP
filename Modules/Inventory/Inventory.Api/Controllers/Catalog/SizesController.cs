@@ -15,7 +15,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [ApiController]
 [Authorize]
 public class SizesController(ISender sender, ISizeQueries queries)
-    : HybridSettingController<Size, SizeCreateCommand, SizeUpdateCommand>(sender, queries)
+    : BaseSettingController<Size, SizeCreateCommand, SizeUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Size>> BuildDeleteCommand(Guid id)
         => new SizeDeleteCommand(id);

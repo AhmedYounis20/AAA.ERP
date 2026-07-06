@@ -20,7 +20,7 @@ public class CostCentersController(
     ISender sender,
     ICostCenterQueries queries,
     IBaseQueryService<CostCenter, CostCenterLookupDto> lookups)
-    : HybridTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>(sender, queries)
+    : BaseTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<CostCenter>> BuildDeleteCommand(Guid id)
         => new CostCenterDeleteCommand(id);

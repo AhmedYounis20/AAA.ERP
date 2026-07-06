@@ -15,7 +15,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [ApiController]
 [Authorize]
 public class ProductsController(ISender sender, IProductQueries queries)
-    : HybridTreeSettingController<Product, ProductCreateCommand, ProductUpdateCommand>(sender, queries)
+    : BaseTreeSettingController<Product, ProductCreateCommand, ProductUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Product>> BuildDeleteCommand(Guid id)
         => new ProductDeleteCommand(id);

@@ -20,7 +20,7 @@ public class AccountGuidesController(
     ISender sender,
     IAccountGuideQueries queries,
     IBaseQueryService<AccountGuide, LookupDto> lookups)
-    : HybridSettingController<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>(sender, queries)
+    : BaseSettingController<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<AccountGuide>> BuildDeleteCommand(Guid id)
         => new AccountGuideDeleteCommand(id);

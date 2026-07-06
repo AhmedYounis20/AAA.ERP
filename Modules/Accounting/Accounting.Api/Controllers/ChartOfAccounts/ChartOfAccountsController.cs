@@ -21,7 +21,7 @@ public class ChartOfAccountsController(
     ISender sender,
     IChartOfAccountQueries queries,
     IBaseQueryService<ChartOfAccount, ChartOfAccountLookupDto> lookups)
-    : HybridTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>(sender, queries)
+    : BaseTreeSettingController<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<ChartOfAccount>> BuildDeleteCommand(Guid id)
         => new ChartOfAccountDeleteCommand(id);

@@ -20,7 +20,7 @@ public class CashInBoxesController(
     ISender sender,
     ICashInBoxQueries queries,
     IBaseQueryService<CashInBox, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<CashInBox, CashInBoxCreateCommand, CashInBoxUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<CashInBox>> BuildDeleteCommand(Guid id)
         => new CashInBoxDeleteCommand(id);

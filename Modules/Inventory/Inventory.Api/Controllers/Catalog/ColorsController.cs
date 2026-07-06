@@ -15,7 +15,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [ApiController]
 [Authorize]
 public class ColorsController(ISender sender, IColorQueries queries)
-    : HybridSettingController<Color, ColorCreateCommand, ColorUpdateCommand>(sender, queries)
+    : BaseSettingController<Color, ColorCreateCommand, ColorUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Color>> BuildDeleteCommand(Guid id)
         => new ColorDeleteCommand(id);

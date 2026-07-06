@@ -20,7 +20,7 @@ public class BranchesController(
     ISender sender,
     IBranchQueries queries,
     IBaseQueryService<Branch, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<Branch, BranchCreateCommand, BranchUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<Branch, BranchCreateCommand, BranchUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Branch>> BuildDeleteCommand(Guid id)
         => new BranchDeleteCommand(id);

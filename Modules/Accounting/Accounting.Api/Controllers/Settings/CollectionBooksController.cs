@@ -20,7 +20,7 @@ public class CollectionBooksController(
     ISender sender,
     ICollectionBookQueries queries,
     IBaseQueryService<CollectionBook, LookupDto> lookups)
-    : HybridSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>(sender, queries)
+    : BaseSettingController<CollectionBook, CollectionBookCreateCommand, CollectionBookUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<CollectionBook>> BuildDeleteCommand(Guid id)
         => new CollectionBookDeleteCommand(id);

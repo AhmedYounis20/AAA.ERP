@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ERP.BuildingBlocks.Api.Controllers;
 
 /// <summary>
-/// Hybrid CQRS base for sub-ledger tree entities: tree CRUD reads plus <c>NextAccountDefaultData</c>.
+/// CQRS base for sub-ledger tree entities: tree CRUD reads plus <c>NextAccountDefaultData</c>.
 /// </summary>
-public abstract class HybridSubLedgerController<TEntity, TCreate, TUpdate>(
+public abstract class BaseSubLedgerController<TEntity, TCreate, TUpdate>(
     ISender sender,
     ISubLedgerQueries<TEntity, TCreate> queries)
-    : HybridTreeSettingController<TEntity, TCreate, TUpdate>(sender, queries)
+    : BaseTreeSettingController<TEntity, TCreate, TUpdate>(sender, queries)
     where TEntity : BaseTreeSettingEntity<TEntity>
     where TCreate : BaseTreeSettingCreateCommand<TEntity>
     where TUpdate : BaseTreeSettingUpdateCommand<TEntity>

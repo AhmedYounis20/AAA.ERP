@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ERP.BuildingBlocks.Api.Controllers;
 
 /// <summary>
-/// Hybrid CQRS base for tree setting entities: standard CRUD reads plus <c>GetLevel</c> and <c>GetChildren</c>.
+/// CQRS base for tree setting entities: standard CRUD reads plus <c>GetLevel</c> and <c>GetChildren</c>.
 /// </summary>
-public abstract class HybridTreeSettingController<TEntity, TCreate, TUpdate>(
+public abstract class BaseTreeSettingController<TEntity, TCreate, TUpdate>(
     ISender sender,
     ITreeSettingQueries<TEntity> queries)
-    : HybridSettingController<TEntity, TCreate, TUpdate>(sender, queries)
+    : BaseSettingController<TEntity, TCreate, TUpdate>(sender, queries)
     where TEntity : BaseTreeSettingEntity<TEntity>
     where TCreate : BaseTreeSettingCreateCommand<TEntity>
     where TUpdate : BaseTreeSettingUpdateCommand<TEntity>

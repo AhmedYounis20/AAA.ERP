@@ -20,7 +20,7 @@ public class SuppliersController(
     ISender sender,
     ISupplierQueries queries,
     IBaseQueryService<Supplier, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<Supplier, SupplierCreateCommand, SupplierUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<Supplier, SupplierCreateCommand, SupplierUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Supplier>> BuildDeleteCommand(Guid id)
         => new SupplierDeleteCommand(id);

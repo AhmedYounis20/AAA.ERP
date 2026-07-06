@@ -20,7 +20,7 @@ public class PackingUnitsController(
     ISender sender,
     IPackingUnitQueries queries,
     IBaseQueryService<PackingUnit, PackingUnitLookupDto> lookups)
-    : HybridSettingController<PackingUnit, PackingUnitCreateCommand, PackingUnitUpdateCommand>(sender, queries)
+    : BaseSettingController<PackingUnit, PackingUnitCreateCommand, PackingUnitUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<PackingUnit>> BuildDeleteCommand(Guid id)
         => new PackingUnitDeleteCommand(id);

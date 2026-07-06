@@ -20,7 +20,7 @@ public class FixedAssetsController(
     ISender sender,
     IFixedAssetQueries queries,
     IBaseQueryService<FixedAsset, SubLeadgerLookupDto> lookups)
-    : HybridTreeSettingController<FixedAsset, FixedAssetCreateCommand, FixedAssetUpdateCommand>(sender, queries)
+    : BaseTreeSettingController<FixedAsset, FixedAssetCreateCommand, FixedAssetUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<FixedAsset>> BuildDeleteCommand(Guid id)
         => new FixedAssetDeleteCommand(id);

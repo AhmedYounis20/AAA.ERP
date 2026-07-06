@@ -14,7 +14,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [ApiController]
 [Authorize]
 public class ManufacturerCompaniesController(ISender sender, IManufacturerCompanyQueries queries)
-    : HybridSettingController<ManufacturerCompany, ManufacturerCompanyCreateCommand, ManufacturerCompanyUpdateCommand>(sender, queries)
+    : BaseSettingController<ManufacturerCompany, ManufacturerCompanyCreateCommand, ManufacturerCompanyUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<ManufacturerCompany>> BuildDeleteCommand(Guid id)
         => new ManufacturerCompanyDeleteCommand(id);

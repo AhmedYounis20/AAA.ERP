@@ -15,7 +15,7 @@ namespace Inventory.Api.Controllers.Catalog;
 [ApiController]
 [Authorize]
 public class AttributeDefinitionsController(ISender sender, IAttributeDefinitionQueries queries)
-    : HybridSettingController<AttributeDefinition, AttributeDefinitionCreateCommand, AttributeDefinitionUpdateCommand>(sender, queries)
+    : BaseSettingController<AttributeDefinition, AttributeDefinitionCreateCommand, AttributeDefinitionUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<AttributeDefinition>> BuildDeleteCommand(Guid id)
         => new AttributeDefinitionDeleteCommand(id);

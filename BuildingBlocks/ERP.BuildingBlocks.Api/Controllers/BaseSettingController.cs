@@ -13,10 +13,10 @@ using System.Net;
 namespace ERP.BuildingBlocks.Api.Controllers;
 
 /// <summary>
-/// Hybrid CQRS base for standard setting entities: writes via <see cref="ISender"/>, reads via <see cref="ISettingQueries{TEntity}"/>.
+/// CQRS base for standard setting entities: writes via <see cref="ISender"/>, reads via <see cref="ISettingQueries{TEntity}"/>.
 /// </summary>
 /// <remarks>ADR-012 compliant — does not inject <c>I*Service</c> write services.</remarks>
-public abstract class HybridSettingController<TEntity, TCreate, TUpdate>(
+public abstract class BaseSettingController<TEntity, TCreate, TUpdate>(
     ISender sender,
     ISettingQueries<TEntity> queries) : ControllerBase
     where TEntity : BaseSettingEntity

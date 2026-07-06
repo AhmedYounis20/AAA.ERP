@@ -30,20 +30,20 @@ public class HybridCqrsArchitectureTests
 
     private static readonly Lazy<Type[]> ReadSideContracts = new(DiscoverReadSideContracts);
 
-    private static readonly Type HybridSettingControllerDef =
-        typeof(HybridSettingController<Role, RoleCreateCommand, RoleUpdateCommand>).GetGenericTypeDefinition();
+    private static readonly Type BaseSettingControllerDef =
+        typeof(BaseSettingController<Role, RoleCreateCommand, RoleUpdateCommand>).GetGenericTypeDefinition();
 
-    private static readonly Type HybridTreeSettingControllerDef =
-        typeof(HybridTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>).GetGenericTypeDefinition();
+    private static readonly Type BaseTreeSettingControllerDef =
+        typeof(BaseTreeSettingController<CostCenter, CostCenterCreateCommand, CostCenterUpdateCommand>).GetGenericTypeDefinition();
 
-    private static readonly Type HybridSubLedgerControllerDef =
-        typeof(HybridSubLedgerController<Tax, TaxCreateCommand, TaxUpdateCommand>).GetGenericTypeDefinition();
+    private static readonly Type BaseSubLedgerControllerDef =
+        typeof(BaseSubLedgerController<Tax, TaxCreateCommand, TaxUpdateCommand>).GetGenericTypeDefinition();
 
     private static readonly Type ISettingQueriesDef = typeof(ISettingQueries<>);
     private static readonly Type ITreeSettingQueriesDef = typeof(ITreeSettingQueries<>);
     private static readonly Type ISubLedgerQueriesDef = typeof(ISubLedgerQueries<,>);
 
-    private enum RequiredHybridBaseKind
+    private enum RequiredBaseKind
     {
         None,
         Setting,
@@ -134,7 +134,7 @@ public class HybridCqrsArchitectureTests
     }
 
     [Fact]
-    public void Standard_setting_and_tree_controllers_should_inherit_hybrid_base()
+    public void Standard_setting_and_tree_controllers_should_inherit_base_controller()
     {
         var subjectCount = 0;
 
@@ -144,31 +144,31 @@ public class HybridCqrsArchitectureTests
             if (queriesParameter is null)
                 continue;
 
-            var requiredBase = GetRequiredHybridBase(queriesParameter.ParameterType);
-            if (requiredBase == RequiredHybridBaseKind.None)
+            var requiredBase = GetRequiredBase(queriesParameter.ParameterType);
+            if (requiredBase == RequiredBaseKind.None)
                 continue;
 
             subjectCount++;
 
             var hasRequiredBase = requiredBase switch
             {
-                RequiredHybridBaseKind.SubLedger => InheritsHybridBase(controller, HybridSubLedgerControllerDef),
-                RequiredHybridBaseKind.Tree => InheritsHybridBase(controller, HybridTreeSettingControllerDef)
-                                               || InheritsHybridBase(controller, HybridSubLedgerControllerDef),
-                RequiredHybridBaseKind.Setting => InheritsHybridBase(controller, HybridSettingControllerDef)
-                                                  || InheritsHybridBase(controller, HybridTreeSettingControllerDef)
-                                                  || InheritsHybridBase(controller, HybridSubLedgerControllerDef),
+                RequiredBaseKind.SubLedger => InheritsBaseController(controller, BaseSubLedgerControllerDef),
+                RequiredBaseKind.Tree => InheritsBaseController(controller, BaseTreeSettingControllerDef)
+                                               || InheritsBaseController(controller, BaseSubLedgerControllerDef),
+                RequiredBaseKind.Setting => InheritsBaseController(controller, BaseSettingControllerDef)
+                                                  || InheritsBaseController(controller, BaseTreeSettingControllerDef)
+                                                  || InheritsBaseController(controller, BaseSubLedgerControllerDef),
                 _ => false
             };
 
             hasRequiredBase.Should().BeTrue(
                 $"{controller.Name} injects {queriesParameter.ParameterType.Name} ({requiredBase} queries) " +
-                $"and must inherit HybridSettingController, HybridTreeSettingController, or HybridSubLedgerController " +
+                $"and must inherit BaseSettingController, BaseTreeSettingController, or BaseSubLedgerController " +
                 $"to expose standard CRUD/search/tree endpoints.");
         }
 
         subjectCount.Should().BeGreaterThanOrEqualTo(19,
-            "expected at least 19 standard setting/tree controllers on hybrid bases (Sprint 12 rollout)");
+            "expected at least 19 standard setting/tree controllers on base controllers (Sprint 12 rollout)");
     }
 
     [Fact]
@@ -193,27 +193,27 @@ public class HybridCqrsArchitectureTests
                                && p.ParameterType.Namespace?.Contains(".Application.", StringComparison.Ordinal) == true);
     }
 
-    private static RequiredHybridBaseKind GetRequiredHybridBase(Type queriesType)
+    private static RequiredBaseKind GetRequiredBase(Type queriesType)
     {
         var interfaces = queriesType.GetInterfaces();
 
         if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ISubLedgerQueriesDef))
-            return RequiredHybridBaseKind.SubLedger;
+            return RequiredBaseKind.SubLedger;
 
         if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ITreeSettingQueriesDef))
-            return RequiredHybridBaseKind.Tree;
+            return RequiredBaseKind.Tree;
 
         if (interfaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ISettingQueriesDef))
-            return RequiredHybridBaseKind.Setting;
+            return RequiredBaseKind.Setting;
 
-        return RequiredHybridBaseKind.None;
+        return RequiredBaseKind.None;
     }
 
-    private static bool InheritsHybridBase(Type controller, Type openHybridBaseDefinition)
+    private static bool InheritsBaseController(Type controller, Type openBaseControllerDefinition)
     {
         for (var baseType = controller.BaseType; baseType is not null; baseType = baseType.BaseType)
         {
-            if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == openHybridBaseDefinition)
+            if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == openBaseControllerDefinition)
                 return true;
         }
 

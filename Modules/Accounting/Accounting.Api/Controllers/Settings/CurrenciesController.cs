@@ -20,7 +20,7 @@ public class CurrenciesController(
     ISender sender,
     ICurrencyQueries queries,
     IBaseQueryService<Currency, CurrencyLookupDto> lookups)
-    : HybridSettingController<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>(sender, queries)
+    : BaseSettingController<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Currency>> BuildDeleteCommand(Guid id)
         => new CurrencyDeleteCommand(id);

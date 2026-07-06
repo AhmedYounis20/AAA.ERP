@@ -20,7 +20,7 @@ public class SellingPricesController(
     ISender sender,
     ISellingPriceQueries queries,
     IBaseQueryService<SellingPrice, SellingPriceLookupDto> lookups)
-    : HybridSettingController<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>(sender, queries)
+    : BaseSettingController<SellingPrice, SellingPriceCreateCommand, SellingPriceUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<SellingPrice>> BuildDeleteCommand(Guid id)
         => new SellingPriceDeleteCommand(id);

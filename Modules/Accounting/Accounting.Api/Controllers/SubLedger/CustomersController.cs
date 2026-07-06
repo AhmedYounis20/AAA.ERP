@@ -20,7 +20,7 @@ public class CustomersController(
     ISender sender,
     ICustomerQueries queries,
     IBaseQueryService<Customer, SubLeadgerLookupDto> lookups)
-    : HybridSubLedgerController<Customer, CustomerCreateCommand, CustomerUpdateCommand>(sender, queries)
+    : BaseSubLedgerController<Customer, CustomerCreateCommand, CustomerUpdateCommand>(sender, queries)
 {
     protected override IRequest<ApiResponse<Customer>> BuildDeleteCommand(Guid id)
         => new CustomerDeleteCommand(id);
