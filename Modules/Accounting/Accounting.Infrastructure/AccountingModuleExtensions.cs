@@ -40,7 +40,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<IFinancialPeriodWorkflowService, FinancialPeriodWorkflowService>();
         services.AddScoped<IFinancialPeriodQueries, FinancialPeriodQueries>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
-        services.AddScoped<ICostCenterService, CostCenterService>();
+        services.AddScoped<ICostCenterWorkflowService, CostCenterWorkflowService>();
         services.AddScoped<ICostCenterQueries, CostCenterQueries>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();

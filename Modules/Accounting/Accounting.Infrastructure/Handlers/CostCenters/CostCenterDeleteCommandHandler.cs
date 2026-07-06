@@ -4,9 +4,11 @@ using Accounting.Domain.Models.Entities.CostCenters;
 
 namespace Accounting.Infrastructure.Handlers.CostCenters;
 
-public class CostCenterDeleteCommandHandler(ICostCenterService service)
+public sealed class CostCenterDeleteCommandHandler(ICostCenterWorkflowService workflow)
     : ICommandHandler<CostCenterDeleteCommand, ApiResponse<CostCenter>>
 {
-    public Task<ApiResponse<CostCenter>> Handle(CostCenterDeleteCommand request, CancellationToken cancellationToken)
-        => service.Delete(request.Id);
+    public Task<ApiResponse<CostCenter>> Handle(
+        CostCenterDeleteCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Delete(request.Id);
 }

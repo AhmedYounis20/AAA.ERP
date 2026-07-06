@@ -4,9 +4,11 @@ using Accounting.Domain.Models.Entities.CostCenters;
 
 namespace Accounting.Infrastructure.Handlers.CostCenters;
 
-public class CostCenterUpdateCommandHandler(ICostCenterService service)
+public sealed class CostCenterUpdateCommandHandler(ICostCenterWorkflowService workflow)
     : ICommandHandler<CostCenterUpdateCommand, ApiResponse<CostCenter>>
 {
-    public Task<ApiResponse<CostCenter>> Handle(CostCenterUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
+    public Task<ApiResponse<CostCenter>> Handle(
+        CostCenterUpdateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Update(request);
 }
