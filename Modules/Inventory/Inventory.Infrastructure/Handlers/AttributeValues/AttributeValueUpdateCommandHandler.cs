@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.AttributeValues;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.Attributes;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.AttributeValues;
 
-public class AttributeValueUpdateCommandHandler(IAttributeValueService service)
-    : ICommandHandler<AttributeValueUpdateCommand, ApiResponse<AttributeValue>>
-{
-    public Task<ApiResponse<AttributeValue>> Handle(AttributeValueUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class AttributeValueUpdateCommandHandler(IAttributeValueRepository repository)
+    : BaseSettingUpdateHandler<AttributeValue, AttributeValueUpdateCommand>(repository);

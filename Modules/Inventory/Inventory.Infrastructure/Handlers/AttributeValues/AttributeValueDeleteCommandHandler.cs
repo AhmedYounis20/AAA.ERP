@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.AttributeValues;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.Attributes;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.AttributeValues;
 
-public class AttributeValueDeleteCommandHandler(IAttributeValueService service)
-    : ICommandHandler<AttributeValueDeleteCommand, ApiResponse<AttributeValue>>
-{
-    public Task<ApiResponse<AttributeValue>> Handle(AttributeValueDeleteCommand request, CancellationToken cancellationToken)
-        => service.Delete(request.Id);
-}
+public sealed class AttributeValueDeleteCommandHandler(IAttributeValueRepository repository)
+    : BaseSettingDeleteHandler<AttributeValue, AttributeValueDeleteCommand>(repository);
