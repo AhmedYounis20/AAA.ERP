@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.AccountGuides;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.AccountGuides;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.AccountGuides;
 
-public class AccountGuideDeleteCommandHandler(IAccountGuideService service)
-    : ICommandHandler<AccountGuideDeleteCommand, ApiResponse<AccountGuide>>
-{
-    public Task<ApiResponse<AccountGuide>> Handle(AccountGuideDeleteCommand request, CancellationToken cancellationToken)
-        => service.Delete(request.Id);
-}
+public sealed class AccountGuideDeleteCommandHandler(IAccountGuideRepository repository)
+    : BaseSettingDeleteHandler<AccountGuide, AccountGuideDeleteCommand>(repository);

@@ -1,4 +1,4 @@
-using Accounting.Application.Commands.AccountGuides;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using ERP.Infrastructure.Services.Queries;
@@ -6,8 +6,8 @@ using ERP.Infrastructure.Services.Queries;
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Account guide read queries. Transitional: delegates to <see cref="IAccountGuideService"/> until write methods are removed.
+/// Account guide read queries.
 /// </summary>
-public class AccountGuideQueries(IAccountGuideService accountGuideService)
-    : BaseSettingQueries<AccountGuide, AccountGuideCreateCommand, AccountGuideUpdateCommand>(accountGuideService),
+public class AccountGuideQueries(IAccountGuideRepository repository)
+    : BaseSettingRepositoryQueries<AccountGuide>(repository),
       IAccountGuideQueries;

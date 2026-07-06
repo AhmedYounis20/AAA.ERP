@@ -33,7 +33,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<IGLSettingService, GLSettingService>();
         services.AddScoped<IGLSettingQueries, GLSettingQueries>();
         services.AddScoped<IAccountGuideRepository, AccountGuideRepository>();
-        services.AddScoped<IAccountGuideService, AccountGuideService>();
         services.AddScoped<IAccountGuideQueries, AccountGuideQueries>();
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<ICollectionBookQueries, CollectionBookQueries>();

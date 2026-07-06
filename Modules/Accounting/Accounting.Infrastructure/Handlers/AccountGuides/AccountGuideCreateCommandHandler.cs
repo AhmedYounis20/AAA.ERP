@@ -1,12 +1,9 @@
 using Accounting.Application.Commands.AccountGuides;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.AccountGuides;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Accounting.Infrastructure.Handlers.AccountGuides;
 
-public class AccountGuideCreateCommandHandler(IAccountGuideService service)
-    : ICommandHandler<AccountGuideCreateCommand, ApiResponse<AccountGuide>>
-{
-    public Task<ApiResponse<AccountGuide>> Handle(AccountGuideCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
-}
+public sealed class AccountGuideCreateCommandHandler(IAccountGuideRepository repository)
+    : BaseSettingCreateHandler<AccountGuide, AccountGuideCreateCommand>(repository);
