@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.StockBalances;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.Sizes;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Base;
 
 namespace Inventory.Infrastructure.Handlers.StockBalances;
 
-public class StockBalanceCreateCommandHandler(IStockBalanceService service)
-    : ICommandHandler<StockBalanceCreateCommand, ApiResponse<StockBalance>>
-{
-    public Task<ApiResponse<StockBalance>> Handle(StockBalanceCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
-}
+public sealed class StockBalanceCreateCommandHandler(IStockBalanceRepository repository)
+    : BaseCreateHandler<StockBalance, StockBalanceCreateCommand>(repository);

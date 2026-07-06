@@ -1,14 +1,12 @@
-using ERP.BuildingBlocks.Application.Services.BaseServices;
-using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Dtos.Catalog;
 using Inventory.Domain.Models.Entities.Sizes;
 
 namespace Inventory.Application.Services;
 
 /// <summary>
-/// Application service contract for stock balance.
+/// Stock balance domain operations (reads, balance updates). CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface IStockBalanceService : IBaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>
+public interface IStockBalanceService
 {
     Task<ApiResponse<StockBalanceReadDto>> GetDisplayById(Guid id);
     Task<ApiResponse<IEnumerable<StockBalanceReadDto>>> GetAllForDisplay();

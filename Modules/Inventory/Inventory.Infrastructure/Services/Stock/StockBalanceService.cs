@@ -1,8 +1,6 @@
 using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
-using ERP.Infrastructure.Services.BaseServices;
-using Inventory.Application.Commands.StockBalances;
 using Inventory.Application.Services;
 using Inventory.Application.Dtos.Catalog;
 using Inventory.Domain.Models.Entities.Sizes;
@@ -12,7 +10,7 @@ using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
-public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateCommand, StockBalanceUpdateCommand>, IStockBalanceService
+public class StockBalanceService : IStockBalanceService
 {
     private readonly IStockBalanceRepository _repository;
     private readonly IVariantRepository _variantRepository;
@@ -23,7 +21,7 @@ public class StockBalanceService : BaseService<StockBalance, StockBalanceCreateC
         IStockBalanceRepository repository,
         IVariantRepository variantRepository,
         IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
-        IInventoryAccountingDisplayQueries displayQueries) : base(repository)
+        IInventoryAccountingDisplayQueries displayQueries)
     {
         _repository = repository;
         _variantRepository = variantRepository;
