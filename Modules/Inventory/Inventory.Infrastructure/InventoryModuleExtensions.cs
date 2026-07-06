@@ -67,6 +67,7 @@ public static class InventoryModuleExtensions
         services.AddScoped<IBaseRepository<ProductSellingPriceDiscount>, BaseRepository<ProductSellingPriceDiscount>>();
         services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
         services.AddScoped<IVariantRepository, VariantRepository>();
+        services.AddScoped<IVariantWorkflowService, VariantWorkflowService>();
         services.AddScoped<IVariantService, VariantService>();
         services.AddScoped<IVariantQueries, VariantQueries>();
         services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();

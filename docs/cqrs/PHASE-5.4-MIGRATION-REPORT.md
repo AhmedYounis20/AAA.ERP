@@ -14,7 +14,9 @@ Phase 5.4 extracts `AttributeDefinitionService` write logic into `AttributeDefin
 |------|--------|---------|
 | AttributeDefinition | *(this commit)* | `AttributeDefinitionWorkflowService`; `IAttributeDefinitionService` read-only |
 
-**Next in order (Phase 5.5):** `Variant` workflow.
+**Next in order (Phase 5.5):** `Variant` workflow — **done in Phase 5.5 commit.**
+
+**Next in order (Phase 5.6):** `Item` workflow.
 
 ---
 
