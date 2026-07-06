@@ -1,16 +1,14 @@
 using Accounting.Application.Commands.ChartOfAccounts;
-using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for chart of account.
+/// Chart-of-account domain helpers. CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface IChartOfAccountService : IBaseTreeSettingService<ChartOfAccount, ChartOfAccountCreateCommand, ChartOfAccountUpdateCommand>
+public interface IChartOfAccountService
 {
-    /// <summary>Generates new code for child.</summary>
     Task<string> GenerateNewCodeForChild(Guid? parentId);
     Task<ApiResponse<ChartOfAccountInputModel>> NextAccountDefaultData(Guid? parentId);
 }

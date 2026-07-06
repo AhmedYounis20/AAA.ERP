@@ -1,27 +1,33 @@
 using Accounting.Application.Commands.ChartOfAccounts;
 using Accounting.Application.Dtos.Filters;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
+using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Chart-of-account read queries. Transitional: delegates to <see cref="IChartOfAccountService"/>.
+/// Chart-of-account read queries.
 /// </summary>
-public class ChartOfAccountQueries(IChartOfAccountService chartOfAccountService) : IChartOfAccountQueries
+public class ChartOfAccountQueries(
+    IChartOfAccountRepository repository,
+    IChartOfAccountService chartOfAccountService) : IChartOfAccountQueries
 {
+    private readonly BaseEntityRepositoryQueries<ChartOfAccount> _entityQueries = new(repository);
+
     public Task<ApiResponse<IEnumerable<ChartOfAccount>>> GetAll()
-        => chartOfAccountService.ReadAll();
+        => _entityQueries.GetAll();
 
     public Task<ApiResponse<PaginatedResult<ChartOfAccount>>> GetPaginated(
         ChartOfAccountFilterDto filter,
         CancellationToken cancellationToken = default)
-        => chartOfAccountService.ReadAllPaginated(filter, cancellationToken);
+        => _entityQueries.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ChartOfAccount>> GetById(Guid id)
-        => chartOfAccountService.ReadById(id);
+        => _entityQueries.GetById(id);
 
     public Task<string> GenerateNewChildCode(Guid? parentId)
         => chartOfAccountService.GenerateNewCodeForChild(parentId);
