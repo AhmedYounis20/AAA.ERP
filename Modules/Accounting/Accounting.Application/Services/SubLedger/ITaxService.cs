@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Taxes;
-using Accounting.Domain.Entities;
 using Accounting.Application.Services.SubLeadgers;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace Accounting.Application.Services;
 

@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using FluentAssertions;
 using NetArchTest.Rules;
 
@@ -28,7 +29,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Accounting_Domain_should_not_reference_Inventory_entities()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .Should()
             .NotHaveDependencyOn("Inventory.Domain.Models.Entities")
             .And()
@@ -41,7 +42,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Accounting_Domain_should_not_reference_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Persistence")
             .And()

@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account.SubLeadgers;
-using Accounting.Domain.Entities;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.Constants;

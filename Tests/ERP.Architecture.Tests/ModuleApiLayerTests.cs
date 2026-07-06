@@ -1,4 +1,5 @@
 using Accounting.Api;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using FluentAssertions;
 using Identity.Api;
 using Inventory.Api;
@@ -131,7 +132,7 @@ public class ModuleApiLayerTests
     [Fact]
     public void Accounting_Domain_should_not_contain_Dto_types()
     {
-        var dtoTypes = typeof(Accounting.Domain.Entities.Tax).Assembly.GetTypes()
+        var dtoTypes = typeof(Tax).Assembly.GetTypes()
             .Where(t => t.IsClass && (t.Name.EndsWith("Dto", StringComparison.Ordinal) || t.Name.EndsWith("InputModel", StringComparison.Ordinal)))
             .Select(t => t.FullName)
             .ToList();

@@ -1,3 +1,4 @@
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using FluentAssertions;
 using NetArchTest.Rules;
 
@@ -255,7 +256,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_entities_should_not_use_legacy_ERP_Domain_Models_Entities_Account_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .That()
             .ResideInNamespaceStartingWith("Accounting.Domain.Models.Entities")
             .Should()
@@ -285,7 +286,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_commands_should_not_use_legacy_ERP_Domain_Commands_Account_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .That()
             .ResideInNamespaceContaining("Commands")
             .Should()
@@ -357,7 +358,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_models_dtos_should_not_use_legacy_Domain_Account_Models_Dtos_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .That()
             .ResideInNamespaceContaining("Models.Dtos")
             .Should()
@@ -399,7 +400,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_utility_should_not_use_legacy_Domain_Account_Utility_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .That()
             .ResideInNamespaceContaining("Utility")
             .Should()
@@ -429,7 +430,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_output_dtos_should_not_use_legacy_AAA_ERP_OutputDtos_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .That()
             .ResideInNamespaceContaining("OutputDtos")
             .Should()
@@ -507,7 +508,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Accounting_Domain_should_not_contain_commands_namespace()
     {
-        var result = Types.InAssembly(typeof(Accounting.Domain.Entities.Tax).Assembly)
+        var result = Types.InAssembly(typeof(Tax).Assembly)
             .Should()
             .NotResideInNamespaceContaining("Commands")
             .GetResult();

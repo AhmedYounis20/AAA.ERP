@@ -2,7 +2,6 @@ using Accounting.Api.Controllers.SubLedger;
 using Accounting.Application.Commands.CostCenters;
 using Accounting.Application.Commands.Roles;
 using Accounting.Application.Commands.Taxes;
-using Accounting.Domain.Entities;
 using Accounting.Domain.Models.Entities.CostCenters;
 using Accounting.Domain.Models.Entities.Roles;
 using ERP.BuildingBlocks.Api.Controllers;
@@ -11,6 +10,7 @@ using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace ERP.Architecture.Tests;
 

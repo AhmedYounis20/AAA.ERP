@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Entities;
 using Accounting.Application.Repositories;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Infrastructure.Services.SubLeadgers;

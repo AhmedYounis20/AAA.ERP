@@ -1,5 +1,5 @@
-using Accounting.Domain.Entities;
 using Accounting.Application.Repositories.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 
 namespace Accounting.Application.Repositories;
 

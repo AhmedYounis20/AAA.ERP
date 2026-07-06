@@ -1,6 +1,6 @@
 using Accounting.Domain.Models.Entities.SubLeadgers;
 
-namespace Accounting.Domain.Entities;
+namespace Accounting.Domain.Models.Entities.Account.SubLeadgers;
 
 public class Tax : SubLeadgerBaseEntity<Tax>
 {
