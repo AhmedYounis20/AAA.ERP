@@ -40,7 +40,7 @@ public class InventoryCatalogSettingsIntegrationTests : IAsyncLifetime
   public async Task Create_color_via_MediatR_persists_and_appears_in_list()
   {
     var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
-    var service = _scope.ServiceProvider.GetRequiredService<IColorService>();
+    var queries = _scope.ServiceProvider.GetRequiredService<IColorQueries>();
 
     var response = await sender.Send(new ColorCreateCommand
     {
@@ -51,7 +51,7 @@ public class InventoryCatalogSettingsIntegrationTests : IAsyncLifetime
 
     response.IsSuccess.Should().BeTrue(response.Errors?.FirstOrDefault()?.MessageKey);
 
-    var list = await service.ReadAll();
+    var list = await queries.GetAll();
     list.IsSuccess.Should().BeTrue();
     list.Result.Should().Contain(c => c.Name == "Crimson");
   }

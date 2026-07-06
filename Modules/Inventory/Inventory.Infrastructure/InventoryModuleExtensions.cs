@@ -35,10 +35,8 @@ public static class InventoryModuleExtensions
         ModuleModelConfigurationRegistry.Register(ApplyInventoryModuleConfigurations);
 
         services.AddScoped<IColorRepository, ColorRepository>();
-        services.AddScoped<IColorService, ColorService>();
         services.AddScoped<IColorQueries, ColorQueries>();
         services.AddScoped<ISizeRepository, SizeRepository>();
-        services.AddScoped<ISizeService, SizeService>();
         services.AddScoped<ISizeQueries, SizeQueries>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<IPackingUnitQueries, PackingUnitQueries>();
