@@ -1,29 +1,34 @@
-# Phase 6.5 Migration Report — Variant Workflow Extraction
+# Phase 6.5 Migration Report — Catalog Workflow Extraction
 
-**Status:** Complete (Variant only)  
+**Status:** In progress (Variant ✅, Item ✅, Product pending)  
 **Branch:** `feature/adr-013-generic-cqrs-handlers`  
-**Scope:** Move variant write logic into `VariantWorkflowService`; remove `IVariantService`
+**Scope:** Move catalog CRUD into workflow services; remove `I*Service` write facades
 
 ---
 
-## Summary
-
-Phase 6.5 consolidates variant CRUD into the workflow service. The former `VariantService` implementation is now `VariantWorkflowService` in `Inventory.Infrastructure/Workflows`.
+## Phase 6.5a — Variant (complete)
 
 | Change | Outcome |
 |--------|---------|
-| `VariantService` → `VariantWorkflowService` | Write logic lives in workflow layer |
-| `IVariantService` removed | Replaced by `IVariantWorkflowService` + `IVariantProductOperations` |
-| Dead read methods removed | Reads already on `VariantQueries` → `IVariantRepository` (Phase 6.4) |
-| `ProductService` | Uses `IVariantProductOperations` for `PrepareVariantsForProduct` / bulk create |
+| `VariantService` → `VariantWorkflowService` | Write logic in `Workflows/` |
+| `IVariantService` removed | `IVariantWorkflowService` + `IVariantProductOperations` |
+| `ProductService` | Uses `IVariantProductOperations` |
 
-**Still extends `BaseService`:** Full decoupling from `BaseService` inheritance deferred — behavior preserved; class now implements workflow contracts directly.
-
-**Remaining (Phase 6.5b/c):** `ItemService` and `ProductService` extraction into workflows.
+Commit: `73eb7ee`
 
 ---
 
-## Validation
+## Phase 6.5b — Item (complete)
+
+| Change | Outcome |
+|--------|---------|
+| `ItemService` → `ItemWorkflowService` | Write logic in `Workflows/` |
+| `IItemService` removed | Handlers use `IItemWorkflowService` only |
+| Dead read methods removed | Reads on `ItemQueries` (Phase 6.4) |
+
+---
+
+## Validation (6.5b)
 
 | Check | Result |
 |-------|--------|
@@ -35,5 +40,4 @@ Phase 6.5 consolidates variant CRUD into the workflow service. The former `Varia
 
 ## Next Steps
 
-- Phase 6.5b: Extract `ItemService` → `ItemWorkflowService`
-- Phase 6.5c: Extract `ProductService` → `ProductWorkflowService`
+- **Phase 6.5c:** Extract `ProductService` → `ProductWorkflowService`
