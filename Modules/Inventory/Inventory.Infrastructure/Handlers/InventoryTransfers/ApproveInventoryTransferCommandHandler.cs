@@ -4,11 +4,20 @@ using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransfers;
 
-public class ApproveInventoryTransferCommandHandler(IInventoryTransferService transferService)
+public sealed class ApproveInventoryTransferCommandHandler(IInventoryTransferWorkflowService workflow)
     : ICommandHandler<ApproveInventoryTransferCommand, ApiResponse<InventoryTransfer>>
 {
     public Task<ApiResponse<InventoryTransfer>> Handle(
         ApproveInventoryTransferCommand request,
         CancellationToken cancellationToken)
-        => transferService.ApproveTransfer(request.Id);
+        => workflow.ApproveTransfer(request.Id);
+}
+
+public sealed class RejectInventoryTransferCommandHandler(IInventoryTransferWorkflowService workflow)
+    : ICommandHandler<RejectInventoryTransferCommand, ApiResponse<InventoryTransfer>>
+{
+    public Task<ApiResponse<InventoryTransfer>> Handle(
+        RejectInventoryTransferCommand request,
+        CancellationToken cancellationToken)
+        => workflow.RejectTransfer(request.Id, request.ApproverId, request.Reason);
 }

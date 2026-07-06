@@ -1,18 +1,23 @@
-using ERP.BuildingBlocks.Application.Services.BaseServices;
-using Inventory.Application.Commands.InventoryTransfers;
-using Inventory.Domain.Models.Entities;
-
+using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.DTOs.Filters;
 using Inventory.Application.Dtos.Catalog;
+using Inventory.Domain.Models.Entities;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Inventory.Application.Services;
 
 /// <summary>
-/// Application service contract for inventory transfer.
+/// Inventory transfer read-side helper. CRUD writes are handled by CQRS workflow.
 /// </summary>
-public interface IInventoryTransferService : IBaseService<InventoryTransfer, InventoryTransferCreateCommand, InventoryTransferUpdateCommand>
+public interface IInventoryTransferService
 {
     Task<ApiResponse<InventoryTransferReadDto>> GetWithDetails(Guid id);
+
     Task<ApiResponse<IEnumerable<InventoryTransferReadDto>>> GetByStatus(InventoryTransferStatus status);
-    Task<ApiResponse<InventoryTransfer>> ApproveTransfer(Guid id);
-    Task<ApiResponse<InventoryTransfer>> RejectTransfer(Guid id, Guid approverId, string? reason);
+
+    Task<ApiResponse<IEnumerable<InventoryTransfer>>> ReadAll();
+
+    Task<ApiResponse<PaginatedResult<InventoryTransfer>>> GetPaginated(
+        InventoryTransferFilterDto filter,
+        CancellationToken cancellationToken = default);
 }

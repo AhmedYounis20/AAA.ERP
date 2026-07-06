@@ -11,11 +11,11 @@ namespace Inventory.UnitTests.Handlers;
 public class ApproveInventoryTransferCommandHandlerTests
 {
     [Fact]
-    public async Task Handle_DelegatesToTransferServiceApprove()
+    public async Task Handle_DelegatesToTransferWorkflowApprove()
     {
         var transferId = Guid.NewGuid();
-        var transferService = new Mock<IInventoryTransferService>();
-        transferService
+        var workflow = new Mock<IInventoryTransferWorkflowService>();
+        workflow
             .Setup(s => s.ApproveTransfer(transferId))
             .ReturnsAsync(new ApiResponse<InventoryTransfer>
             {
@@ -23,11 +23,11 @@ public class ApproveInventoryTransferCommandHandlerTests
                 Result = new InventoryTransfer { Id = transferId, Status = InventoryTransferStatus.Approved }
             });
 
-        var handler = new ApproveInventoryTransferCommandHandler(transferService.Object);
+        var handler = new ApproveInventoryTransferCommandHandler(workflow.Object);
         var result = await handler.Handle(new ApproveInventoryTransferCommand(transferId), CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Result!.Status.Should().Be(InventoryTransferStatus.Approved);
-        transferService.Verify(s => s.ApproveTransfer(transferId), Times.Once);
+        workflow.Verify(s => s.ApproveTransfer(transferId), Times.Once);
     }
 }

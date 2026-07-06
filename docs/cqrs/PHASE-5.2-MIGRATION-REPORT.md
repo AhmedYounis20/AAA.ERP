@@ -15,7 +15,9 @@ Phase 5.2 slims `ImportTransactionService` and `ExportTransactionService` to rea
 | ImportTransaction | *(this commit)* | Read-only `IImportTransactionService`; handlers → workflow |
 | ExportTransaction | *(this commit)* | Read-only `IExportTransactionService`; handlers → workflow |
 
-**Next in order (Phase 5.3):** `InventoryTransfer` + approve/reject commands.
+**Next in order (Phase 5.3):** `InventoryTransfer` + approve/reject commands — **done in Phase 5.3 commit.**
+
+**Next in order (Phase 5.4):** `AttributeDefinition` workflow.
 
 ---
 

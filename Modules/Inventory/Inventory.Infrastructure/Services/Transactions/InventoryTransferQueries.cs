@@ -19,7 +19,7 @@ public class InventoryTransferQueries(IInventoryTransferService transferService)
     public Task<ApiResponse<PaginatedResult<InventoryTransfer>>> GetPaginated(
         InventoryTransferFilterDto filter,
         CancellationToken cancellationToken = default)
-        => transferService.ReadAllPaginated(filter, cancellationToken);
+        => transferService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<InventoryTransferReadDto>> GetWithDetails(Guid id)
         => transferService.GetWithDetails(id);

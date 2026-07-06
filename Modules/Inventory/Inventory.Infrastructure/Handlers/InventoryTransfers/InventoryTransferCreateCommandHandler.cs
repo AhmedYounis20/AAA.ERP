@@ -4,9 +4,20 @@ using Inventory.Domain.Models.Entities;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransfers;
 
-public class InventoryTransferCreateCommandHandler(IInventoryTransferService service)
+public sealed class InventoryTransferCreateCommandHandler(IInventoryTransferWorkflowService workflow)
     : ICommandHandler<InventoryTransferCreateCommand, ApiResponse<InventoryTransfer>>
 {
-    public Task<ApiResponse<InventoryTransfer>> Handle(InventoryTransferCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
+    public Task<ApiResponse<InventoryTransfer>> Handle(
+        InventoryTransferCreateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Create(request);
+}
+
+public sealed class InventoryTransferUpdateCommandHandler(IInventoryTransferWorkflowService workflow)
+    : ICommandHandler<InventoryTransferUpdateCommand, ApiResponse<InventoryTransfer>>
+{
+    public Task<ApiResponse<InventoryTransfer>> Handle(
+        InventoryTransferUpdateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Update(request);
 }
