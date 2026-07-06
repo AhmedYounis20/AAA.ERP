@@ -1,4 +1,5 @@
 using Accounting.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using ERP.BuildingBlocks.Application.Constants;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Repositories;
@@ -19,7 +20,7 @@ public class InventoryTransactionWorkflowService(
     public Task<ApiResponse<InventoryTransaction>> Create(InventoryTransactionCreateCommand command, bool isValidate = true)
         => transactionCoordinator.ExecuteAsync(ct => CreateWithinTransactionAsync(command, isValidate, ct));
 
-    public async Task<ApiResponse<InventoryTransaction>> Update(InventoryTransactionUpdateCommand command)
+    public async Task<ApiResponse<InventoryTransaction>> Update(BaseUpdateCommand<InventoryTransaction> command)
     {
         try
         {
@@ -233,7 +234,7 @@ public class InventoryTransactionWorkflowService(
     }
 
     private async Task<(bool isValid, List<string> errors, InventoryTransaction? entity)> ValidateUpdate(
-        InventoryTransactionUpdateCommand command)
+        BaseUpdateCommand<InventoryTransaction> command)
     {
         var entity = await repository.Get(command.Id);
         if (entity == null)

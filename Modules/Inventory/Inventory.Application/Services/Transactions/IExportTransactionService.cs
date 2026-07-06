@@ -1,16 +1,17 @@
 using Accounting.Contracts.Dtos;
-using ERP.BuildingBlocks.Application.Services.BaseServices;
-using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Dtos.Catalog;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Inventory.Application.Services;
 
 /// <summary>
-/// Application service contract for export transaction.
+/// Export transaction read-side helper. CRUD writes are handled by CQRS workflow.
 /// </summary>
-public interface IExportTransactionService : IBaseService<Inventory.Domain.Models.Entities.InventoryTransactions.InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>
+public interface IExportTransactionService
 {
     Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id);
+
     Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll();
+
     Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime);
 }

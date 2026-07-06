@@ -4,7 +4,7 @@ using Inventory.Domain.Models.Entities.InventoryTransactions;
 
 namespace Inventory.Infrastructure.Handlers.InventoryTransactions;
 
-public class ExportTransactionCreateCommandHandler(IInventoryTransactionWorkflowService workflow)
+public sealed class ExportTransactionCreateCommandHandler(IInventoryTransactionWorkflowService workflow)
     : ICommandHandler<ExportTransactionCreateCommand, ApiResponse<InventoryTransaction>>
 {
     public Task<ApiResponse<InventoryTransaction>> Handle(
@@ -23,4 +23,22 @@ public class ExportTransactionCreateCommandHandler(IInventoryTransactionWorkflow
 
         return workflow.Create(baseCommand, isValidate: false);
     }
+}
+
+public sealed class ExportTransactionUpdateCommandHandler(IInventoryTransactionWorkflowService workflow)
+    : ICommandHandler<ExportTransactionUpdateCommand, ApiResponse<InventoryTransaction>>
+{
+    public Task<ApiResponse<InventoryTransaction>> Handle(
+        ExportTransactionUpdateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Update(request);
+}
+
+public sealed class ExportTransactionDeleteCommandHandler(IInventoryTransactionWorkflowService workflow)
+    : ICommandHandler<ExportTransactionDeleteCommand, ApiResponse<InventoryTransaction>>
+{
+    public Task<ApiResponse<InventoryTransaction>> Handle(
+        ExportTransactionDeleteCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Delete(request.Id);
 }

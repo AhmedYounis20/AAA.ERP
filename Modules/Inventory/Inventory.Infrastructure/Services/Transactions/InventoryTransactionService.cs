@@ -1,8 +1,11 @@
 using Accounting.Contracts.Integration;
+using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.DTOs.Filters;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.BuildingBlocks.Application.Constants;
+using System.Linq.Expressions;
 
 namespace Inventory.Infrastructure.Services;
 
@@ -136,6 +139,56 @@ public class InventoryTransactionService(
                         MessageKey = $"Failed to generate transaction number: {ex.Message}"
                     }
                 ]
+            };
+        }
+    }
+
+    public async Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
+        InventoryTransactionFilterDto filter,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            Expression<Func<InventoryTransaction, bool>>? filterExpression = null;
+
+            if (filter.CreatedFrom.HasValue || filter.CreatedTo.HasValue)
+            {
+                filterExpression = e =>
+                    (!filter.CreatedFrom.HasValue || e.CreatedAt >= filter.CreatedFrom.Value) &&
+                    (!filter.CreatedTo.HasValue || e.CreatedAt <= filter.CreatedTo.Value);
+            }
+
+            Expression<Func<InventoryTransaction, object>>? orderBy = string.IsNullOrEmpty(filter.SortBy)
+                ? e => e.CreatedAt
+                : filter.SortBy.ToLower() switch
+                {
+                    "createdat" => e => e.CreatedAt,
+                    "modifiedat" => e => e.ModifiedAt,
+                    _ => e => e.CreatedAt
+                };
+
+            var result = await repository.GetPaginated(
+                filter.PageNumber,
+                filter.PageSize,
+                filterExpression,
+                orderBy,
+                filter.SortDescending,
+                cancellationToken);
+
+            return new ApiResponse<PaginatedResult<InventoryTransaction>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = result
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<PaginatedResult<InventoryTransaction>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }

@@ -1,4 +1,6 @@
 using Accounting.Contracts.Dtos;
+using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Application.DTOs.Filters;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.BuildingBlocks.Application.Responses;
@@ -17,4 +19,8 @@ public interface IInventoryTransactionService
     Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByTransactionType(InventoryTransactionType transactionType);
 
     Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime);
+
+    Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
+        InventoryTransactionFilterDto filter,
+        CancellationToken cancellationToken = default);
 }

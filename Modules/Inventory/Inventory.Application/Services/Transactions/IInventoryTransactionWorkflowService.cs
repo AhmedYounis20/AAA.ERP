@@ -1,3 +1,4 @@
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
 using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using ERP.BuildingBlocks.Application.Responses;
@@ -11,7 +12,7 @@ public interface IInventoryTransactionWorkflowService
 {
     Task<ApiResponse<InventoryTransaction>> Create(InventoryTransactionCreateCommand command, bool isValidate = true);
 
-    Task<ApiResponse<InventoryTransaction>> Update(InventoryTransactionUpdateCommand command);
+    Task<ApiResponse<InventoryTransaction>> Update(BaseUpdateCommand<InventoryTransaction> command);
 
     Task<ApiResponse<InventoryTransaction>> Delete(Guid id);
 }

@@ -1,7 +1,5 @@
 using Accounting.Contracts.Integration;
 using Inventory.Application.Repositories;
-using ERP.Infrastructure.Services.BaseServices;
-using Inventory.Application.Commands.InventoryTransactions;
 using Inventory.Application.Services;
 using Inventory.Application.Dtos.Catalog;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
@@ -10,44 +8,17 @@ using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Services;
 
-public class ExportTransactionService : BaseService<InventoryTransaction, ExportTransactionCreateCommand, ExportTransactionUpdateCommand>, IExportTransactionService
+/// <summary>
+/// Export transaction read-side helper. CRUD writes are handled by CQRS workflow.
+/// </summary>
+public class ExportTransactionService(
+    IInventoryTransactionService inventoryTransactionService,
+    IInventoryTransactionRepository repository,
+    IInventoryAccountingDisplayQueries displayQueries) : IExportTransactionService
 {
-    private readonly IInventoryTransactionWorkflowService _inventoryTransactionWorkflow;
-    private readonly IInventoryTransactionService _inventoryTransactionService;
-    private readonly IInventoryTransactionRepository _repository;
-    private readonly IInventoryAccountingDisplayQueries _displayQueries;
-
-    public ExportTransactionService(
-        IInventoryTransactionWorkflowService inventoryTransactionWorkflow,
-        IInventoryTransactionService inventoryTransactionService,
-        IInventoryTransactionRepository repository,
-        IInventoryAccountingDisplayQueries displayQueries)
-        : base(repository)
-    {
-        _inventoryTransactionWorkflow = inventoryTransactionWorkflow;
-        _inventoryTransactionService = inventoryTransactionService;
-        _repository = repository;
-        _displayQueries = displayQueries;
-    }
-
-    public override async Task<ApiResponse<InventoryTransaction>> Create(ExportTransactionCreateCommand command, bool isValidate = false)
-    {
-        var baseCommand = new InventoryTransactionCreateCommand
-        {
-            TransactionType = InventoryTransactionType.Issue,
-            TransactionDate = command.TransactionDate,
-            DocumentNumber = command.DocumentNumber,
-            TransactionPartyId = command.TransactionPartyId,
-            BranchId = command.BranchId,
-            Items = command.Items
-        };
-
-        return await _inventoryTransactionWorkflow.Create(baseCommand, isValidate);
-    }
-
     public async Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
     {
-        var transaction = await _repository.GetWithItems(id);
+        var transaction = await repository.GetWithItems(id);
         if (transaction == null)
         {
             return new ApiResponse<InventoryTransactionReadDto>
@@ -68,7 +39,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
             };
         }
 
-        var dto = await InventoryReadDtoMapper.ToReadDtoAsync(transaction, _displayQueries);
+        var dto = await InventoryReadDtoMapper.ToReadDtoAsync(transaction, displayQueries);
         return new ApiResponse<InventoryTransactionReadDto>
         {
             IsSuccess = true,
@@ -79,7 +50,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
 
     public async Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll()
     {
-        var result = await _inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Issue);
+        var result = await inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Issue);
         if (!result.IsSuccess || result.Result is null)
         {
             return new ApiResponse<IEnumerable<InventoryTransactionReadDto>>
@@ -90,7 +61,7 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
             };
         }
 
-        var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(result.Result, _displayQueries);
+        var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(result.Result, displayQueries);
         return new ApiResponse<IEnumerable<InventoryTransactionReadDto>>
         {
             IsSuccess = true,
@@ -99,8 +70,6 @@ public class ExportTransactionService : BaseService<InventoryTransaction, Export
         };
     }
 
-    public async Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime)
-    {
-        return await _inventoryTransactionService.GetTransactionNumber(dateTime);
-    }
+    public Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime)
+        => inventoryTransactionService.GetTransactionNumber(dateTime);
 }

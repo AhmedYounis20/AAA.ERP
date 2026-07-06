@@ -12,7 +12,9 @@ namespace Inventory.Infrastructure.Services.Transactions;
 /// <summary>
 /// Export transaction reads. Transitional: delegates to <see cref="IExportTransactionService"/>.
 /// </summary>
-public class ExportTransactionQueries(IExportTransactionService exportTransactionService) : IExportTransactionQueries
+public class ExportTransactionQueries(
+    IExportTransactionService exportTransactionService,
+    IInventoryTransactionService inventoryTransactionService) : IExportTransactionQueries
 {
     public Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll()
         => exportTransactionService.GetAll();
@@ -20,7 +22,7 @@ public class ExportTransactionQueries(IExportTransactionService exportTransactio
     public Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
         InventoryTransactionFilterDto filter,
         CancellationToken cancellationToken = default)
-        => exportTransactionService.ReadAllPaginated(filter, cancellationToken);
+        => inventoryTransactionService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
         => exportTransactionService.GetById(id);

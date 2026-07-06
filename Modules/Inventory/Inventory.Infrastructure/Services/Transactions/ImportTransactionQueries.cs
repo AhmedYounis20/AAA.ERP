@@ -12,7 +12,9 @@ namespace Inventory.Infrastructure.Services.Transactions;
 /// <summary>
 /// Import transaction reads. Transitional: delegates to <see cref="IImportTransactionService"/>.
 /// </summary>
-public class ImportTransactionQueries(IImportTransactionService importTransactionService) : IImportTransactionQueries
+public class ImportTransactionQueries(
+    IImportTransactionService importTransactionService,
+    IInventoryTransactionService inventoryTransactionService) : IImportTransactionQueries
 {
     public Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll()
         => importTransactionService.GetAll();
@@ -20,7 +22,7 @@ public class ImportTransactionQueries(IImportTransactionService importTransactio
     public Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
         InventoryTransactionFilterDto filter,
         CancellationToken cancellationToken = default)
-        => importTransactionService.ReadAllPaginated(filter, cancellationToken);
+        => inventoryTransactionService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
         => importTransactionService.GetById(id);

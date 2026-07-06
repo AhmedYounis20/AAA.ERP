@@ -14,7 +14,9 @@ Phase 5.1 extracts `InventoryTransactionService` write logic into `InventoryTran
 |------|--------|---------|
 | InventoryTransaction | *(this commit)* | `InventoryTransactionWorkflowService`; `IInventoryTransactionService` read-only |
 
-**Next in order (Phase 5.2):** Slim `ImportTransactionService` / `ExportTransactionService` (update/delete handlers still on typed services).
+**Next in order (Phase 5.2):** Slim `ImportTransactionService` / `ExportTransactionService` — **done in Phase 5.2 commit.**
+
+**Next in order (Phase 5.3):** `InventoryTransfer` + approve/reject commands.
 
 ---
 
