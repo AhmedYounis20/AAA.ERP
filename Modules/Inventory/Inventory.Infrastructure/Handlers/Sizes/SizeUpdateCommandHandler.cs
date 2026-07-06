@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.Sizes;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.Sizes;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.Sizes;
 
-public class SizeUpdateCommandHandler(ISizeService service)
-    : ICommandHandler<SizeUpdateCommand, ApiResponse<Size>>
-{
-    public Task<ApiResponse<Size>> Handle(SizeUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class SizeUpdateCommandHandler(ISizeRepository repository)
+    : BaseSettingUpdateHandler<Size, SizeUpdateCommand>(repository);

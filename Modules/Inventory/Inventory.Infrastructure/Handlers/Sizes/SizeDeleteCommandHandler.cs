@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.Sizes;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.Sizes;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.Sizes;
 
-public class SizeDeleteCommandHandler(ISizeService sizeService)
-    : ICommandHandler<SizeDeleteCommand, ApiResponse<Size>>
-{
-    public Task<ApiResponse<Size>> Handle(SizeDeleteCommand request, CancellationToken cancellationToken)
-        => sizeService.Delete(request.Id);
-}
+public sealed class SizeDeleteCommandHandler(ISizeRepository repository)
+    : BaseSettingDeleteHandler<Size, SizeDeleteCommand>(repository);
