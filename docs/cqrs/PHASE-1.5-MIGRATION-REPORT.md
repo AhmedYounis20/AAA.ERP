@@ -1,8 +1,8 @@
 # Phase 1.5 Migration Report — Category C Pilot (FinancialPeriod)
 
-**Status:** In progress (3 of 5 planned items)  
+**Status:** In progress (4 of 5 planned items)  
 **Branch:** `feature/adr-013-generic-cqrs-handlers`  
-**Scope:** FinancialPeriod, CostCenter, Branch workflow-service pilots
+**Scope:** FinancialPeriod, CostCenter, Branch, FixedAsset workflow-service pilots
 
 ---
 
@@ -14,9 +14,10 @@ Phase 1.5 migrates Category C entities from `BaseService` / `BaseTreeSettingServ
 |---|--------|----------|--------|---------|
 | 1 | FinancialPeriod | C | `a2b8cd5` | `FinancialPeriodWorkflowService`; `IFinancialPeriodService` removed |
 | 2 | CostCenter | C | `b0cdb8b` | `CostCenterWorkflowService`; `ICostCenterService` removed |
-| 3 | Branch | C | *(this commit)* | `BranchWorkflowService`; `IBranchService` slimmed to `GetNextSubLeadgers` |
+| 3 | Branch | C | `8c3490a` | `BranchWorkflowService`; `IBranchService` slimmed to `GetNextSubLeadgers` |
+| 4 | FixedAsset | C | *(this commit)* | `FixedAssetWorkflowService`; `IFixedAssetService` slimmed to `GetNextFixedAsset` |
 
-**Remaining in Phase 1.5 plan:** FixedAsset, Entry group.
+**Remaining in Phase 1.5 plan:** Entry group.
 
 ---
 
@@ -136,9 +137,28 @@ Handlers consolidated into `BranchCreateCommandHandler.cs` (create/update/delete
 
 ---
 
+## FixedAsset — asset-type COA + depreciation (`this commit`)
+
+`FixedAssetWorkflowService` preserves:
+
+| Operation | Logic |
+|-----------|--------|
+| **Create** | Asset-type parent COA; optional accumulated/expense depreciation accounts; non-depreciable zeroing |
+| **Update** | Transactional COA name sync for main, accumulated, and expense accounts |
+| **Delete** | Transactional; deletes all three linked COA accounts |
+
+Handlers consolidated into `FixedAssetCreateCommandHandler.cs` → `IFixedAssetWorkflowService`.
+
+`IFixedAssetService` retained for `GetNextFixedAsset` only (type-specific code generation).
+
+`FixedAssetQueries` → `BaseTreeSettingRepositoryQueries<FixedAsset>`.
+
+`SubLeadgerService` no longer has concrete subclasses.
+
+---
+
 ## Recommended Next Steps (Phase 1.5 continuation)
 
 | Priority | Item | Category | Notes |
 |----------|------|----------|-------|
-| 4 | FixedAsset | C | Asset-type COA rules |
 | 5 | Entry group | C | `EntryWorkflowService` first in entry delegation chain |

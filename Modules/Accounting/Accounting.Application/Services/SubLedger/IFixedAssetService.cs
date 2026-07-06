@@ -1,14 +1,13 @@
 using Accounting.Application.Commands.FixedAssets;
-using Accounting.Application.Services.SubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for fixed asset.
+/// Fixed-asset default-data helper. CRUD writes are handled by CQRS workflow.
 /// </summary>
-public interface IFixedAssetService : IBaseSubLeadgerService<FixedAsset, FixedAssetCreateCommand, FixedAssetUpdateCommand>
+public interface IFixedAssetService
 {
     Task<ApiResponse<FixedAssetCreateCommand>> GetNextFixedAsset(Guid? parentId, FixedAssetType fixedAssetType);
 }

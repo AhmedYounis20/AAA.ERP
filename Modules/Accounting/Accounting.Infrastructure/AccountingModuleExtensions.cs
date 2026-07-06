@@ -62,6 +62,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<ISupplierQueries, SupplierQueries>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
+        services.AddScoped<IFixedAssetWorkflowService, FixedAssetWorkflowService>();
         services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<IFixedAssetQueries, FixedAssetQueries>();
         services.AddScoped<IRoleRepository, RoleRepository>();
