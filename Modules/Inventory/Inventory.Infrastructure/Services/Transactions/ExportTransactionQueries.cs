@@ -6,7 +6,6 @@ using ERP.BuildingBlocks.Application.DTOs.Filters;
 using ERP.BuildingBlocks.Application.Responses;
 using Inventory.Application.Dtos.Catalog;
 using Inventory.Application.Repositories;
-using Inventory.Application.Services;
 using Inventory.Application.Services.Transactions;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using Inventory.Infrastructure.Mapping;
@@ -18,7 +17,7 @@ namespace Inventory.Infrastructure.Services.Transactions;
 /// </summary>
 public class ExportTransactionQueries(
     IInventoryTransactionRepository repository,
-    IInventoryTransactionService inventoryTransactionService,
+    IAccountingIntegrationService accountingIntegration,
     IInventoryAccountingDisplayQueries displayQueries) : IExportTransactionQueries
 {
     public async Task<ApiResponse<InventoryTransactionReadDto>> GetById(Guid id)
@@ -55,7 +54,9 @@ public class ExportTransactionQueries(
 
     public async Task<ApiResponse<IEnumerable<InventoryTransactionReadDto>>> GetAll()
     {
-        var result = await inventoryTransactionService.GetByTransactionType(InventoryTransactionType.Issue);
+        var result = await InventoryTransactionQuerySupport.GetByTransactionType(
+            repository,
+            InventoryTransactionType.Issue);
         if (!result.IsSuccess || result.Result is null)
         {
             return new ApiResponse<IEnumerable<InventoryTransactionReadDto>>
@@ -78,8 +79,8 @@ public class ExportTransactionQueries(
     public Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
         InventoryTransactionFilterDto filter,
         CancellationToken cancellationToken = default)
-        => inventoryTransactionService.GetPaginated(filter, cancellationToken);
+        => InventoryTransactionQuerySupport.GetPaginated(repository, filter, cancellationToken);
 
     public Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime)
-        => inventoryTransactionService.GetTransactionNumber(dateTime);
+        => InventoryTransactionQuerySupport.GetTransactionNumber(repository, accountingIntegration, dateTime);
 }

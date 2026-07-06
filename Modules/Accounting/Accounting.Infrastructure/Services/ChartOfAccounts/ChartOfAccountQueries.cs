@@ -12,9 +12,7 @@ namespace Accounting.Infrastructure.Services;
 /// <summary>
 /// Chart-of-account read queries.
 /// </summary>
-public class ChartOfAccountQueries(
-    IChartOfAccountRepository repository,
-    IChartOfAccountService chartOfAccountService) : IChartOfAccountQueries
+public class ChartOfAccountQueries(IChartOfAccountRepository repository) : IChartOfAccountQueries
 {
     private readonly BaseEntityRepositoryQueries<ChartOfAccount> _entityQueries = new(repository);
 
@@ -30,8 +28,39 @@ public class ChartOfAccountQueries(
         => _entityQueries.GetById(id);
 
     public Task<string> GenerateNewChildCode(Guid? parentId)
-        => chartOfAccountService.GenerateNewCodeForChild(parentId);
+        => repository.GenerateNewCodeForChild(parentId);
 
-    public Task<ApiResponse<ChartOfAccountInputModel>> GetNextAccountDefaultData(Guid? parentId)
-        => chartOfAccountService.NextAccountDefaultData(parentId);
+    public async Task<ApiResponse<ChartOfAccountInputModel>> GetNextAccountDefaultData(Guid? parentId)
+    {
+        try
+        {
+            ChartOfAccount? parent = parentId is not null ? await repository.Get(parentId ?? Guid.Empty) : null;
+            var inputModel = new ChartOfAccountInputModel
+            {
+                parentId = parentId,
+                AccountNature = parent?.AccountNature ?? AccountNature.Debit,
+                AccountGuidId = parent?.AccountGuidId ?? Guid.Empty,
+                Code = await repository.GenerateNewCodeForChild(parentId),
+                IsPostedAccount = parent?.IsPostedAccount ?? false,
+                IsStopDealing = parent?.IsStopDealing ?? false,
+                IsDepreciable = false,
+                IsActiveAccount = true,
+            };
+
+            return new ApiResponse<ChartOfAccountInputModel>
+            {
+                StatusCode = HttpStatusCode.OK,
+                IsSuccess = true,
+                Result = inputModel
+            };
+        }
+        catch (Exception)
+        {
+            return new ApiResponse<ChartOfAccountInputModel>
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                IsSuccess = false,
+            };
+        }
+    }
 }

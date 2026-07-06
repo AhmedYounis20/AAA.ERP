@@ -47,7 +47,6 @@ public static class InventoryModuleExtensions
         services.AddScoped<ISellingPriceQueries, SellingPriceQueries>();
         services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
         services.AddScoped<IAttributeDefinitionWorkflowService, AttributeDefinitionWorkflowService>();
-        services.AddScoped<IAttributeDefinitionService, AttributeDefinitionService>();
         services.AddScoped<IAttributeDefinitionQueries, AttributeDefinitionQueries>();
         services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
         services.AddScoped<IAttributeValueService, AttributeValueService>();
@@ -90,7 +89,6 @@ public static class InventoryModuleExtensions
         services.AddScoped<IFinancialPeriodInventoryUsageQueries, FinancialPeriodInventoryUsageQueries>();
         services.AddScoped<IInventoryQueryService, FinancialPeriodInventoryUsageQueries>();
         services.AddScoped<IInventoryTransactionWorkflowService, InventoryTransactionWorkflowService>();
-        services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
         services.AddScoped<IImportTransactionQueries, ImportTransactionQueries>();
         services.AddScoped<IExportTransactionQueries, ExportTransactionQueries>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();

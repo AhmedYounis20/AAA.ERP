@@ -1,68 +1,23 @@
+using Accounting.Contracts.Dtos;
 using Accounting.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.DTOs.Filters;
+using ERP.BuildingBlocks.Application.Responses;
 using Inventory.Application.Repositories;
-using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
-using ERP.BuildingBlocks.Application.Constants;
 using System.Linq.Expressions;
+using System.Numerics;
 
-namespace Inventory.Infrastructure.Services;
+namespace Inventory.Infrastructure.Services.Transactions;
 
 /// <summary>
-/// Inventory transaction read-side helper. CRUD writes are handled by CQRS workflow.
+/// Shared inventory transaction read helpers for import/export query types.
 /// </summary>
-public class InventoryTransactionService(
-    IInventoryTransactionRepository repository,
-    IAccountingIntegrationService accountingIntegration) : IInventoryTransactionService
+internal static class InventoryTransactionQuerySupport
 {
-    public async Task<ApiResponse<InventoryTransaction>> GetWithItems(Guid id)
-    {
-        try
-        {
-            var transaction = await repository.GetWithItems(id);
-            return new ApiResponse<InventoryTransaction>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = transaction
-            };
-        }
-        catch (Exception ex)
-        {
-            return new ApiResponse<InventoryTransaction>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = ex.Message }]
-            };
-        }
-    }
-
-    public async Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByBranch(Guid branchId)
-    {
-        try
-        {
-            var transactions = await repository.GetByBranch(branchId);
-            return new ApiResponse<IEnumerable<InventoryTransaction>>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = transactions
-            };
-        }
-        catch (Exception ex)
-        {
-            return new ApiResponse<IEnumerable<InventoryTransaction>>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = ex.Message }]
-            };
-        }
-    }
-
-    public async Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByTransactionType(
+    public static async Task<ApiResponse<IEnumerable<InventoryTransaction>>> GetByTransactionType(
+        IInventoryTransactionRepository repository,
         InventoryTransactionType transactionType)
     {
         try
@@ -86,7 +41,10 @@ public class InventoryTransactionService(
         }
     }
 
-    public async Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(DateTime dateTime)
+    public static async Task<ApiResponse<TransactionNumberDto>> GetTransactionNumber(
+        IInventoryTransactionRepository repository,
+        IAccountingIntegrationService accountingIntegration,
+        DateTime dateTime)
     {
         try
         {
@@ -143,7 +101,8 @@ public class InventoryTransactionService(
         }
     }
 
-    public async Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
+    public static async Task<ApiResponse<PaginatedResult<InventoryTransaction>>> GetPaginated(
+        IInventoryTransactionRepository repository,
         InventoryTransactionFilterDto filter,
         CancellationToken cancellationToken = default)
     {

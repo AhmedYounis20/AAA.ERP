@@ -42,7 +42,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICostCenterWorkflowService, CostCenterWorkflowService>();
         services.AddScoped<ICostCenterQueries, CostCenterQueries>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
-        services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
         services.AddScoped<IChartOfAccountQueries, ChartOfAccountQueries>();
         services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<IBankQueries, BankQueries>();
