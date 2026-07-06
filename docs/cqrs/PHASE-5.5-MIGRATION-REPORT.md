@@ -14,7 +14,9 @@ Phase 5.5 introduces `IVariantWorkflowService` / `VariantWorkflowService` and ro
 |------|--------|---------|
 | Variant | *(this commit)* | Variant handlers now depend on `IVariantWorkflowService` |
 
-**Next in order (Phase 5.6):** `Item` workflow.
+**Next in order (Phase 5.6):** `Item` workflow — **done in Phase 5.6 commit.**
+
+**Next in order (Phase 5.7):** `Product` workflow.
 
 ---
 

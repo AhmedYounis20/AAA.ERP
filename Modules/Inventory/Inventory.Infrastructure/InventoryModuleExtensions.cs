@@ -100,6 +100,7 @@ public static class InventoryModuleExtensions
         services.AddScoped<IInventoryTransferService, InventoryTransferService>();
         services.AddScoped<IInventoryTransferQueries, InventoryTransferQueries>();
         services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddScoped<IItemWorkflowService, ItemWorkflowService>();
         services.AddScoped<IItemService, ItemService>();
         services.AddScoped<IItemQueries, ItemQueries>();
         services.AddScoped<IBaseRepository<ItemCode>, BaseRepository<ItemCode>>();
