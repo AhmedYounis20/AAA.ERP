@@ -1,16 +1,13 @@
 using Accounting.Application.Commands.Customers;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using ERP.BuildingBlocks.Application.Responses;
 using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 
-/// <summary>
-/// Customer read queries. Transitional: delegates to <see cref="ICustomerService"/>.
-/// </summary>
-public class CustomerQueries(ICustomerService customerService)
-    : BaseTreeSettingQueries<Customer, CustomerCreateCommand, CustomerUpdateCommand>(customerService),
+public class CustomerQueries(ICustomerRepository repository, ICustomerService customerService)
+    : BaseTreeSettingRepositoryQueries<Customer>(repository),
       ICustomerQueries
 {
     public Task<ApiResponse<CustomerCreateCommand>> GetNextSubLedgers(Guid? parentId)
