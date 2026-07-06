@@ -1,16 +1,16 @@
 using Accounting.Application.Commands.Banks;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using ERP.BuildingBlocks.Application.Responses;
 using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Bank read queries. Transitional: delegates to <see cref="IBankService"/>.
+/// Bank read queries.
 /// </summary>
-public class BankQueries(IBankService bankService)
-    : BaseTreeSettingQueries<Bank, BankCreateCommand, BankUpdateCommand>(bankService),
+public class BankQueries(IBankRepository repository, IBankService bankService)
+    : BaseTreeSettingRepositoryQueries<Bank>(repository),
       IBankQueries
 {
     public Task<ApiResponse<BankCreateCommand>> GetNextSubLedgers(Guid? parentId)

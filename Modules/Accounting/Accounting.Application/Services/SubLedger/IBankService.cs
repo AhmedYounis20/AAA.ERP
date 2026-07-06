@@ -1,10 +1,14 @@
 using Accounting.Application.Commands.Banks;
-using Accounting.Application.Services.SubLeadgers;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for bank.
+/// Bank default-data helper. CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface IBankService : IBaseSubLeadgerService<Bank, BankCreateCommand, BankUpdateCommand>;
+public interface IBankService
+{
+    Task<ApiResponse<BankCreateCommand>> GetNextSubLeadgers(Guid? parentId);
+}
