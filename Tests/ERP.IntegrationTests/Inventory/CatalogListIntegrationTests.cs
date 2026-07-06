@@ -30,9 +30,9 @@ public class CatalogListIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Product_list_returns_seeded_product_without_error()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IProductService>();
+        var queries = _scope.ServiceProvider.GetRequiredService<IProductQueries>();
 
-        var result = await service.GetProductDtos();
+        var result = await queries.GetAll();
 
         result.IsSuccess.Should().BeTrue();
         result.Result.Should().NotBeNull();
@@ -42,13 +42,13 @@ public class CatalogListIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Variant_full_list_and_paginated_list_return_seeded_variant()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IVariantService>();
+        var queries = _scope.ServiceProvider.GetRequiredService<IVariantQueries>();
 
-        var fullList = await service.GetVariantDtos();
+        var fullList = await queries.GetAll();
         fullList.IsSuccess.Should().BeTrue();
         fullList.Result.Should().Contain(v => v.Id == InventoryTestIds.VariantId);
 
-        var paginated = await service.ReadAllDtosPaginated(
+        var paginated = await queries.GetPaginated(
             new SettingFilterDto { PageNumber = 1, PageSize = 10 });
         paginated.IsSuccess.Should().BeTrue();
         paginated.Result!.Items.Should().Contain(v => v.Id == InventoryTestIds.VariantId);
@@ -57,13 +57,13 @@ public class CatalogListIntegrationTests : IAsyncLifetime
     [Fact]
     public async Task Variant_by_product_and_search_return_seeded_variant()
     {
-        var service = _scope.ServiceProvider.GetRequiredService<IVariantService>();
+        var queries = _scope.ServiceProvider.GetRequiredService<IVariantQueries>();
 
-        var byProduct = await service.GetVariantsByProductId(InventoryTestIds.ProductId);
+        var byProduct = await queries.GetVariantsByProductId(InventoryTestIds.ProductId);
         byProduct.IsSuccess.Should().BeTrue();
         byProduct.Result.Should().Contain(v => v.Id == InventoryTestIds.VariantId);
 
-        var search = await service.SearchVariants("Test Product");
+        var search = await queries.SearchVariants("Test Product");
         search.IsSuccess.Should().BeTrue();
         search.Result.Should().Contain(v => v.Id == InventoryTestIds.VariantId);
     }

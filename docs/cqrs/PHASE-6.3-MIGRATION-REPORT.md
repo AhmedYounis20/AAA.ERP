@@ -30,7 +30,7 @@ Phase 6.3 removes three transitional inventory transaction read services. Querie
 
 ---
 
-## Next Steps (Phase 6.4+)
+## Next Steps (Phase 6.5+)
 
-- Migrate catalog `*Queries` (Item, Product, Variant) off write-capable services once workflow extraction completes
-- Optional: inline `IInventoryTransactionService` into a shared query base or repository queries
+- Extract CRUD logic from catalog services into workflow services (remove `BaseService` inheritance)
+- Optional: inline remaining core read services into queries
