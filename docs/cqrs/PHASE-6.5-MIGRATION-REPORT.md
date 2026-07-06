@@ -1,34 +1,46 @@
 # Phase 6.5 Migration Report — Catalog Workflow Extraction
 
-**Status:** In progress (Variant ✅, Item ✅, Product pending)  
+**Status:** Complete (Variant ✅, Item ✅, Product ✅)  
 **Branch:** `feature/adr-013-generic-cqrs-handlers`  
 **Scope:** Move catalog CRUD into workflow services; remove `I*Service` write facades
 
 ---
 
-## Phase 6.5a — Variant (complete)
+## Phase 6.5a — Variant
 
 | Change | Outcome |
 |--------|---------|
 | `VariantService` → `VariantWorkflowService` | Write logic in `Workflows/` |
 | `IVariantService` removed | `IVariantWorkflowService` + `IVariantProductOperations` |
-| `ProductService` | Uses `IVariantProductOperations` |
 
 Commit: `73eb7ee`
 
 ---
 
-## Phase 6.5b — Item (complete)
+## Phase 6.5b — Item
 
 | Change | Outcome |
 |--------|---------|
 | `ItemService` → `ItemWorkflowService` | Write logic in `Workflows/` |
 | `IItemService` removed | Handlers use `IItemWorkflowService` only |
-| Dead read methods removed | Reads on `ItemQueries` (Phase 6.4) |
+
+Commit: `37a973a`
 
 ---
 
-## Validation (6.5b)
+## Phase 6.5c — Product
+
+| Change | Outcome |
+|--------|---------|
+| `ProductService` → `ProductWorkflowService` | Write logic in `Workflows/` |
+| `IProductService` removed | Handlers use `IProductWorkflowService` only |
+| Dead read methods removed | Reads on `ProductQueries` (Phase 6.4) |
+
+Commit: *(this commit)*
+
+---
+
+## Validation
 
 | Check | Result |
 |-------|--------|
@@ -38,6 +50,9 @@ Commit: `73eb7ee`
 
 ---
 
-## Next Steps
+## Phase 6 — Catalog Complete
 
-- **Phase 6.5c:** Extract `ProductService` → `ProductWorkflowService`
+All three catalog write services are now workflow services. Optional remaining cleanup:
+
+- Remove `BaseService` / `BaseTreeSettingService` inheritance from catalog workflows
+- Inline `IEntryService`, `IComplexEntryService`, `IInventoryTransactionService` into queries

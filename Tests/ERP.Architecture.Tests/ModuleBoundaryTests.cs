@@ -12,7 +12,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Inventory_transaction_services_should_not_reference_Account_domain_entities()
     {
-        var result = Types.InAssembly(typeof(Inventory.Infrastructure.Services.ProductService).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly)
             .That()
             .HaveNameEndingWith("TransactionService")
             .Or()
@@ -133,7 +133,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Inventory_catalog_services_should_not_reference_Account_domain_entities()
     {
-        var result = Types.InAssembly(typeof(Inventory.Infrastructure.Services.ProductService).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Infrastructure.InventoryModuleExtensions).Assembly)
             .That()
             .ResideInNamespace("Inventory.Infrastructure.Services")
             .Should()
