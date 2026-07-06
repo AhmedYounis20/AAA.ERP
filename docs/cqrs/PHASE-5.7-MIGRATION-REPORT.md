@@ -32,3 +32,9 @@ Phase 5.7 introduces `IProductWorkflowService` / `ProductWorkflowService` and ro
 | `dotnet build AAA.ERP.sln` | **0 errors** |
 | `dotnet test Tests/Inventory.UnitTests/Inventory.UnitTests.csproj --no-build` | **6/6 passed** |
 
+---
+
+## Next Steps
+
+Phase 6 cleanup — see `PHASE-6.1-MIGRATION-REPORT.md` (sub-ledger query cleanup complete).
+

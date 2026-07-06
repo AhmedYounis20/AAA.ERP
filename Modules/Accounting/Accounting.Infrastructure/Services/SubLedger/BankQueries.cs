@@ -2,6 +2,8 @@ using Accounting.Application.Commands.Banks;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Domain.Utility;
+using Accounting.Infrastructure.Services.SubLeadgers;
 using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
@@ -9,10 +11,13 @@ namespace Accounting.Infrastructure.Services;
 /// <summary>
 /// Bank read queries.
 /// </summary>
-public class BankQueries(IBankRepository repository, IBankService bankService)
+public class BankQueries(IBankRepository repository, IChartOfAccountRepository chartOfAccountRepository)
     : BaseTreeSettingRepositoryQueries<Bank>(repository),
       IBankQueries
 {
     public Task<ApiResponse<BankCreateCommand>> GetNextSubLedgers(Guid? parentId)
-        => bankService.GetNextSubLeadgers(parentId);
+        => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Bank, BankCreateCommand>(
+            chartOfAccountRepository,
+            Guid.Parse(SD.BankChartAccountId),
+            parentId);
 }

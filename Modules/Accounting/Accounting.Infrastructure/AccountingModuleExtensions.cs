@@ -25,7 +25,6 @@ public static class AccountingModuleExtensions
         ModuleModelConfigurationRegistry.Register(ApplyAccountingModuleConfigurations);
 
         services.AddScoped<ITaxRepository, TaxRepository>();
-        services.AddScoped<ITaxService, TaxService>();
         services.AddScoped<ITaxQueries, TaxQueries>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         services.AddScoped<ICurrencyQueries, CurrencyQueries>();
@@ -46,24 +45,18 @@ public static class AccountingModuleExtensions
         services.AddScoped<IChartOfAccountService, ChartOfAccountService>();
         services.AddScoped<IChartOfAccountQueries, ChartOfAccountQueries>();
         services.AddScoped<IBankRepository, BankRepository>();
-        services.AddScoped<IBankService, BankService>();
         services.AddScoped<IBankQueries, BankQueries>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
-        services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<ICashInBoxQueries, CashInBoxQueries>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchWorkflowService, BranchWorkflowService>();
-        services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IBranchQueries, BranchQueries>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ICustomerQueries, CustomerQueries>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
-        services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<ISupplierQueries, SupplierQueries>();
         services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
         services.AddScoped<IFixedAssetWorkflowService, FixedAssetWorkflowService>();
-        services.AddScoped<IFixedAssetService, FixedAssetService>();
         services.AddScoped<IFixedAssetQueries, FixedAssetQueries>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleQueries, RoleQueries>();
