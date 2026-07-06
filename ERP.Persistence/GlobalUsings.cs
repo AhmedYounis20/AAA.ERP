@@ -19,6 +19,5 @@ global using Accounting.Domain.Utility;
 global using Serilog;
 global using Microsoft.AspNetCore.Http;
 global using Accounting.Application.Services.Queries;
-global using Accounting.Application.Services.SubLeadgers;
 global using Shared;
 global using ERP.BuildingBlocks.Application.Responses;

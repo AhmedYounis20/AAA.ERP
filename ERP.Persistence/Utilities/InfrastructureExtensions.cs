@@ -15,8 +15,6 @@ public static class InfrastructureExtensions
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBaseSettingService<,,>), typeof(BaseSettingService<,,>));
-        services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>));
         services.AddScoped<ExportDataToSeed>();
         services.AddScoped<ImportDataToSeed>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();

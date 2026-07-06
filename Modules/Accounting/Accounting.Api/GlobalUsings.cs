@@ -11,5 +11,4 @@ global using Accounting.Application.Dtos.Filters;
 global using Accounting.Application.Dtos.Lookups;
 global using Accounting.Application.Services;
 global using Accounting.Application.Services.Queries;
-global using Accounting.Application.Services.SubLeadgers;
 global using Accounting.Domain.Utility;

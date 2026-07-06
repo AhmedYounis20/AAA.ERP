@@ -26,14 +26,6 @@ public class HybridCqrsArchitectureTests
         "DbWorkController"
     ];
 
-    private static readonly string[] LegacyCrudBaseNames =
-    [
-        "BaseController`3",
-        "BaseSettingController`3",
-        "BaseTreeSettingController`3",
-        "BaseTreeController`3"
-    ];
-
     private static readonly Lazy<Type[]> HybridCqrsControllers = new(DiscoverHybridCqrsControllers);
 
     private static readonly Lazy<Type[]> ReadSideContracts = new(DiscoverReadSideContracts);
@@ -138,19 +130,6 @@ public class HybridCqrsArchitectureTests
                 .Any(c => c.GetParameters().Any(p => p.ParameterType.Name is "ISender" or "IMediator"));
 
             hasSender.Should().BeTrue($"{controller.Name} has write actions and must inject ISender.");
-        }
-    }
-
-    [Fact]
-    public void Hybrid_controllers_should_not_inherit_legacy_crud_base_classes()
-    {
-        foreach (var controller in HybridCqrsControllers.Value)
-        {
-            for (var baseType = controller.BaseType; baseType is not null; baseType = baseType.BaseType)
-            {
-                LegacyCrudBaseNames.Should().NotContain(baseType.Name,
-                    $"{controller.Name} must not inherit legacy {baseType.Name}");
-            }
         }
     }
 

@@ -213,16 +213,6 @@ public class NamespaceDebtTests
 
         queryResult.IsSuccessful.Should().BeTrue(
             $"Legacy namespace still present: {string.Join(", ", queryResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
-
-        var subLeadgerResult = Types.InAssembly(assembly)
-            .That()
-            .HaveName("IBaseSubLeadgerService")
-            .Should()
-            .NotResideInNamespaceStartingWith("ERP.Application.Services.Account")
-            .GetResult();
-
-        subLeadgerResult.IsSuccessful.Should().BeTrue(
-            $"Legacy namespace still present: {string.Join(", ", subLeadgerResult.FailingTypes?.Select(t => t.FullName) ?? [])}");
     }
 
     [Fact]
