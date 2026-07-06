@@ -1,4 +1,4 @@
-using Accounting.Application.Commands.Currencies;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Currencies;
 using ERP.Infrastructure.Services.Queries;
@@ -6,8 +6,8 @@ using ERP.Infrastructure.Services.Queries;
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Currency read queries. Transitional: delegates to <see cref="ICurrencyService"/> until write methods are removed.
+/// Currency read queries.
 /// </summary>
-public class CurrencyQueries(ICurrencyService currencyService)
-    : BaseSettingQueries<Currency, CurrencyCreateCommand, CurrencyUpdateCommand>(currencyService),
+public class CurrencyQueries(ICurrencyRepository repository)
+    : BaseSettingRepositoryQueries<Currency>(repository),
       ICurrencyQueries;

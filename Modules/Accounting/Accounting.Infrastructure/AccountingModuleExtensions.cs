@@ -27,7 +27,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<ITaxService, TaxService>();
         services.AddScoped<ITaxQueries, TaxQueries>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-        services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<ICurrencyQueries, CurrencyQueries>();
         services.AddScoped<IGLSettingRepository, GLSettingRepository>();
         services.AddScoped<IGLSettingService, GLSettingService>();
