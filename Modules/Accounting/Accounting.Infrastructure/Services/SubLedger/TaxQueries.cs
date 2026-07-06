@@ -1,16 +1,16 @@
 using Accounting.Application.Commands.Taxes;
+using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Account.SubLeadgers;
-using ERP.BuildingBlocks.Application.Responses;
 using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 
 /// <summary>
-/// Tax read queries. Transitional: delegates to <see cref="ITaxService"/> until write methods are removed.
+/// Tax read queries.
 /// </summary>
-public class TaxQueries(ITaxService taxService)
-    : BaseTreeSettingQueries<Tax, TaxCreateCommand, TaxUpdateCommand>(taxService),
+public class TaxQueries(ITaxRepository repository, ITaxService taxService)
+    : BaseTreeSettingRepositoryQueries<Tax>(repository),
       ITaxQueries
 {
     public Task<ApiResponse<TaxCreateCommand>> GetNextSubLedgers(Guid? parentId)

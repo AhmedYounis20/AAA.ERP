@@ -1,64 +1,37 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.BuildingBlocks.Application.Constants;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Execution;
+using Accounting.Infrastructure.Handlers.SubLedger;
 
 namespace Accounting.Infrastructure.Handlers.Taxes;
 
-public class TaxUpdateCommandHandler(ITaxRepository repository)
-    : ICommandHandler<TaxUpdateCommand, ApiResponse<Tax>>
+public sealed class TaxUpdateCommandHandler(ITaxRepository repository)
+    : BaseSubLedgerUpdateHandler<Tax, TaxUpdateCommand>(repository)
 {
-    public async Task<ApiResponse<Tax>> Handle(TaxUpdateCommand command, CancellationToken cancellationToken)
+    protected override bool ShouldValidateBusinessRules => true;
+
+    protected override async Task<CrudEntityValidationResult<Tax>> ValidateUpdateAsync(
+        TaxUpdateCommand command,
+        CancellationToken cancellationToken)
     {
-        try
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var entity = await TreeSettingRepository.Get(command.Id);
+        if (entity is null)
         {
-            var entity = await repository.Get(command.Id);
-            if (entity is null)
-            {
-                return new ApiResponse<Tax>
-                {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.NotFound,
-                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
-                };
-            }
-
-            if (entity.NodeType != command.NodeType)
-            {
-                return new ApiResponse<Tax>
-                {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.CannotChangeNodeType }]
-                };
-            }
-
-            var updated = command.Adapt<Tax>();
-            if (entity.ChartOfAccount is not null)
-            {
-                updated.ChartOfAccountId = entity.ChartOfAccountId;
-                updated.ChartOfAccount = entity.ChartOfAccount;
-                updated.ChartOfAccount.Name = command.Name;
-                updated.ChartOfAccount.NameSecondLanguage = command.NameSecondLanguage;
-            }
-
-            await repository.Update(updated);
-
-            return new ApiResponse<Tax>
-            {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = updated,
-            };
+            return CrudEntityValidationResult<Tax>.Failure(
+                new[] { ErrorMessages.RecordNotFound });
         }
-        catch (Exception ex)
+
+        if (entity.NodeType != command.NodeType)
         {
-            return new ApiResponse<Tax>
-            {
-                IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
-            };
+            return CrudEntityValidationResult<Tax>.Failure(
+                new[] { ErrorMessages.CannotChangeNodeType },
+                entity);
         }
+
+        return CrudEntityValidationResult<Tax>.Success(entity);
     }
 }

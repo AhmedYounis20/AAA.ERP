@@ -1,10 +1,14 @@
 using Accounting.Application.Commands.Taxes;
-using Accounting.Application.Services.SubLeadgers;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for tax.
+/// Tax default-data helper. CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface ITaxService : IBaseSubLeadgerService<Tax, TaxCreateCommand, TaxUpdateCommand>;
+public interface ITaxService
+{
+    Task<ApiResponse<TaxCreateCommand>> GetNextSubLeadgers(Guid? parentId);
+}

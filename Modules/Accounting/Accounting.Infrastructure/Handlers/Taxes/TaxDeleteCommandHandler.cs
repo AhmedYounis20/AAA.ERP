@@ -1,15 +1,13 @@
 using Accounting.Application.Commands.Taxes;
-using Accounting.Application.Services;
+using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Infrastructure.Handlers.SubLedger;
+using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Accounting.Infrastructure.Handlers.Taxes;
 
-/// <summary>
-/// Delete via MediatR. Transitional: delegates to <see cref="ITaxService"/> until delete logic is inlined.
-/// </summary>
-public class TaxDeleteCommandHandler(ITaxService taxService)
-    : ICommandHandler<TaxDeleteCommand, ApiResponse<Tax>>
-{
-    public Task<ApiResponse<Tax>> Handle(TaxDeleteCommand request, CancellationToken cancellationToken)
-        => taxService.Delete(request.Id);
-}
+public sealed class TaxDeleteCommandHandler(
+    ITaxRepository repository,
+    IUnitOfWork unitOfWork,
+    IChartOfAccountRepository chartOfAccountRepository)
+    : BaseSubLedgerDeleteHandler<Tax, TaxDeleteCommand>(repository, unitOfWork, chartOfAccountRepository);
