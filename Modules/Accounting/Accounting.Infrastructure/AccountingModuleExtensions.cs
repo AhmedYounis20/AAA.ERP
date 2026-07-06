@@ -10,6 +10,7 @@ using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
 using Accounting.Infrastructure.Services.Entries;
 using Accounting.Infrastructure.Services.Queries;
+using Accounting.Infrastructure.Workflows;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories.Account.SubLeadgers;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICollectionBookRepository, CollectionBookRepository>();
         services.AddScoped<ICollectionBookQueries, CollectionBookQueries>();
         services.AddScoped<IFinancialPeriodRepository, FinancialPeriodRepository>();
-        services.AddScoped<IFinancialPeriodService, FinancialPeriodService>();
+        services.AddScoped<IFinancialPeriodWorkflowService, FinancialPeriodWorkflowService>();
         services.AddScoped<IFinancialPeriodQueries, FinancialPeriodQueries>();
         services.AddScoped<ICostCenterRepository, CostCenterRepository>();
         services.AddScoped<ICostCenterService, CostCenterService>();

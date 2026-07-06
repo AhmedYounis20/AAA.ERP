@@ -4,9 +4,11 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Infrastructure.Handlers.FinancialPeriods;
 
-public class FinancialPeriodCreateCommandHandler(IFinancialPeriodService service)
+public sealed class FinancialPeriodCreateCommandHandler(IFinancialPeriodWorkflowService workflow)
     : ICommandHandler<FinancialPeriodCreateCommand, ApiResponse<FinancialPeriod>>
 {
-    public Task<ApiResponse<FinancialPeriod>> Handle(FinancialPeriodCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
+    public Task<ApiResponse<FinancialPeriod>> Handle(
+        FinancialPeriodCreateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Create(request);
 }

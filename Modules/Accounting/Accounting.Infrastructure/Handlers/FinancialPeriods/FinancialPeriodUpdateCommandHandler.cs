@@ -4,9 +4,11 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Infrastructure.Handlers.FinancialPeriods;
 
-public class FinancialPeriodUpdateCommandHandler(IFinancialPeriodService service)
+public sealed class FinancialPeriodUpdateCommandHandler(IFinancialPeriodWorkflowService workflow)
     : ICommandHandler<FinancialPeriodUpdateCommand, ApiResponse<FinancialPeriod>>
 {
-    public Task<ApiResponse<FinancialPeriod>> Handle(FinancialPeriodUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
+    public Task<ApiResponse<FinancialPeriod>> Handle(
+        FinancialPeriodUpdateCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Update(request);
 }

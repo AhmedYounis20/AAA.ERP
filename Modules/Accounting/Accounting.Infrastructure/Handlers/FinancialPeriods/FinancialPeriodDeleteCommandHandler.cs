@@ -4,9 +4,11 @@ using Accounting.Domain.Models.Entities.FinancialPeriods;
 
 namespace Accounting.Infrastructure.Handlers.FinancialPeriods;
 
-public class FinancialPeriodDeleteCommandHandler(IFinancialPeriodService financialPeriodService)
+public sealed class FinancialPeriodDeleteCommandHandler(IFinancialPeriodWorkflowService workflow)
     : ICommandHandler<FinancialPeriodDeleteCommand, ApiResponse<FinancialPeriod>>
 {
-    public Task<ApiResponse<FinancialPeriod>> Handle(FinancialPeriodDeleteCommand request, CancellationToken cancellationToken)
-        => financialPeriodService.Delete(request.Id);
+    public Task<ApiResponse<FinancialPeriod>> Handle(
+        FinancialPeriodDeleteCommand request,
+        CancellationToken cancellationToken)
+        => workflow.Delete(request.Id);
 }
