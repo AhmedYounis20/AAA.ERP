@@ -4,9 +4,23 @@ using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Infrastructure.Handlers.Branches;
 
-public class BranchCreateCommandHandler(IBranchService service)
+public sealed class BranchCreateCommandHandler(IBranchWorkflowService workflow)
     : ICommandHandler<BranchCreateCommand, ApiResponse<Branch>>
 {
     public Task<ApiResponse<Branch>> Handle(BranchCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
+        => workflow.Create(request);
+}
+
+public sealed class BranchUpdateCommandHandler(IBranchWorkflowService workflow)
+    : ICommandHandler<BranchUpdateCommand, ApiResponse<Branch>>
+{
+    public Task<ApiResponse<Branch>> Handle(BranchUpdateCommand request, CancellationToken cancellationToken)
+        => workflow.Update(request);
+}
+
+public sealed class BranchDeleteCommandHandler(IBranchWorkflowService workflow)
+    : ICommandHandler<BranchDeleteCommand, ApiResponse<Branch>>
+{
+    public Task<ApiResponse<Branch>> Handle(BranchDeleteCommand request, CancellationToken cancellationToken)
+        => workflow.Delete(request.Id);
 }

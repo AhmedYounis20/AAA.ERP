@@ -52,6 +52,7 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICashInBoxService, CashInBoxService>();
         services.AddScoped<ICashInBoxQueries, CashInBoxQueries>();
         services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IBranchWorkflowService, BranchWorkflowService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IBranchQueries, BranchQueries>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
