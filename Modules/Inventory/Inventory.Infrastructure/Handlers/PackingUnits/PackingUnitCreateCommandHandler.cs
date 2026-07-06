@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.PackingUnits;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.PackingUnits;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.PackingUnits;
 
-public class PackingUnitCreateCommandHandler(IPackingUnitService service)
-    : ICommandHandler<PackingUnitCreateCommand, ApiResponse<PackingUnit>>
-{
-    public Task<ApiResponse<PackingUnit>> Handle(PackingUnitCreateCommand request, CancellationToken cancellationToken)
-        => service.Create(request);
-}
+public sealed class PackingUnitCreateCommandHandler(IPackingUnitRepository repository)
+    : BaseSettingCreateHandler<PackingUnit, PackingUnitCreateCommand>(repository);

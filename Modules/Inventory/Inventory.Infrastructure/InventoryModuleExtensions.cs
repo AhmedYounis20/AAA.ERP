@@ -41,7 +41,6 @@ public static class InventoryModuleExtensions
         services.AddScoped<ISizeService, SizeService>();
         services.AddScoped<ISizeQueries, SizeQueries>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
-        services.AddScoped<IPackingUnitService, PackingUnitService>();
         services.AddScoped<IPackingUnitQueries, PackingUnitQueries>();
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
         services.AddScoped<IManufacturerCompanyService, ManufacturerCompanyService>();

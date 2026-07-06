@@ -28,9 +28,9 @@ public class InventoryCatalogSettingsIntegrationTests : IAsyncLifetime
   [Fact]
   public async Task Packing_unit_list_returns_seeded_unit()
   {
-    var service = _scope.ServiceProvider.GetRequiredService<IPackingUnitService>();
+    var queries = _scope.ServiceProvider.GetRequiredService<IPackingUnitQueries>();
 
-    var result = await service.ReadAll();
+    var result = await queries.GetAll();
 
     result.IsSuccess.Should().BeTrue();
     result.Result.Should().Contain(p => p.Id == InventoryTestIds.PackingUnitId && p.Name == "Piece");

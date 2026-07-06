@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.PackingUnits;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.PackingUnits;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.PackingUnits;
 
-public class PackingUnitUpdateCommandHandler(IPackingUnitService service)
-    : ICommandHandler<PackingUnitUpdateCommand, ApiResponse<PackingUnit>>
-{
-    public Task<ApiResponse<PackingUnit>> Handle(PackingUnitUpdateCommand request, CancellationToken cancellationToken)
-        => service.Update(request);
-}
+public sealed class PackingUnitUpdateCommandHandler(IPackingUnitRepository repository)
+    : BaseSettingUpdateHandler<PackingUnit, PackingUnitUpdateCommand>(repository);

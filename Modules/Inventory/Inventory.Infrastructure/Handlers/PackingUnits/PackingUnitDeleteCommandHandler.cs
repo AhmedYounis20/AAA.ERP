@@ -1,12 +1,9 @@
 using Inventory.Application.Commands.PackingUnits;
-using Inventory.Application.Services;
+using Inventory.Application.Repositories;
 using Inventory.Domain.Models.Entities.PackingUnits;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Setting;
 
 namespace Inventory.Infrastructure.Handlers.PackingUnits;
 
-public class PackingUnitDeleteCommandHandler(IPackingUnitService packingUnitService)
-    : ICommandHandler<PackingUnitDeleteCommand, ApiResponse<PackingUnit>>
-{
-    public Task<ApiResponse<PackingUnit>> Handle(PackingUnitDeleteCommand request, CancellationToken cancellationToken)
-        => packingUnitService.Delete(request.Id);
-}
+public sealed class PackingUnitDeleteCommandHandler(IPackingUnitRepository repository)
+    : BaseSettingDeleteHandler<PackingUnit, PackingUnitDeleteCommand>(repository);
