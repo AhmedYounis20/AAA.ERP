@@ -1,19 +1,28 @@
 using Accounting.Application.Commands.Suppliers;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Utility;
-using Accounting.Application.Repositories.Account.SubLeadgers;
-using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Infrastructure.Services.SubLeadgers;
+using Accounting.Domain.Utility;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Infrastructure.Services;
 
-public class SupplierService : SubLeadgerService<Supplier, SupplierCreateCommand, SupplierUpdateCommand>, ISupplierService
+public class SupplierService(IChartOfAccountRepository chartOfAccountRepository) : ISupplierService
 {
-    public SupplierService(IUnitOfWork unitOfWork, ISupplierRepository repository, IHttpContextAccessor accessor,
-        IChartOfAccountRepository chartOfAccountRepository)
-        : base(unitOfWork, repository, accessor, chartOfAccountRepository, SD.SupplierChartOfAccountId, SubLeadgerType.Supplier)
+    public async Task<ApiResponse<SupplierCreateCommand>> GetNextSubLeadgers(Guid? parentId)
     {
+        var code = await chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(SD.SupplierChartOfAccountId));
+
+        return new ApiResponse<SupplierCreateCommand>
+        {
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = new SupplierCreateCommand
+            {
+                Code = code,
+                NodeType = NodeType.Domain,
+                ParentId = parentId
+            }
+        };
     }
 }

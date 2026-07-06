@@ -1,10 +1,13 @@
 using Accounting.Application.Commands.Suppliers;
-using Accounting.Application.Services.SubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for supplier.
+/// Supplier default-data helper. CRUD writes are handled by CQRS handlers.
 /// </summary>
-public interface ISupplierService : IBaseSubLeadgerService<Supplier, SupplierCreateCommand, SupplierUpdateCommand>;
+public interface ISupplierService
+{
+    Task<ApiResponse<SupplierCreateCommand>> GetNextSubLeadgers(Guid? parentId);
+}

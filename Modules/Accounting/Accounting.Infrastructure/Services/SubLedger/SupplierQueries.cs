@@ -1,16 +1,14 @@
 using Accounting.Application.Commands.Suppliers;
+using Accounting.Application.Repositories;
+using Accounting.Application.Repositories.Account.SubLeadgers;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using ERP.BuildingBlocks.Application.Responses;
 using ERP.Infrastructure.Services.Queries;
 
 namespace Accounting.Infrastructure.Services;
 
-/// <summary>
-/// Supplier read queries. Transitional: delegates to <see cref="ISupplierService"/>.
-/// </summary>
-public class SupplierQueries(ISupplierService supplierService)
-    : BaseTreeSettingQueries<Supplier, SupplierCreateCommand, SupplierUpdateCommand>(supplierService),
+public class SupplierQueries(ISupplierRepository repository, ISupplierService supplierService)
+    : BaseTreeSettingRepositoryQueries<Supplier>(repository),
       ISupplierQueries
 {
     public Task<ApiResponse<SupplierCreateCommand>> GetNextSubLedgers(Guid? parentId)
