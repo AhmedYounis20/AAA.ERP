@@ -2,8 +2,6 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
-using ERP.Infrastructure.Services.BaseServices;
-
 using Inventory.Application.Commands.Items;
 using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.Items;
@@ -12,9 +10,7 @@ using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Workflows;
 
-public class ItemWorkflowService
-    : BaseTreeSettingService<Item, ItemCreateCommand, ItemUpdateCommand>,
-      IItemWorkflowService
+public class ItemWorkflowService : IItemWorkflowService
 {
 
     IItemRepository _repository { get; set; }
@@ -40,7 +36,7 @@ public class ItemWorkflowService
         IColorRepository colorRepository,
         ISizeRepository sizeRepository,
         IInventoryCatalogValidationQueries catalogValidationQueries,
-        IUnitOfWork unitOfWork) : base(repository)
+        IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _codeRepossitory = itemCodeRepository;
@@ -55,7 +51,7 @@ public class ItemWorkflowService
         _unitOfWork = unitOfWork;
     }
 
-    public override async Task<ApiResponse<Item>> Create(ItemCreateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Item>> Create(ItemCreateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateCreate(command);
         if (!validationResult.isValid)
@@ -229,7 +225,7 @@ public class ItemWorkflowService
         item.ItemSellingPriceDiscounts = discounts;
     }
 
-    public override async Task<ApiResponse<Item>> Update(ItemUpdateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Item>> Update(ItemUpdateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateUpdate(command);
         if (!validationResult.isValid || validationResult.entity == null)
@@ -526,9 +522,9 @@ public class ItemWorkflowService
             await _codeRepossitory.Add(itemBarCodesToAdd);
     }
 
-    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ItemCreateCommand command)
+    private async Task<(bool isValid, List<string> errors)> ValidateCreate(ItemCreateCommand command)
     {
-        var validationResult = await base.ValidateCreate(command);
+        var validationResult = await CatalogWorkflowSupport.ValidateSettingCreateAsync(_repository, command);
         var checkRepeatedCode = _codeRepossitory.GetQuery().Any(e => e.Code == command.Code);
         if (checkRepeatedCode)
         {
@@ -611,9 +607,9 @@ public class ItemWorkflowService
         return validationResult;
     }
 
-    protected override async Task<(bool isValid, List<string> errors, Item? entity)> ValidateUpdate(ItemUpdateCommand command)
+    private async Task<(bool isValid, List<string> errors, Item? entity)> ValidateUpdate(ItemUpdateCommand command)
     {
-        var validationResult = await base.ValidateUpdate(command);
+        var validationResult = await CatalogWorkflowSupport.ValidateTreeSettingUpdateAsync(_repository, command);
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
         {
             validationResult.isValid = false;
@@ -896,6 +892,12 @@ public class ItemWorkflowService
             };
         }
     }
+
+    public async Task<ApiResponse<Item>> Delete(Guid id, bool isValidate = true)
+        => await CatalogWorkflowSupport.DeleteByIdAsync(
+            _repository,
+            id,
+            entityId => CatalogWorkflowSupport.ValidateTreeSettingDeleteAsync(_repository, entityId));
 
     Task<ApiResponse<Item>> IItemWorkflowService.Create(ItemCreateCommand command)
         => Create(command);

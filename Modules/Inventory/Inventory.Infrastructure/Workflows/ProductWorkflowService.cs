@@ -1,7 +1,6 @@
 using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
-using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Infrastructure.Validation;
 using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
@@ -18,9 +17,7 @@ using ERP.BuildingBlocks.Application.Constants;
 
 namespace Inventory.Infrastructure.Workflows;
 
-public class ProductWorkflowService
-    : BaseTreeSettingService<Product, ProductCreateCommand, ProductUpdateCommand>,
-      IProductWorkflowService
+public class ProductWorkflowService : IProductWorkflowService
 {
     private readonly IProductRepository _repository;
     private readonly IBaseRepository<ProductCode> _codeRepository;
@@ -77,7 +74,7 @@ public class ProductWorkflowService
         IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
         IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IUnitOfWork unitOfWork,
-        IVariantProductOperations variantProductOperations) : base(repository)
+        IVariantProductOperations variantProductOperations)
     {
         _repository = repository;
         _codeRepository = codeRepository;
@@ -108,7 +105,7 @@ public class ProductWorkflowService
         _variantProductOperations = variantProductOperations;
     }
 
-    public override async Task<ApiResponse<Product>> Create(ProductCreateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Product>> Create(ProductCreateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateCreate(command);
         if (!validationResult.isValid)
@@ -440,7 +437,7 @@ public class ProductWorkflowService
 
     #endregion
 
-    public override async Task<ApiResponse<Product>> Update(ProductUpdateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Product>> Update(ProductUpdateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateUpdate(command);
         if (!validationResult.isValid || validationResult.entity == null)
@@ -534,7 +531,7 @@ public class ProductWorkflowService
         }
     }
 
-    public override async Task<ApiResponse<Product>> Delete(Guid id, bool isValidate = true)
+    public async Task<ApiResponse<Product>> Delete(Guid id, bool isValidate = true)
     {
         var validationResult = await ValidateDelete(id);
         if (!validationResult.isValid || validationResult.entity == null)
@@ -1947,9 +1944,9 @@ public class ProductWorkflowService
 
     #region Validations
 
-    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(ProductCreateCommand command)
+    private async Task<(bool isValid, List<string> errors)> ValidateCreate(ProductCreateCommand command)
     {
-        var result = await base.ValidateCreate(command);
+        var result = await CatalogWorkflowSupport.ValidateSettingCreateAsync(_repository, command);
         if (!result.isValid)
             return result;
 
@@ -1997,9 +1994,9 @@ public class ProductWorkflowService
 
     }
 
-    protected override async Task<(bool isValid, List<string> errors, Product? entity)> ValidateUpdate(ProductUpdateCommand command)
+    private async Task<(bool isValid, List<string> errors, Product? entity)> ValidateUpdate(ProductUpdateCommand command)
     {
-        var result = await base.ValidateUpdate(command);
+        var result = await CatalogWorkflowSupport.ValidateTreeSettingUpdateAsync(_repository, command);
 
         var isBarCodeExist = await _codeRepository.GetQuery().AnyAsync(e => command.BarCodes.Contains(e.Code) && e.ProductId != command.Id);
         if (isBarCodeExist)
@@ -2017,6 +2014,9 @@ public class ProductWorkflowService
         result.isValid = result.isValid && expiryLevelsValid;
         return result;
     }
+
+    private Task<(bool isValid, List<string> errors, Product? entity)> ValidateDelete(Guid id)
+        => CatalogWorkflowSupport.ValidateTreeSettingDeleteAsync(_repository, id);
 
     private List<InventoryThreshold> CreateProductInventoryThresholds(ProductCreateCommand command)
     {

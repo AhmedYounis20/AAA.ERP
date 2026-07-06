@@ -1,5 +1,4 @@
-﻿using ERP.BuildingBlocks.Application.Services.BaseServices;
-using ERP.BuildingBlocks.Domain.Entities;
+﻿using ERP.BuildingBlocks.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Accounting.Application.Services.Queries;

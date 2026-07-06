@@ -178,11 +178,8 @@ public class HybridCqrsArchitectureTests
 
         foreach (var queryContract in ReadSideContracts.Value)
         {
-            var hasWriteBase = queryContract.GetInterfaces()
-                .Any(i => i.IsGenericType
-                          && i.GetGenericTypeDefinition().FullName?.Contains("IBaseService", StringComparison.Ordinal) == true);
-
-            hasWriteBase.Should().BeFalse($"{queryContract.Name} must not extend IBaseService.");
+            queryContract.Name.Should().NotEndWith("Service",
+                $"{queryContract.Name} is a query contract and must not be named as a write service.");
         }
     }
 

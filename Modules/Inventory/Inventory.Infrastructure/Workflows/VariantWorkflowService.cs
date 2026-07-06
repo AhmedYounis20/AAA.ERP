@@ -1,7 +1,6 @@
 using Accounting.Contracts.Integration;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
-using ERP.Infrastructure.Services.BaseServices;
 using Inventory.Infrastructure.Validation;
 using Inventory.Application.Commands.Products;
 using Inventory.Application.Commands.Variants;
@@ -20,8 +19,7 @@ using ERP.BuildingBlocks.Application.Constants;
 namespace Inventory.Infrastructure.Workflows;
 
 public class VariantWorkflowService
-    : BaseService<Variant, VariantCreateCommand, VariantUpdateCommand>,
-      IVariantWorkflowService,
+    : IVariantWorkflowService,
       IVariantProductOperations
 {
     private readonly IVariantRepository _repository;
@@ -65,7 +63,7 @@ public class VariantWorkflowService
         IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IBaseRepository<VariantAttachment> variantAttachmentRepository,
         IAttachmentCrossModulePort attachmentPort,
-        IUnitOfWork unitOfWork) : base(repository)
+        IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _codeRepository = codeRepository;
@@ -89,7 +87,7 @@ public class VariantWorkflowService
         _unitOfWork = unitOfWork;
     }
 
-    public override async Task<ApiResponse<Variant>> Create(VariantCreateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Variant>> Create(VariantCreateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateCreate(command);
         if (!validationResult.isValid)
@@ -216,7 +214,7 @@ public class VariantWorkflowService
         }
     }
 
-    public override async Task<ApiResponse<Variant>> Update(VariantUpdateCommand command, bool isValidate = true)
+    public async Task<ApiResponse<Variant>> Update(VariantUpdateCommand command, bool isValidate = true)
     {
         var validationResult = await ValidateUpdate(command);
         if (!validationResult.isValid || validationResult.entity == null)
@@ -303,16 +301,19 @@ public class VariantWorkflowService
         }
     }
 
-    public override async Task<ApiResponse<Variant>> Delete(Guid id, bool isValidate = true)
+    public async Task<ApiResponse<Variant>> Delete(Guid id, bool isValidate = true)
     {
         await _inventoryThresholdRepository.ExecuteDeleteAsync(t => t.VariantId == id);
         await _expiryLevelRepository.ExecuteDeleteAsync(t => t.VariantId == id);
-        return await base.Delete(id, isValidate);
+        return await CatalogWorkflowSupport.DeleteByIdAsync(
+            _repository,
+            id,
+            entityId => CatalogWorkflowSupport.ValidateEntityDeleteAsync(_repository, entityId));
     }
 
-    protected override async Task<(bool isValid, List<string> errors)> ValidateCreate(VariantCreateCommand command)
+    private async Task<(bool isValid, List<string> errors)> ValidateCreate(VariantCreateCommand command)
     {
-        var validationResult = await base.ValidateCreate(command);
+        var validationResult = (isValid: true, errors: new List<string>());
 
         // Check if code is unique
         var checkRepeatedCode = await _codeRepository.GetQuery().AnyAsync(e => e.Code == command.Code);
@@ -410,9 +411,9 @@ public class VariantWorkflowService
         return validationResult;
     }
 
-    protected override async Task<(bool isValid, List<string> errors, Variant? entity)> ValidateUpdate(VariantUpdateCommand command)
+    private async Task<(bool isValid, List<string> errors, Variant? entity)> ValidateUpdate(VariantUpdateCommand command)
     {
-        var validationResult = await base.ValidateUpdate(command);
+        var validationResult = await CatalogWorkflowSupport.ValidateEntityUpdateAsync(_repository, command);
 
         // Check for duplicate barcodes in the command
         if (command.BarCodes != null && command.BarCodes.Count != command.BarCodes.Distinct().Count())
