@@ -14,7 +14,7 @@ Phase 5.6 introduces `IItemWorkflowService` / `ItemWorkflowService` and routes i
 |------|--------|---------|
 | Item | *(this commit)* | Item handlers now depend on `IItemWorkflowService` |
 
-**Next in order (Phase 5.7):** `Product` workflow.
+**Next in order (Phase 5.7):** `Product` workflow — **done in Phase 5.7 commit.**
 
 ---
 

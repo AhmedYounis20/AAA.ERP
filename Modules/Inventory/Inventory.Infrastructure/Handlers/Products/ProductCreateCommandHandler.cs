@@ -4,11 +4,23 @@ using Inventory.Domain.Models.Entities.Products;
 
 namespace Inventory.Infrastructure.Handlers.Products;
 
-public class ProductCreateCommandHandler(IProductService service) : ICommandHandler<ProductCreateCommand, ApiResponse<Product>>
+public sealed class ProductCreateCommandHandler(IProductWorkflowService workflow)
+    : ICommandHandler<ProductCreateCommand, ApiResponse<Product>>
 {
-    public async Task<ApiResponse<Product>> Handle(ProductCreateCommand request,
-        CancellationToken cancellationToken)
-    {
-        return await service.Create(request);
-    }
+    public Task<ApiResponse<Product>> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
+        => workflow.Create(request);
+}
+
+public sealed class ProductUpdateCommandHandler(IProductWorkflowService workflow)
+    : ICommandHandler<ProductUpdateCommand, ApiResponse<Product>>
+{
+    public Task<ApiResponse<Product>> Handle(ProductUpdateCommand request, CancellationToken cancellationToken)
+        => workflow.Update(request);
+}
+
+public sealed class ProductDeleteCommandHandler(IProductWorkflowService workflow)
+    : ICommandHandler<ProductDeleteCommand, ApiResponse<Product>>
+{
+    public Task<ApiResponse<Product>> Handle(ProductDeleteCommand request, CancellationToken cancellationToken)
+        => workflow.Delete(request.Id);
 }
