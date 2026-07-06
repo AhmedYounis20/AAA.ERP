@@ -12,15 +12,16 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Complex entry reads. Transitional: delegates to <see cref="IComplexEntryService"/>.
 /// </summary>
-public class ComplexEntryQueries(IComplexEntryService complexEntryService) : IComplexEntryQueries
+public class ComplexEntryQueries(IComplexEntryService complexEntryService, IEntryService entryService)
+    : IComplexEntryQueries
 {
     public Task<ApiResponse<IEnumerable<Entry>>> GetAll()
-        => complexEntryService.ReadAll();
+        => entryService.ReadAll();
 
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => complexEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
         => complexEntryService.GetComplexEntryById(id);

@@ -12,7 +12,8 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Journal entry reads. Transitional: delegates to <see cref="IJournalEntryService"/>.
 /// </summary>
-public class JournalEntryQueries(IJournalEntryService journalEntryService) : IJournalEntryQueries
+public class JournalEntryQueries(IJournalEntryService journalEntryService, IEntryService entryService)
+    : IJournalEntryQueries
 {
     public Task<ApiResponse<IEnumerable<EntryDto>>> GetAll()
         => journalEntryService.GetDto();
@@ -20,7 +21,7 @@ public class JournalEntryQueries(IJournalEntryService journalEntryService) : IJo
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => journalEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<EntryDto>> GetById(Guid id)
         => journalEntryService.GetDto(id);

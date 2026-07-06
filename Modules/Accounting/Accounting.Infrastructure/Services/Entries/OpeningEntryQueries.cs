@@ -12,7 +12,8 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Opening entry reads. Transitional: delegates to <see cref="IOpeningEntryService"/>.
 /// </summary>
-public class OpeningEntryQueries(IOpeningEntryService openingEntryService) : IOpeningEntryQueries
+public class OpeningEntryQueries(IOpeningEntryService openingEntryService, IEntryService entryService)
+    : IOpeningEntryQueries
 {
     public Task<ApiResponse<IEnumerable<EntryDto>>> GetAll()
         => openingEntryService.GetDto();
@@ -20,7 +21,7 @@ public class OpeningEntryQueries(IOpeningEntryService openingEntryService) : IOp
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => openingEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<EntryDto>> GetById(Guid id)
         => openingEntryService.GetDto(id);

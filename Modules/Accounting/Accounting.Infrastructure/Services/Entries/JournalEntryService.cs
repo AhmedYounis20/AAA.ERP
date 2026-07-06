@@ -1,30 +1,15 @@
-using Accounting.Contracts.Dtos;
 using Accounting.Application.Dtos.Entries;
-using Accounting.Application.Commands.JournalEntries;
-using Accounting.Application.Commands.Entries;
-using Accounting.Application.Repositories;
+using Accounting.Contracts.Dtos;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Entries;
-using ERP.Infrastructure.Services.BaseServices;
 
 namespace Accounting.Infrastructure.Services;
 
-public class JournalEntryService(IEntryService entryService, IEntryRepository entryRepository)
-    : BaseService<Entry, JournalEntryCreateCommand, JournalEntryUpdateCommand>(entryRepository), IJournalEntryService
+/// <summary>
+/// Journal entry read-side helper. CRUD writes are handled by CQRS workflow.
+/// </summary>
+public class JournalEntryService(IEntryService entryService) : IJournalEntryService
 {
-    public override async Task<ApiResponse<Entry>> Create(JournalEntryCreateCommand entity, bool isValidate = true)
-    {
-        var entryCreateCommand = entity.Adapt<EntryCreateCommand>();
-        entryCreateCommand.Type = EntryType.Journal;
-        return await entryService.Create(entryCreateCommand, isValidate);
-    }
-
-    public override async Task<ApiResponse<Entry>> Update(JournalEntryUpdateCommand entity, bool isValidate = true)
-    {
-        var entryUpdateCommand = entity.Adapt<EntryUpdateCommand>();
-        return await entryService.Update(entryUpdateCommand, isValidate);
-    }
-
     public Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
         => entryService.GetEntryNumber(dateTime);
 

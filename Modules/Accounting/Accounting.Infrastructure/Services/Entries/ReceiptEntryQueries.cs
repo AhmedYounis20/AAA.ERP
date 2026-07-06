@@ -12,7 +12,8 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Receipt entry reads. Transitional: delegates to <see cref="IReceiptEntryService"/>.
 /// </summary>
-public class ReceiptEntryQueries(IReceiptEntryService receiptEntryService) : IReceiptEntryQueries
+public class ReceiptEntryQueries(IReceiptEntryService receiptEntryService, IEntryService entryService)
+    : IReceiptEntryQueries
 {
     public Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetAll()
         => receiptEntryService.GetComplexEntries();
@@ -20,7 +21,7 @@ public class ReceiptEntryQueries(IReceiptEntryService receiptEntryService) : IRe
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => receiptEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
         => receiptEntryService.GetComplexEntryById(id);

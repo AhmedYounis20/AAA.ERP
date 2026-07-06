@@ -12,7 +12,8 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Combined entry reads. Transitional: delegates to <see cref="ICombinedEntryService"/>.
 /// </summary>
-public class CombinedEntryQueries(ICombinedEntryService combinedEntryService) : ICombinedEntryQueries
+public class CombinedEntryQueries(ICombinedEntryService combinedEntryService, IEntryService entryService)
+    : ICombinedEntryQueries
 {
     public Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetAll()
         => combinedEntryService.GetComplexEntries();
@@ -20,7 +21,7 @@ public class CombinedEntryQueries(ICombinedEntryService combinedEntryService) : 
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => combinedEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
         => combinedEntryService.GetComplexEntryById(id);

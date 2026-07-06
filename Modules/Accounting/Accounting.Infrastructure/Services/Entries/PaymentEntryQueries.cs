@@ -12,7 +12,8 @@ namespace Accounting.Infrastructure.Services.Entries;
 /// <summary>
 /// Payment entry reads. Transitional: delegates to <see cref="IPaymentEntryService"/>.
 /// </summary>
-public class PaymentEntryQueries(IPaymentEntryService paymentEntryService) : IPaymentEntryQueries
+public class PaymentEntryQueries(IPaymentEntryService paymentEntryService, IEntryService entryService)
+    : IPaymentEntryQueries
 {
     public Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetAll()
         => paymentEntryService.GetComplexEntries();
@@ -20,7 +21,7 @@ public class PaymentEntryQueries(IPaymentEntryService paymentEntryService) : IPa
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => paymentEntryService.ReadAllPaginated(filter, cancellationToken);
+        => entryService.GetPaginated(filter, cancellationToken);
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
         => paymentEntryService.GetComplexEntryById(id);

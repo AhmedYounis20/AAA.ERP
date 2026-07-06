@@ -1,6 +1,5 @@
 using Accounting.Application.Dtos.Entries;
 using Accounting.Contracts.Dtos;
-using ERP.BuildingBlocks.Application.Services.BaseServices;
 using Accounting.Application.Commands.CombinedEntries;
 using Accounting.Domain.Models.Entities.Entries;
 using ERP.BuildingBlocks.Application.Responses;
@@ -8,11 +7,13 @@ using ERP.BuildingBlocks.Application.Responses;
 namespace Accounting.Application.Services;
 
 /// <summary>
-/// Application service contract for combined entry.
+/// Combined entry read-side helper. CRUD writes are handled by CQRS workflow.
 /// </summary>
-public interface ICombinedEntryService : IBaseService<Entry, CombinedEntryCreateCommand, CombinedEntryUpdateCommand>
+public interface ICombinedEntryService
 {
     Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime);
+
     Task<ApiResponse<ComplexEntryDto>> GetComplexEntryById(Guid id);
+
     Task<ApiResponse<IEnumerable<ComplexEntryDto>>> GetComplexEntries();
 }

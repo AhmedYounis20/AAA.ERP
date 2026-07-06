@@ -74,6 +74,8 @@ public static class AccountingModuleExtensions
         services.AddScoped<IReceiptEntryService, ReceiptEntryService>();
         services.AddScoped<IReceiptEntryQueries, ReceiptEntryQueries>();
         services.AddScoped<IEntryRepository, EntryRepository>();
+        services.AddScoped<IEntryWorkflowService, EntryWorkflowService>();
+        services.AddScoped<IComplexEntryWorkflowService, ComplexEntryWorkflowService>();
         services.AddScoped<IEntryService, EntryService>();
         services.AddScoped<IComplexEntryService, ComplexEntryService>();
         services.AddScoped<IComplexEntryQueries, ComplexEntryQueries>();

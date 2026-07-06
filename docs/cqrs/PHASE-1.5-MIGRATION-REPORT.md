@@ -1,8 +1,8 @@
 # Phase 1.5 Migration Report — Category C Pilot (FinancialPeriod)
 
-**Status:** In progress (4 of 5 planned items)  
+**Status:** Complete (5 of 5 planned items)  
 **Branch:** `feature/adr-013-generic-cqrs-handlers`  
-**Scope:** FinancialPeriod, CostCenter, Branch, FixedAsset workflow-service pilots
+**Scope:** FinancialPeriod, CostCenter, Branch, FixedAsset, Entry group workflow-service pilots
 
 ---
 
@@ -15,9 +15,10 @@ Phase 1.5 migrates Category C entities from `BaseService` / `BaseTreeSettingServ
 | 1 | FinancialPeriod | C | `a2b8cd5` | `FinancialPeriodWorkflowService`; `IFinancialPeriodService` removed |
 | 2 | CostCenter | C | `b0cdb8b` | `CostCenterWorkflowService`; `ICostCenterService` removed |
 | 3 | Branch | C | `8c3490a` | `BranchWorkflowService`; `IBranchService` slimmed to `GetNextSubLeadgers` |
-| 4 | FixedAsset | C | *(this commit)* | `FixedAssetWorkflowService`; `IFixedAssetService` slimmed to `GetNextFixedAsset` |
+| 4 | FixedAsset | C | `299eb4f` | `FixedAssetWorkflowService`; `IFixedAssetService` slimmed to `GetNextFixedAsset` |
+| 5 | Entry group | C | *(this commit)* | `EntryWorkflowService` + `ComplexEntryWorkflowService`; typed entry services read-only |
 
-**Remaining in Phase 1.5 plan:** Entry group.
+**Phase 1.5 complete.**
 
 ---
 
@@ -137,7 +138,7 @@ Handlers consolidated into `BranchCreateCommandHandler.cs` (create/update/delete
 
 ---
 
-## FixedAsset — asset-type COA + depreciation (`this commit`)
+## FixedAsset — asset-type COA + depreciation (`299eb4f`)
 
 `FixedAssetWorkflowService` preserves:
 
@@ -157,8 +158,30 @@ Handlers consolidated into `FixedAssetCreateCommandHandler.cs` → `IFixedAssetW
 
 ---
 
-## Recommended Next Steps (Phase 1.5 continuation)
+## Entry group — core + complex + typed facades (`this commit`)
 
-| Priority | Item | Category | Notes |
-|----------|------|----------|-------|
-| 5 | Entry group | C | `EntryWorkflowService` first in entry delegation chain |
+`EntryWorkflowService` preserves core write orchestration:
+
+| Operation | Logic |
+|-----------|--------|
+| **Create** | Financial-period validation; entry numbering; attachments |
+| **Update** | Transactional attachment/transaction/cost-center sync |
+| **Delete** | Standard entity delete with validation |
+
+`ComplexEntryWorkflowService` maps debit/credit pairs and delegates to `IEntryWorkflowService`.
+
+Typed entry handlers map commands and route writes:
+
+| Handler group | Workflow |
+|---------------|----------|
+| Journal, Opening | `IEntryWorkflowService` |
+| Payment, Receipt, Combined, Complex | `IComplexEntryWorkflowService` |
+| All deletes | `IEntryWorkflowService.Delete` |
+
+`IEntryService`, `IComplexEntryService`, and typed `I*EntryService` interfaces slimmed to read helpers only.
+
+Entry queries use `IEntryService.GetPaginated` / `ReadAll` for pagination.
+
+---
+
+**Phase 1.5 Category C pilots complete.**
