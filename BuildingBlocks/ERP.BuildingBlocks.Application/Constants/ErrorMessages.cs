@@ -94,7 +94,7 @@ public static class ErrorMessages
     public const string ProductCodeAlreadyExists = "Product code already exists";
     public const string SomeChartOfAcountsNotExisted = "SomeChartOfAcountsNotExisted";
     public const string ThereAreEntriesAfterNewEndDate = "ThereAreEntriesAfterNewEndDate";
-    public const string ThereAreInventoryTrasnsactionsAfterNewEndDate = "ThereAreInventoryTrasnsactionsAfterNewEndDate";
+    public const string ThereAreInventoryTransactionsAfterNewEndDate = "ThereAreInventoryTransactionsAfterNewEndDate";
     public const string TransactionIsNotExportTransaction = "TransactionIsNotExportTransaction";
     public const string TransactionIsNotImportTransaction = "TransactionIsNotImportTransaction";
     public const string TransactionNotFound = "TransactionNotFound";

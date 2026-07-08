@@ -174,7 +174,7 @@
   <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
     <value>توجد قيود بعد تاريخ النهاية الجديد</value>
   </data>
-  <data name="ThereAreInventoryTrasnsactionsAfterNewEndDate" xml:space="preserve">
+  <data name="ThereAreInventoryTransactionsAfterNewEndDate" xml:space="preserve">
     <value>توجد حركات مخزنية بعد تاريخ النهاية الجديد</value>
   </data>
 

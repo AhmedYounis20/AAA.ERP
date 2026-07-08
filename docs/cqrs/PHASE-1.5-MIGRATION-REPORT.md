@@ -65,8 +65,8 @@ Cross-module dependencies: `IEntryRepository`, `IFinancialPeriodInventoryUsageQu
 | `GetAll` | `repository.GetDtos()` |
 | `GetPaginated` | `BaseEntityRepositoryQueries<FinancialPeriod>` |
 | `GetById` | `repository.GetDto(id)` |
-| `GetNextDefaultdata` | `repository.GetNextDefaultdata()` |
-| `GetCurrentFinancialPeriod` | `repository.GetCurrentFinancialPeroid()` |
+| `GetNextDefaultData` | `repository.GetNextDefaultData()` |
+| `GetCurrentFinancialPeriod` | `repository.GetCurrentFinancialPeriod()` |
 
 ---
 

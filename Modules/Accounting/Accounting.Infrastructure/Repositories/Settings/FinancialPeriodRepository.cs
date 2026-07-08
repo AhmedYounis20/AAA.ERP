@@ -20,7 +20,7 @@ public class FinancialPeriodRepository : BaseRepository<FinancialPeriod>, IFinan
         _usageQueries = usageQueries;
     }
 
-    public async Task<FinancialPeriod?> GetCurrentFinancialPeroid()
+    public async Task<FinancialPeriod?> GetCurrentFinancialPeriod()
         => await _dbset.Where(e => e.StartDate <= DateTime.Now && e.EndDate > DateTime.Now).FirstOrDefaultAsync();
 
     public async Task<List<FinancialPeriod>> GetIntersectedFinancialPeriods(DateTime startDate, DateTime endDate)
@@ -41,7 +41,7 @@ public class FinancialPeriodRepository : BaseRepository<FinancialPeriod>, IFinan
         return await MapToDto(transaction);
     }
 
-    public async Task<FinancialPeriodDto> GetNextDefaultdata()
+    public async Task<FinancialPeriodDto> GetNextDefaultData()
     {
         var lastPeriod = await GetLastFinancialPeriod();
         var periodInMonths = lastPeriod == null ? FinancialPeriodType.OneYear : lastPeriod.PeriodTypeByMonth;

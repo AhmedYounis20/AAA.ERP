@@ -68,11 +68,11 @@ public class FinancialPeriodQueries(IFinancialPeriodRepository repository) : IFi
         }
     }
 
-    public async Task<ApiResponse<FinancialPeriodDto>> GetNextDefaultdata()
+    public async Task<ApiResponse<FinancialPeriodDto>> GetNextDefaultData()
     {
         try
         {
-            var entity = await repository.GetNextDefaultdata();
+            var entity = await repository.GetNextDefaultData();
             return new ApiResponse<FinancialPeriodDto>
             {
                 IsSuccess = true,
@@ -93,7 +93,7 @@ public class FinancialPeriodQueries(IFinancialPeriodRepository repository) : IFi
 
     public async Task<ApiResponse<FinancialPeriod>> GetCurrentFinancialPeriod()
     {
-        var currentFinancialPeriod = await repository.GetCurrentFinancialPeroid();
+        var currentFinancialPeriod = await repository.GetCurrentFinancialPeriod();
         if (currentFinancialPeriod is null)
         {
             return new ApiResponse<FinancialPeriod>

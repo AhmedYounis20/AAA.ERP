@@ -234,8 +234,8 @@
   <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
     <value>There Are Entries After New EndDate</value>
   </data>
-  <data name="ThereAreInventoryTrasnsactionsAfterNewEndDate" xml:space="preserve">
-    <value>There Are Inventory Trasnsactions After New EndDate</value>
+  <data name="ThereAreInventoryTransactionsAfterNewEndDate" xml:space="preserve">
+    <value>There Are Inventory Transactions After New EndDate</value>
   </data>
 
   <data name="AddedSuccessfullyWithName" xml:space="preserve">

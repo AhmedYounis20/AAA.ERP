@@ -341,9 +341,9 @@ namespace ERP.Shared.Resources {
                 return ResourceManager.GetString("ThereAreEntriesAfterNewEndDate", resourceCulture);
             }
         }
-                public static string ThereAreInventoryTrasnsactionsAfterNewEndDate {
+                public static string ThereAreInventoryTransactionsAfterNewEndDate {
             get {
-                return ResourceManager.GetString("ThereAreInventoryTrasnsactionsAfterNewEndDate", resourceCulture);
+                return ResourceManager.GetString("ThereAreInventoryTransactionsAfterNewEndDate", resourceCulture);
             }
         }
     }

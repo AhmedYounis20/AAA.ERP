@@ -19,7 +19,7 @@ public interface IFinancialPeriodQueries
 
     Task<ApiResponse<FinancialPeriodDto?>> GetById(Guid id);
 
-    Task<ApiResponse<FinancialPeriodDto>> GetNextDefaultdata();
+    Task<ApiResponse<FinancialPeriodDto>> GetNextDefaultData();
 
     Task<ApiResponse<FinancialPeriod>> GetCurrentFinancialPeriod();
 }

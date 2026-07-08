@@ -42,7 +42,7 @@ public class FinancialPeriodWorkflowService(
             return new ApiResponse<FinancialPeriod>
             {
                 IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
+                StatusCode = HttpStatusCode.Created,
                 Result = entity,
             };
         }
@@ -149,6 +149,13 @@ public class FinancialPeriodWorkflowService(
             errors.Add(ErrorMessages.FinancialPeriodWithYearNumberIsExisted);
         }
 
+        var lastFinancialPeriod = await repository.GetLastFinancialPeriod();
+        if (lastFinancialPeriod is not null && command.StartDate != lastFinancialPeriod.EndDate.AddTicks(1))
+        {
+            isValid = false;
+            errors.Add(ErrorMessages.InvalidFinancialPeriod);
+        }
+
         return (isValid, errors);
     }
 
@@ -164,6 +171,12 @@ public class FinancialPeriodWorkflowService(
 
         if (command.YearNumber != entity.YearNumber)
         {
+            if (await repository.IsExisted(command.YearNumber))
+            {
+                errors.Add(ErrorMessages.FinancialPeriodWithYearNumberIsExisted);
+                return (false, errors, entity);
+            }
+
             if (await repository.IsUsedInEntries(command.Id))
             {
                 errors.Add(ErrorMessages.FinancialTransactionIsUsedInEntriesCannotUpdateYearName);
@@ -191,7 +204,7 @@ public class FinancialPeriodWorkflowService(
 
             if (await inventoryUsageQueries.TransactionExistsAfterDateAsync(newEndDate))
             {
-                errors.Add(ErrorMessages.ThereAreInventoryTrasnsactionsAfterNewEndDate);
+                errors.Add(ErrorMessages.ThereAreInventoryTransactionsAfterNewEndDate);
                 return (false, errors, entity);
             }
         }

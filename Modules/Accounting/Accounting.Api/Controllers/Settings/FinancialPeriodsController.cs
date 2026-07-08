@@ -33,10 +33,11 @@ public class FinancialPeriodsController(
     public async Task<IActionResult> Get(Guid id)
         => this.ToResult(await queries.GetById(id));
 
-    [HttpGet("nextDefaultdata")]
-    public async Task<IActionResult> GetNextDefaultdata()
-        => this.ToResult(await queries.GetNextDefaultdata());
+    [HttpGet("nextDefaultData")]
+    public async Task<IActionResult> GetNextDefaultData()
+        => this.ToResult(await queries.GetNextDefaultData());
 
+    [HttpGet("current")]
     [HttpGet("GetCurrentFinancialPeriod")]
     public async Task<IActionResult> GetCurrentFinancialPeriod()
         => this.ToResult(await queries.GetCurrentFinancialPeriod());
@@ -52,12 +53,13 @@ public class FinancialPeriodsController(
                 Result = await lookups.GetLookUps()
             });
         }
-        catch
+        catch (Exception ex)
         {
             return this.ToResult(new ApiResponse<IEnumerable<FinancialPeriodLookupDto>>
             {
                 IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             });
         }
     }

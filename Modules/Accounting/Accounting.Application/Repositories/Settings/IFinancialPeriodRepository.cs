@@ -11,8 +11,8 @@ public interface IFinancialPeriodRepository : IBaseRepository<FinancialPeriod>
 {
     /// <summary>Gets last financial period.</summary>
     Task<FinancialPeriod?> GetLastFinancialPeriod();
-    /// <summary>Gets current financial peroid.</summary>
-    Task<FinancialPeriod?> GetCurrentFinancialPeroid();
+    /// <summary>Gets current financial period.</summary>
+    Task<FinancialPeriod?> GetCurrentFinancialPeriod();
     Task<List<FinancialPeriodDto>> GetDtos();
     /// <summary>Gets dto.</summary>
     Task<FinancialPeriodDto?> GetDto(Guid id);
@@ -23,8 +23,8 @@ public interface IFinancialPeriodRepository : IBaseRepository<FinancialPeriod>
     Task<bool> IsUsedInInventoryTransactions(Guid id);
     /// <summary>is used in entries operation.</summary>
     Task<bool> IsUsedInEntries(Guid id);
-    /// <summary>Gets next defaultdata.</summary>
-    Task<FinancialPeriodDto> GetNextDefaultdata();
+    /// <summary>Gets next default data.</summary>
+    Task<FinancialPeriodDto> GetNextDefaultData();
     /// <summary>is last financial period operation.</summary>
     Task<bool> IsLastFinancialPeriod(Guid id);
 }
