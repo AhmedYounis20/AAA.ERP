@@ -1,14 +1,9 @@
-using System.Net;
 using Accounting.Application.Commands.ChartOfAccounts;
 using Accounting.Application.Dtos.Filters;
-using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using ERP.BuildingBlocks.Application.Constants;
-using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.Responses;
 using ERP.BuildingBlocks.Persistence.Services.Queries;
-using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Infrastructure.Services;
 

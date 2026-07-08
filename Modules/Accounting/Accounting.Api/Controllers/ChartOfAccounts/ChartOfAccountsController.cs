@@ -39,7 +39,6 @@ public class ChartOfAccountsController(
     public async Task<IActionResult> GenerateNewChildCode([FromQuery] Guid? parentId)
         => this.ToResult(await queries.GenerateNewChildCode(parentId));
 
-    [HttpGet("NextAccountDefaultData")]
     [HttpGet("nextAccountDefaultData")]
     public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId)
         => this.ToResult(await queries.GetNextAccountDefaultData(parentId));

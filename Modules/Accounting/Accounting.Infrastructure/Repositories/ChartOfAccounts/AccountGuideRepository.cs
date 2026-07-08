@@ -1,7 +1,5 @@
-using Accounting.Application.Repositories;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
-using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Accounting.Infrastructure.Repositories;
 
