@@ -32,6 +32,12 @@ public static class ErrorMessages
     public const string ChartOfAccountCodeCannotChange = "ChartOfAccountCodeCannotBeChanged";
     public const string ChartOfAccountFromSubLeadger = "ChartOfAccountCreatedFomSubLeadger";
     public const string ChartOfAccountIsSubLeadgerBase = "ChartOfAccountBaseSubLeadgerAccount";
+    public const string ChartOfAccountIsInUse = "ChartOfAccountIsInUse";
+    public const string ChartOfAccountNatureCannotChange = "ChartOfAccountNatureCannotChange";
+    public const string ChartOfAccountAccountGuideCannotChange = "ChartOfAccountAccountGuideCannotChange";
+    public const string InvalidChartOfAccountCode = "InvalidChartOfAccountCode";
+    public const string AccountGuideNotFound = "AccountGuideNotFound";
+    public const string AccountGuideIsUsedInChartOfAccounts = "AccountGuideIsUsedInChartOfAccounts";
 
     // Inventory
     public const string ItemCodeDuplicated = "ITEM_CODE_IS_DUPLICATED";

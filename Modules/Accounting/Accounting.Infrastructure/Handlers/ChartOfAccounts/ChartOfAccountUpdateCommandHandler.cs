@@ -7,9 +7,13 @@ using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
 
 namespace Accounting.Infrastructure.Handlers.ChartOfAccounts;
 
-public sealed class ChartOfAccountUpdateCommandHandler(IChartOfAccountRepository repository)
+public sealed class ChartOfAccountUpdateCommandHandler(
+    IChartOfAccountRepository repository,
+    IAccountGuideRepository accountGuideRepository)
     : BaseTreeSettingUpdateHandler<ChartOfAccount, ChartOfAccountUpdateCommand>(repository)
 {
+    private IChartOfAccountRepository ChartOfAccountRepository => (IChartOfAccountRepository)SettingRepository;
+
     protected override async Task<CrudEntityValidationResult<ChartOfAccount>> ValidateUpdateAsync(
         ChartOfAccountUpdateCommand command,
         CancellationToken cancellationToken)
@@ -20,6 +24,9 @@ public sealed class ChartOfAccountUpdateCommandHandler(IChartOfAccountRepository
 
         var errors = baseResult.Errors.ToList();
 
+        if (!await accountGuideRepository.CheckIfInDatabase(command.AccountGuidId))
+            errors.Add(ErrorMessages.AccountGuideNotFound);
+
         if (baseResult.Entity is not null)
         {
             if (command.Code != baseResult.Entity.Code)
@@ -27,9 +34,19 @@ public sealed class ChartOfAccountUpdateCommandHandler(IChartOfAccountRepository
 
             if (baseResult.Entity.IsCreatedFromSubLeadger && command.Name != baseResult.Entity.Name)
                 errors.Add(ErrorMessages.ChartOfAccountUpdateSubLeadgerName);
-            else if (baseResult.Entity.IsCreatedFromSubLeadger
-                     && command.NameSecondLanguage != baseResult.Entity.NameSecondLanguage)
+
+            if (baseResult.Entity.IsCreatedFromSubLeadger
+                && command.NameSecondLanguage != baseResult.Entity.NameSecondLanguage)
                 errors.Add(ErrorMessages.ChartOfAccountUpdateSubLeadgerNameSecondLanguage);
+
+            if (await ChartOfAccountRepository.IsInUse(command.Id))
+            {
+                if (command.AccountNature != baseResult.Entity.AccountNature)
+                    errors.Add(ErrorMessages.ChartOfAccountNatureCannotChange);
+
+                if (command.AccountGuidId != baseResult.Entity.AccountGuidId)
+                    errors.Add(ErrorMessages.ChartOfAccountAccountGuideCannotChange);
+            }
         }
 
         return errors.Count == 0

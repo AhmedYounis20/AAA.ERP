@@ -26,6 +26,9 @@ public sealed class ChartOfAccountDeleteCommandHandler(IChartOfAccountRepository
         if (baseResult.Entity.IsSubLeadgerBaseAccount)
             errors.Add(ErrorMessages.ChartOfAccountIsSubLeadgerBase);
 
+        if (await repository.IsInUse(id))
+            errors.Add(ErrorMessages.ChartOfAccountIsInUse);
+
         return errors.Count == 0
             ? baseResult
             : CrudEntityValidationResult<ChartOfAccount>.Failure(errors, baseResult.Entity);

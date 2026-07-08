@@ -80,6 +80,27 @@
   <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
     <value>برجاء اخيار طبيعة حساب صالحة</value>
   </data>
+  <data name="ChartOfAccountMustBeDomainNode" xml:space="preserve">
+    <value>يجب أن يكون دليل الحسابات من نوع نطاق</value>
+  </data>
+  <data name="ChartOfAccountIsInUse" xml:space="preserve">
+    <value>دليل الحسابات مستخدم ولا يمكن حذفه</value>
+  </data>
+  <data name="ChartOfAccountNatureCannotChange" xml:space="preserve">
+    <value>لا يمكن تغيير طبيعة الحساب أثناء استخدامه</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideCannotChange" xml:space="preserve">
+    <value>لا يمكن تغيير دليل الحساب أثناء استخدام الحساب</value>
+  </data>
+  <data name="InvalidChartOfAccountCode" xml:space="preserve">
+    <value>تنسيق كود دليل الحسابات غير صالح</value>
+  </data>
+  <data name="AccountGuideNotFound" xml:space="preserve">
+    <value>دليل الحساب غير موجود</value>
+  </data>
+  <data name="AccountGuideIsUsedInChartOfAccounts" xml:space="preserve">
+    <value>دليل الحساب مستخدم في دليل الحسابات ولا يمكن حذفه</value>
+  </data>
   <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
     <value>لا يمكن اضافة اكتر من حساب بنفس الكود</value>
   </data>

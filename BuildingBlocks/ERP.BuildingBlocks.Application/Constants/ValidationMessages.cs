@@ -12,6 +12,7 @@ public static class ValidationMessages
     public const string ChartOfAccountCodeRequired = "ChartOfAccountCodeRequired";
     public const string ChartOfAccountIdIsRequired = "ChartOfAccountIdIsRequired";
     public const string ChartOfAccountNotValidAccountNature = "ChartOfAccountNotValidAccountNature";
+    public const string ChartOfAccountMustBeDomainNode = "ChartOfAccountMustBeDomainNode";
     public const string CostCenterIsRequired = "CostCenterIsRequired";
     public const string CurrencyActiveOnDefault = "CurrencyActiveOnDefault";
     public const string CurrencyIdIsRequired = "CurrencyIdIsRequired";

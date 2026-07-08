@@ -139,7 +139,7 @@ namespace ERP.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(14);
+                        .HasColumnOrder(13);
 
                     b.Property<Guid>("AccountGuidId")
                         .HasColumnType("uniqueidentifier")
@@ -148,13 +148,13 @@ namespace ERP.Persistence.Migrations
                     b.Property<string>("AccountNature")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(4);
+                        .HasColumnOrder(3);
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasColumnOrder(3);
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -164,27 +164,27 @@ namespace ERP.Persistence.Migrations
 
                     b.Property<bool>("IsActiveAccount")
                         .HasColumnType("bit")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(7);
 
                     b.Property<bool>("IsCreatedFromSubLeadger")
                         .HasColumnType("bit")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(8);
 
                     b.Property<bool>("IsDepreciable")
                         .HasColumnType("bit")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(4);
 
                     b.Property<bool>("IsPostedAccount")
                         .HasColumnType("bit")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(5);
 
                     b.Property<bool>("IsStopDealing")
                         .HasColumnType("bit")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(6);
 
                     b.Property<bool>("IsSubLeadgerBaseAccount")
                         .HasColumnType("bit")
-                        .HasColumnOrder(10);
+                        .HasColumnOrder(9);
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -196,24 +196,24 @@ namespace ERP.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(11);
 
                     b.Property<string>("NameSecondLanguage")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(13);
+                        .HasColumnOrder(12);
 
                     b.Property<int>("NodeType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(15);
+                        .HasColumnOrder(14);
 
                     b.Property<string>("SubLeadgerType")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(10);
 
                     b.HasKey("Id");
 

@@ -7,7 +7,9 @@ using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
 
 namespace Accounting.Infrastructure.Handlers.ChartOfAccounts;
 
-public sealed class ChartOfAccountCreateCommandHandler(IChartOfAccountRepository repository)
+public sealed class ChartOfAccountCreateCommandHandler(
+    IChartOfAccountRepository repository,
+    IAccountGuideRepository accountGuideRepository)
     : BaseTreeSettingCreateHandler<ChartOfAccount, ChartOfAccountCreateCommand>(repository)
 {
     private IChartOfAccountRepository ChartOfAccountRepository => (IChartOfAccountRepository)SettingRepository;
@@ -19,7 +21,10 @@ public sealed class ChartOfAccountCreateCommandHandler(IChartOfAccountRepository
         var baseResult = await base.ValidateCreateAsync(command, cancellationToken);
         var errors = baseResult.Errors.ToList();
 
-        var chartOfAccount = await ChartOfAccountRepository.GetChartOfAccountByCode(command.Code ?? "");
+        if (!await accountGuideRepository.CheckIfInDatabase(command.AccountGuidId))
+            errors.Add(ErrorMessages.AccountGuideNotFound);
+
+        var chartOfAccount = await ChartOfAccountRepository.GetChartOfAccountByCode(command.Code ?? string.Empty);
         if (chartOfAccount is not null)
             errors.Add(ErrorMessages.ChartOfAccountCodeExists);
 

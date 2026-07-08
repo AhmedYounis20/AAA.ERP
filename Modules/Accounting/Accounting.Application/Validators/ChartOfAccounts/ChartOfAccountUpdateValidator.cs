@@ -3,6 +3,7 @@ using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCo
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;
+using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Application.Validators.ChartOfAccounts;
 
@@ -10,6 +11,7 @@ public class ChartOfAccountUpdateValidator : BaseTreeSettingUpdateValidator<Char
 {
     public ChartOfAccountUpdateValidator() : base()
     {
+        _ = RuleFor(e => e.NodeType).Equal(NodeType.Domain).WithMessage(ValidationMessages.ChartOfAccountMustBeDomainNode);
         _ = RuleFor(e => e.Code).MaximumLength(100).WithMessage(ValidationMessages.ChartOfAccountCodeMaxLengthValidation).NotEmpty().WithMessage(ValidationMessages.ChartOfAccountCodeRequired);
         _ = RuleFor(e => e.AccountGuidId).NotEmpty().WithMessage(ValidationMessages.ChartOfAccountAccountGuideRequired);
         _ = RuleFor(e => e.AccountNature).IsInEnum().WithMessage(ValidationMessages.ChartOfAccountNotValidAccountNature);

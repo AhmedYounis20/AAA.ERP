@@ -138,6 +138,27 @@
   <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
     <value>Please Select Valid Account Nature</value>
   </data>
+  <data name="ChartOfAccountMustBeDomainNode" xml:space="preserve">
+    <value>Chart of account must be a domain node</value>
+  </data>
+  <data name="ChartOfAccountIsInUse" xml:space="preserve">
+    <value>Chart of account is in use and cannot be deleted</value>
+  </data>
+  <data name="ChartOfAccountNatureCannotChange" xml:space="preserve">
+    <value>Account nature cannot be changed while the account is in use</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideCannotChange" xml:space="preserve">
+    <value>Account guide cannot be changed while the account is in use</value>
+  </data>
+  <data name="InvalidChartOfAccountCode" xml:space="preserve">
+    <value>Invalid chart of account code format</value>
+  </data>
+  <data name="AccountGuideNotFound" xml:space="preserve">
+    <value>Account guide was not found</value>
+  </data>
+  <data name="AccountGuideIsUsedInChartOfAccounts" xml:space="preserve">
+    <value>Account guide is used in chart of accounts and cannot be deleted</value>
+  </data>
   <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
     <value>Chart of account with same code is existed</value>
   </data>

@@ -14,9 +14,8 @@ public class ChartOfAccountDbConfig : BaseTreeSettingEntityDbConfig<ChartOfAccou
         _ = builder.Property(e => e.AccountGuidId).HasColumnOrder(columnNumber++).IsRequired();
         _ = builder.HasOne<AccountGuide>().WithMany().HasForeignKey(e => e.AccountGuidId);
 
-        _ = builder.Property(e => e.Code).HasColumnOrder(columnNumber++).HasMaxLength(300).IsRequired();
+        _ = builder.Property(e => e.Code).HasColumnOrder(columnNumber++).HasMaxLength(100).IsRequired();
         _ = builder.HasIndex(e => e.Code).IsUnique();
-        _ = builder.Property(e => e.Code).HasColumnOrder(columnNumber++);
 
         _ = builder.Property(e => e.AccountNature).HasConversion<string>().HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.IsDepreciable).HasColumnOrder(columnNumber++);

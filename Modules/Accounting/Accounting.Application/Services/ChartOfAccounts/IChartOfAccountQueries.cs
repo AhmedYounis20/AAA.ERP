@@ -16,7 +16,7 @@ public interface IChartOfAccountQueries : ITreeSettingQueries<ChartOfAccount>
         ChartOfAccountFilterDto filter,
         CancellationToken cancellationToken = default);
 
-    Task<string> GenerateNewChildCode(Guid? parentId);
+    Task<ApiResponse<string>> GenerateNewChildCode(Guid? parentId);
 
     Task<ApiResponse<ChartOfAccountInputModel>> GetNextAccountDefaultData(Guid? parentId);
 }

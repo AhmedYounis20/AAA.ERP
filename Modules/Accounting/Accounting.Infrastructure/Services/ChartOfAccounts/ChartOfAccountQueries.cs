@@ -1,11 +1,14 @@
+using System.Net;
 using Accounting.Application.Commands.ChartOfAccounts;
 using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.DTOs;
 using ERP.BuildingBlocks.Application.Responses;
 using ERP.BuildingBlocks.Persistence.Services.Queries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Infrastructure.Services;
 
@@ -16,15 +19,129 @@ public class ChartOfAccountQueries(IChartOfAccountRepository repository)
     : BaseTreeSettingRepositoryQueries<ChartOfAccount>(repository),
       IChartOfAccountQueries
 {
-    private readonly BaseEntityRepositoryQueries<ChartOfAccount> _entityQueries = new(repository);
-
-    public Task<ApiResponse<PaginatedResult<ChartOfAccount>>> GetPaginated(
+    public async Task<ApiResponse<PaginatedResult<ChartOfAccount>>> GetPaginated(
         ChartOfAccountFilterDto filter,
         CancellationToken cancellationToken = default)
-        => _entityQueries.GetPaginated(filter, cancellationToken);
+    {
+        try
+        {
+            var query = repository.GetQuery().AsNoTracking();
 
-    public Task<string> GenerateNewChildCode(Guid? parentId)
-        => repository.GenerateNewCodeForChild(parentId);
+            if (filter.CreatedFrom.HasValue)
+                query = query.Where(e => e.CreatedAt >= filter.CreatedFrom.Value);
+
+            if (filter.CreatedTo.HasValue)
+                query = query.Where(e => e.CreatedAt <= filter.CreatedTo.Value);
+
+            if (filter.ParentId.HasValue)
+            {
+                query = filter.ParentId.Value == Guid.Empty
+                    ? query.Where(e => e.ParentId == null)
+                    : query.Where(e => e.ParentId == filter.ParentId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
+            {
+                var term = filter.SearchTerm.Trim();
+                query = query.Where(e =>
+                    (e.Name != null && e.Name.Contains(term)) ||
+                    (e.NameSecondLanguage != null && e.NameSecondLanguage.Contains(term)) ||
+                    (e.Code != null && e.Code.Contains(term)));
+            }
+
+            if (filter.AccountNature.HasValue)
+            {
+                var accountNature = (AccountNature)filter.AccountNature.Value;
+                query = query.Where(e => e.AccountNature == accountNature);
+            }
+
+            if (filter.AccountGuidId.HasValue)
+                query = query.Where(e => e.AccountGuidId == filter.AccountGuidId.Value);
+
+            if (filter.IsActiveAccount.HasValue)
+                query = query.Where(e => e.IsActiveAccount == filter.IsActiveAccount.Value);
+
+            if (filter.IsPostedAccount.HasValue)
+                query = query.Where(e => e.IsPostedAccount == filter.IsPostedAccount.Value);
+
+            if (filter.IsStopDealing.HasValue)
+                query = query.Where(e => e.IsStopDealing == filter.IsStopDealing.Value);
+
+            if (filter.SubLeadgerType.HasValue)
+            {
+                var subLeadgerType = (SubLeadgerType)filter.SubLeadgerType.Value;
+                query = query.Where(e => e.SubLeadgerType == subLeadgerType);
+            }
+
+            query = string.IsNullOrEmpty(filter.SortBy)
+                ? query.OrderByDescending(e => e.CreatedAt)
+                : filter.SortBy.ToLower() switch
+                {
+                    "createdat" => filter.SortDescending
+                        ? query.OrderByDescending(e => e.CreatedAt)
+                        : query.OrderBy(e => e.CreatedAt),
+                    "modifiedat" => filter.SortDescending
+                        ? query.OrderByDescending(e => e.ModifiedAt)
+                        : query.OrderBy(e => e.ModifiedAt),
+                    "code" => filter.SortDescending
+                        ? query.OrderByDescending(e => e.Code)
+                        : query.OrderBy(e => e.Code),
+                    "name" => filter.SortDescending
+                        ? query.OrderByDescending(e => e.Name)
+                        : query.OrderBy(e => e.Name),
+                    _ => query.OrderByDescending(e => e.CreatedAt)
+                };
+
+            var result = await query.ToPaginatedResultAsync(filter.PageNumber, filter.PageSize, cancellationToken);
+
+            return new ApiResponse<PaginatedResult<ChartOfAccount>>
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                Result = result
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<PaginatedResult<ChartOfAccount>>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
+            };
+        }
+    }
+
+    public async Task<ApiResponse<string>> GenerateNewChildCode(Guid? parentId)
+    {
+        try
+        {
+            var code = await repository.GenerateNewCodeForChild(parentId);
+            return new ApiResponse<string>
+            {
+                StatusCode = HttpStatusCode.OK,
+                IsSuccess = true,
+                Result = code
+            };
+        }
+        catch (InvalidOperationException ex) when (ex.Message == ErrorMessages.InvalidChartOfAccountCode)
+        {
+            return new ApiResponse<string>
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                IsSuccess = false,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.InvalidChartOfAccountCode }]
+            };
+        }
+        catch (Exception)
+        {
+            return new ApiResponse<string>
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                IsSuccess = false
+            };
+        }
+    }
 
     public async Task<ApiResponse<ChartOfAccountInputModel>> GetNextAccountDefaultData(Guid? parentId)
     {
@@ -48,6 +165,15 @@ public class ChartOfAccountQueries(IChartOfAccountRepository repository)
                 StatusCode = HttpStatusCode.OK,
                 IsSuccess = true,
                 Result = inputModel
+            };
+        }
+        catch (InvalidOperationException ex) when (ex.Message == ErrorMessages.InvalidChartOfAccountCode)
+        {
+            return new ApiResponse<ChartOfAccountInputModel>
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                IsSuccess = false,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.InvalidChartOfAccountCode }]
             };
         }
         catch (Exception)
