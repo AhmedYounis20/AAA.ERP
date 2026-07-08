@@ -34,22 +34,16 @@ public class CostCenterWorkflowService(
 
             if (command.NodeType.Equals(NodeType.Domain) &&
                 command.CostCenterType.Equals(CostCenterType.RelatedToAccount) &&
-                command.ChartOfAccounts is not null)
+                command.ChartOfAccounts is { Count: > 0 })
             {
-                costCenter.ChartOfAccounts = new List<CostCenterChartOfAccount>();
-                foreach (var account in command.ChartOfAccounts)
-                {
-                    var accountInDb = await chartOfAccountRepository.Get(account);
-                    if (accountInDb is not null)
+                costCenter.ChartOfAccounts = command.ChartOfAccounts
+                    .Select(accountId => new CostCenterChartOfAccount
                     {
-                        costCenter.ChartOfAccounts.Add(new CostCenterChartOfAccount
-                        {
-                            ChartOfAccountId = account,
-                            CreatedAt = DateTime.Now,
-                            ModifiedAt = DateTime.Now,
-                        });
-                    }
-                }
+                        ChartOfAccountId = accountId,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now,
+                    })
+                    .ToList();
             }
             else
             {
@@ -87,6 +81,7 @@ public class CostCenterWorkflowService(
             var validationResult = await ValidateUpdate(command);
             if (!validationResult.isValid)
             {
+                await unitOfWork.RollbackAsync();
                 return new ApiResponse<CostCenter>
                 {
                     IsSuccess = false,
@@ -131,10 +126,12 @@ public class CostCenterWorkflowService(
 
             await repository.Update(oldCostCenter);
             await unitOfWork.CommitAsync();
+            var updated = await repository.Get(command.Id);
             return new ApiResponse<CostCenter>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
+                Result = updated
             };
         }
         catch (Exception ex)
@@ -207,8 +204,14 @@ public class CostCenterWorkflowService(
     private async Task<(bool isValid, List<string> errors, CostCenter? entity)> ValidateUpdate(
         CostCenterUpdateCommand command)
     {
-        var (isValid, errors, _) = await ValidateDuplicateNamesForUpdate(command);
-        var oldCostCenter = await repository.Get(command.Id);
+        var (isValid, errors, oldCostCenter) = await ValidateDuplicateNamesForUpdate(command);
+
+        if (oldCostCenter is null)
+        {
+            isValid = false;
+            errors.Add(ErrorMessages.RecordNotFound);
+            return (false, errors, null);
+        }
 
         if (command.ChartOfAccounts is not null)
         {
@@ -220,10 +223,9 @@ public class CostCenterWorkflowService(
             }
         }
 
-        if (oldCostCenter is not null && oldCostCenter.NodeType != command.NodeType)
+        if (oldCostCenter.NodeType != command.NodeType)
         {
             isValid = false;
-            errors.Add(ErrorMessages.NodeTypeCannotBeChanged);
             errors.Add(ErrorMessages.CannotChangeNodeType);
         }
 
@@ -233,7 +235,7 @@ public class CostCenterWorkflowService(
     private async Task<(bool isValid, List<string> errors, CostCenter? entity)> ValidateDelete(Guid id)
     {
         if (await repository.HasChildren(id))
-            return (false, ["CannotDeleteParent"], null);
+            return (false, [ErrorMessages.CannotDeleteParent], null);
 
         var entity = await repository.Get(id);
         if (entity is null)
@@ -245,39 +247,39 @@ public class CostCenterWorkflowService(
     private async Task<(bool isValid, List<string> errors)> ValidateDuplicateNamesForCreate(
         CostCenterCreateCommand command)
     {
-        var errors = new List<string>();
-        var isValid = true;
-
         var existedEntity = await repository.GetByNames(command.Name, command.NameSecondLanguage);
-        if (existedEntity is not null)
-        {
-            isValid = false;
-            if (existedEntity.Name.Trim().ToUpper() == command.Name?.Trim().ToUpper())
-                errors.Add("WithSameNameIsExisted");
-            if (existedEntity.NameSecondLanguage.Trim().ToUpper() == command.NameSecondLanguage?.Trim().ToUpper())
-                errors.Add("WithSameNameSecondLanguageIsExisted");
-        }
+        if (existedEntity is null)
+            return (true, []);
 
-        return (isValid, errors);
+        var errors = CollectDuplicateNameErrors(existedEntity, command.Name, command.NameSecondLanguage);
+        return (errors.Count == 0, errors);
     }
 
     private async Task<(bool isValid, List<string> errors, CostCenter? entity)> ValidateDuplicateNamesForUpdate(
         CostCenterUpdateCommand command)
     {
-        var errors = new List<string>();
-        var isValid = true;
-
         var oldEntity = await repository.Get(command.Id);
         var existedEntity = await repository.GetByNames(command.Name, command.NameSecondLanguage);
-        if (existedEntity is not null && existedEntity.Id != command.Id)
-        {
-            isValid = false;
-            if (existedEntity.Name.Trim().ToUpper() == command.Name?.Trim().ToUpper())
-                errors.Add("WithSameNameIsExisted");
-            if (existedEntity.NameSecondLanguage.Trim().ToUpper() == command.NameSecondLanguage?.Trim().ToUpper())
-                errors.Add("WithSameNameSecondLanguageIsExisted");
-        }
+        if (existedEntity is null || existedEntity.Id == command.Id)
+            return (true, [], oldEntity);
 
-        return (isValid, errors, oldEntity);
+        var errors = CollectDuplicateNameErrors(existedEntity, command.Name, command.NameSecondLanguage);
+        return (errors.Count == 0, errors, oldEntity);
+    }
+
+    private static List<string> CollectDuplicateNameErrors(
+        CostCenter existedEntity,
+        string? name,
+        string? nameSecondLanguage)
+    {
+        var errors = new List<string>();
+
+        if (existedEntity.Name.Trim().ToUpper() == name?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameIsExisted);
+
+        if (existedEntity.NameSecondLanguage.Trim().ToUpper() == nameSecondLanguage?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameSecondLanguageIsExisted);
+
+        return errors;
     }
 }
