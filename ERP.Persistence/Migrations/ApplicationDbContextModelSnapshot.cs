@@ -22,7 +22,7 @@ namespace ERP.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3542,13 +3542,13 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("AuditLogs", "platform");
                 });
 
-            modelBuilder.Entity("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", b =>
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
                 {
                     b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
                         .WithMany()
                         .HasForeignKey("ChartOfAccountId");
 
-                    b.HasOne("Accounting.Domain.Models.Entities.Account.SubLeadgers.Tax", null)
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Tax", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 

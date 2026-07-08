@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.Taxes;
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.Services.Queries;
 
 namespace Accounting.Application.Services;

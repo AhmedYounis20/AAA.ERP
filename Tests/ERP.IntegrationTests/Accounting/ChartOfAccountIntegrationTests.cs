@@ -6,7 +6,6 @@ using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
 using ERP.Infrastructure.DBConfiguration.DbContext;
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;

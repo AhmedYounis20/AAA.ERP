@@ -1,4 +1,4 @@
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using FluentAssertions;
 using NetArchTest.Rules;
 

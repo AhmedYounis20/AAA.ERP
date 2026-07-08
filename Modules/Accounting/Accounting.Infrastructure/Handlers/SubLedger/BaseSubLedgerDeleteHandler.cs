@@ -1,6 +1,7 @@
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.CQRS.Commands;
 using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
 using ERP.BuildingBlocks.Application.Responses;
@@ -42,13 +43,27 @@ public abstract class BaseSubLedgerDeleteHandler<TEntity, TDeleteCommand>(
             {
                 return new ApiResponse<TEntity>
                 {
-                    IsSuccess = true,
-                    StatusCode = HttpStatusCode.OK,
-                    Result = null
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
                 };
             }
 
             var chartOfAccountId = entity.ChartOfAccountId;
+            if (chartOfAccountId.HasValue)
+            {
+                var isLinkedToEntries = await chartOfAccountRepository.IsUsedInEntries(chartOfAccountId.Value);
+                var isLinkedToCostCenters = await chartOfAccountRepository.IsUsedInCostCenters(chartOfAccountId.Value);
+                if (isLinkedToEntries || isLinkedToCostCenters)
+                {
+                    return new ApiResponse<TEntity>
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Errors = [new MessageTemplate { MessageKey = ErrorMessages.ChartOfAccountIsInUse }]
+                    };
+                }
+            }
 
             await unitOfWork.BeginTransactionAsync();
             try

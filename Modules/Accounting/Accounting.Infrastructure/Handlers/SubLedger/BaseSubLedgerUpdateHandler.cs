@@ -15,8 +15,6 @@ public abstract class BaseSubLedgerUpdateHandler<TEntity, TUpdate>(IBaseSubLeadg
     where TEntity : SubLeadgerBaseEntity<TEntity>
     where TUpdate : BaseSubLeadgerUpdateCommand<TEntity>
 {
-    protected override bool ShouldValidateBusinessRules => false;
-
     protected override Task<TEntity> MapUpdateEntityAsync(
         TUpdate command,
         TEntity existingEntity,
@@ -24,26 +22,18 @@ public abstract class BaseSubLedgerUpdateHandler<TEntity, TUpdate>(IBaseSubLeadg
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var newEntity = command.Adapt<TEntity>();
+        var existingChartOfAccount = existingEntity.ChartOfAccount;
+        var existingChartOfAccountId = existingEntity.ChartOfAccountId;
+        command.Adapt(existingEntity);
 
-        if (existingEntity.ChartOfAccount is not null)
+        if (existingChartOfAccount is not null)
         {
-            newEntity.ChartOfAccountId = existingEntity.ChartOfAccountId;
-            newEntity.ChartOfAccount = existingEntity.ChartOfAccount;
-            newEntity.ChartOfAccount.Name = command.Name;
-            newEntity.ChartOfAccount.NameSecondLanguage = command.NameSecondLanguage;
+            existingEntity.ChartOfAccountId = existingChartOfAccountId;
+            existingEntity.ChartOfAccount = existingChartOfAccount;
+            existingEntity.ChartOfAccount.Name = command.Name;
+            existingEntity.ChartOfAccount.NameSecondLanguage = command.NameSecondLanguage;
         }
 
-        return Task.FromResult(newEntity);
+        return Task.FromResult(existingEntity);
     }
-
-    protected override Task<ApiResponse<TEntity>?> OnUpdateExceptionAsync(
-        TUpdate command,
-        Exception exception,
-        CancellationToken cancellationToken) =>
-        Task.FromResult<ApiResponse<TEntity>?>(new ApiResponse<TEntity>
-        {
-            IsSuccess = false,
-            Errors = [new MessageTemplate { MessageKey = exception.ToString() }]
-        });
 }

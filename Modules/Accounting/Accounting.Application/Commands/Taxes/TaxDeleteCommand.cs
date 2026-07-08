@@ -1,4 +1,4 @@
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.CQRS.Commands;
 using ERP.BuildingBlocks.Application.Responses;
 using Shared;

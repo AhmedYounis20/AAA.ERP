@@ -1,7 +1,7 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Domain.Entities;
 using ERP.BuildingBlocks.Persistence.Services.Queries;

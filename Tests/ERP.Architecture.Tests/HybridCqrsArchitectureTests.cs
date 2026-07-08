@@ -10,7 +10,7 @@ using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace ERP.Architecture.Tests;
 

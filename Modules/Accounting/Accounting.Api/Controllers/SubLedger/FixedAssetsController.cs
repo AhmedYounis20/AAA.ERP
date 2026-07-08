@@ -29,6 +29,8 @@ public class FixedAssetsController(
         => this.ToLookupsResult(() => lookups.GetLookUps(e => e.NodeType == NodeType.Domain));
 
     [HttpGet("NextAccountDefaultData")]
-    public async Task<IActionResult> NextAccountDefaultData([FromQuery] Guid? parentId, [FromQuery] FixedAssetType fixedAssetType)
+    public async Task<IActionResult> NextAccountDefaultData(
+        [FromQuery] Guid? parentId,
+        [FromQuery] FixedAssetType fixedAssetType = FixedAssetType.Lands)
         => this.ToResult(await queries.GetNextFixedAsset(parentId, fixedAssetType));
 }

@@ -19,6 +19,17 @@ public class FixedAssetWorkflowService(
 {
     public async Task<ApiResponse<FixedAsset>> Create(FixedAssetCreateCommand command)
     {
+        var duplicateValidation = await ValidateDuplicateNames(command.Name, command.NameSecondLanguage);
+        if (!duplicateValidation.isValid)
+        {
+            return new ApiResponse<FixedAsset>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = duplicateValidation.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
+            };
+        }
+
         try
         {
             var isDomain = command.NodeType.Equals(NodeType.Domain);
@@ -126,74 +137,105 @@ public class FixedAssetWorkflowService(
             return new ApiResponse<FixedAsset>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
 
     public async Task<ApiResponse<FixedAsset>> Update(FixedAssetUpdateCommand command)
     {
+        var duplicateValidation = await ValidateDuplicateNames(command.Name, command.NameSecondLanguage, command.Id);
+        if (!duplicateValidation.isValid)
+        {
+            return new ApiResponse<FixedAsset>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = duplicateValidation.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
+            };
+        }
+
         await unitOfWork.BeginTransactionAsync();
         try
         {
             var entity = await repository.GetAsNoTracking(command.Id);
-            if (entity != null)
+            if (entity is null)
             {
-                entity.Name = command.Name;
-                entity.NameSecondLanguage = command.NameSecondLanguage;
-                entity.Notes = command.Notes;
-                if (command.NodeType == NodeType.Domain)
+                await unitOfWork.RollbackAsync();
+                return new ApiResponse<FixedAsset>
                 {
-                    entity.ManufactureCompany = command.ManufactureCompany;
-                    entity.Model = command.Model;
-                    entity.Serial = command.Serial;
-                    entity.Version = command.Version;
-                    entity.DepreciationRate = command.DepreciationRate;
-                    entity.IsDepreciable = command.IsDepreciable;
-                    entity.AssetLifeSpanByYears = command.AssetLifeSpanByYears;
-                    if (!command.IsDepreciable)
-                    {
-                        entity.AssetLifeSpanByYears = 0;
-                        entity.DepreciationRate = 0;
-                    }
-                }
-
-                if (entity.ChartOfAccountId.HasValue)
-                {
-                    var account = await chartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
-                    account.Name = command.Name;
-                    account.NameSecondLanguage = command.NameSecondLanguage;
-                    await chartOfAccountRepository.Update(account);
-                }
-
-                if (entity.AccumlatedAccountId.HasValue)
-                {
-                    var accumlatedDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
-
-                    var acculatedAccount =
-                        await chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
-                    acculatedAccount.Name = $"{accumlatedDepreciationAccount.Name} {command.Name}";
-                    acculatedAccount.NameSecondLanguage =
-                        $"{accumlatedDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
-                    await chartOfAccountRepository.Update(acculatedAccount);
-                }
-
-                if (entity.ExpensesAccountId.HasValue)
-                {
-                    var expensesDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
-
-                    var expenseAccount =
-                        await chartOfAccountRepository.Get(entity.ExpensesAccountId.Value);
-                    expenseAccount.Name = $"{expensesDepreciationAccount.Name} {command.Name}";
-                    expenseAccount.NameSecondLanguage =
-                        $"{expensesDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
-                    await chartOfAccountRepository.Update(expenseAccount);
-                }
-
-                await repository.Update(entity);
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
+                };
             }
+
+            if (entity.NodeType != command.NodeType)
+            {
+                await unitOfWork.RollbackAsync();
+                return new ApiResponse<FixedAsset>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.CannotChangeNodeType }]
+                };
+            }
+
+            entity.Name = command.Name;
+            entity.NameSecondLanguage = command.NameSecondLanguage;
+            entity.Notes = command.Notes;
+            if (command.NodeType == NodeType.Domain)
+            {
+                entity.ManufactureCompany = command.ManufactureCompany;
+                entity.Model = command.Model;
+                entity.Serial = command.Serial;
+                entity.Version = command.Version;
+                entity.DepreciationRate = command.DepreciationRate;
+                entity.IsDepreciable = command.IsDepreciable;
+                entity.AssetLifeSpanByYears = command.AssetLifeSpanByYears;
+                if (!command.IsDepreciable)
+                {
+                    entity.AssetLifeSpanByYears = 0;
+                    entity.DepreciationRate = 0;
+                }
+            }
+
+            if (entity.ChartOfAccountId.HasValue)
+            {
+                var account = await chartOfAccountRepository.Get(entity.ChartOfAccountId.Value);
+                account.Name = command.Name;
+                account.NameSecondLanguage = command.NameSecondLanguage;
+                await chartOfAccountRepository.Update(account);
+            }
+
+            if (entity.AccumlatedAccountId.HasValue)
+            {
+                var accumlatedDepreciationAccount =
+                    await chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
+
+                var acculatedAccount =
+                    await chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
+                acculatedAccount.Name = $"{accumlatedDepreciationAccount.Name} {command.Name}";
+                acculatedAccount.NameSecondLanguage =
+                    $"{accumlatedDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
+                await chartOfAccountRepository.Update(acculatedAccount);
+            }
+
+            if (entity.ExpensesAccountId.HasValue)
+            {
+                var expensesDepreciationAccount =
+                    await chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
+
+                var expenseAccount =
+                    await chartOfAccountRepository.Get(entity.ExpensesAccountId.Value);
+                expenseAccount.Name = $"{expensesDepreciationAccount.Name} {command.Name}";
+                expenseAccount.NameSecondLanguage =
+                    $"{expensesDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
+                await chartOfAccountRepository.Update(expenseAccount);
+            }
+
+            await repository.Update(entity);
 
             await unitOfWork.CommitAsync();
             return new ApiResponse<FixedAsset>
@@ -209,7 +251,8 @@ public class FixedAssetWorkflowService(
             return new ApiResponse<FixedAsset>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
@@ -278,5 +321,23 @@ public class FixedAssetWorkflowService(
             return (false, [ErrorMessages.RecordNotFound], null);
 
         return (true, [], entity);
+    }
+
+    private async Task<(bool isValid, List<string>? errors)> ValidateDuplicateNames(
+        string? name,
+        string? nameSecondLanguage,
+        Guid? excludeId = null)
+    {
+        var existedEntity = await repository.GetByNames(name, nameSecondLanguage);
+        if (existedEntity is null || (excludeId.HasValue && existedEntity.Id == excludeId.Value))
+            return (true, null);
+
+        var errors = new List<string>();
+        if (existedEntity.Name?.Trim().ToUpper() == name?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameIsExisted);
+        if (existedEntity.NameSecondLanguage?.Trim().ToUpper() == nameSecondLanguage?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameSecondLanguageIsExisted);
+
+        return errors.Count == 0 ? (true, null) : (false, errors);
     }
 }

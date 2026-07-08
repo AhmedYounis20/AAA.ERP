@@ -22,18 +22,29 @@ public class BranchWorkflowService(
 {
     public async Task<ApiResponse<Branch>> Create(BranchCreateCommand command)
     {
+        var duplicateValidation = await ValidateDuplicateNames(command.Name, command.NameSecondLanguage);
+        if (!duplicateValidation.isValid)
+        {
+            return new ApiResponse<Branch>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = duplicateValidation.errors?.Select(e => new MessageTemplate { MessageKey = e }).ToList()
+            };
+        }
+
         await unitOfWork.BeginTransactionAsync();
         try
         {
             var isDomain = command.NodeType.Equals(NodeType.Domain);
-            var chartOfAccountParent =
-                await chartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
-            var newCode = await chartOfAccountRepository
-                .GenerateNewCodeForChild(Guid.Parse(SD.BranchChartOfAccountId));
             Branch entity = new();
 
             if (isDomain)
             {
+                var chartOfAccountParent =
+                    await chartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
+                var newCode = await chartOfAccountRepository
+                    .GenerateNewCodeForChild(Guid.Parse(SD.BranchChartOfAccountId));
                 entity = command.Adapt<Branch>();
                 entity.ChartOfAccount = new ChartOfAccount
                 {
@@ -169,7 +180,7 @@ public class BranchWorkflowService(
             return new ApiResponse<Branch>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }],
+                Errors = [new MessageTemplate { MessageKey = ex.Message }],
                 StatusCode = HttpStatusCode.BadRequest
             };
         }
@@ -230,13 +241,14 @@ public class BranchWorkflowService(
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
 
     private async Task<ApiResponse<Branch>> UpdateCategoryBranch(BranchUpdateCommand command)
     {
+        await unitOfWork.BeginTransactionAsync();
         try
         {
             var entity = await repository.Get(command.Id);
@@ -252,21 +264,31 @@ public class BranchWorkflowService(
                 }
 
                 await repository.Update(newEntity);
+                await unitOfWork.CommitAsync();
+                return new ApiResponse<Branch>
+                {
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.OK,
+                    Result = newEntity
+                };
             }
 
+            await unitOfWork.RollbackAsync();
             return new ApiResponse<Branch>
             {
-                IsSuccess = true,
-                StatusCode = HttpStatusCode.OK,
-                Result = entity
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.RecordNotFound }]
             };
         }
         catch (Exception ex)
         {
+            await unitOfWork.RollbackAsync();
             return new ApiResponse<Branch>
             {
                 IsSuccess = false,
-                Errors = [new MessageTemplate { MessageKey = ex.ToString() }]
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ex.Message }]
             };
         }
     }
@@ -277,20 +299,16 @@ public class BranchWorkflowService(
         var isValid = true;
 
         var oldEntity = await repository.Get(command.Id);
-        var existedEntity = await repository.GetByNames(command.Name, command.NameSecondLanguage);
-        if (existedEntity is not null && existedEntity.Id != command.Id)
+        var duplicateValidation = await ValidateDuplicateNames(command.Name, command.NameSecondLanguage, command.Id);
+        if (!duplicateValidation.isValid)
         {
             isValid = false;
-            if (existedEntity.Name.Trim().ToUpper() == command.Name?.Trim().ToUpper())
-                errors.Add("WithSameNameIsExisted");
-            if (existedEntity.NameSecondLanguage.Trim().ToUpper() == command.NameSecondLanguage?.Trim().ToUpper())
-                errors.Add("WithSameNameSecondLanguageIsExisted");
+            errors.AddRange(duplicateValidation.errors!);
         }
 
         if (oldEntity is not null && oldEntity.NodeType != command.NodeType)
         {
             isValid = false;
-            errors.Add(ErrorMessages.NodeTypeCannotBeChanged);
             errors.Add(ErrorMessages.CannotChangeNodeType);
         }
 
@@ -307,5 +325,23 @@ public class BranchWorkflowService(
             return (false, [ErrorMessages.RecordNotFound], null);
 
         return (true, [], entity);
+    }
+
+    private async Task<(bool isValid, List<string>? errors)> ValidateDuplicateNames(
+        string? name,
+        string? nameSecondLanguage,
+        Guid? excludeId = null)
+    {
+        var existedEntity = await repository.GetByNames(name, nameSecondLanguage);
+        if (existedEntity is null || (excludeId.HasValue && existedEntity.Id == excludeId.Value))
+            return (true, null);
+
+        var errors = new List<string>();
+        if (existedEntity.Name?.Trim().ToUpper() == name?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameIsExisted);
+        if (existedEntity.NameSecondLanguage?.Trim().ToUpper() == nameSecondLanguage?.Trim().ToUpper())
+            errors.Add(ErrorMessages.WithSameNameSecondLanguageIsExisted);
+
+        return errors.Count == 0 ? (true, null) : (false, errors);
     }
 }

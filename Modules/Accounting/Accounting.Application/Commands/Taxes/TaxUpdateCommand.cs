@@ -1,5 +1,5 @@
 using Accounting.Application.Commands.SubLeadgers.BaseSubLeadgersCommands;
-using Accounting.Domain.Models.Entities.Account.SubLeadgers;
+using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace Accounting.Application.Commands.Taxes;
 

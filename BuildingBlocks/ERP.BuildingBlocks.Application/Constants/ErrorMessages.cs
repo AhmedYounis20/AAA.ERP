@@ -59,7 +59,7 @@ public static class ErrorMessages
     public const string BranchOrBranchAccountNotFound = "BranchOrBranchAccountNotFound";
     public const string CannotChangeNodeType = "CannotChangeNodeType";
     public const string CannotDeleteParent = "CannotDeleteParent";
-    public const string NodeTypeCannotBeChanged = "Node Type cannot be changed";
+    public const string NodeTypeCannotBeChanged = CannotChangeNodeType;
     public const string WithSameNameIsExisted = "WithSameNameIsExisted";
     public const string WithSameNameSecondLanguageIsExisted = "WithSameNameSecondLanguageIsExisted";
     public const string ChartOfAccountUpdateSubLeadgerName = "ChartOfAccountUpdateSubLeadgerName";
