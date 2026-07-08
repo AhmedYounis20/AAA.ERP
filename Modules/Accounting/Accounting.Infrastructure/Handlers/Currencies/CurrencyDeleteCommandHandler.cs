@@ -25,6 +25,13 @@ public sealed class CurrencyDeleteCommandHandler(ICurrencyRepository repository)
                 baseResult.Entity);
         }
 
+        if (await repository.IsUsedInEntries(id))
+        {
+            return CrudEntityValidationResult<Currency>.Failure(
+                new[] { ErrorMessages.CurrencyIsUsedInEntries },
+                baseResult.Entity);
+        }
+
         return baseResult;
     }
 }

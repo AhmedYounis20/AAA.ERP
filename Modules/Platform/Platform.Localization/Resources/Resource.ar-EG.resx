@@ -92,6 +92,9 @@
   <data name="CurrencySymbolIsExisted" xml:space="preserve">
     <value>عملة بهذا الرمز موجودة بالفعل</value>
   </data>
+  <data name="CurrencyIsUsedInEntries" xml:space="preserve">
+    <value>العملة مستخدمة في القيود ولا يمكن حذفها</value>
+  </data>
   <data name="CurrencySymbolMaxLength" xml:space="preserve">
     <value>لا يمكن ان يتعدى الرمز 4 حروف</value>
   </data>

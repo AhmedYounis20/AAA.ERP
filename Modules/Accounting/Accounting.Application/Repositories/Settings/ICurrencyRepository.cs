@@ -12,4 +12,6 @@ public interface ICurrencyRepository : IBaseSettingRepository<Currency>
     Task<Currency?> GetDefaultCurrency();
     /// <summary>is exited currency symbol operation.</summary>
     Task<bool> IsExitedCurrencySymbol(string? symbol);
+    /// <summary>Checks whether currency is referenced by entries.</summary>
+    Task<bool> IsUsedInEntries(Guid id);
 }

@@ -150,6 +150,9 @@
   <data name="CurrencySymbolIsExisted" xml:space="preserve">
     <value>currency with same symbol is existed</value>
   </data>
+  <data name="CurrencyIsUsedInEntries" xml:space="preserve">
+    <value>Currency is used in entries and cannot be deleted</value>
+  </data>
   <data name="CurrencySymbolMaxLength" xml:space="preserve">
     <value>currency symbol can't exceed 4 letters</value>
   </data>
