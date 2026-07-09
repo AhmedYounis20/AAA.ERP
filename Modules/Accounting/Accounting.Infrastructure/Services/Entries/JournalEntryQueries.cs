@@ -4,8 +4,6 @@ using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Dtos;
 using Accounting.Domain.Models.Entities.Entries;
-using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Infrastructure.Services.Entries;
 
@@ -20,7 +18,10 @@ public class JournalEntryQueries(IEntryService entryService) : IJournalEntryQuer
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => entryService.GetPaginated(filter, cancellationToken);
+    {
+        filter.EntryType ??= (int)EntryType.Journal;
+        return entryService.GetPaginated(filter, cancellationToken);
+    }
 
     public Task<ApiResponse<EntryDto>> GetById(Guid id)
         => entryService.Get(id, EntryType.Journal);

@@ -1,12 +1,10 @@
 using Accounting.Contracts.Dtos;
 using Accounting.Application.Dtos.Entries;
 using Accounting.Application.Dtos.Filters;
-using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
-using ERP.BuildingBlocks.Application.Constants;
-using ERP.BuildingBlocks.Application.DTOs;
+using Accounting.Infrastructure.Services.Entries;
 using System.Linq.Expressions;
 
 namespace Accounting.Infrastructure.Services;
@@ -113,14 +111,7 @@ public class EntryService(
     {
         try
         {
-            Expression<Func<Entry, bool>>? filterExpression = null;
-
-            if (filter.CreatedFrom.HasValue || filter.CreatedTo.HasValue)
-            {
-                filterExpression = e =>
-                    (!filter.CreatedFrom.HasValue || e.CreatedAt >= filter.CreatedFrom.Value) &&
-                    (!filter.CreatedTo.HasValue || e.CreatedAt <= filter.CreatedTo.Value);
-            }
+            var filterExpression = EntryFilterSupport.BuildFilterExpression(filter);
 
             Expression<Func<Entry, object>>? orderBy = string.IsNullOrEmpty(filter.SortBy)
                 ? e => e.CreatedAt
@@ -157,41 +148,9 @@ public class EntryService(
         }
     }
 
-    public async Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
-    {
-        var result = new EntryNumberDto();
-
-        var financialPeriod = await unitOfWork.Set<FinancialPeriod>()
-            .FirstOrDefaultAsync(e => e.StartDate <= dateTime && e.EndDate > dateTime);
-        if (financialPeriod == null)
-        {
-            return new ApiResponse<EntryNumberDto>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.Found,
-                Errors = [new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound }]
-            };
-        }
-
-        result.FinancialPeriodId = financialPeriod.Id;
-        result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
-
-        var lastEntryNumber = unitOfWork.Set<Entry>()
-            .Where(e => e.FinancialPeriodId == financialPeriod.Id)
-            .ToList()
-            .OrderByDescending(e => BigInteger.Parse(e.EntryNumber))
-            .Select(e => BigInteger.Parse(e.EntryNumber))
-            .FirstOrDefault();
-
-        result.EntryNumber = lastEntryNumber == 0
-            ? "1"
-            : (lastEntryNumber + 1).ToString();
-
-        return new ApiResponse<EntryNumberDto>
-        {
-            IsSuccess = true,
-            StatusCode = HttpStatusCode.OK,
-            Result = result
-        };
-    }
+    public Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
+        => EntryNumberSupport.GetNextEntryNumberAsync(
+            unitOfWork.Set<FinancialPeriod>(),
+            unitOfWork.Set<Entry>(),
+            dateTime);
 }

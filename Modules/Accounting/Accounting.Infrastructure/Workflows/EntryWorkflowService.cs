@@ -1,11 +1,10 @@
 using Accounting.Application.Commands.Entries;
-using Accounting.Application.Dtos.Entries;
-using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
 using Accounting.Contracts.Dtos;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
+using Accounting.Infrastructure.Services.Entries;
 using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.BuildingBlocks.Domain.Entities.Attachments;
@@ -18,18 +17,19 @@ namespace Accounting.Infrastructure.Workflows;
 public class EntryWorkflowService(
     IEntryRepository repository,
     IUnitOfWork unitOfWork,
-    IFinancialPeriodRepository financialPeriodRepository,
     IBaseRepository<FinancialTransaction> financialTransactionRepository,
     IBaseRepository<EntryAttachment> entryAttachmentRepository,
     IAttachmentRepository attachmentRepository) : IEntryWorkflowService
 {
     public async Task<ApiResponse<Entry>> Create(EntryCreateCommand command)
     {
+        await unitOfWork.BeginTransactionAsync();
         try
         {
             var bussinessValidationResult = await ValidateCreate(command);
             if (!bussinessValidationResult.isValid)
             {
+                await unitOfWork.RollbackAsync();
                 return new ApiResponse<Entry>
                 {
                     IsSuccess = false,
@@ -41,9 +41,32 @@ public class EntryWorkflowService(
             var entry = command.Adapt<Entry>();
             var entryNumberResult = await GetEntryNumber(entry.EntryDate);
             if (entryNumberResult.IsSuccess == false || entryNumberResult.Result == null)
-                throw new Exception(ErrorMessages.FaildToGenerateEntryNubmer);
+            {
+                await unitOfWork.RollbackAsync();
+                return new ApiResponse<Entry>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = entryNumberResult.Errors ??
+                             [new MessageTemplate { MessageKey = ErrorMessages.FaildToGenerateEntryNubmer }]
+                };
+            }
 
             var entryNumber = entryNumberResult.Result;
+            if (await EntryNumberSupport.EntryNumberExistsAsync(
+                    unitOfWork.Set<Entry>(),
+                    entryNumber.FinancialPeriodId,
+                    entryNumber.EntryNumber))
+            {
+                await unitOfWork.RollbackAsync();
+                return new ApiResponse<Entry>
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Errors = [new MessageTemplate { MessageKey = ErrorMessages.EntryNumberExists }]
+                };
+            }
+
             entry.EntryNumber = entryNumber.EntryNumber;
             entry.FinancialPeriodId = entryNumber.FinancialPeriodId;
 
@@ -56,6 +79,8 @@ public class EntryWorkflowService(
             entry = await repository.Add(entry);
             entry.FinancialTransactions = [];
 
+            await unitOfWork.CommitAsync();
+
             return new ApiResponse<Entry>
             {
                 IsSuccess = true,
@@ -63,8 +88,19 @@ public class EntryWorkflowService(
                 Result = entry
             };
         }
+        catch (DbUpdateException ex) when (IsDuplicateEntryNumberViolation(ex))
+        {
+            await unitOfWork.RollbackAsync();
+            return new ApiResponse<Entry>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.EntryNumberExists }]
+            };
+        }
         catch (Exception ex)
         {
+            await unitOfWork.RollbackAsync();
             Log.Error(ex.ToString());
             return new ApiResponse<Entry>
             {
@@ -83,6 +119,7 @@ public class EntryWorkflowService(
             var bussinessValidationResult = await ValidateUpdate(command);
             if (!bussinessValidationResult.isValid || bussinessValidationResult.entity is null)
             {
+                await unitOfWork.RollbackAsync();
                 return new ApiResponse<Entry>
                 {
                     IsSuccess = false,
@@ -163,43 +200,11 @@ public class EntryWorkflowService(
         }
     }
 
-    private async Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
-    {
-        var result = new EntryNumberDto();
-
-        var financialPeriod = await unitOfWork.Set<FinancialPeriod>()
-            .FirstOrDefaultAsync(e => e.StartDate <= dateTime && e.EndDate > dateTime);
-        if (financialPeriod == null)
-        {
-            return new ApiResponse<EntryNumberDto>
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.Found,
-                Errors = [new MessageTemplate { MessageKey = ErrorMessages.FinancialPeriodNotFound }]
-            };
-        }
-
-        result.FinancialPeriodId = financialPeriod.Id;
-        result.FinancialPeriodNumber = financialPeriod.YearNumber ?? string.Empty;
-
-        var lastEntryNumber = unitOfWork.Set<Entry>()
-            .Where(e => e.FinancialPeriodId == financialPeriod.Id)
-            .ToList()
-            .OrderByDescending(e => BigInteger.Parse(e.EntryNumber))
-            .Select(e => BigInteger.Parse(e.EntryNumber))
-            .FirstOrDefault();
-
-        result.EntryNumber = lastEntryNumber == 0
-            ? "1"
-            : (lastEntryNumber + 1).ToString();
-
-        return new ApiResponse<EntryNumberDto>
-        {
-            IsSuccess = true,
-            StatusCode = HttpStatusCode.OK,
-            Result = result
-        };
-    }
+    private Task<ApiResponse<EntryNumberDto>> GetEntryNumber(DateTime dateTime)
+        => EntryNumberSupport.GetNextEntryNumberAsync(
+            unitOfWork.Set<FinancialPeriod>(),
+            unitOfWork.Set<Entry>(),
+            dateTime);
 
     private async Task UpdateEntryAttachments(EntryUpdateCommand command, Entry entry)
     {
@@ -209,11 +214,13 @@ public class EntryWorkflowService(
 
         IEnumerable<EntryAttachment> deletedEntryAttachments =
             oldAttachments.Where(e => !command.Attachments.Any(file => file.AttachmentId == e.Attachment.Id));
-        IEnumerable<Attachment> deletedAttachments = oldAttachments.Select(e => e.Attachment);
+        IEnumerable<Attachment> deletedAttachments = deletedEntryAttachments.Select(e => e.Attachment);
         IEnumerable<Attachment> newAttachments = command.Attachments
             .Where(file => !oldAttachments.Any(e => file.AttachmentId == e.Attachment.Id))
             .ToAttachment();
-        List<Attachment> updatedAttachments = oldAttachments.Select(e => e.Attachment).Except(deletedAttachments)
+        List<Attachment> updatedAttachments = oldAttachments
+            .Where(e => command.Attachments.Any(file => file.AttachmentId == e.Attachment.Id))
+            .Select(e => e.Attachment)
             .ToList();
 
         SyncUpdatedEntryAttachments(updatedAttachments, command.Attachments);
@@ -276,8 +283,7 @@ public class EntryWorkflowService(
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
-            Log.Error($"{ex}");
+            Log.Error(ex.ToString());
             throw;
         }
     }
@@ -310,8 +316,7 @@ public class EntryWorkflowService(
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
-            Log.Error($"{ex}");
+            Log.Error(ex.ToString());
             throw;
         }
     }
@@ -377,9 +382,7 @@ public class EntryWorkflowService(
         var entity = await repository.Get(command.Id);
         if (entity == null)
         {
-            return (false,
-                [$"{nameof(Entry)} with Id: {command.Id} not found"],
-                null);
+            return (false, [ErrorMessages.RecordNotFound], null);
         }
 
         return (true, [], entity);
@@ -392,5 +395,13 @@ public class EntryWorkflowService(
             return (false, [ErrorMessages.RecordNotFound], null);
 
         return (true, [], entity);
+    }
+
+    private static bool IsDuplicateEntryNumberViolation(DbUpdateException exception)
+    {
+        var message = exception.InnerException?.Message ?? exception.Message;
+        return message.Contains("FinancialPeriodId", StringComparison.OrdinalIgnoreCase)
+               && message.Contains("EntryNumber", StringComparison.OrdinalIgnoreCase)
+               && message.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase);
     }
 }

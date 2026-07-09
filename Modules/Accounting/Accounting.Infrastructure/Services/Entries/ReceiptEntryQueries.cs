@@ -4,8 +4,6 @@ using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Dtos;
 using Accounting.Domain.Models.Entities.Entries;
-using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.Responses;
 
 namespace Accounting.Infrastructure.Services.Entries;
 
@@ -21,7 +19,10 @@ public class ReceiptEntryQueries(IComplexEntryService complexEntryService, IEntr
     public Task<ApiResponse<PaginatedResult<Entry>>> GetPaginated(
         EntryFilterDto filter,
         CancellationToken cancellationToken = default)
-        => entryService.GetPaginated(filter, cancellationToken);
+    {
+        filter.EntryType ??= (int)EntryType.Receipt;
+        return entryService.GetPaginated(filter, cancellationToken);
+    }
 
     public Task<ApiResponse<ComplexEntryDto>> GetById(Guid id)
         => complexEntryService.GetComplexEntryById(id, EntryType.Receipt);
