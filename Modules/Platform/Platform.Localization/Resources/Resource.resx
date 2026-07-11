@@ -1,0 +1,727 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountGuide" xml:space="preserve">
+    <value>Account Guide</value>
+  </data>
+  <data name="Added" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="CannotDeleteParent" xml:space="preserve">
+    <value>Parent Cannot be deleted please delete chilldren first</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideRequired" xml:space="preserve">
+    <value>Account Guide Is Required</value>
+  </data>
+  <data name="ChartOfAccountCodeMaxLengthValidation" xml:space="preserve">
+    <value>code max length 100 characters</value>
+  </data>
+  <data name="ChartOfAccountCodeRequired" xml:space="preserve">
+    <value>Code is required</value>
+  </data>
+  <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
+    <value>Please Select Valid Account Nature</value>
+  </data>
+  <data name="ChartOfAccountMustBeDomainNode" xml:space="preserve">
+    <value>Chart of account must be a domain node</value>
+  </data>
+  <data name="ChartOfAccountIsInUse" xml:space="preserve">
+    <value>Chart of account is in use and cannot be deleted</value>
+  </data>
+  <data name="ChartOfAccountNatureCannotChange" xml:space="preserve">
+    <value>Account nature cannot be changed while the account is in use</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideCannotChange" xml:space="preserve">
+    <value>Account guide cannot be changed while the account is in use</value>
+  </data>
+  <data name="InvalidChartOfAccountCode" xml:space="preserve">
+    <value>Invalid chart of account code format</value>
+  </data>
+  <data name="AccountGuideNotFound" xml:space="preserve">
+    <value>Account guide was not found</value>
+  </data>
+  <data name="AccountGuideIsUsedInChartOfAccounts" xml:space="preserve">
+    <value>Account guide is used in chart of accounts and cannot be deleted</value>
+  </data>
+  <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
+    <value>Chart of account with same code is existed</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="CurrencyActiveOnDefault" xml:space="preserve">
+    <value>default currency must be active</value>
+  </data>
+  <data name="CurrencySymbolIsExisted" xml:space="preserve">
+    <value>currency with same symbol is existed</value>
+  </data>
+  <data name="CurrencyIsUsedInEntries" xml:space="preserve">
+    <value>Currency is used in entries and cannot be deleted</value>
+  </data>
+  <data name="CurrencySymbolMaxLength" xml:space="preserve">
+    <value>currency symbol can't exceed 4 letters</value>
+  </data>
+  <data name="DefaultCurrencyIsAlreadyExistedWithName" xml:space="preserve">
+    <value>default currency is already existed with name</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="ExchangeRateOnDefaultCurrency" xml:space="preserve">
+    <value>exchange rate must be 1 for default currency</value>
+  </data>
+  <data name="ExchangeRateIsRequired" xml:space="preserve">
+    <value>Exchange Rate Is Required</value>
+  </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>name is required</value>
+  </data>
+  <data name="NameMaxLength" xml:space="preserve">
+    <value>name can't exceed 50 letters</value>
+  </data>
+  <data name="NameSecondLanguageIsRequired" xml:space="preserve">
+    <value>name second language is required</value>
+  </data>
+  <data name="NameSecondLanguageMaxLength" xml:space="preserve">
+    <value>name second language can't exceed 50 letters</value>
+  </data>
+  <data name="Successfully" xml:space="preserve">
+    <value>Successfully</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="WithSameNameIsExisted" xml:space="preserve">
+    <value>with same name is existed</value>
+  </data>
+  <data name="WithSameNameSecondLanguageIsExisted" xml:space="preserve">
+    <value>with same name second language is existed</value>
+  </data>
+  <data name="CurrencySymbolIsRequired" xml:space="preserve">
+    <value>Currency Symol is required</value>
+  </data>
+  <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
+    <value>Exchange rate must be greater than zero</value>
+  </data>
+  <data name="GLSettings" xml:space="preserve">
+    <value>GLSettings</value>
+  </data>
+  <data name="DefaultCurrencyCannotBeDeleted" xml:space="preserve">
+    <value>Default currency cannot be deleted</value>
+  </data>
+  <data name="NotFoundCurrentFinancialPeriod" xml:space="preserve">
+    <value>Not Found Current Financial Period</value>
+  </data>
+  <data name="ColorCodeIsRequired" xml:space="preserve">
+    <value>Color Code is required</value>
+  </data>
+  <data name="ColorValueIsDuplicate" xml:space="preserve">
+    <value>Color value already exists</value>
+  </data>
+
+  <data name="CreatedSuccessfully" xml:space="preserve">
+  <value>Created Successfully</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Updated Successfully</value>
+  </data>
+    <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted Successfully</value>
+  </data>
+  <data name="FinancialPeriodCurrentOrPastUpdateError" xml:space="preserve">
+    <value>Not Allowed To Update Current or Past Period</value>
+  </data>
+
+  <data name="FinancialTransactionIsUsedInEntriesCannotUpdateYearName" xml:space="preserve">
+    <value>Financial Transaction Is Used In Entries Cannot Update YearName</value>
+  </data>
+    <data name="FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName" xml:space="preserve">
+    <value>Financial Transaction Is Used In InventoryTransactions Cannot Update YearName</value>
+  </data>
+
+  <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
+    <value>There Are Entries After New EndDate</value>
+  </data>
+  <data name="ThereAreInventoryTransactionsAfterNewEndDate" xml:space="preserve">
+    <value>There Are Inventory Transactions After New EndDate</value>
+  </data>
+
+  <data name="AddedSuccessfullyWithName" xml:space="preserve">
+    <value>Added Successfully With Name</value>
+  </data>
+  <data name="AmountIsRequired" xml:space="preserve">
+    <value>Amount Is Required</value>
+  </data>
+  <data name="At least one item is required" xml:space="preserve">
+    <value>At least one item is required</value>
+  </data>
+  <data name="AttributeValueNotFound" xml:space="preserve">
+    <value>Attribute Value Not Found</value>
+  </data>
+  <data name="AuditLogNotFound" xml:space="preserve">
+    <value>Audit Log Not Found</value>
+  </data>
+  <data name="AverageCostIsRequired" xml:space="preserve">
+    <value>Average Cost Is Required</value>
+  </data>
+  <data name="BalanceNotZero" xml:space="preserve">
+    <value>Balance Not Zero</value>
+  </data>
+  <data name="Branch is required" xml:space="preserve">
+    <value>Branch is required</value>
+  </data>
+  <data name="BranchIdIsRequired" xml:space="preserve">
+    <value>Branch Id Is Required</value>
+  </data>
+  <data name="BranchOrBranchAccountNotFound" xml:space="preserve">
+    <value>Branch Or Branch Account Not Found</value>
+  </data>
+  <data name="BulkCreatedSuccessfully" xml:space="preserve">
+    <value>Bulk created successfully</value>
+  </data>
+  <data name="BulkDeletedSuccessfully" xml:space="preserve">
+    <value>Bulk deleted successfully</value>
+  </data>
+  <data name="BulkUpdatedSuccessfully" xml:space="preserve">
+    <value>Bulk updated successfully</value>
+  </data>
+  <data name="CANNOT_SET_SUBDOMAIN_AS_PARENT" xml:space="preserve">
+    <value>CANNOT_SET_SUBDOMAIN_AS_PARENT</value>
+  </data>
+  <data name="CannotChangeNodeType" xml:space="preserve">
+    <value>Node type cannot be changed</value>
+  </data>
+  <data name="ChartOfAccountBaseSubLeadgerAccount" xml:space="preserve">
+    <value>Chart Of Account Base Sub Leadger Account</value>
+  </data>
+  <data name="ChartOfAccountCodeCannotBeChanged" xml:space="preserve">
+    <value>Chart Of Account Code Cannot Be Changed</value>
+  </data>
+  <data name="ChartOfAccountCreatedFomSubLeadger" xml:space="preserve">
+    <value>Chart Of Account Created Fom Sub Leadger</value>
+  </data>
+  <data name="ChartOfAccountIdIsRequired" xml:space="preserve">
+    <value>Chart Of Account Id Is Required</value>
+  </data>
+  <data name="ChartOfAccountUpdateSubLeadgerName" xml:space="preserve">
+    <value>Chart Of Account Update Sub Leadger Name</value>
+  </data>
+  <data name="ChartOfAccountUpdateSubLeadgerNameSecondLanguage" xml:space="preserve">
+    <value>Chart Of Account Update Sub Leadger Name Second Language</value>
+  </data>
+  <data name="CodeIsRequired" xml:space="preserve">
+    <value>Code Is Required</value>
+  </data>
+  <data name="ColorValueIsRequired" xml:space="preserve">
+    <value>Color Value Is Required</value>
+  </data>
+  <data name="CostCenterIsRequired" xml:space="preserve">
+    <value>Cost Center Is Required</value>
+  </data>
+  <data name="CreateFailed" xml:space="preserve">
+    <value>Create Failed</value>
+  </data>
+  <data name="CurrencyIdIsRequired" xml:space="preserve">
+    <value>Currency Id Is Required</value>
+  </data>
+  <data name="CurrentBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>Current Balance Must Be Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="DecimalDigitsMAXValue" xml:space="preserve">
+    <value>Decimal Digits MAXValue</value>
+  </data>
+  <data name="DecimalDigitsMINValue" xml:space="preserve">
+    <value>Decimal Digits MINValue</value>
+  </data>
+  <data name="DefaultCurrencyNotFound" xml:space="preserve">
+    <value>Default Currency Not Found</value>
+  </data>
+  <data name="DefaultPackingUnitNotFound" xml:space="preserve">
+    <value>Default Packing Unit Not Found</value>
+  </data>
+  <data name="DeletedSuccessfullyWithName" xml:space="preserve">
+    <value>Deleted Successfully With Name</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>Delete Failed</value>
+  </data>
+  <data name="DiscountCannotBeNegative" xml:space="preserve">
+    <value>Discount Cannot Be Negative</value>
+  </data>
+  <data name="DiscountTypeIsNotValid" xml:space="preserve">
+    <value>Discount Type Is Not Valid</value>
+  </data>
+  <data name="DistinationBranchNotFound" xml:space="preserve">
+    <value>Distination Branch Not Found</value>
+  </data>
+  <data name="DocumentNumberMaximumLength" xml:space="preserve">
+    <value>Document Number Maximum Length</value>
+  </data>
+  <data name="DocumentNumberMaxLength" xml:space="preserve">
+    <value>Document Number Max Length</value>
+  </data>
+  <data name="DuplicateRecord" xml:space="preserve">
+    <value>Duplicate Record</value>
+  </data>
+  <data name="EntryFinancialTransactionsRequired" xml:space="preserve">
+    <value>Entry Financial Transactions Required</value>
+  </data>
+  <data name="ExistedEntryWithSameNumber" xml:space="preserve">
+    <value>Existed Entry With Same Number</value>
+  </data>
+  <data name="EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO" xml:space="preserve">
+    <value>EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO</value>
+  </data>
+  <data name="EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP" xml:space="preserve">
+    <value>EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP</value>
+  </data>
+  <data name="FaildToGenerateEntryNubmer" xml:space="preserve">
+    <value>Faild To Generate Entry Nubmer</value>
+  </data>
+  <data name="FaildToGetUsedPackingUnit" xml:space="preserve">
+    <value>Faild To Get Used Packing Unit</value>
+  </data>
+  <data name="Failed To Add Stock Balance" xml:space="preserve">
+    <value>Failed To Add Stock Balance</value>
+  </data>
+  <data name="FinancialPeriodIdIsRequired" xml:space="preserve">
+    <value>Financial Period Id Is Required</value>
+  </data>
+  <data name="FinancialPeriodIsUsedInEntries" xml:space="preserve">
+    <value>Financial Period Is Used In Entries</value>
+  </data>
+  <data name="FinancialPeriodIsUsedInInventoryTransactions" xml:space="preserve">
+    <value>Financial Period Is Used In Inventory Transactions</value>
+  </data>
+  <data name="FinancialPeriodMaximumLength" xml:space="preserve">
+    <value>Financial Period Maximum Length</value>
+  </data>
+  <data name="FinancialPeriodRequiredYearNumber" xml:space="preserve">
+    <value>Financial Period Required Year Number</value>
+  </data>
+  <data name="FinancialPeriodStartDateRequired" xml:space="preserve">
+    <value>Financial Period Start Date Required</value>
+  </data>
+  <data name="FinancialPeriodWithYearNumberIsExisted" xml:space="preserve">
+    <value>Financial Period With Year Number Is Existed</value>
+  </data>
+  <data name="IdIsRequired" xml:space="preserve">
+    <value>Id Is Required</value>
+  </data>
+  <data name="INCORRENCT_EMAIL_OR_PASSWORD" xml:space="preserve">
+    <value>Incorrect email or password</value>
+  </data>
+  <data name="INSUFFICIENT_STOCK" xml:space="preserve">
+    <value>INSUFFICIENT_STOCK</value>
+  </data>
+  <data name="InsufficientStockBalance" xml:space="preserve">
+    <value>Insufficient Stock Balance</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>An internal server error occurred: {0}</value>
+  </data>
+  <data name="INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN" xml:space="preserve">
+    <value>Invalid access token or refresh token</value>
+  </data>
+  <data name="INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>Invalid refresh token</value>
+  </data>
+  <data name="InvalidDomainItem" xml:space="preserve">
+    <value>Invalid Domain Item</value>
+  </data>
+  <data name="InvalidFinancialPeriod" xml:space="preserve">
+    <value>Invalid Financial Period</value>
+  </data>
+  <data name="InvalidFormat" xml:space="preserve">
+    <value>Invalid Format</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Invalid Operation</value>
+  </data>
+  <data name="InvalidRange" xml:space="preserve">
+    <value>Invalid Range</value>
+  </data>
+  <data name="InvalidTransactionType" xml:space="preserve">
+    <value>Invalid Transaction Type</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH" xml:space="preserve">
+    <value>INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX" xml:space="preserve">
+    <value>INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP" xml:space="preserve">
+    <value>INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP</value>
+  </data>
+  <data name="Item is required" xml:space="preserve">
+    <value>Item is required</value>
+  </data>
+  <data name="ITEM_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>ITEM_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="ITEM_EGS_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>ITEM_EGS_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="ITEM_GS1_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>ITEM_GS1_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="ITEM_ONE_OF_BARCODES_IS_DUPLICATED" xml:space="preserve">
+    <value>ITEM_ONE_OF_BARCODES_IS_DUPLICATED</value>
+  </data>
+  <data name="ItemIdIsRequired" xml:space="preserve">
+    <value>Item Id Is Required</value>
+  </data>
+  <data name="ItemsRequired" xml:space="preserve">
+    <value>Items Required</value>
+  </data>
+  <data name="LastCostPriceIsRequired" xml:space="preserve">
+    <value>Last Cost Price Is Required</value>
+  </data>
+  <data name="Login failed." xml:space="preserve">
+    <value>Login failed.</value>
+  </data>
+  <data name="MaximumBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>Maximum Balance Must Be Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="MaxLength300" xml:space="preserve">
+    <value>Max Length300</value>
+  </data>
+  <data name="MaxLengthExceeded" xml:space="preserve">
+    <value>Max Length Exceeded</value>
+  </data>
+  <data name="MinimumBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>Minimum Balance Must Be Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="MinLengthNotMet" xml:space="preserve">
+    <value>Min Length Not Met</value>
+  </data>
+  <data name="MonthDaysMINValue" xml:space="preserve">
+    <value>Month Days MINValue</value>
+  </data>
+  <data name="Node Type cannot be changed" xml:space="preserve">
+    <value>Node type cannot be changed</value>
+  </data>
+  <data name="NotesMaximumLength" xml:space="preserve">
+    <value>Notes Maximum Length</value>
+  </data>
+  <data name="NotesMaxLength" xml:space="preserve">
+    <value>Notes Max Length</value>
+  </data>
+  <data name="NotLastPeriod" xml:space="preserve">
+    <value>Not Last Period</value>
+  </data>
+  <data name="NotValidCustomerType" xml:space="preserve">
+    <value>Not Valid Customer Type</value>
+  </data>
+  <data name="NotValidPeriodType" xml:space="preserve">
+    <value>Not Valid Period Type</value>
+  </data>
+  <data name="One of barcodes  already exists" xml:space="preserve">
+    <value>One of barcodes  already exists</value>
+  </data>
+  <data name="One of barcodes is associated with another product" xml:space="preserve">
+    <value>One of barcodes is associated with another product</value>
+  </data>
+  <data name="ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND" xml:space="preserve">
+    <value>ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND</value>
+  </data>
+  <data name="ONE_OF_SUPPLIERS_NOT_FOUND" xml:space="preserve">
+    <value>ONE_OF_SUPPLIERS_NOT_FOUND</value>
+  </data>
+  <data name="ONLY_ONE_IS_NEEDED_EGS_OR_GS1" xml:space="preserve">
+    <value>ONLY_ONE_IS_NEEDED_EGS_OR_GS1</value>
+  </data>
+  <data name="OPERATION_FAILD" xml:space="preserve">
+    <value>OPERATION_FAILD</value>
+  </data>
+  <data name="OperationSuccessful" xml:space="preserve">
+    <value>Operation completed successfully</value>
+  </data>
+  <data name="Packing unit is required" xml:space="preserve">
+    <value>Packing unit is required</value>
+  </data>
+  <data name="PackingUnitIdIsRequired" xml:space="preserve">
+    <value>Packing Unit Id Is Required</value>
+  </data>
+  <data name="PackingUnitIsRequired" xml:space="preserve">
+    <value>Packing Unit Is Required</value>
+  </data>
+  <data name="PackingUnitSellingPriceIsRequired" xml:space="preserve">
+    <value>Packing Unit Selling Price Is Required</value>
+  </data>
+  <data name="PackingUnitsIsRequired" xml:space="preserve">
+    <value>Packing Units Is Required</value>
+  </data>
+  <data name="ParentIdIsRequired" xml:space="preserve">
+    <value>Parent Id Is Required</value>
+  </data>
+  <data name="PartsCountIsRequired" xml:space="preserve">
+    <value>Parts Count Is Required</value>
+  </data>
+  <data name="PartyAccountNotFound" xml:space="preserve">
+    <value>Party Account Not Found</value>
+  </data>
+  <data name="PercentCannotBeNegative" xml:space="preserve">
+    <value>Percent Cannot Be Negative</value>
+  </data>
+  <data name="PercentCannotExceed100" xml:space="preserve">
+    <value>Percent Cannot Exceed100</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_BARCODES" xml:space="preserve">
+    <value>PLEASE_PROVIDE_NON_DUPLICATE_BARCODES</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES" xml:space="preserve">
+    <value>PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS" xml:space="preserve">
+    <value>PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS</value>
+  </data>
+  <data name="PleaseChooseValidNodeType" xml:space="preserve">
+    <value>Please Choose Valid Node Type</value>
+  </data>
+  <data name="PriceAmountIsRequired" xml:space="preserve">
+    <value>Price Amount Is Required</value>
+  </data>
+  <data name="Product code already exists" xml:space="preserve">
+    <value>Product code already exists</value>
+  </data>
+  <data name="Product EGS already exists" xml:space="preserve">
+    <value>Product EGS already exists</value>
+  </data>
+  <data name="Product GS1 already exists" xml:space="preserve">
+    <value>Product GS1 already exists</value>
+  </data>
+  <data name="PRODUCT_NOT_FOUND" xml:space="preserve">
+    <value>PRODUCT_NOT_FOUND</value>
+  </data>
+  <data name="Quantity must be greater than zero" xml:space="preserve">
+    <value>Quantity must be greater than zero</value>
+  </data>
+  <data name="QuantityMustBeGreaterThanZero" xml:space="preserve">
+    <value>Quantity Must Be Greater Than Zero</value>
+  </data>
+  <data name="ReceiverNameMaximumLength" xml:space="preserve">
+    <value>Receiver Name Maximum Length</value>
+  </data>
+  <data name="RecordAlreadyExists" xml:space="preserve">
+    <value>Record Already Exists</value>
+  </data>
+  <data name="RecordNotFound" xml:space="preserve">
+    <value>Record not found</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Required Field</value>
+  </data>
+  <data name="SellingPriceIsRequired" xml:space="preserve">
+    <value>Selling Price Is Required</value>
+  </data>
+  <data name="SomeChartOfAcountsNotExisted" xml:space="preserve">
+    <value>Some Chart Of Acounts Not Existed</value>
+  </data>
+  <data name="Total cost must be greater than or equal to zero" xml:space="preserve">
+    <value>Total cost must be greater than or equal to zero</value>
+  </data>
+  <data name="TotalCostMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>Total Cost Must Be Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="Transaction date is required" xml:space="preserve">
+    <value>Transaction date is required</value>
+  </data>
+  <data name="Transaction ID is required" xml:space="preserve">
+    <value>Transaction ID is required</value>
+  </data>
+  <data name="Transaction party is required" xml:space="preserve">
+    <value>Transaction party is required</value>
+  </data>
+  <data name="TransactionDateIsRequired" xml:space="preserve">
+    <value>Transaction Date Is Required</value>
+  </data>
+  <data name="TransactionIsNotExportTransaction" xml:space="preserve">
+    <value>Transaction Is Not Export Transaction</value>
+  </data>
+  <data name="TransactionIsNotImportTransaction" xml:space="preserve">
+    <value>Transaction Is Not Import Transaction</value>
+  </data>
+  <data name="TransactionNotFound" xml:space="preserve">
+    <value>Transaction Not Found</value>
+  </data>
+  <data name="TransactionPartyIdIsRequired" xml:space="preserve">
+    <value>Transaction Party Id Is Required</value>
+  </data>
+  <data name="TransferIsNotPending" xml:space="preserve">
+    <value>Transfer Is Not Pending</value>
+  </data>
+  <data name="TransferNotFound" xml:space="preserve">
+    <value>Transfer Not Found</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>Unauthorized access</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected error occurred</value>
+  </data>
+  <data name="UnitCostMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>Unit Cost Must Be Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="UpdatedSuccessfullyWithName" xml:space="preserve">
+    <value>Updated Successfully With Name</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Update Failed</value>
+  </data>
+  <data name="USER_NOT_FOUND" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="UserCreationFailed" xml:space="preserve">
+    <value>User Creation Failed</value>
+  </data>
+  <data name="UsernameAlreadyExists" xml:space="preserve">
+    <value>Username Already Exists</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Validation Failed</value>
+  </data>
+  <data name="Variant combinations are only allowed for products of type Stock" xml:space="preserve">
+    <value>Variant combinations are only allowed for products of type Stock</value>
+  </data>
+  <data name="VARIANT_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>VARIANT_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="VARIANT_EGS_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>VARIANT_EGS_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="VARIANT_GS1_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>VARIANT_GS1_CODE_IS_DUPLICATED</value>
+  </data>
+  <data name="VARIANT_ONE_OF_BARCODES_IS_DUPLICATED" xml:space="preserve">
+    <value>VARIANT_ONE_OF_BARCODES_IS_DUPLICATED</value>
+  </data>
+  <data name="VariantIdIsRequired" xml:space="preserve">
+    <value>Variant Id Is Required</value>
+  </data>
+  <data name="VariantNotFound" xml:space="preserve">
+    <value>Variant Not Found</value>
+  </data>
+  <data name="VariantWithNowStockBalance" xml:space="preserve">
+    <value>Variant With Now Stock Balance</value>
+  </data>
+</root>

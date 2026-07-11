@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ERP.Host",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-host",
+      "program": "${workspaceFolder}/ERP.Host/bin/Debug/net8.0/ERP.Host.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/ERP.Host",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>ERP.Architecture.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ERP.Host\ERP.Host.csproj" />
+    <ProjectReference Include="..\..\ERP.Persistence\ERP.Persistence.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Infrastructure\Accounting.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Contracts\Inventory.Contracts.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Domain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Infrastructure\Inventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Application\Identity.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Api\ERP.BuildingBlocks.Api.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Api\Inventory.Api.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Api\Accounting.Api.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Api\Identity.Api.csproj" />
+    <ProjectReference Include="..\..\Modules\Identity\Identity.Contracts\Identity.Contracts.csproj" />
+    <ProjectReference Include="..\..\Modules\Platform\Platform.Audit\Platform.Audit.Api\Platform.Audit.Api.csproj" />
+  </ItemGroup>
+
+</Project>

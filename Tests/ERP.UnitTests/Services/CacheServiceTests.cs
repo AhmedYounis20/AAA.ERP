@@ -1,9 +1,9 @@
-using ERP.Application.Services.Caching;
-using ERP.Infrastracture.Services.Caching;
+using Platform.Caching.Application;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Platform.Caching.Infrastructure.Services;
 
 namespace ERP.UnitTests.Services;
 

@@ -1,0 +1,18 @@
+using Accounting.Domain.Models.Entities.CostCenters;
+using ERP.BuildingBlocks.Persistence.Configurations;
+using ERP.BuildingBlocks.Persistence;
+
+namespace Accounting.Infrastructure.Persistence;
+
+public class CostCenterChartOfAccountDbConfig : BaseEntityDbConfig<CostCenterChartOfAccount>
+{
+    protected override EntityTypeBuilder<CostCenterChartOfAccount> ApplyConfiguration(EntityTypeBuilder<CostCenterChartOfAccount> builder)
+    {
+        base.ApplyConfiguration(builder);
+        builder.ToTable("CostCenterChartOfAccounts", DbSchemaNames.Accounting);
+
+        builder.HasOne(e => e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
+        builder.HasIndex(e => new { e.ChartOfAccountId, e.CostCenterId }).IsUnique();
+        return builder;
+    }
+}

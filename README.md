@@ -1,69 +1,94 @@
-# 💼 Accounting Management System - Backend
+# AAA.ERP — Modular monolith backend
 
-This is the backend part of the **Accounting Management System** developed using **.NET 8**. It employs **Clean Architecture**, **Repository Pattern**, and **Mediator Pattern** to manage accounting entities such as currencies, Chart of Accounts, sub-ledgers, and financial periods.
+**.NET 8** ERP backend for **accounting** and **inventory**, deployed as a **single API process** against **one SQL Server database**. The codebase is a **modular monolith**: module boundaries are enforced at compile time via architecture tests.
 
-🔗 **Frontend Demo**: [ERP Frontend System](https://erp-frontend-system.netlify.app)
+🔗 **Frontend demo:** [ERP Frontend System](https://erp-frontend-system.netlify.app)  
+🔗 **Frontend repo:** [Accounting Management System](https://github.com/AhmedYounis20/aaa-dashboard)
 
-🔗 **Frontend Repo**: [Accounting Management System](https://github.com/AhmedYounis20/aaa-dashboard)
+## Solution overview
 
-## 🛠️ Technologies Used
+| Area | Location |
+|------|----------|
+| **Host** (HTTP, Swagger, migrations) | [`ERP.Host/`](ERP.Host/) |
+| **Shared persistence kernel** | [`ERP.Persistence/`](ERP.Persistence/) |
+| **Modules** | [`Modules/Accounting`](Modules/Accounting/), [`Inventory`](Modules/Inventory/), [`Identity`](Modules/Identity/), [`Platform`](Modules/Platform/) |
+| **Building blocks** | [`BuildingBlocks/`](BuildingBlocks/) |
+| **Architecture docs** | [`docs/architecture/MODULAR_MONOLITH.md`](docs/architecture/MODULAR_MONOLITH.md) |
+| **Hybrid CQRS (ADR-012)** | [`docs/architecture/HYBRID_CQRS_PLAN.md`](docs/architecture/HYBRID_CQRS_PLAN.md) · controllers use `ISender` + `I*ReadService` |
+| **Enhancement plan (active)** | [`docs/architecture/ARCHITECTURE_ENHANCEMENT_PLAN.md`](docs/architecture/ARCHITECTURE_ENHANCEMENT_PLAN.md) |
+| **Staging deploy checklist** | [`docs/ops/STAGING_DEPLOYMENT_CHECKLIST.md`](docs/ops/STAGING_DEPLOYMENT_CHECKLIST.md) |
+| **Solution diagram** | [`docs/architecture/SOLUTION_DIAGRAM.md`](docs/architecture/SOLUTION_DIAGRAM.md) |
 
-![dotnet](https://img.shields.io/badge/.NET-8-512BD4?logo=.net&logoColor=white)  
-![mssql](https://img.shields.io/badge/MSSQL-CC2927?logo=microsoft-sql-server&logoColor=white)  
-![fluentvalidation](https://img.shields.io/badge/FluentValidation-71B72B?logo=fluent&logoColor=white)  
-![mediatr](https://img.shields.io/badge/MediatR-00A9E0?logo=mediatr&logoColor=white)  
-![swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=white)  
+```mermaid
+graph LR
+    Host[ERP.Host] --> Acc[Accounting]
+    Host --> Inv[Inventory]
+    Host --> Idn[Identity]
+    Host --> Plt[Platform]
+    Host --> Pers[ERP.Persistence]
+    Acc & Inv & Idn & Plt --> Pers
+    Pers --> DB[(SQL Server)]
+```
 
-- **.NET 8** for backend development
-- **Clean Architecture** and **Repository Pattern** for maintainable, scalable architecture
-- **Mediator Pattern** for separating concerns in business logic
-- **Entity Framework Core** for ORM with **SQL Server**
-- **FluentValidation** for model validation
-- **Swagger** for API documentation
+## Tech stack
 
-## 📂 Features
+- **.NET 8**, **Entity Framework Core**, **SQL Server**
+- **MediatR** (single write path), **FluentValidation**
+- **Serilog** structured logging, **Swagger** (grouped by module)
+- **JWT** authentication (Identity module + host wiring)
 
-- **Currency Management**: Endpoints to manage multiple currencies and exchange rates.
-- **Chart of Accounts**: APIs to manage and retrieve hierarchical account data.
-- **Subledger Management**: CRUD operations for banks, customers, suppliers, cash inboxes, and fixed assets.
-- **General Ledger**: Settings management and entry management for different entry types.
-- **Financial Periods**: Manage different financial periods for the accounting process.
-- **Validation**: Cross-cutting validation for all API inputs using **FluentValidation**.
-- **Separation of Concerns**: Clear separation between API, service, and model layers.
+## Prerequisites
 
-## 🔧 Setup Instructions
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- SQL Server (connection string in `ERP.Host/appsettings.json`)
 
-### **Prerequisites**
+## Build and test
 
-- **.NET 8 SDK**
-- **SQL Server** for database storage
+```bash
+dotnet restore AAA.ERP.sln
+dotnet build AAA.ERP.sln -c Release
+dotnet test AAA.ERP.sln -c Release
+```
 
-### **Steps to Run Locally:**
+Architecture and integration tests:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/AhmedYounis20/AAA.ERP.git
-   ```
+```bash
+dotnet test Tests/ERP.Architecture.Tests/ERP.Architecture.Tests.csproj -c Release
+dotnet test Tests/ERP.IntegrationTests/ERP.IntegrationTests.csproj -c Release
+```
 
-2. Navigate to the project directory:
-   ```bash
-   cd AAA.ERP
-   ```
+## Run locally
 
-3. Restore dependencies:
-   ```bash
-   dotnet restore
-   ```
+```bash
+dotnet run --project ERP.Host/ERP.Host.csproj
+```
 
-4. Set up the SQL Server database and configure the connection string in `appsettings.json`.
+Swagger UI is available at `/swagger` when running in Development.
 
-5. Build and run the application:
-   ```bash
-   dotnet run
-   ```
+## EF migrations
 
-   The API will be available at `https://localhost:5001` (or the configured port).
+Migrations are owned by the host project:
 
-### **Testing the APIs**
+```bash
+dotnet ef migrations add <MigrationName> \
+  --project ERP.Host/ERP.Host.csproj \
+  --startup-project ERP.Host/ERP.Host.csproj
 
-You can use **Postman** or **Swagger UI** (available at `/swagger`) to interact with the APIs.
+dotnet ef database update \
+  --project ERP.Host/ERP.Host.csproj \
+  --startup-project ERP.Host/ERP.Host.csproj
+```
+
+## Module READMEs
+
+- [Accounting](Modules/Accounting/README.md)
+- [Inventory](Modules/Inventory/README.md)
+- [Identity](Modules/Identity/README.md)
+- [Platform](Modules/Platform/README.md)
+- [ERP.Persistence](ERP.Persistence/README.md)
+
+New features: follow [MODULE_TEMPLATE.md](docs/architecture/MODULE_TEMPLATE.md).
+
+## Contributing
+
+See [docs/architecture/CONTRIBUTING.md](docs/architecture/CONTRIBUTING.md) for layer rules, PR checklist, and CI expectations.

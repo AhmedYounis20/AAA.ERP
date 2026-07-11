@@ -1,0 +1,134 @@
+using ERP.BuildingBlocks.Persistence.Data;
+using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
+using Inventory.Application.Repositories;
+using Inventory.Application.Repositories;
+using Inventory.Application.Services;
+using Inventory.Application.Services.Transactions;
+using Inventory.Infrastructure.Persistence;
+using Inventory.Infrastructure.Persistence.ExpiryLevels;
+using Inventory.Infrastructure.Persistence.InventoryThresholds;
+using Inventory.Infrastructure.Persistence.Products;
+using Inventory.Infrastructure.Persistence.InventoryTransactions;
+using Inventory.Infrastructure.Persistence.InventoryTransfers;
+using Inventory.Infrastructure.Persistence.StockBalances;
+using Inventory.Infrastructure.Persistence.Variants;
+using Inventory.Infrastructure.Repositories;
+using Inventory.Infrastructure.Services;
+using Inventory.Infrastructure.Services.Transactions;
+using Inventory.Infrastructure.Workflows;
+using Inventory.Contracts.Integration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Inventory.Domain.Models.Entities.ExpiryLevels;
+using Inventory.Domain.Models.Entities.InventoryThresholds;
+using Inventory.Domain.Models.Entities.Products;
+using Inventory.Domain.Models.Entities.Variants;
+using ERP.BuildingBlocks.Persistence.Repositories;
+
+namespace Inventory.Infrastructure;
+
+public static class InventoryModuleExtensions
+{
+    public static IServiceCollection AddInventoryModule(this IServiceCollection services)
+    {
+        ModuleModelConfigurationRegistry.Register(ApplyInventoryModuleConfigurations);
+
+        services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
+        services.AddScoped<IPackingUnitQueries, PackingUnitQueries>();
+        services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
+        services.AddScoped<IManufacturerCompanyQueries, ManufacturerCompanyQueries>();
+        services.AddScoped<ISellingPriceRepository, SellingPriceRepository>();
+        services.AddScoped<ISellingPriceQueries, SellingPriceQueries>();
+        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
+        services.AddScoped<IAttributeDefinitionWorkflowService, AttributeDefinitionWorkflowService>();
+        services.AddScoped<IAttributeDefinitionQueries, AttributeDefinitionQueries>();
+        services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
+        services.AddScoped<IAttributeValueService, AttributeValueService>();
+        services.AddScoped<IAttributeValueQueries, AttributeValueQueries>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductWorkflowService, ProductWorkflowService>();
+        services.AddScoped<IProductQueries, ProductQueries>();
+        services.AddScoped<IBaseRepository<ProductCode>, BaseRepository<ProductCode>>();
+        services.AddScoped<IBaseRepository<ProductSupplier>, BaseRepository<ProductSupplier>>();
+        services.AddScoped<IBaseRepository<ProductSalesTax>, BaseRepository<ProductSalesTax>>();
+        services.AddScoped<IBaseRepository<ProductPurchaseTax>, BaseRepository<ProductPurchaseTax>>();
+        services.AddScoped<IBaseRepository<ProductCostCenter>, BaseRepository<ProductCostCenter>>();
+        services.AddScoped<IBaseRepository<ProductManufacturerCompany>, BaseRepository<ProductManufacturerCompany>>();
+        services.AddScoped<IBaseRepository<ProductAttachment>, BaseRepository<ProductAttachment>>();
+        services.AddScoped<IBaseRepository<ProductPackingUnit>, BaseRepository<ProductPackingUnit>>();
+        services.AddScoped<IBaseRepository<ProductPackingUnitSellingPrice>, BaseRepository<ProductPackingUnitSellingPrice>>();
+        services.AddScoped<IBaseRepository<ProductSellingPriceDiscount>, BaseRepository<ProductSellingPriceDiscount>>();
+        services.AddScoped<IProductAttributeDefinitionRepository, ProductAttributeDefinitionRepository>();
+        services.AddScoped<IVariantRepository, VariantRepository>();
+        services.AddScoped<IVariantWorkflowService, VariantWorkflowService>();
+        services.AddScoped<IVariantProductOperations, VariantWorkflowService>();
+        services.AddScoped<IVariantQueries, VariantQueries>();
+        services.AddScoped<IBaseRepository<VariantCode>, BaseRepository<VariantCode>>();
+        services.AddScoped<IBaseRepository<VariantSupplier>, BaseRepository<VariantSupplier>>();
+        services.AddScoped<IBaseRepository<VariantSalesTax>, BaseRepository<VariantSalesTax>>();
+        services.AddScoped<IBaseRepository<VariantPurchaseTax>, BaseRepository<VariantPurchaseTax>>();
+        services.AddScoped<IBaseRepository<VariantCostCenter>, BaseRepository<VariantCostCenter>>();
+        services.AddScoped<IBaseRepository<VariantManufacturerCompany>, BaseRepository<VariantManufacturerCompany>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnit>, BaseRepository<VariantPackingUnit>>();
+        services.AddScoped<IBaseRepository<VariantPackingUnitSellingPrice>, BaseRepository<VariantPackingUnitSellingPrice>>();
+        services.AddScoped<IBaseRepository<VariantSellingPriceDiscount>, BaseRepository<VariantSellingPriceDiscount>>();
+        services.AddScoped<IBaseRepository<VariantAttachment>, BaseRepository<VariantAttachment>>();
+        services.AddScoped<IVariantAttributeValueRepository, VariantAttributeValueRepository>();
+        services.AddScoped<IStockBalanceRepository, StockBalanceRepository>();
+        services.AddScoped<IStockBalanceService, StockBalanceService>();
+        services.AddScoped<IStockBalanceQueries, StockBalanceQueries>();
+        services.AddScoped<IBaseRepository<InventoryThreshold>, BaseRepository<InventoryThreshold>>();
+        services.AddScoped<IBaseRepository<ExpiryLevel>, BaseRepository<ExpiryLevel>>();
+        services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+        services.AddScoped<IFinancialPeriodInventoryUsageQueries, FinancialPeriodInventoryUsageQueries>();
+        services.AddScoped<IInventoryQueryService, FinancialPeriodInventoryUsageQueries>();
+        services.AddScoped<IInventoryTransactionWorkflowService, InventoryTransactionWorkflowService>();
+        services.AddScoped<IImportTransactionQueries, ImportTransactionQueries>();
+        services.AddScoped<IExportTransactionQueries, ExportTransactionQueries>();
+        services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
+        services.AddScoped<IInventoryTransferWorkflowService, InventoryTransferWorkflowService>();
+        services.AddScoped<IInventoryTransferQueries, InventoryTransferQueries>();
+
+        return services;
+    }
+
+    public static void ApplyInventoryModuleConfigurations(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new PackingUnitDbConfig());
+        modelBuilder.ApplyConfiguration(new ManufacturerCompanyDbConfig());
+        modelBuilder.ApplyConfiguration(new SellingPriceDbConfig());
+        modelBuilder.ApplyConfiguration(new AttributeDefinitionDbConfig());
+        modelBuilder.ApplyConfiguration(new AttributeValueDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductCodeDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductAttachmentDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductSupplierDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductSalesTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductPurchaseTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductCostCenterDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductManufacturerCompanyDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductPackingUnitDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductPackingUnitSellingPriceDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductSellingPriceDiscountDbConfig());
+        modelBuilder.ApplyConfiguration(new ProductAttributeDefinitionDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantCodeDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantAttachmentDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSupplierDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSalesTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPurchaseTaxDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantCostCenterDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantManufacturerCompanyDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPackingUnitDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantPackingUnitSellingPriceDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantSellingPriceDiscountDbConfig());
+        modelBuilder.ApplyConfiguration(new VariantAttributeValueDbConfig());
+        modelBuilder.ApplyConfiguration(new StockBalanceDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryThresholdDbConfig());
+        modelBuilder.ApplyConfiguration(new ExpiryLevelDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransactionDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransactionItemDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransferDbConfig());
+        modelBuilder.ApplyConfiguration(new InventoryTransferItemDbConfig());
+    }
+}

@@ -1,0 +1,13 @@
+global using System.Net;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using ERP.BuildingBlocks.Api.Controllers;
+global using ERP.BuildingBlocks.Application.DTOs;
+global using ERP.BuildingBlocks.Application.DTOs.Filters;
+global using ERP.BuildingBlocks.Application.Responses;
+global using ERP.BuildingBlocks.Domain.Entities;
+global using Inventory.Application.Dtos;
+global using Inventory.Application.Dtos.Lookups;
+global using Inventory.Application.Services;
+global using ERP.BuildingBlocks.Application.Services.Queries;

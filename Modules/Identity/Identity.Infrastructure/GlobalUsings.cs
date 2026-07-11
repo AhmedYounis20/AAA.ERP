@@ -1,0 +1,11 @@
+global using System.Linq.Expressions;
+global using ERP.BuildingBlocks.Persistence.Data;
+global using ERP.Infrastructure.DBConfiguration.DbContext;
+global using Accounting.Domain.Utility;
+global using ERP.BuildingBlocks.Application.Responses;
+global using System.Net;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Http;
+global using Identity.Contracts;
+global using Identity.Application;
+global using Identity.Domain;

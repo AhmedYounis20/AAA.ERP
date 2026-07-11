@@ -1,0 +1,35 @@
+using Accounting.Application.Commands.ChartOfAccounts;
+using Accounting.Application.Repositories;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using ERP.BuildingBlocks.Application.Constants;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.Execution;
+using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
+
+namespace Accounting.Infrastructure.Handlers.ChartOfAccounts;
+
+public sealed class ChartOfAccountCreateCommandHandler(
+    IChartOfAccountRepository repository,
+    IAccountGuideRepository accountGuideRepository)
+    : BaseTreeSettingCreateHandler<ChartOfAccount, ChartOfAccountCreateCommand>(repository)
+{
+    private IChartOfAccountRepository ChartOfAccountRepository => (IChartOfAccountRepository)SettingRepository;
+
+    protected override async Task<CrudValidationResult> ValidateCreateAsync(
+        ChartOfAccountCreateCommand command,
+        CancellationToken cancellationToken)
+    {
+        var baseResult = await base.ValidateCreateAsync(command, cancellationToken);
+        var errors = baseResult.Errors.ToList();
+
+        if (!await accountGuideRepository.CheckIfInDatabase(command.AccountGuidId))
+            errors.Add(ErrorMessages.AccountGuideNotFound);
+
+        var chartOfAccount = await ChartOfAccountRepository.GetChartOfAccountByCode(command.Code ?? string.Empty);
+        if (chartOfAccount is not null)
+            errors.Add(ErrorMessages.ChartOfAccountCodeExists);
+
+        return errors.Count == 0
+            ? CrudValidationResult.Success
+            : CrudValidationResult.Failure(errors);
+    }
+}

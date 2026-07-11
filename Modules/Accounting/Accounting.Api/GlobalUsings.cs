@@ -1,0 +1,14 @@
+global using System.Net;
+global using System.Security.Claims;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using ERP.BuildingBlocks.Api.Controllers;
+global using ERP.BuildingBlocks.Domain.Entities;
+global using ERP.BuildingBlocks.Application.DTOs;
+global using ERP.BuildingBlocks.Application.Responses;
+global using Accounting.Application.Dtos.Filters;
+global using Accounting.Application.Dtos.Lookups;
+global using Accounting.Application.Services;
+global using ERP.BuildingBlocks.Application.Services.Queries;
+global using Accounting.Domain.Utility;

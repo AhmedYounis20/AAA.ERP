@@ -1,0 +1,25 @@
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
+using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
+using Inventory.Domain.Models.Entities.InventoryTransactions;
+
+namespace Inventory.Application.Commands.InventoryTransactions;
+
+public class ExportTransactionCreateCommand : BaseCreateCommand<InventoryTransaction>
+{
+    public DateTime TransactionDate { get; set; }
+    public string? DocumentNumber { get; set; }
+    public Guid TransactionPartyId { get; set; }
+    public Guid BranchId { get; set; }
+    public string? Notes { get; set; }
+    public List<InventoryTransactionItemCreateDto> Items { get; set; } = [];
+}
+
+public class ExportTransactionUpdateCommand : BaseUpdateCommand<InventoryTransaction>
+{
+    public DateTime TransactionDate { get; set; }
+    public string? DocumentNumber { get; set; }
+    public Guid TransactionPartyId { get; set; }
+    public Guid BranchId { get; set; }
+    public string? Notes { get; set; }
+    public List<InventoryTransactionItemCreateDto> Items { get; set; } = [];
+}

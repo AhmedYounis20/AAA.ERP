@@ -1,0 +1,17 @@
+global using ERP.BuildingBlocks.Domain.Entities;
+global using Accounting.Contracts.Dtos;
+global using Inventory.Application.Dtos;
+global using Inventory.Application.Dtos.Pricing;
+global using Accounting.Domain.Utility;
+global using ERP.BuildingBlocks.Persistence.Data;
+global using ERP.BuildingBlocks.Persistence.Repositories;
+global using Mapster;
+global using MediatR;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Serilog;
+global using Shared;
+global using ERP.BuildingBlocks.Application.Responses;
+global using System.Net;
+global using System.Numerics;

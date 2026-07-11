@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ERP.Persistence</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+    <ProjectReference Include="..\Modules\Inventory\Inventory.Domain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\Modules\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Identity.Contracts\Identity.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Identity.Domain\Identity.Domain.csproj" />
+    <ProjectReference Include="..\Modules\Platform\Platform.Localization\Platform.Localization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

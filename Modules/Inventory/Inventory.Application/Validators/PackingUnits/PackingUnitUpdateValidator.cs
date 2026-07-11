@@ -1,0 +1,7 @@
+using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.UpdateCommandValidators;
+using Inventory.Application.Commands.PackingUnits;
+using Inventory.Domain.Models.Entities.PackingUnits;
+
+namespace Inventory.Application.Validators.PackingUnits;
+
+public class PackingUnitUpdateValidator : BaseSettingUpdateValidator<PackingUnitUpdateCommand, PackingUnit>;

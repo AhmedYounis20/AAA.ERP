@@ -1,0 +1,667 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountGuide" xml:space="preserve">
+    <value>دليل محاسبي</value>
+  </data>
+  <data name="Added" xml:space="preserve">
+    <value>تم اضافة</value>
+  </data>
+  <data name="CannotDeleteParent" xml:space="preserve">
+    <value>لا يمكن حذف الاب من فضلك قم بحذف الابناء اولاً</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideRequired" xml:space="preserve">
+    <value>الدليل المحاسبي مطلوب</value>
+  </data>
+  <data name="ChartOfAccountCodeMaxLengthValidation" xml:space="preserve">
+    <value>الكود لا يمكن ان يتعدى 100 حرف</value>
+  </data>
+  <data name="ChartOfAccountCodeRequired" xml:space="preserve">
+    <value>الكود مطلوب</value>
+  </data>
+  <data name="ChartOfAccountNotValidAccountNature" xml:space="preserve">
+    <value>برجاء اخيار طبيعة حساب صالحة</value>
+  </data>
+  <data name="ChartOfAccountMustBeDomainNode" xml:space="preserve">
+    <value>يجب أن يكون دليل الحسابات من نوع نطاق</value>
+  </data>
+  <data name="ChartOfAccountIsInUse" xml:space="preserve">
+    <value>دليل الحسابات مستخدم ولا يمكن حذفه</value>
+  </data>
+  <data name="ChartOfAccountNatureCannotChange" xml:space="preserve">
+    <value>لا يمكن تغيير طبيعة الحساب أثناء استخدامه</value>
+  </data>
+  <data name="ChartOfAccountAccountGuideCannotChange" xml:space="preserve">
+    <value>لا يمكن تغيير دليل الحساب أثناء استخدام الحساب</value>
+  </data>
+  <data name="InvalidChartOfAccountCode" xml:space="preserve">
+    <value>تنسيق كود دليل الحسابات غير صالح</value>
+  </data>
+  <data name="AccountGuideNotFound" xml:space="preserve">
+    <value>دليل الحساب غير موجود</value>
+  </data>
+  <data name="AccountGuideIsUsedInChartOfAccounts" xml:space="preserve">
+    <value>دليل الحساب مستخدم في دليل الحسابات ولا يمكن حذفه</value>
+  </data>
+  <data name="ChartOfAccoutWithSameCodeExist" xml:space="preserve">
+    <value>لا يمكن اضافة اكتر من حساب بنفس الكود</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>عملة</value>
+  </data>
+  <data name="CurrencyActiveOnDefault" xml:space="preserve">
+    <value>الاعملة الافتراضية يجب ان تكون نشطة</value>
+  </data>
+  <data name="CurrencySymbolIsExisted" xml:space="preserve">
+    <value>عملة بهذا الرمز موجودة بالفعل</value>
+  </data>
+  <data name="CurrencyIsUsedInEntries" xml:space="preserve">
+    <value>العملة مستخدمة في القيود ولا يمكن حذفها</value>
+  </data>
+  <data name="CurrencySymbolMaxLength" xml:space="preserve">
+    <value>لا يمكن ان يتعدى الرمز 4 حروف</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>تم حذف</value>
+  </data>
+  <data name="ExchangeRateOnDefaultCurrency" xml:space="preserve">
+    <value>معدل التحويل للعملة الافتراضية يجب ان يكون 1</value>
+  </data>
+  <data name="ExchangeRateIsRequired" xml:space="preserve">
+    <value>معدل التحويل مطلوب</value>
+  </data>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>الاسم مطلوب</value>
+  </data>
+  <data name="NameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الاسم 50 حرف</value>
+  </data>
+  <data name="NameSecondLanguageIsRequired" xml:space="preserve">
+    <value>الاسم باللغة الثانية مطلوب</value>
+  </data>
+  <data name="NameSecondLanguageMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الاسم باللغة الثانية 50 حرف</value>
+  </data>
+  <data name="Successfully" xml:space="preserve">
+    <value>بنجاح</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>تم تعديل</value>
+  </data>
+  <data name="WithSameNameIsExisted" xml:space="preserve">
+    <value>بنفس الاسم موجود</value>
+  </data>
+  <data name="WithSameNameSecondLanguageIsExisted" xml:space="preserve">
+    <value>بنفس الاسم باللغة الثانية موجود</value>
+  </data>
+  <data name="CurrencySymbolIsRequired" xml:space="preserve">
+    <value>رمز العملة مطلوب</value>
+  </data>
+  <data name="ExchangeRateGreaterThanZero" xml:space="preserve">
+    <value>معدل تحويل العملية يجب ان يكون اكبر من صفر</value>
+  </data>
+  <data name="DefaultCurrencyIsAlreadyExistedWithName" xml:space="preserve">
+    <value>العملة الافتراضية موجودة باسم</value>
+  </data>
+  <data name="GLSettings" xml:space="preserve">
+    <value>الاعدادات العامة</value>
+  </data>
+  <data name="DefaultCurrencyCannotBeDeleted" xml:space="preserve">
+    <value>لا يمكن حذف العملة الافتراضية</value>
+  </data>
+  <data name="NotFoundCurrentFinancialPeriod" xml:space="preserve">
+    <value>لا توجد فترة مالية حالية</value>
+  </data>
+  <data name="ColorCodeIsRequired" xml:space="preserve">
+    <value>كود اللون مطلوب</value>
+  </data>
+  <data name="ColorValueIsDuplicate" xml:space="preserve">
+    <value>قيمة اللون موجودة بالفعل</value>
+  </data>
+  <data name="CreatedSuccessfully" xml:space="preserve">
+    <value>تم الانشاء بنجاح</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>تم التعديل بنجاح</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="FinancialPeriodCurrentOrPastUpdateError" xml:space="preserve">
+    <value>لا يمكن تعديل فترة حالية او سابقة</value>
+  </data>
+
+  <data name="FinancialTransactionIsUsedInEntriesCannotUpdateYearName" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في القيود لايمكن تغيير اسم السنة</value>
+  </data>
+    <data name="FinancialTransactionIsUsedInInventoryTransactionsCannotUpdateYearName" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في الحركات المخزنية لايمكن تغيير اسم السنة</value>
+  </data>
+  <data name="ThereAreEntriesAfterNewEndDate" xml:space="preserve">
+    <value>توجد قيود بعد تاريخ النهاية الجديد</value>
+  </data>
+  <data name="ThereAreInventoryTransactionsAfterNewEndDate" xml:space="preserve">
+    <value>توجد حركات مخزنية بعد تاريخ النهاية الجديد</value>
+  </data>
+
+  <data name="AddedSuccessfullyWithName" xml:space="preserve">
+    <value>تمت الإضافة بنجاح بالاسم</value>
+  </data>
+  <data name="AmountIsRequired" xml:space="preserve">
+    <value>المبلغ مطلوب</value>
+  </data>
+  <data name="At least one item is required" xml:space="preserve">
+    <value>مطلوب عنصر واحد على الأقل</value>
+  </data>
+  <data name="AttributeValueNotFound" xml:space="preserve">
+    <value>قيمة السمة غير موجودة</value>
+  </data>
+  <data name="AuditLogNotFound" xml:space="preserve">
+    <value>سجل التدقيق غير موجود</value>
+  </data>
+  <data name="AverageCostIsRequired" xml:space="preserve">
+    <value>متوسط التكلفة مطلوب</value>
+  </data>
+  <data name="BalanceNotZero" xml:space="preserve">
+    <value>الرصيد ليس صفراً</value>
+  </data>
+  <data name="Branch is required" xml:space="preserve">
+    <value>الفرع مطلوب</value>
+  </data>
+  <data name="BranchIdIsRequired" xml:space="preserve">
+    <value>معرف الفرع مطلوب</value>
+  </data>
+  <data name="BranchOrBranchAccountNotFound" xml:space="preserve">
+    <value>الفرع أو حساب الفرع غير موجود</value>
+  </data>
+  <data name="BulkCreatedSuccessfully" xml:space="preserve">
+    <value>تم الإنشاء الجماعي بنجاح</value>
+  </data>
+  <data name="BulkDeletedSuccessfully" xml:space="preserve">
+    <value>تم الحذف الجماعي بنجاح</value>
+  </data>
+  <data name="BulkUpdatedSuccessfully" xml:space="preserve">
+    <value>تم التحديث الجماعي بنجاح</value>
+  </data>
+  <data name="CANNOT_SET_SUBDOMAIN_AS_PARENT" xml:space="preserve">
+    <value>لا يمكن تعيين نطاق فرعي كأب</value>
+  </data>
+  <data name="CannotChangeNodeType" xml:space="preserve">
+    <value>لا يمكن تغيير نوع العقدة</value>
+  </data>
+  <data name="ChartOfAccountBaseSubLeadgerAccount" xml:space="preserve">
+    <value>حساب دفتر الأستاذ الفرعي الأساسي</value>
+  </data>
+  <data name="ChartOfAccountCodeCannotBeChanged" xml:space="preserve">
+    <value>لا يمكن تغيير كود دليل الحسابات</value>
+  </data>
+  <data name="ChartOfAccountCreatedFomSubLeadger" xml:space="preserve">
+    <value>تم إنشاء دليل الحسابات من دفتر الأستاذ الفرعي</value>
+  </data>
+  <data name="ChartOfAccountIdIsRequired" xml:space="preserve">
+    <value>معرف دليل الحسابات مطلوب</value>
+  </data>
+  <data name="ChartOfAccountUpdateSubLeadgerName" xml:space="preserve">
+    <value>تحديث اسم دفتر الأستاذ الفرعي في دليل الحسابات</value>
+  </data>
+  <data name="ChartOfAccountUpdateSubLeadgerNameSecondLanguage" xml:space="preserve">
+    <value>تحديث اسم دفتر الأستاذ الفرعي باللغة الثانية</value>
+  </data>
+  <data name="CodeIsRequired" xml:space="preserve">
+    <value>الكود مطلوب</value>
+  </data>
+  <data name="ColorValueIsRequired" xml:space="preserve">
+    <value>قيمة اللون مطلوبة</value>
+  </data>
+  <data name="CostCenterIsRequired" xml:space="preserve">
+    <value>مركز التكلفة مطلوب</value>
+  </data>
+  <data name="CreateFailed" xml:space="preserve">
+    <value>فشل الإنشاء</value>
+  </data>
+  <data name="CurrencyIdIsRequired" xml:space="preserve">
+    <value>معرف العملة مطلوب</value>
+  </data>
+  <data name="CurrentBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>يجب أن يكون الرصيد الحالي أكبر من أو يساوي صفر</value>
+  </data>
+  <data name="DecimalDigitsMAXValue" xml:space="preserve">
+    <value>الحد الأقصى لعدد الخانات العشرية</value>
+  </data>
+  <data name="DecimalDigitsMINValue" xml:space="preserve">
+    <value>الحد الأدنى لعدد الخانات العشرية</value>
+  </data>
+  <data name="DefaultCurrencyNotFound" xml:space="preserve">
+    <value>العملة الافتراضية غير موجودة</value>
+  </data>
+  <data name="DefaultPackingUnitNotFound" xml:space="preserve">
+    <value>وحدة التعبئة الافتراضية غير موجودة</value>
+  </data>
+  <data name="DeletedSuccessfullyWithName" xml:space="preserve">
+    <value>تم الحذف بنجاح بالاسم</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>فشل الحذف</value>
+  </data>
+  <data name="DiscountCannotBeNegative" xml:space="preserve">
+    <value>لا يمكن أن يكون الخصم سالباً</value>
+  </data>
+  <data name="DiscountTypeIsNotValid" xml:space="preserve">
+    <value>نوع الخصم غير صالح</value>
+  </data>
+  <data name="DistinationBranchNotFound" xml:space="preserve">
+    <value>فرع الوجهة غير موجود</value>
+  </data>
+  <data name="DocumentNumberMaximumLength" xml:space="preserve">
+    <value>تم تجاوز الحد الأقصى لطول رقم المستند</value>
+  </data>
+  <data name="DocumentNumberMaxLength" xml:space="preserve">
+    <value>الحد الأقصى لطول رقم المستند</value>
+  </data>
+  <data name="DuplicateRecord" xml:space="preserve">
+    <value>سجل مكرر</value>
+  </data>
+  <data name="EntryFinancialTransactionsRequired" xml:space="preserve">
+    <value>المعاملات المالية للقيد مطلوبة</value>
+  </data>
+  <data name="ExistedEntryWithSameNumber" xml:space="preserve">
+    <value>يوجد قيد بنفس الرقم</value>
+  </data>
+  <data name="EXPIRY_LEVEL_DAYS_FROM_MUST_BE_LESS_THAN_DAYS_TO" xml:space="preserve">
+    <value>يجب أن تكون أيام البداية أقل من أيام النهاية في مستوى الصلاحية</value>
+  </data>
+  <data name="EXPIRY_LEVEL_RANGES_MUST_NOT_OVERLAP" xml:space="preserve">
+    <value>يجب ألا تتداخل نطاقات مستويات الصلاحية</value>
+  </data>
+  <data name="FaildToGenerateEntryNubmer" xml:space="preserve">
+    <value>فشل في توليد رقم القيد</value>
+  </data>
+  <data name="FaildToGetUsedPackingUnit" xml:space="preserve">
+    <value>فشل في الحصول على وحدة التعبئة المستخدمة</value>
+  </data>
+  <data name="Failed To Add Stock Balance" xml:space="preserve">
+    <value>فشل في إضافة رصيد المخزون</value>
+  </data>
+  <data name="FinancialPeriodIdIsRequired" xml:space="preserve">
+    <value>معرف الفترة المالية مطلوب</value>
+  </data>
+  <data name="FinancialPeriodIsUsedInEntries" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في القيود</value>
+  </data>
+  <data name="FinancialPeriodIsUsedInInventoryTransactions" xml:space="preserve">
+    <value>الفترة المالية مستخدمة في معاملات المخزون</value>
+  </data>
+  <data name="FinancialPeriodMaximumLength" xml:space="preserve">
+    <value>تم تجاوز الحد الأقصى لطول الفترة المالية</value>
+  </data>
+  <data name="FinancialPeriodRequiredYearNumber" xml:space="preserve">
+    <value>رقم السنة للفترة المالية مطلوب</value>
+  </data>
+  <data name="FinancialPeriodStartDateRequired" xml:space="preserve">
+    <value>تاريخ بداية الفترة المالية مطلوب</value>
+  </data>
+  <data name="FinancialPeriodWithYearNumberIsExisted" xml:space="preserve">
+    <value>توجد فترة مالية بنفس رقم السنة</value>
+  </data>
+  <data name="IdIsRequired" xml:space="preserve">
+    <value>المعرف مطلوب</value>
+  </data>
+  <data name="INCORRENCT_EMAIL_OR_PASSWORD" xml:space="preserve">
+    <value>البريد الإلكتروني أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="INSUFFICIENT_STOCK" xml:space="preserve">
+    <value>المخزون غير كافٍ</value>
+  </data>
+  <data name="InsufficientStockBalance" xml:space="preserve">
+    <value>رصيد المخزون غير كافٍ</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>خطأ داخلي في الخادم</value>
+  </data>
+  <data name="INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN" xml:space="preserve">
+    <value>رمز الوصول أو رمز التحديث غير صالح</value>
+  </data>
+  <data name="INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>رمز التحديث غير صالح</value>
+  </data>
+  <data name="InvalidDomainItem" xml:space="preserve">
+    <value>عنصر النطاق غير صالح</value>
+  </data>
+  <data name="InvalidFinancialPeriod" xml:space="preserve">
+    <value>فترة مالية غير صالحة</value>
+  </data>
+  <data name="InvalidFormat" xml:space="preserve">
+    <value>تنسيق غير صالح</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>عملية غير صالحة</value>
+  </data>
+  <data name="InvalidRange" xml:space="preserve">
+    <value>نطاق غير صالح</value>
+  </data>
+  <data name="InvalidTransactionType" xml:space="preserve">
+    <value>نوع المعاملة غير صالح</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_BRANCH_REQUIRED_WHEN_SCOPE_BRANCH" xml:space="preserve">
+    <value>الفرع مطلوب عند تحديد نطاق الفرع لحد المخزون</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_MIN_MUST_BE_LESS_THAN_MAX" xml:space="preserve">
+    <value>يجب أن يكون الحد الأدنى للمخزون أقل من الحد الأقصى</value>
+  </data>
+  <data name="INVENTORY_THRESHOLD_RANGES_MUST_NOT_OVERLAP" xml:space="preserve">
+    <value>يجب ألا تتداخل نطاقات حدود المخزون</value>
+  </data>
+  <data name="Item is required" xml:space="preserve">
+    <value>الصنف مطلوب</value>
+  </data>
+  <data name="ITEM_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود الصنف مكرر</value>
+  </data>
+  <data name="ITEM_EGS_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود EGS للصنف مكرر</value>
+  </data>
+  <data name="ITEM_GS1_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود GS1 للصنف مكرر</value>
+  </data>
+  <data name="ITEM_ONE_OF_BARCODES_IS_DUPLICATED" xml:space="preserve">
+    <value>أحد باركودات الصنف مكرر</value>
+  </data>
+  <data name="ItemIdIsRequired" xml:space="preserve">
+    <value>معرف الصنف مطلوب</value>
+  </data>
+  <data name="ItemsRequired" xml:space="preserve">
+    <value>الأصناف مطلوبة</value>
+  </data>
+  <data name="LastCostPriceIsRequired" xml:space="preserve">
+    <value>آخر سعر تكلفة مطلوب</value>
+  </data>
+  <data name="Login failed." xml:space="preserve">
+    <value>فشل تسجيل الدخول.</value>
+  </data>
+  <data name="MaximumBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>يجب أن يكون الحد الأقصى للرصيد أكبر من أو يساوي صفر</value>
+  </data>
+  <data name="MaxLength300" xml:space="preserve">
+    <value>الحد الأقصى للطول 300 حرف</value>
+  </data>
+  <data name="MaxLengthExceeded" xml:space="preserve">
+    <value>تم تجاوز الحد الأقصى للطول</value>
+  </data>
+  <data name="MinimumBalanceMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>يجب أن يكون الحد الأدنى للرصيد أكبر من أو يساوي صفر</value>
+  </data>
+  <data name="MinLengthNotMet" xml:space="preserve">
+    <value>لم يتم استيفاء الحد الأدنى للطول</value>
+  </data>
+  <data name="MonthDaysMINValue" xml:space="preserve">
+    <value>الحد الأدنى لأيام الشهر</value>
+  </data>
+  <data name="Node Type cannot be changed" xml:space="preserve">
+    <value>لا يمكن تغيير نوع العقدة</value>
+  </data>
+  <data name="NotesMaximumLength" xml:space="preserve">
+    <value>تم تجاوز الحد الأقصى لطول الملاحظات</value>
+  </data>
+  <data name="NotesMaxLength" xml:space="preserve">
+    <value>الحد الأقصى لطول الملاحظات</value>
+  </data>
+  <data name="NotLastPeriod" xml:space="preserve">
+    <value>ليست آخر فترة</value>
+  </data>
+  <data name="NotValidCustomerType" xml:space="preserve">
+    <value>نوع العميل غير صالح</value>
+  </data>
+  <data name="NotValidPeriodType" xml:space="preserve">
+    <value>نوع الفترة غير صالح</value>
+  </data>
+  <data name="One of barcodes  already exists" xml:space="preserve">
+    <value>أحد الباركودات موجود بالفعل</value>
+  </data>
+  <data name="One of barcodes is associated with another product" xml:space="preserve">
+    <value>أحد الباركودات مرتبط بمنتج آخر</value>
+  </data>
+  <data name="ONE_OF_MANUFACTURER_COMPANIES_NOT_FOUND" xml:space="preserve">
+    <value>إحدى شركات التصنيع غير موجودة</value>
+  </data>
+  <data name="ONE_OF_SUPPLIERS_NOT_FOUND" xml:space="preserve">
+    <value>أحد الموردين غير موجود</value>
+  </data>
+  <data name="ONLY_ONE_IS_NEEDED_EGS_OR_GS1" xml:space="preserve">
+    <value>مطلوب EGS أو GS1 واحد فقط</value>
+  </data>
+  <data name="OPERATION_FAILD" xml:space="preserve">
+    <value>فشلت العملية</value>
+  </data>
+  <data name="OperationSuccessful" xml:space="preserve">
+    <value>تمت العملية بنجاح</value>
+  </data>
+  <data name="Packing unit is required" xml:space="preserve">
+    <value>وحدة التعبئة مطلوبة</value>
+  </data>
+  <data name="PackingUnitIdIsRequired" xml:space="preserve">
+    <value>معرف وحدة التعبئة مطلوب</value>
+  </data>
+  <data name="PackingUnitIsRequired" xml:space="preserve">
+    <value>وحدة التعبئة مطلوبة</value>
+  </data>
+  <data name="PackingUnitSellingPriceIsRequired" xml:space="preserve">
+    <value>سعر بيع وحدة التعبئة مطلوب</value>
+  </data>
+  <data name="PackingUnitsIsRequired" xml:space="preserve">
+    <value>وحدات التعبئة مطلوبة</value>
+  </data>
+  <data name="ParentIdIsRequired" xml:space="preserve">
+    <value>معرف الأب مطلوب</value>
+  </data>
+  <data name="PartsCountIsRequired" xml:space="preserve">
+    <value>عدد الأجزاء مطلوب</value>
+  </data>
+  <data name="PartyAccountNotFound" xml:space="preserve">
+    <value>حساب الطرف غير موجود</value>
+  </data>
+  <data name="PercentCannotBeNegative" xml:space="preserve">
+    <value>لا يمكن أن تكون النسبة سالبة</value>
+  </data>
+  <data name="PercentCannotExceed100" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز النسبة 100</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_BARCODES" xml:space="preserve">
+    <value>يرجى تقديم باركودات غير مكررة</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_MANUFACTURER_COMPANIES" xml:space="preserve">
+    <value>يرجى تقديم شركات تصنيع غير مكررة</value>
+  </data>
+  <data name="PLEASE_PROVIDE_NON_DUPLICATE_SUPPLIERS" xml:space="preserve">
+    <value>يرجى تقديم موردين غير مكررين</value>
+  </data>
+  <data name="PleaseChooseValidNodeType" xml:space="preserve">
+    <value>يرجى اختيار نوع عقدة صالح</value>
+  </data>
+  <data name="PriceAmountIsRequired" xml:space="preserve">
+    <value>مبلغ السعر مطلوب</value>
+  </data>
+  <data name="Product code already exists" xml:space="preserve">
+    <value>كود المنتج موجود بالفعل</value>
+  </data>
+  <data name="Product EGS already exists" xml:space="preserve">
+    <value>كود EGS للمنتج موجود بالفعل</value>
+  </data>
+  <data name="Product GS1 already exists" xml:space="preserve">
+    <value>كود GS1 للمنتج موجود بالفعل</value>
+  </data>
+  <data name="PRODUCT_NOT_FOUND" xml:space="preserve">
+    <value>المنتج غير موجود</value>
+  </data>
+  <data name="Quantity must be greater than zero" xml:space="preserve">
+    <value>يجب أن تكون الكمية أكبر من صفر</value>
+  </data>
+  <data name="QuantityMustBeGreaterThanZero" xml:space="preserve">
+    <value>يجب أن تكون الكمية أكبر من صفر</value>
+  </data>
+  <data name="ReceiverNameMaximumLength" xml:space="preserve">
+    <value>تم تجاوز الحد الأقصى لطول اسم المستلم</value>
+  </data>
+  <data name="RecordAlreadyExists" xml:space="preserve">
+    <value>السجل موجود بالفعل</value>
+  </data>
+  <data name="RecordNotFound" xml:space="preserve">
+    <value>السجل غير موجود</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>حقل مطلوب</value>
+  </data>
+  <data name="SellingPriceIsRequired" xml:space="preserve">
+    <value>سعر البيع مطلوب</value>
+  </data>
+  <data name="SomeChartOfAcountsNotExisted" xml:space="preserve">
+    <value>بعض حسابات دليل الحسابات غير موجودة</value>
+  </data>
+  <data name="Total cost must be greater than or equal to zero" xml:space="preserve">
+    <value>يجب أن تكون التكلفة الإجمالية أكبر من أو تساوي صفر</value>
+  </data>
+  <data name="TotalCostMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>يجب أن تكون التكلفة الإجمالية أكبر من أو تساوي صفر</value>
+  </data>
+  <data name="Transaction date is required" xml:space="preserve">
+    <value>تاريخ المعاملة مطلوب</value>
+  </data>
+  <data name="Transaction ID is required" xml:space="preserve">
+    <value>معرف المعاملة مطلوب</value>
+  </data>
+  <data name="Transaction party is required" xml:space="preserve">
+    <value>طرف المعاملة مطلوب</value>
+  </data>
+  <data name="TransactionDateIsRequired" xml:space="preserve">
+    <value>تاريخ المعاملة مطلوب</value>
+  </data>
+  <data name="TransactionIsNotExportTransaction" xml:space="preserve">
+    <value>المعاملة ليست معاملة تصدير</value>
+  </data>
+  <data name="TransactionIsNotImportTransaction" xml:space="preserve">
+    <value>المعاملة ليست معاملة استيراد</value>
+  </data>
+  <data name="TransactionNotFound" xml:space="preserve">
+    <value>المعاملة غير موجودة</value>
+  </data>
+  <data name="TransactionPartyIdIsRequired" xml:space="preserve">
+    <value>معرف طرف المعاملة مطلوب</value>
+  </data>
+  <data name="TransferIsNotPending" xml:space="preserve">
+    <value>التحويل ليس في حالة انتظار</value>
+  </data>
+  <data name="TransferNotFound" xml:space="preserve">
+    <value>التحويل غير موجود</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>غير مصرح</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>وصول غير مصرح</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>خطأ غير متوقع</value>
+  </data>
+  <data name="UnitCostMustBeGreaterThanOrEqualToZero" xml:space="preserve">
+    <value>يجب أن تكون تكلفة الوحدة أكبر من أو تساوي صفر</value>
+  </data>
+  <data name="UpdatedSuccessfullyWithName" xml:space="preserve">
+    <value>تم التحديث بنجاح بالاسم</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>فشل التحديث</value>
+  </data>
+  <data name="USER_NOT_FOUND" xml:space="preserve">
+    <value>المستخدم غير موجود</value>
+  </data>
+  <data name="UserCreationFailed" xml:space="preserve">
+    <value>فشل إنشاء المستخدم</value>
+  </data>
+  <data name="UsernameAlreadyExists" xml:space="preserve">
+    <value>اسم المستخدم موجود بالفعل</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>فشل التحقق</value>
+  </data>
+  <data name="Variant combinations are only allowed for products of type Stock" xml:space="preserve">
+    <value>تركيبات المتغيرات مسموحة فقط لمنتجات نوع المخزون</value>
+  </data>
+  <data name="VARIANT_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود المتغير مكرر</value>
+  </data>
+  <data name="VARIANT_EGS_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود EGS للمتغير مكرر</value>
+  </data>
+  <data name="VARIANT_GS1_CODE_IS_DUPLICATED" xml:space="preserve">
+    <value>كود GS1 للمتغير مكرر</value>
+  </data>
+  <data name="VARIANT_ONE_OF_BARCODES_IS_DUPLICATED" xml:space="preserve">
+    <value>أحد باركودات المتغير مكرر</value>
+  </data>
+  <data name="VariantIdIsRequired" xml:space="preserve">
+    <value>معرف المتغير مطلوب</value>
+  </data>
+  <data name="VariantNotFound" xml:space="preserve">
+    <value>المتغير غير موجود</value>
+  </data>
+  <data name="VariantWithNowStockBalance" xml:space="preserve">
+    <value>المتغير بدون رصيد مخزون</value>
+  </data>
+</root>

@@ -23,9 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\ERP.Shared.csproj" />
-    <ProjectReference Include="..\..\ERP.Application\ERP.Application.csproj" />
-    <ProjectReference Include="..\..\ERP.Infrastracture\ERP.Infrastracture.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Inventory\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\ERP.Persistence\ERP.Persistence.csproj" />
+    <ProjectReference Include="..\..\Modules\Accounting\Accounting.Application\Accounting.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Platform\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

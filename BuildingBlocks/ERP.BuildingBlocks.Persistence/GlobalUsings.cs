@@ -1,0 +1,12 @@
+global using System.Linq.Expressions;
+global using ERP.BuildingBlocks.Application.DTOs;
+global using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
+global using ERP.BuildingBlocks.Application.Responses;
+global using ERP.BuildingBlocks.Application.Services.Queries;
+global using ERP.BuildingBlocks.Domain.Entities;
+global using ERP.BuildingBlocks.Persistence.Data;
+global using Mapster;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Query;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using System.Net;

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Inventory.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj" />
+    <ProjectReference Include="..\Inventory.Contracts\Inventory.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\Accounting\Accounting.Contracts\Accounting.Contracts.csproj" />
+    <ProjectReference Include="..\..\Accounting\Accounting.Domain\Accounting.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

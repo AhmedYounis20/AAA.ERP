@@ -1,0 +1,20 @@
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Persistence.Configurations;
+using ERP.BuildingBlocks.Persistence;
+
+namespace Accounting.Infrastructure.Persistence;
+
+public class BranchDbConfig : BaseTreeSettingEntityDbConfig<Branch>
+{
+    protected override EntityTypeBuilder<Branch> ApplyConfiguration(EntityTypeBuilder<Branch> builder)
+    {
+        builder.ToTable("Branches", DbSchemaNames.Accounting);
+        base.ApplyConfiguration(builder);
+        _ = builder.Property(e => e.ChartOfAccountId).HasColumnOrder(columnNumber++);
+        _ = builder.HasOne(e => e.ChartOfAccount).WithMany().HasForeignKey(e => e.ChartOfAccountId);
+
+        _ = builder.Property(e => e.Notes).HasMaxLength(1000).HasColumnOrder(columnNumber++);
+        _ = builder.HasOne(e => e.Attachment).WithMany().HasForeignKey(e => e.AttachmentId).OnDelete(DeleteBehavior.SetNull);
+        return builder;
+    }
+}
