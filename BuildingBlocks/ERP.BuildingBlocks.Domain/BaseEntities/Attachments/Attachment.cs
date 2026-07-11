@@ -1,5 +1,3 @@
-using ERP.BuildingBlocks.Domain.Entities;
-
 namespace ERP.BuildingBlocks.Domain.Entities.Attachments;
 
 public class Attachment : BaseEntity

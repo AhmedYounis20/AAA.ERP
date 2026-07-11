@@ -19,8 +19,8 @@ public class FixedAssetQueries(IFixedAssetRepository repository, IChartOfAccount
         Guid? parentId,
         FixedAssetType fixedAssetType)
     {
-        var chartOfAccountId = Guid.Parse(SD.FixedAssetsIds[fixedAssetType]);
-        var assetCodes = SD.FixedAssetsDepreciationDetails[fixedAssetType];
+        var chartOfAccountId = Guid.Parse(Sd.FixedAssetsIds[fixedAssetType]);
+        var assetCodes = Sd.FixedAssetsDepreciationDetails[fixedAssetType];
         var code = await chartOfAccountRepository.GenerateNewCodeForChild(chartOfAccountId);
         var accumelatedCode = fixedAssetType == FixedAssetType.Lands
             ? ""

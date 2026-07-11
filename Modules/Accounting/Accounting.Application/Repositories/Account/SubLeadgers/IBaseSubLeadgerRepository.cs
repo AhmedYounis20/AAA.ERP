@@ -1,5 +1,4 @@
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.BuildingBlocks.Domain.Entities;
 
 namespace Accounting.Application.Repositories.Account.SubLeadgers;
 

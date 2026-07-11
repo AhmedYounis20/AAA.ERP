@@ -15,6 +15,6 @@ public class CustomerQueries(ICustomerRepository repository, IChartOfAccountRepo
     public Task<ApiResponse<CustomerCreateCommand>> GetNextSubLedgers(Guid? parentId)
         => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Customer, CustomerCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(SD.CustomerChartOfAccountId),
+            Guid.Parse(Sd.CustomerChartOfAccountId),
             parentId);
 }

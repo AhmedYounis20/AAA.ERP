@@ -37,8 +37,7 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
     [Theory]
     [InlineData("/api/Currencies")]
     [InlineData("/api/CompinedEntries")]
-    [InlineData("/api/Products")]
-    [InlineData("/api/Colors")]
+    [InlineData("/api/PackingUnits")]
     [InlineData("/api/Taxes")]
     [InlineData("/api/StockBalances")]
     [InlineData("/api/ChartOfAccounts")]
@@ -53,7 +52,7 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
     [Fact]
     public async Task Responses_include_correlation_id_header()
     {
-        var response = await _client.GetAsync("/api/Colors");
+        var response = await _client.GetAsync("/api/Products");
 
         response.Headers.Should().ContainKey("X-Correlation-Id");
         response.Headers.GetValues("X-Correlation-Id").First().Should().NotBeNullOrWhiteSpace();
@@ -63,7 +62,7 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
     public async Task Correlation_id_is_echoed_when_sent_by_client()
     {
         var expected = Guid.NewGuid().ToString("D");
-        var request = new HttpRequestMessage(HttpMethod.Get, "/api/Colors");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/Products");
         request.Headers.Add("X-Correlation-Id", expected);
 
         var response = await _client.SendAsync(request);
@@ -78,9 +77,9 @@ public class ApiSmokeTests : IClassFixture<ErpWebApplicationFactory>
         var inventory = await _client.GetStringAsync("/swagger/inventory/swagger.json");
 
         accounting.Should().Contain("/api/Currencies");
-        accounting.Should().NotContain("/api/Colors");
+        accounting.Should().NotContain("/api/Products");
 
-        inventory.Should().Contain("/api/Colors");
+        inventory.Should().Contain("/api/Products");
         inventory.Should().NotContain("/api/Currencies");
     }
 

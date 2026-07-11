@@ -1,4 +1,3 @@
-using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

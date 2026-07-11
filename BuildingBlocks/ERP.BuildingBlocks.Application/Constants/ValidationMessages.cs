@@ -45,7 +45,6 @@ public static class ValidationMessages
     public const string AverageCostIsRequired = "AverageCostIsRequired";
     public const string BranchIsRequired = "Branch is required";
     public const string CodeIsRequired = "CodeIsRequired";
-    public const string ColorValueIsRequired = "ColorValueIsRequired";
     public const string CurrentBalanceMustBeGreaterThanOrEqualToZero = "CurrentBalanceMustBeGreaterThanOrEqualToZero";
     public const string DiscountCannotBeNegative = "DiscountCannotBeNegative";
     public const string DiscountTypeIsNotValid = "DiscountTypeIsNotValid";

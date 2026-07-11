@@ -35,7 +35,7 @@ public class DomainLayerPurityTests
     [Fact]
     public void Inventory_Api_should_not_reference_Accounting_Application()
     {
-        var result = Types.InAssembly(typeof(Inventory.Api.Controllers.Catalog.ColorsController).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Api.Controllers.Catalog.ProductsController).Assembly)
             .Should()
             .NotHaveDependencyOn("Accounting.Application")
             .GetResult();

@@ -1,6 +1,4 @@
-
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ERP.BuildingBlocks.Domain.Entities;
 
 namespace ERP.BuildingBlocks.Persistence.Configurations;
 

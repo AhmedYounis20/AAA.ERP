@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ERP.BuildingBlocks.Application.Constants;
-using ERP.BuildingBlocks.Application.Exceptions;
 using ERP.BuildingBlocks.Application.Responses;
 using System.Net;
 

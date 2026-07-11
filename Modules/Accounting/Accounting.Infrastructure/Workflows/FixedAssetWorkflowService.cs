@@ -33,7 +33,7 @@ public class FixedAssetWorkflowService(
         try
         {
             var isDomain = command.NodeType.Equals(NodeType.Domain);
-            var fixedAssetId = Guid.Parse(SD.FixedAssetsIds[command.FixedAssetType ?? FixedAssetType.Lands]);
+            var fixedAssetId = Guid.Parse(Sd.FixedAssetsIds[command.FixedAssetType ?? FixedAssetType.Lands]);
             var chartOfAccountParent = await chartOfAccountRepository.Get(fixedAssetId);
             var newCode = await chartOfAccountRepository.GenerateNewCodeForChild(fixedAssetId);
             var entity = command.Adapt<FixedAsset>();
@@ -47,7 +47,7 @@ public class FixedAssetWorkflowService(
                 }
 
                 var fixedAssetsDepreciationDetails =
-                    SD.FixedAssetsDepreciationDetails[command.FixedAssetType ?? FixedAssetType.Lands];
+                    Sd.FixedAssetsDepreciationDetails[command.FixedAssetType ?? FixedAssetType.Lands];
                 var accumlatedDepriciation = command.FixedAssetType == FixedAssetType.Lands
                     ? null
                     : await chartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
@@ -74,7 +74,7 @@ public class FixedAssetWorkflowService(
                 if (accumlatedDepriciation != null)
                 {
                     var accumlatedDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
+                        await chartOfAccountRepository.Get(Guid.Parse(Sd.AccumulatedDepreciationId));
                     var newAccumlatedCode =
                         await chartOfAccountRepository.GenerateNewCodeForChild(accumlatedDepriciation.Id);
                     entity.AccumlatedAccount = new ChartOfAccount
@@ -97,7 +97,7 @@ public class FixedAssetWorkflowService(
                 if (expensesDepriciation != null)
                 {
                     var expensesDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
+                        await chartOfAccountRepository.Get(Guid.Parse(Sd.ExpensesDepreciationId));
                     var newExpenseCode =
                         await chartOfAccountRepository.GenerateNewCodeForChild(expensesDepriciation.Id);
                     entity.ExpensesAccount = new ChartOfAccount
@@ -212,7 +212,7 @@ public class FixedAssetWorkflowService(
             if (entity.AccumlatedAccountId.HasValue)
             {
                 var accumlatedDepreciationAccount =
-                    await chartOfAccountRepository.Get(Guid.Parse(SD.AccumlatedDepreciationId));
+                    await chartOfAccountRepository.Get(Guid.Parse(Sd.AccumulatedDepreciationId));
 
                 var acculatedAccount =
                     await chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
@@ -225,7 +225,7 @@ public class FixedAssetWorkflowService(
             if (entity.ExpensesAccountId.HasValue)
             {
                 var expensesDepreciationAccount =
-                    await chartOfAccountRepository.Get(Guid.Parse(SD.ExpensesDepreciationId));
+                    await chartOfAccountRepository.Get(Guid.Parse(Sd.ExpensesDepreciationId));
 
                 var expenseAccount =
                     await chartOfAccountRepository.Get(entity.ExpensesAccountId.Value);

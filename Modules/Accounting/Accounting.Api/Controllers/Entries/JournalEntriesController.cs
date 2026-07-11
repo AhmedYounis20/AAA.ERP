@@ -1,5 +1,4 @@
 using Accounting.Application.Commands.JournalEntries;
-using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services.Entries;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;

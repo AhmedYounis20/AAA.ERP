@@ -15,7 +15,7 @@ public sealed class BankCreateCommandHandler(
     : BaseSubLedgerCreateHandler<Bank, BankCreateCommand>(
         repository,
         chartOfAccountRepository,
-        Guid.Parse(SD.BankChartAccountId),
+        Guid.Parse(Sd.BankChartAccountId),
         SubLeadgerType.Bank);
 
 public sealed class BankUpdateCommandHandler(IBankRepository repository)

@@ -2,7 +2,7 @@ using Accounting.Contracts.Integration;
 using Inventory.Application.Dtos.Catalog;
 using Inventory.Domain.Models.Entities;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 
 namespace Inventory.Infrastructure.Mapping;
 

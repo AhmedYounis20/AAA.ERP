@@ -109,7 +109,7 @@ public class ModuleBoundaryTests
     [Fact]
     public void Inventory_Application_should_not_reference_Infrastructure()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Commands.PackingUnits.PackingUnitCreateCommand).Assembly)
             .Should()
             .NotHaveDependencyOn("ERP.Persistence")
             .And()

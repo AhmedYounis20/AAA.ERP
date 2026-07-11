@@ -33,10 +33,6 @@ public static class InventoryModuleExtensions
     {
         ModuleModelConfigurationRegistry.Register(ApplyInventoryModuleConfigurations);
 
-        services.AddScoped<IColorRepository, ColorRepository>();
-        services.AddScoped<IColorQueries, ColorQueries>();
-        services.AddScoped<ISizeRepository, SizeRepository>();
-        services.AddScoped<ISizeQueries, SizeQueries>();
         services.AddScoped<IPackingUnitRepository, PackingUnitRepository>();
         services.AddScoped<IPackingUnitQueries, PackingUnitQueries>();
         services.AddScoped<IManufacturerCompanyRepository, ManufacturerCompanyRepository>();
@@ -98,8 +94,6 @@ public static class InventoryModuleExtensions
 
     public static void ApplyInventoryModuleConfigurations(this ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ColorDbConfig());
-        modelBuilder.ApplyConfiguration(new SizeDbConfig());
         modelBuilder.ApplyConfiguration(new PackingUnitDbConfig());
         modelBuilder.ApplyConfiguration(new ManufacturerCompanyDbConfig());
         modelBuilder.ApplyConfiguration(new SellingPriceDbConfig());

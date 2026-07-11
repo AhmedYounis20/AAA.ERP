@@ -160,10 +160,10 @@ public class AuthenticationService : IAuthenticationService
                 return response;
             }
 
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+            if (!await _roleManager.RoleExistsAsync(Sd.RoleAdmin))
+                await _roleManager.CreateAsync(new IdentityRole(Sd.RoleAdmin));
 
-            await _userManager.AddToRoleAsync(newUser, SD.Role_Admin);
+            await _userManager.AddToRoleAsync(newUser, Sd.RoleAdmin);
 
             await transaction.CommitAsync();
 

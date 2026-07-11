@@ -22,74 +22,6 @@ namespace ERP.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(3);
-
-                    b.Property<Guid?>("ChartOfAccountId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(5);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(2);
-
-                    b.Property<int>("NodeType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasColumnOrder(7);
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(4);
-
-                    b.Property<decimal>("Percent")
-                        .HasColumnType("decimal(18,4)")
-                        .HasColumnOrder(6);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChartOfAccountId");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Taxes", "accounting");
-                });
-
             modelBuilder.Entity("Accounting.Domain.Models.Entities.AccountGuides.AccountGuide", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1414,6 +1346,74 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("Suppliers", "accounting");
                 });
 
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(3);
+
+                    b.Property<Guid?>("ChartOfAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NameSecondLanguage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("NodeType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnOrder(7);
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,4)")
+                        .HasColumnOrder(6);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartOfAccountId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("NameSecondLanguage")
+                        .IsUnique();
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Taxes", "accounting");
+                });
+
             modelBuilder.Entity("ERP.BuildingBlocks.Domain.Entities.Attachments.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1613,66 +1613,6 @@ namespace ERP.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("AttributeValues", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Colors.Color", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(3);
-
-                    b.Property<string>("ColorValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("ColorValue")
-                        .IsUnique();
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.ToTable("Colors", "inventory");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Models.Entities.ExpiryLevels.ExpiryLevel", b =>
@@ -2670,59 +2610,7 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("SellingPrices", "inventory");
                 });
 
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Sizes.Size", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(3);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("NameSecondLanguage")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("NameSecondLanguage")
-                        .IsUnique();
-
-                    b.ToTable("Sizes", "inventory");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Sizes.StockBalance", b =>
+            modelBuilder.Entity("Inventory.Domain.Models.Entities.StockBalances.StockBalance", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3542,19 +3430,6 @@ namespace ERP.Persistence.Migrations
                     b.ToTable("AuditLogs", "platform");
                 });
 
-            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
-                {
-                    b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
-                        .WithMany()
-                        .HasForeignKey("ChartOfAccountId");
-
-                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Tax", null)
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.Navigation("ChartOfAccount");
-                });
-
             modelBuilder.Entity("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", b =>
                 {
                     b.HasOne("Accounting.Domain.Models.Entities.AccountGuides.AccountGuide", null)
@@ -3783,6 +3658,19 @@ namespace ERP.Persistence.Migrations
                         .HasForeignKey("ChartOfAccountId");
 
                     b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Supplier", null)
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("ChartOfAccount");
+                });
+
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.SubLeadgers.Tax", b =>
+                {
+                    b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartOfAccountId");
+
+                    b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Tax", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
 
@@ -4080,7 +3968,7 @@ namespace ERP.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Inventory.Domain.Models.Entities.Sizes.StockBalance", b =>
+            modelBuilder.Entity("Inventory.Domain.Models.Entities.StockBalances.StockBalance", b =>
                 {
                     b.HasOne("Accounting.Domain.Models.Entities.SubLeadgers.Branch", null)
                         .WithMany()

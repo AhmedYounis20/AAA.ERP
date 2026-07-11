@@ -64,7 +64,6 @@ public static class ErrorMessages
     public const string WithSameNameSecondLanguageIsExisted = "WithSameNameSecondLanguageIsExisted";
     public const string ChartOfAccountUpdateSubLeadgerName = "ChartOfAccountUpdateSubLeadgerName";
     public const string ChartOfAccountUpdateSubLeadgerNameSecondLanguage = "ChartOfAccountUpdateSubLeadgerNameSecondLanguage";
-    public const string ColorValueIsDuplicate = "ColorValueIsDuplicate";
     public const string CurrencySymbolIsExisted = "CurrencySymbolIsExisted";
     public const string CurrencyIsUsedInEntries = "CurrencyIsUsedInEntries";
     public const string DefaultCurrencyCannotBeDeleted = "DefaultCurrencyCannotBeDeleted";

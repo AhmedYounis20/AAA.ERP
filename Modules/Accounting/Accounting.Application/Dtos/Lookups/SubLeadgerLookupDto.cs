@@ -1,5 +1,3 @@
-using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
-using ERP.BuildingBlocks.Domain.Entities;
 using ERP.BuildingBlocks.Application.DTOs;
 
 namespace Accounting.Application.Dtos.Lookups;

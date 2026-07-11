@@ -16,6 +16,6 @@ public class SupplierQueries(ISupplierRepository repository, IChartOfAccountRepo
     public Task<ApiResponse<SupplierCreateCommand>> GetNextSubLedgers(Guid? parentId)
         => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Supplier, SupplierCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(SD.SupplierChartOfAccountId),
+            Guid.Parse(Sd.SupplierChartOfAccountId),
             parentId);
 }

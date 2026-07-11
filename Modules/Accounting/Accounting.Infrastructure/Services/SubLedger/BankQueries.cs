@@ -18,6 +18,6 @@ public class BankQueries(IBankRepository repository, IChartOfAccountRepository c
     public Task<ApiResponse<BankCreateCommand>> GetNextSubLedgers(Guid? parentId)
         => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Bank, BankCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(SD.BankChartAccountId),
+            Guid.Parse(Sd.BankChartAccountId),
             parentId);
 }

@@ -16,7 +16,7 @@ public sealed class SupplierCreateCommandHandler(
     : BaseSubLedgerCreateHandler<Supplier, SupplierCreateCommand>(
         repository,
         chartOfAccountRepository,
-        Guid.Parse(SD.SupplierChartOfAccountId),
+        Guid.Parse(Sd.SupplierChartOfAccountId),
         SubLeadgerType.Supplier);
 
 public sealed class SupplierUpdateCommandHandler(ISupplierRepository repository)

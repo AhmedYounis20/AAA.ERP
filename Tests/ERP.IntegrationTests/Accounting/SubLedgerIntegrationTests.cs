@@ -276,7 +276,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
     {
         var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
         var repository = _scope.ServiceProvider.GetRequiredService<ITaxRepository>();
-        var parentTaxAccountId = Guid.Parse(SD.CashInBoxChartOfAccountId);
+        var parentTaxAccountId = Guid.Parse(Sd.CashInBoxChartOfAccountId);
 
         var create = await sender.Send(new TaxCreateCommand
         {
@@ -385,7 +385,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.BankChartAccountId),
+            Id = Guid.Parse(Sd.BankChartAccountId),
             Name = "Banks Parent",
             NameSecondLanguage = "Banks Parent",
             Code = "1100",
@@ -399,7 +399,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.BranchChartOfAccountId),
+            Id = Guid.Parse(Sd.BranchChartOfAccountId),
             Name = "Branches Parent",
             NameSecondLanguage = "Branches Parent",
             Code = "1200",
@@ -413,7 +413,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.CustomerChartOfAccountId),
+            Id = Guid.Parse(Sd.CustomerChartOfAccountId),
             Name = "Customers Parent",
             NameSecondLanguage = "Customers Parent",
             Code = "1300",
@@ -427,7 +427,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.SupplierChartOfAccountId),
+            Id = Guid.Parse(Sd.SupplierChartOfAccountId),
             Name = "Suppliers Parent",
             NameSecondLanguage = "Suppliers Parent",
             Code = "1400",
@@ -441,7 +441,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.CashInBoxChartOfAccountId),
+            Id = Guid.Parse(Sd.CashInBoxChartOfAccountId),
             Name = "Cash Boxes Parent",
             NameSecondLanguage = "Cash Boxes Parent",
             Code = "1500",
@@ -455,7 +455,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.FixedAssetsIds[FixedAssetType.ElectronicDevices]),
+            Id = Guid.Parse(Sd.FixedAssetsIds[FixedAssetType.ElectronicDevices]),
             Name = "Electronic Devices Parent",
             NameSecondLanguage = "Electronic Devices Parent",
             Code = "1504",
@@ -469,7 +469,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.AccumlatedDepreciationId),
+            Id = Guid.Parse(Sd.AccumulatedDepreciationId),
             Name = "Accumulated Depreciation",
             NameSecondLanguage = "Accumulated Depreciation",
             Code = "1600",
@@ -483,7 +483,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.ExpensesDepreciationId),
+            Id = Guid.Parse(Sd.ExpensesDepreciationId),
             Name = "Depreciation Expense",
             NameSecondLanguage = "Depreciation Expense",
             Code = "5100",
@@ -497,7 +497,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][0]),
+            Id = Guid.Parse(Sd.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][0]),
             Name = "Electronic Devices Accumulated Depreciation",
             NameSecondLanguage = "Electronic Devices Accumulated Depreciation",
             Code = "1504-AD",
@@ -511,7 +511,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(SD.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][1]),
+            Id = Guid.Parse(Sd.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][1]),
             Name = "Electronic Devices Depreciation Expense",
             NameSecondLanguage = "Electronic Devices Depreciation Expense",
             Code = "5104",

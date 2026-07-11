@@ -18,6 +18,6 @@ public class BranchQueries(IBranchRepository repository, IChartOfAccountReposito
     public Task<ApiResponse<BranchCreateCommand>> GetNextSubLedgers(Guid? parentId)
         => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Branch, BranchCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(SD.BranchChartOfAccountId),
+            Guid.Parse(Sd.BranchChartOfAccountId),
             parentId);
 }

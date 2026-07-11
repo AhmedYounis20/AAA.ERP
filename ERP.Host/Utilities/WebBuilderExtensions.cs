@@ -2,14 +2,13 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using Accounting.Application.Validators.Taxes;
 using Accounting.Infrastructure;
-using Inventory.Application.Validators.Colors;
+using Inventory.Application.Validators.PackingUnits;
 using Inventory.Infrastructure;
 using ERP.Infrastructure.DBConfiguration.DbContext;
 using Identity.Infrastructure;
 using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Extensions;
 using ERP.BuildingBlocks.Application.Logging.Middleware;
-using Accounting.Domain.Models.Entities.Entries;
 using ERP.Infrastructure.Utilities;
 using FluentValidation;
 using Microsoft.AspNetCore.Localization;
@@ -33,7 +32,7 @@ public static class WebBuilderExtensions
         services.AddEndpointsApiExplorer();
         services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
         services.AddValidatorsFromAssembly(typeof(TaxCreateValidator).Assembly);
-        services.AddValidatorsFromAssembly(typeof(ColorCreateValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(PackingUnitCreateValidator).Assembly);
         services.AddMediatR(config =>
         {
             // Single registration point for all command handlers (Phase 0 — MODULAR_MONOLITH.md §10.2).
@@ -119,7 +118,6 @@ public static class WebBuilderExtensions
             .AddJsonOptions(opts =>
         {
             opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            opts.JsonSerializerOptions.Converters.Add(new EntryTypeJsonConverter());
         });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();

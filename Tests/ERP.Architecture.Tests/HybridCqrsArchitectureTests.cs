@@ -10,6 +10,9 @@ using FluentAssertions;
 using Inventory.Api.Controllers.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using Accounting.Api.Controllers.SubLedger.Base;
+using Accounting.Application.Services.SubLedger;
+using Accounting.Application.Services.SubLedger.Base;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 
 namespace ERP.Architecture.Tests;
@@ -58,7 +61,7 @@ public class HybridCqrsArchitectureTests
         return new[]
             {
                 typeof(TaxesController).Assembly,
-                typeof(ColorsController).Assembly
+                typeof(ProductsController).Assembly
             }
             .SelectMany(assembly => assembly.GetExportedTypes())
             .Where(type => type is { IsClass: true, IsAbstract: false }
@@ -74,7 +77,7 @@ public class HybridCqrsArchitectureTests
         return new[]
             {
                 typeof(Accounting.Application.Services.ITaxQueries).Assembly,
-                typeof(Inventory.Application.Services.IColorQueries).Assembly
+                typeof(Inventory.Application.Services.IProductQueries).Assembly
             }
             .SelectMany(assembly => assembly.GetExportedTypes())
             .Where(type => type is { IsInterface: true, IsPublic: true }
@@ -88,7 +91,7 @@ public class HybridCqrsArchitectureTests
     [Fact]
     public void All_accounting_and_inventory_controllers_are_enforced()
     {
-        HybridCqrsControllers.Value.Should().HaveCountGreaterThanOrEqualTo(34,
+        HybridCqrsControllers.Value.Should().HaveCountGreaterThanOrEqualTo(32,
             "discovery should include all migrated Accounting + Inventory controllers");
     }
 
@@ -167,7 +170,7 @@ public class HybridCqrsArchitectureTests
                 $"to expose standard CRUD/search/tree endpoints.");
         }
 
-        subjectCount.Should().BeGreaterThanOrEqualTo(19,
+        subjectCount.Should().BeGreaterThanOrEqualTo(17,
             "expected at least 19 standard setting/tree controllers on base controllers (Sprint 12 rollout)");
     }
 

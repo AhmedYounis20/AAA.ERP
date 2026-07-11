@@ -1,5 +1,4 @@
 using Accounting.Application.Commands.CombinedEntries;
-using Accounting.Application.Dtos.Filters;
 using Accounting.Application.Services.Entries;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;
@@ -8,7 +7,6 @@ namespace Accounting.Api.Controllers.Entries;
 
 /// <summary>CRUD API for combined entries (hybrid CQRS; legacy route alias preserved).</summary>
 [Route("api/CombinedEntries")]
-[Route("api/CompinedEntries")] // legacy route — Phase 4.1.4 backward compatibility
 [ApiController]
 [Authorize]
 public class CombinedEntriesController(ISender sender, ICombinedEntryQueries queries) : ControllerBase

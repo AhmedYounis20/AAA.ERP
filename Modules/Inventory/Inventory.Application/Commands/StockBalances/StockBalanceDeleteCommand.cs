@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.CQRS.Commands;
 using ERP.BuildingBlocks.Application.Responses;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 using Shared;
 
 namespace Inventory.Application.Commands.StockBalances;

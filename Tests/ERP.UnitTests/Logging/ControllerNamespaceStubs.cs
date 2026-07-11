@@ -1,6 +1,6 @@
 namespace Inventory.Api.Controllers.Catalog
 {
-    internal sealed class ColorsController;
+    internal sealed class ProductsController;
 }
 
 namespace Accounting.Api.Controllers.Settings

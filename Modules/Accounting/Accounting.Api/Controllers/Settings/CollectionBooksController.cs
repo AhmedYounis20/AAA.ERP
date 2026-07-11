@@ -1,13 +1,6 @@
 ﻿using Accounting.Application.Commands.CollectionBooks;
-using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.CollectionBooks;
-using ERP.BuildingBlocks.Api.Controllers;
 using ERP.BuildingBlocks.Api.Extensions;
-using ERP.BuildingBlocks.Application.DTOs;
-using ERP.BuildingBlocks.Application.Responses;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Accounting.Api.Controllers.Settings;
 

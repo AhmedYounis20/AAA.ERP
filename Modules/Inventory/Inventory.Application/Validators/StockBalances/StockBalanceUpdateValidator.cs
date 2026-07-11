@@ -1,6 +1,6 @@
 using ERP.BuildingBlocks.Application.Validators.Account.CommandValidators.BaseCommandValidators.UpdateCommandValidators;
 using Inventory.Application.Commands.StockBalances;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 using FluentValidation;
 using ERP.BuildingBlocks.Application.Constants;
 

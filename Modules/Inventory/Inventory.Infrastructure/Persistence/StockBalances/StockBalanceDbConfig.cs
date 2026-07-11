@@ -1,5 +1,5 @@
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 using ERP.BuildingBlocks.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ERP.BuildingBlocks.Persistence;

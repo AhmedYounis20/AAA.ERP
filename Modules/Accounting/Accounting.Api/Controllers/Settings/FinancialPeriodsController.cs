@@ -1,7 +1,4 @@
 ﻿using Accounting.Application.Commands.FinancialPeriods;
-using Accounting.Application.Dtos.Filters;
-using Accounting.Application.Dtos.Lookups;
-using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Constants;

@@ -1,5 +1,5 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 
 namespace Inventory.Application.Commands.StockBalances;
 

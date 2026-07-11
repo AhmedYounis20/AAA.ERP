@@ -15,7 +15,7 @@ public sealed class CashInBoxCreateCommandHandler(
     : BaseSubLedgerCreateHandler<CashInBox, CashInBoxCreateCommand>(
         repository,
         chartOfAccountRepository,
-        Guid.Parse(SD.CashInBoxChartOfAccountId),
+        Guid.Parse(Sd.CashInBoxChartOfAccountId),
         SubLeadgerType.CashInBox);
 
 public sealed class CashInBoxUpdateCommandHandler(ICashInBoxRepository repository)

@@ -1,5 +1,4 @@
 using ERP.BuildingBlocks.Application.DTOs;
-using Accounting.Application.Dtos.Entries;
 using Accounting.Domain.Models.Entities.Currencies;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;

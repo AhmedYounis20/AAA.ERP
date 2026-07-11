@@ -1,6 +1,6 @@
 using Accounting.Application.Commands.Branches;
+using Accounting.Application.Services.SubLedger.Base;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using ERP.BuildingBlocks.Application.Services.Queries;
 
 namespace Accounting.Application.Services;
 

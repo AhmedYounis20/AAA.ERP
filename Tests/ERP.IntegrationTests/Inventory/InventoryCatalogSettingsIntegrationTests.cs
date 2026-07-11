@@ -1,8 +1,6 @@
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
-using Inventory.Application.Commands.Colors;
 using Inventory.Application.Services;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ERP.IntegrationTests.Inventory;
@@ -34,25 +32,5 @@ public class InventoryCatalogSettingsIntegrationTests : IAsyncLifetime
 
     result.IsSuccess.Should().BeTrue();
     result.Result.Should().Contain(p => p.Id == InventoryTestIds.PackingUnitId && p.Name == "Piece");
-  }
-
-  [Fact]
-  public async Task Create_color_via_MediatR_persists_and_appears_in_list()
-  {
-    var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
-    var queries = _scope.ServiceProvider.GetRequiredService<IColorQueries>();
-
-    var response = await sender.Send(new ColorCreateCommand
-    {
-      Name = "Crimson",
-      NameSecondLanguage = "Crimson",
-      ColorValue = "#DC143C"
-    });
-
-    response.IsSuccess.Should().BeTrue(response.Errors?.FirstOrDefault()?.MessageKey);
-
-    var list = await queries.GetAll();
-    list.IsSuccess.Should().BeTrue();
-    list.Result.Should().Contain(c => c.Name == "Crimson");
   }
 }

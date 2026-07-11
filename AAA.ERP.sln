@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Audit.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Audit.Infrastructure", "Modules\Platform\Platform.Audit\Platform.Audit.Infrastructure\Platform.Audit.Infrastructure.csproj", "{E543F6E3-1F97-4D33-85F0-1BBA68955BC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Audit.Api", "Modules\Platform\Platform.Audit\Platform.Audit.Api\Platform.Audit.Api.csproj", "{0536E6BC-1581-4A02-915D-8F83AD0B45B0}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Caching.Application", "Modules\Platform\Platform.Caching\Platform.Caching.Application\Platform.Caching.Application.csproj", "{A65C41CC-AF17-4830-8CD8-0198A89D4F76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Caching.Infrastructure", "Modules\Platform\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj", "{B756AA18-1803-4846-B9A6-650690FD25F1}"
@@ -56,6 +58,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Application", "Modules\Identity\Identity.Application\Identity.Application.csproj", "{ABF76859-C9E4-4BC4-B1AA-456197C909D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Infrastructure", "Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj", "{C34912B8-F0C0-407A-A289-AF9B12ADA5D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "Modules\Identity\Identity.Api\Identity.Api.csproj", "{D49027B7-CB58-42A5-95A5-CC3936E39618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Contracts", "Modules\Identity\Identity.Contracts\Identity.Contracts.csproj", "{95AF7D5A-9BF8-423B-A083-5A7CB8C8544F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{A68BCFB6-B88D-4352-653D-5429B95F8475}"
 EndProject
@@ -76,12 +82,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.UnitTests", "Tests\Inventory.UnitTests\Inventory.UnitTests.csproj", "{08759530-9D09-4253-AC76-D7A15809DF22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.BuildingBlocks.Api", "BuildingBlocks\ERP.BuildingBlocks.Api\ERP.BuildingBlocks.Api.csproj", "{3590EFAE-267D-4C69-B833-EDEAAAF746E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "Modules\Identity\Identity.Api\Identity.Api.csproj", "{D49027B7-CB58-42A5-95A5-CC3936E39618}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Contracts", "Modules\Identity\Identity.Contracts\Identity.Contracts.csproj", "{95AF7D5A-9BF8-423B-A083-5A7CB8C8544F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Audit.Api", "Modules\Platform\Platform.Audit\Platform.Audit.Api\Platform.Audit.Api.csproj", "{0536E6BC-1581-4A02-915D-8F83AD0B45B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accounting.Api", "Modules\Accounting\Accounting.Api\Accounting.Api.csproj", "{3535A6AA-0D70-41DD-BB45-4DC33E4EFC26}"
 EndProject
@@ -543,9 +543,9 @@ Global
 		{7451DDF8-C534-474F-911C-76A590D75CAB} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{08759530-9D09-4253-AC76-D7A15809DF22} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{3590EFAE-267D-4C69-B833-EDEAAAF746E8} = {7266C4A9-E384-DC00-0EB6-47F6002CFBA7}
-		{D49027B7-CB58-42A5-95A5-CC3936E39618} = {7266C4A9-E384-DC00-0EB6-47F6002CFBA7}
+		{D49027B7-CB58-42A5-95A5-CC3936E39618} = {293C06CD-4E17-48BD-9F3B-B5ADDFFA9425}
 		{95AF7D5A-9BF8-423B-A083-5A7CB8C8544F} = {293C06CD-4E17-48BD-9F3B-B5ADDFFA9425}
-		{0536E6BC-1581-4A02-915D-8F83AD0B45B0} = {293C06CD-4E17-48BD-9F3B-B5ADDFFA9425}
+		{0536E6BC-1581-4A02-915D-8F83AD0B45B0} = {A1B2C3D4-E5F6-7890-ABCD-EF0123456789}
 		{3535A6AA-0D70-41DD-BB45-4DC33E4EFC26} = {8A4EFEB0-C6A3-2EB9-E078-8B12633D3E51}
 		{91596192-F9A4-4903-8A9F-7C9813472DD4} = {A68BCFB6-B88D-4352-653D-5429B95F8475}
 	EndGlobalSection

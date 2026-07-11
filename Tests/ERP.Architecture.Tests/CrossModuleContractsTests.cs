@@ -11,7 +11,7 @@ public class CrossModuleContractsTests
     [Fact]
     public void Inventory_Application_should_not_reference_Accounting_Domain()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Commands.PackingUnits.PackingUnitCreateCommand).Assembly)
             .Should()
             .NotHaveDependencyOn("Accounting.Domain")
             .GetResult();
@@ -22,7 +22,7 @@ public class CrossModuleContractsTests
     [Fact]
     public void Inventory_Application_should_not_reference_Accounting_Application()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Commands.PackingUnits.PackingUnitCreateCommand).Assembly)
             .Should()
             .NotHaveDependencyOn("Accounting.Application")
             .GetResult();
@@ -88,7 +88,7 @@ public class CrossModuleContractsTests
     [Fact]
     public void Inventory_Application_should_reference_Accounting_Contracts_when_using_Accounting_types()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Commands.Colors.ColorCreateCommand).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Commands.PackingUnits.PackingUnitCreateCommand).Assembly)
             .That()
             .HaveNameEndingWith("Service")
             .Or()

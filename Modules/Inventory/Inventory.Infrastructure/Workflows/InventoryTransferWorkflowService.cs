@@ -3,7 +3,7 @@ using Inventory.Application.Commands.InventoryTransfers;
 using Inventory.Application.Repositories;
 using Inventory.Application.Services;
 using Inventory.Domain.Models.Entities;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 using Inventory.Domain.Models.Entities.Variants;
 using ERP.BuildingBlocks.Application.Constants;
 
@@ -98,7 +98,7 @@ public class InventoryTransferWorkflowService(
         var sourceAccountId = sourceBranchResult.Result.ChartOfAccountId.Value;
         var destAccountId = command.TransferType == InventoryTransferType.Direct
             ? destBranchResult.Result.ChartOfAccountId.Value
-            : Guid.Parse(SD.StockUnderTransfer_Branch);
+            : Guid.Parse(Sd.StockUnderTransferBranch);
         var destinationBranchId = command.TransferType == InventoryTransferType.Direct
             ? command.DestinationBranchId
             : destAccountId;
@@ -175,9 +175,9 @@ public class InventoryTransferWorkflowService(
             };
         }
 
-        var sourceAccountId = Guid.Parse(SD.StockUnderTransfer_Branch);
+        var sourceAccountId = Guid.Parse(Sd.StockUnderTransferBranch);
         var destAccountId = destBranchResult.Result.ChartOfAccountId.Value;
-        var sourceBranchId = Guid.Parse(SD.StockUnderTransfer_Branch);
+        var sourceBranchId = Guid.Parse(Sd.StockUnderTransferBranch);
         var items = await dbContext.Set<InventoryTransferItem>()
             .Where(e => e.InventoryTransferId == transfer.Id)
             .ToListAsync(cancellationToken);
@@ -247,9 +247,9 @@ public class InventoryTransferWorkflowService(
             };
         }
 
-        var sourceAccountId = Guid.Parse(SD.StockUnderTransfer_Branch);
+        var sourceAccountId = Guid.Parse(Sd.StockUnderTransferBranch);
         var destAccountId = sourceBranchResult.Result.ChartOfAccountId.Value;
-        var stockUnderTransferBranchId = Guid.Parse(SD.StockUnderTransfer_Branch);
+        var stockUnderTransferBranchId = Guid.Parse(Sd.StockUnderTransferBranch);
         var items = await dbContext.Set<InventoryTransferItem>()
             .Where(e => e.InventoryTransferId == transfer.Id)
             .ToListAsync(cancellationToken);

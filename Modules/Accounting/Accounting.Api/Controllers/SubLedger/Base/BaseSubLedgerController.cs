@@ -1,12 +1,10 @@
+using Accounting.Application.Services.SubLedger;
+using Accounting.Application.Services.SubLedger.Base;
 using ERP.BuildingBlocks.Api.Extensions;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseUpdateCommands;
-using ERP.BuildingBlocks.Application.Services.Queries;
-using ERP.BuildingBlocks.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
-namespace ERP.BuildingBlocks.Api.Controllers;
+namespace Accounting.Api.Controllers.SubLedger.Base;
 
 /// <summary>
 /// CQRS base for sub-ledger tree entities: tree CRUD reads plus <c>NextAccountDefaultData</c>.

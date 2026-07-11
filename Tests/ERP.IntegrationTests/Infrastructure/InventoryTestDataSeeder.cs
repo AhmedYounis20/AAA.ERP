@@ -8,7 +8,7 @@ using Accounting.Domain.Models.Entities.SubLeadgers;
 using Inventory.Domain.Models.Entities.InventoryTransactions;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using Inventory.Domain.Models.Entities.Products;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 using Inventory.Domain.Models.Entities.Variants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

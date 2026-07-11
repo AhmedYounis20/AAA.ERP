@@ -1,6 +1,4 @@
-using ERP.BuildingBlocks.Application.Dtos.BaseDtos;
 using FluentValidation;
-using System.Data;
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels;
 
 namespace ERP.BuildingBlocks.Application.Validators.Account.InputValidators.BaseValidators;

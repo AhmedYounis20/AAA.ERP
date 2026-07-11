@@ -1,5 +1,3 @@
-using ERP.BuildingBlocks.Application.DTOs;
-
 namespace ERP.BuildingBlocks.Application.DTOs.Filters;
 
 /// <summary>
@@ -89,28 +87,6 @@ public class SellingPriceFilterDto : SettingFilterDto
     /// Filter for default selling price only
     /// </summary>
     public bool? IsDefault { get; set; }
-}
-
-/// <summary>
-/// Filter DTO for Colors
-/// </summary>
-public class ColorFilterDto : SettingFilterDto
-{
-    /// <summary>
-    /// Search by color code
-    /// </summary>
-    public string? Code { get; set; }
-}
-
-/// <summary>
-/// Filter DTO for Sizes
-/// </summary>
-public class SizeFilterDto : SettingFilterDto
-{
-    /// <summary>
-    /// Search by size code
-    /// </summary>
-    public string? Code { get; set; }
 }
 
 /// <summary>

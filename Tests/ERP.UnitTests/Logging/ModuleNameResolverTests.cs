@@ -1,13 +1,13 @@
 using ERP.BuildingBlocks.Application.Logging;
 using FluentAssertions;
-using Inventory.Application.Commands.Colors;
+using Inventory.Application.Commands.PackingUnits;
 
 namespace ERP.UnitTests.Logging;
 
 public class ModuleNameResolverTests
 {
     [Theory]
-    [InlineData(typeof(ColorCreateCommand), "Inventory")]
+    [InlineData(typeof(PackingUnitCreateCommand), "Inventory")]
     [InlineData(typeof(Accounting.Application.Commands.Taxes.TaxCreateCommand), "Accounting")]
     public void FromType_resolves_module_from_command_namespace(Type type, string expectedModule)
     {
@@ -23,7 +23,7 @@ public class ModuleNameResolverTests
     }
 
     [Theory]
-    [InlineData(typeof(Inventory.Api.Controllers.Catalog.ColorsController), "Inventory")]
+    [InlineData(typeof(Inventory.Api.Controllers.Catalog.ProductsController), "Inventory")]
     [InlineData(typeof(Accounting.Api.Controllers.Settings.CurrenciesController), "Accounting")]
     [InlineData(typeof(Identity.Api.Controllers.AuthController), "Identity")]
     [InlineData(typeof(Platform.Audit.Api.Controllers.AuditLogsController), "Platform")]

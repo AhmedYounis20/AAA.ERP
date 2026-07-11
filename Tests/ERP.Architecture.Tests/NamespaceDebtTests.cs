@@ -68,7 +68,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Inventory_Domain_lookup_DTOs_should_not_use_legacy_ERP_Domain_OutputDtos_Lookups_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Dtos.Lookups.ColorLookupDto).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Dtos.Lookups.PackingUnitLookupDto).Assembly)
             .That()
             .ResideInNamespaceContaining("Lookups")
             .And()
@@ -170,7 +170,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Inventory_Application_repositories_should_use_Inventory_Application_Repositories_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Application.Repositories.IColorRepository).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Application.Repositories.IPackingUnitRepository).Assembly)
             .That()
             .HaveNameStartingWith("I")
             .And()
@@ -234,7 +234,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Inventory_Domain_entities_should_not_use_legacy_ERP_Domain_Models_Entities_Inventory_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.Colors.Color).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.PackingUnits.PackingUnit).Assembly)
             .That()
             .ResideInNamespace("Inventory.Domain.Models.Entities")
             .Or()
@@ -264,7 +264,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Inventory_Domain_DTOs_should_not_use_legacy_ERP_Domain_Models_Dtos_Inventory_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.Colors.Color).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Domain.Models.Entities.PackingUnits.PackingUnit).Assembly)
             .That()
             .ResideInNamespaceContaining("Dtos")
             .Should()
@@ -440,7 +440,7 @@ public class NamespaceDebtTests
     [Fact]
     public void Host_project_should_not_use_legacy_ERP_API_namespace()
     {
-        var result = Types.InAssembly(typeof(Inventory.Api.Controllers.Catalog.ColorsController).Assembly)
+        var result = Types.InAssembly(typeof(Inventory.Api.Controllers.Catalog.ProductsController).Assembly)
             .Should()
             .NotResideInNamespace("ERP.API")
             .And()
@@ -459,7 +459,7 @@ public class NamespaceDebtTests
             typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly,
             typeof(ERP.BuildingBlocks.Domain.Entities.BaseEntity).Assembly,
             typeof(Accounting.Application.Repositories.IEntryRepository).Assembly,
-            typeof(Inventory.Application.Repositories.IColorRepository).Assembly,
+            typeof(Inventory.Application.Repositories.IPackingUnitRepository).Assembly,
             typeof(Identity.Application.IAuthenticationService).Assembly,
             typeof(Platform.Audit.Application.IAuditService).Assembly,
             typeof(Accounting.Api.Controllers.Entries.CombinedEntriesController).Assembly
@@ -484,7 +484,7 @@ public class NamespaceDebtTests
         {
             typeof(ERP.BuildingBlocks.Application.Repositories.BaseRepositories.IBaseRepository<>).Assembly,
             typeof(Accounting.Application.Repositories.IEntryRepository).Assembly,
-            typeof(Inventory.Application.Repositories.IColorRepository).Assembly
+            typeof(Inventory.Application.Repositories.IPackingUnitRepository).Assembly
         };
 
         foreach (var assembly in assemblies)

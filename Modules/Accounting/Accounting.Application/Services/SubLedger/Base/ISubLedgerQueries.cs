@@ -1,8 +1,8 @@
 using ERP.BuildingBlocks.Application.Commands.BaseInputModels.BaseCreateCommands;
 using ERP.BuildingBlocks.Application.Responses;
-using ERP.BuildingBlocks.Domain.Entities;
+using ERP.BuildingBlocks.Application.Services.Queries;
 
-namespace ERP.BuildingBlocks.Application.Services.Queries;
+namespace Accounting.Application.Services.SubLedger.Base;
 
 /// <summary>
 /// Read-side contract for sub-ledger tree entities (hybrid CQRS — no writes).

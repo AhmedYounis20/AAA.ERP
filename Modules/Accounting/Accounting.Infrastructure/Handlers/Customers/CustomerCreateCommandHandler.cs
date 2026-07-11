@@ -15,7 +15,7 @@ public sealed class CustomerCreateCommandHandler(
     : BaseSubLedgerCreateHandler<Customer, CustomerCreateCommand>(
         repository,
         chartOfAccountRepository,
-        Guid.Parse(SD.CustomerChartOfAccountId),
+        Guid.Parse(Sd.CustomerChartOfAccountId),
         SubLeadgerType.Customer);
 
 public sealed class CustomerUpdateCommandHandler(ICustomerRepository repository)

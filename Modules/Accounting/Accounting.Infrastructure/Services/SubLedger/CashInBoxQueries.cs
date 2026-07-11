@@ -15,6 +15,6 @@ public class CashInBoxQueries(ICashInBoxRepository repository, IChartOfAccountRe
     public Task<ApiResponse<CashInBoxCreateCommand>> GetNextSubLedgers(Guid? parentId)
         => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<CashInBox, CashInBoxCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(SD.CashInBoxChartOfAccountId),
+            Guid.Parse(Sd.CashInBoxChartOfAccountId),
             parentId);
 }

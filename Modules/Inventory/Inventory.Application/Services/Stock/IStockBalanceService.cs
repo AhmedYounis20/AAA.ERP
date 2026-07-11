@@ -1,5 +1,5 @@
 using Inventory.Application.Dtos.Catalog;
-using Inventory.Domain.Models.Entities.Sizes;
+using Inventory.Domain.Models.Entities.StockBalances;
 
 namespace Inventory.Application.Services;
 

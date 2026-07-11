@@ -2,7 +2,7 @@ using Inventory.Domain.Models.Entities.Variants;
 using Inventory.Domain.Models.Entities.PackingUnits;
 using ERP.BuildingBlocks.Domain.Entities;
 
-namespace Inventory.Domain.Models.Entities.Sizes;
+namespace Inventory.Domain.Models.Entities.StockBalances;
 
 public class StockBalance : BaseEntity
 {

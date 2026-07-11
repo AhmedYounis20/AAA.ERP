@@ -42,15 +42,15 @@ public class BranchWorkflowService(
             if (isDomain)
             {
                 var chartOfAccountParent =
-                    await chartOfAccountRepository.Get(Guid.Parse(SD.BranchChartOfAccountId));
+                    await chartOfAccountRepository.Get(Guid.Parse(Sd.BranchChartOfAccountId));
                 var newCode = await chartOfAccountRepository
-                    .GenerateNewCodeForChild(Guid.Parse(SD.BranchChartOfAccountId));
+                    .GenerateNewCodeForChild(Guid.Parse(Sd.BranchChartOfAccountId));
                 entity = command.Adapt<Branch>();
                 entity.ChartOfAccount = new ChartOfAccount
                 {
                     Name = command.Name,
                     NameSecondLanguage = command.NameSecondLanguage,
-                    ParentId = Guid.Parse(SD.BranchChartOfAccountId),
+                    ParentId = Guid.Parse(Sd.BranchChartOfAccountId),
                     Code = newCode,
                     AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
                     IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,
