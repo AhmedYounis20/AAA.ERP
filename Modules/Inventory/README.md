@@ -4,7 +4,7 @@ Product catalog (products, variants, attributes), stock balances, inventory tran
 
 ## Purpose
 
-- Own catalog and stock aggregates: colors, sizes, packing units, products, variants, items, stock balances, thresholds, expiry levels, transactions, and transfers.
+- Own catalog and stock aggregates: products, variants, attributes, packing units, stock balances, thresholds, expiry levels, transactions, and transfers.
 - Coordinate stock mutations with GL posting via `IAccountingIntegrationService` inside `ITransactionCoordinator` for atomic cross-module operations.
 - Register EF configurations and DI via `AddInventoryModule()`.
 

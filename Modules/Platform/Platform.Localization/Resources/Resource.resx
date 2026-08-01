@@ -718,6 +718,9 @@
   <data name="VariantIdIsRequired" xml:space="preserve">
     <value>Variant Id Is Required</value>
   </data>
+  <data name="AtLeastOneLineItemIsRequired" xml:space="preserve">
+    <value>At least one line item is required</value>
+  </data>
   <data name="VariantNotFound" xml:space="preserve">
     <value>Variant Not Found</value>
   </data>

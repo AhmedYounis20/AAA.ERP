@@ -41,7 +41,7 @@ public static class ValidationMessages
     public const string PleaseChooseValidNodeType = "PleaseChooseValidNodeType";
     public const string ReceiverNameMaximumLength = "ReceiverNameMaximumLength";
     // Inventory — FluentValidation message keys
-    public const string AtLeastOneItemIsRequired = "At least one item is required";
+    public const string AtLeastOneLineItemIsRequired = "AtLeastOneLineItemIsRequired";
     public const string AverageCostIsRequired = "AverageCostIsRequired";
     public const string BranchIsRequired = "Branch is required";
     public const string CodeIsRequired = "CodeIsRequired";

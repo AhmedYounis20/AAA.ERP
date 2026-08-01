@@ -10,7 +10,7 @@ public class StockBalanceCreateValidator : BaseCreateValidator<StockBalanceCreat
 {
     public StockBalanceCreateValidator()
     {
-        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage(ValidationMessages.ItemIdIsRequired);
+        _ = RuleFor(e => e.VariantId).NotEmpty().WithMessage(ValidationMessages.VariantIdIsRequired);
         _ = RuleFor(e => e.PackingUnitId).NotEmpty().WithMessage(ValidationMessages.PackingUnitIdIsRequired);
         _ = RuleFor(e => e.BranchId).NotEmpty().WithMessage(ValidationMessages.BranchIdIsRequired);
         _ = RuleFor(e => e.CurrentBalance).GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.CurrentBalanceMustBeGreaterThanOrEqualToZero);

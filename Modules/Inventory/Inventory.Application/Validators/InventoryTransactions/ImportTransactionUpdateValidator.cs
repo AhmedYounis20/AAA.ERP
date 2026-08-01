@@ -26,7 +26,7 @@ public class ImportTransactionUpdateValidator : AbstractValidator<ImportTransact
 
         RuleFor(x => x.Items)
             .NotEmpty()
-            .WithMessage(ValidationMessages.AtLeastOneItemIsRequired);
+            .WithMessage(ValidationMessages.AtLeastOneLineItemIsRequired);
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }

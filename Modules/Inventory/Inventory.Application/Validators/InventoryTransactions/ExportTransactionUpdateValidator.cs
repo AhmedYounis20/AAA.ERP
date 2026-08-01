@@ -26,7 +26,7 @@ public class ExportTransactionUpdateValidator : AbstractValidator<ExportTransact
 
         RuleFor(x => x.Items)
             .NotEmpty()
-            .WithMessage(ValidationMessages.AtLeastOneItemIsRequired);
+            .WithMessage(ValidationMessages.AtLeastOneLineItemIsRequired);
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }

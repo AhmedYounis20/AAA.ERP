@@ -658,6 +658,9 @@
   <data name="VariantIdIsRequired" xml:space="preserve">
     <value>معرف المتغير مطلوب</value>
   </data>
+  <data name="AtLeastOneLineItemIsRequired" xml:space="preserve">
+    <value>مطلوب بند واحد على الأقل</value>
+  </data>
   <data name="VariantNotFound" xml:space="preserve">
     <value>المتغير غير موجود</value>
   </data>
