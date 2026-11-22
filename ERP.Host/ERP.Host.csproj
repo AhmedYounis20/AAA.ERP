@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="seeding\attributes\" />
+    <Content Update="seeding\account\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <Target Name="CopyProjectReferenceXmlDocumentation" AfterTargets="Build">

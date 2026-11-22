@@ -19,7 +19,7 @@ namespace ERP.Infrastructure.Utilities;
 public class ImportDataToSeed
 {
     private readonly ApplicationDbContext _context;
-    private ILogger<ImportDataToSeed> _logger;
+    private readonly ILogger<ImportDataToSeed> _logger;
 
     public ImportDataToSeed(IConfiguration configuration, ApplicationDbContext context,
         ILogger<ImportDataToSeed> logger)
@@ -30,7 +30,7 @@ public class ImportDataToSeed
 
     public async Task Import(string folder = "account")
     {
-        var transaction = _context.Database.BeginTransaction();
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             await ImportBussinessData(folder);
@@ -41,7 +41,8 @@ public class ImportDataToSeed
         catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            _logger.LogError(ex.ToString());
+            _logger.LogError(ex, "Account seed import failed for folder {Folder}", folder);
+            throw;
         }
     }
 
@@ -67,23 +68,17 @@ public class ImportDataToSeed
 
     private async Task ImportTable<TEntity>(string folder, string jsonFile) where TEntity : BaseEntity
     {
-        var json = await File.ReadAllTextAsync(Path.Combine($"seeding/{folder}", jsonFile));
+        var path = ResolveSeedFile(folder, jsonFile);
+        var json = await File.ReadAllTextAsync(path);
         List<TEntity> entities = JsonConvert.DeserializeObject<List<TEntity>>(json) ?? new();
 
-        try
+        foreach (TEntity entity in entities)
         {
-            foreach (TEntity entity in entities)
-            {
-                TEntity? dbEntity = _context.Set<TEntity>().Where(e => e.Id == entity.Id).FirstOrDefault();
-                if (dbEntity != null)
-                    _context.Update(entity);
-                else
-                    _context.Add(entity);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.ToString());
+            TEntity? dbEntity = _context.Set<TEntity>().Where(e => e.Id == entity.Id).FirstOrDefault();
+            if (dbEntity != null)
+                _context.Update(entity);
+            else
+                _context.Add(entity);
         }
     }
 
@@ -96,51 +91,50 @@ public class ImportDataToSeed
 
     private async Task ImportUserRoles(string folder)
     {
-        try
-        {
-            var json = await File.ReadAllTextAsync(Path.Combine($"seeding/{folder}", "AspNetUserRoles.json"));
-            List<IdentityUserRole<string>> entities =
-                JsonConvert.DeserializeObject<List<IdentityUserRole<string>>>(json) ?? new();
-            _context.Set<IdentityUserRole<string>>()
-                .RemoveRange(_context.Set<IdentityUserRole<string>>().AsNoTracking().ToList());
-            await _context.Set<IdentityUserRole<string>>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.ToString());
-        }
+        var json = await File.ReadAllTextAsync(ResolveSeedFile(folder, "AspNetUserRoles.json"));
+        List<IdentityUserRole<string>> entities =
+            JsonConvert.DeserializeObject<List<IdentityUserRole<string>>>(json) ?? new();
+        _context.Set<IdentityUserRole<string>>()
+            .RemoveRange(_context.Set<IdentityUserRole<string>>().AsNoTracking().ToList());
+        await _context.Set<IdentityUserRole<string>>().AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
     }
 
     private async Task ImportRoles(string folder)
     {
-        try
-        {
-            var json = await File.ReadAllTextAsync(Path.Combine($"seeding/{folder}", "AspNetRoles.json"));
-            List<IdentityRole> entities = JsonConvert.DeserializeObject<List<IdentityRole>>(json) ?? new();
-            _context.Set<IdentityRole>().RemoveRange(_context.Set<IdentityRole>().AsNoTracking().ToList());
-            await _context.Set<IdentityRole>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.ToString());
-        }
+        var json = await File.ReadAllTextAsync(ResolveSeedFile(folder, "AspNetRoles.json"));
+        List<IdentityRole> entities = JsonConvert.DeserializeObject<List<IdentityRole>>(json) ?? new();
+        _context.Set<IdentityRole>().RemoveRange(_context.Set<IdentityRole>().AsNoTracking().ToList());
+        await _context.Set<IdentityRole>().AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
     }
 
     private async Task ImportUsers(string folder)
     {
-        try
+        var json = await File.ReadAllTextAsync(ResolveSeedFile(folder, "AspNetUsers.json"));
+        List<ApplicationUser> entities = JsonConvert.DeserializeObject<List<ApplicationUser>>(json) ?? new();
+        _context.Set<ApplicationUser>().RemoveRange(_context.Set<ApplicationUser>().AsNoTracking().ToList());
+        await _context.Set<ApplicationUser>().AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
+    }
+
+    private static string ResolveSeedFile(string folder, string jsonFile)
+    {
+        var relative = Path.Combine("seeding", folder, jsonFile);
+        var candidates = new[]
         {
-            var json = await File.ReadAllTextAsync(Path.Combine($"seeding/{folder}", "AspNetUsers.json"));
-            List<ApplicationUser> entities = JsonConvert.DeserializeObject<List<ApplicationUser>>(json) ?? new();
-            _context.Set<ApplicationUser>().RemoveRange(_context.Set<ApplicationUser>().AsNoTracking().ToList());
-            await _context.Set<ApplicationUser>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
+            Path.Combine(AppContext.BaseDirectory, relative),
+            Path.GetFullPath(relative),
+        };
+
+        foreach (var candidate in candidates)
         {
-            _logger.LogError(ex.ToString());
+            if (File.Exists(candidate))
+                return candidate;
         }
+
+        throw new FileNotFoundException(
+            $"Seed file not found: {relative}. Ensure seeding/{folder} is copied next to the host binaries.",
+            candidates[0]);
     }
 }

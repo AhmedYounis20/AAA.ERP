@@ -79,6 +79,16 @@ dotnet ef database update \
   --startup-project ERP.Host/ERP.Host.csproj
 ```
 
+### First-time database bootstrap
+
+After `database update`, start the API (startup does not seed or validate sub-ledger bindings by default). Then import system data in Development:
+
+```bash
+GET /api/DbWork/import/account
+```
+
+That loads `seeding/account` (including `SubLedgerBaseAccounts.json`, chart of accounts, lookups, and seed identity users).
+
 ## Module READMEs
 
 - [Accounting](Modules/Accounting/README.md)
