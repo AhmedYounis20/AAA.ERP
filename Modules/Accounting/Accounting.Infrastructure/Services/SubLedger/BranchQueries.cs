@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.Branches;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
 using Accounting.Infrastructure.Services.SubLeadgers;
 using ERP.BuildingBlocks.Persistence.Services.Queries;
 
@@ -11,13 +11,19 @@ namespace Accounting.Infrastructure.Services;
 /// <summary>
 /// Branch read queries.
 /// </summary>
-public class BranchQueries(IBranchRepository repository, IChartOfAccountRepository chartOfAccountRepository)
+public class BranchQueries(
+    IBranchRepository repository,
+    IChartOfAccountRepository chartOfAccountRepository,
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver)
     : BaseTreeSettingRepositoryQueries<Branch>(repository),
       IBranchQueries
 {
-    public Task<ApiResponse<BranchCreateCommand>> GetNextSubLedgers(Guid? parentId)
-        => SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Branch, BranchCreateCommand>(
+    public async Task<ApiResponse<BranchCreateCommand>> GetNextSubLedgers(Guid? parentId)
+    {
+        var coaParent = await subLedgerCoaParentResolver.ResolveAsync(SubLeadgerType.Branch);
+        return await SubLedgerNextDefaultsHelper.GetNextSubLedgersAsync<Branch, BranchCreateCommand>(
             chartOfAccountRepository,
-            Guid.Parse(Sd.BranchChartOfAccountId),
+            coaParent.Id,
             parentId);
+    }
 }

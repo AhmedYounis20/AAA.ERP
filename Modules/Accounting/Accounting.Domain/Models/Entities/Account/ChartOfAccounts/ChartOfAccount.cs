@@ -11,7 +11,6 @@ public class ChartOfAccount : BaseTreeSettingEntity<ChartOfAccount>
     public bool IsStopDealing { get; set; }
     public bool IsDepreciable { get; set; }
     public bool IsCreatedFromSubLeadger { get; set; }
-    public bool IsSubLeadgerBaseAccount { get; set; }
     public AccountNature AccountNature { get; set; }
     public SubLeadgerType? SubLeadgerType { get; set; }
 }

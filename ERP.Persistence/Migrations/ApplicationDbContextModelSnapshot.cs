@@ -71,7 +71,7 @@ namespace ERP.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(13);
+                        .HasColumnOrder(12);
 
                     b.Property<Guid>("AccountGuidId")
                         .HasColumnType("uniqueidentifier")
@@ -114,10 +114,6 @@ namespace ERP.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(6);
 
-                    b.Property<bool>("IsSubLeadgerBaseAccount")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(9);
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -128,24 +124,25 @@ namespace ERP.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(11);
+                        .HasColumnOrder(10);
 
                     b.Property<string>("NameSecondLanguage")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnOrder(12);
+                        .HasColumnOrder(11);
 
                     b.Property<int>("NodeType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(14);
+                        .HasColumnOrder(13);
 
                     b.Property<string>("SubLeadgerType")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(10);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(9);
 
                     b.HasKey("Id");
 
@@ -165,6 +162,60 @@ namespace ERP.Persistence.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("ChartOfAccounts", "accounting");
+                });
+
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.ChartOfAccounts.SubLedgerBaseAccount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("ChartOfAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FixedAssetType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SubLedgerType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartOfAccountId")
+                        .IsUnique();
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("SubLedgerType", "Role", "FixedAssetType")
+                        .IsUnique()
+                        .HasFilter("[FixedAssetType] IS NOT NULL");
+
+                    b.HasIndex("SubLedgerType", "Role")
+                        .IsUnique()
+                        .HasFilter("[FixedAssetType] IS NULL");
+
+                    b.ToTable("SubLedgerBaseAccounts", "accounting");
                 });
 
             modelBuilder.Entity("Accounting.Domain.Models.Entities.CollectionBooks.CollectionBook", b =>
@@ -3441,6 +3492,17 @@ namespace ERP.Persistence.Migrations
                     b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("Accounting.Domain.Models.Entities.ChartOfAccounts.SubLedgerBaseAccount", b =>
+                {
+                    b.HasOne("Accounting.Domain.Models.Entities.ChartOfAccounts.ChartOfAccount", "ChartOfAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartOfAccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChartOfAccount");
                 });
 
             modelBuilder.Entity("Accounting.Domain.Models.Entities.CostCenters.CostCenter", b =>

@@ -169,6 +169,10 @@ public class AccountingIntegrationServiceContractTests
       CancellationToken cancellationToken = default)
       => Task.FromResult(new ApiResponse<BranchAccountInfo> { IsSuccess = false });
 
+    public Task<ApiResponse<BranchAccountInfo>> GetStockUnderTransferBranchAsync(
+      CancellationToken cancellationToken = default)
+      => Task.FromResult(new ApiResponse<BranchAccountInfo> { IsSuccess = false });
+
     public Task<ApiResponse<Guid>> ValidatePartyAccountAsync(
       Guid chartOfAccountId,
       CancellationToken cancellationToken = default)

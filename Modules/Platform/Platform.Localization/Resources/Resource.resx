@@ -634,6 +634,18 @@
   <data name="SomeChartOfAcountsNotExisted" xml:space="preserve">
     <value>Some Chart Of Acounts Not Existed</value>
   </data>
+  <data name="SubLedgerBaseAccountAmbiguous" xml:space="preserve">
+    <value>Multiple sub-ledger base chart-of-account mappings were found for the same type</value>
+  </data>
+  <data name="SubLedgerBaseAccountNotConfigured" xml:space="preserve">
+    <value>Sub-ledger base chart-of-account is not configured</value>
+  </data>
+  <data name="SubLedgerParentAccountInvalid" xml:space="preserve">
+    <value>The selected chart-of-account cannot be used as a sub-ledger parent</value>
+  </data>
+  <data name="SubLedgerParentAccountNotFound" xml:space="preserve">
+    <value>Sub-ledger parent chart-of-account was not found</value>
+  </data>
   <data name="Total cost must be greater than or equal to zero" xml:space="preserve">
     <value>Total cost must be greater than or equal to zero</value>
   </data>
@@ -717,6 +729,9 @@
   </data>
   <data name="VariantIdIsRequired" xml:space="preserve">
     <value>Variant Id Is Required</value>
+  </data>
+  <data name="AtLeastOneLineItemIsRequired" xml:space="preserve">
+    <value>At least one line item is required</value>
   </data>
   <data name="VariantNotFound" xml:space="preserve">
     <value>Variant Not Found</value>

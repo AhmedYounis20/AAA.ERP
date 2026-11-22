@@ -52,6 +52,7 @@ public class ImportDataToSeed
         await ImportTable<AccountGuide>(folder, "AccountGuides.json");
         await ImportTable<Role>(folder, "Roles.json");
         await ImportTable<ChartOfAccount>(folder, "ChartOfAccounts.json");
+        await ImportTable<SubLedgerBaseAccount>(folder, "SubLedgerBaseAccounts.json");
         await ImportTable<GLSetting>(folder, "GLSettings.json");
         await ImportTable<Currency>(folder, "Currencies.json");
         await ImportTable<FinancialPeriod>(folder, "FinancialPeriods.json");

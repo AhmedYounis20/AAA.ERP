@@ -1,5 +1,6 @@
 using Accounting.Application.Commands.Banks;
 using Accounting.Application.Repositories;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Infrastructure.Handlers.Banks;
@@ -15,14 +16,17 @@ public class BankCreateCommandHandlerTests
     public async Task Handle_DuplicateName_ReturnsValidationError()
     {
         var repository = new Mock<IBankRepository>();
-        var chartOfAccountRepository = new Mock<IChartOfAccountRepository>();
-        var parentId = Guid.Parse("0aecd366-95fd-47b8-8516-08dc3dfcb068");
+        var subLedgerCoaParentResolver = new Mock<ISubLedgerCoaParentResolver>();
+        var subLedgerCoaFactory = new Mock<ISubLedgerCoaFactory>();
 
         repository
             .Setup(r => r.GetByNames("Existing Bank", "Existing Bank"))
             .ReturnsAsync(new Bank { Id = Guid.NewGuid(), Name = "Existing Bank", NameSecondLanguage = "Existing Bank" });
 
-        var handler = new BankCreateCommandHandler(repository.Object, chartOfAccountRepository.Object);
+        var handler = new BankCreateCommandHandler(
+            repository.Object,
+            subLedgerCoaParentResolver.Object,
+            subLedgerCoaFactory.Object);
         var command = new BankCreateCommand
         {
             Name = "Existing Bank",
@@ -35,26 +39,38 @@ public class BankCreateCommandHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().Contain(e => e.MessageKey == "WithSameNameIsExisted");
         repository.Verify(r => r.Add(It.IsAny<Bank>()), Times.Never);
-        chartOfAccountRepository.Verify(r => r.Get(It.IsAny<Guid?>()), Times.Never);
+        subLedgerCoaParentResolver.Verify(
+            r => r.ResolveAsync(It.IsAny<SubLeadgerType>(), It.IsAny<FixedAssetType?>(), It.IsAny<SubLedgerAccountRole>(), It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [Fact]
     public async Task Handle_ValidDomainCommand_PersistsBank()
     {
         var repository = new Mock<IBankRepository>();
-        var chartOfAccountRepository = new Mock<IChartOfAccountRepository>();
+        var subLedgerCoaParentResolver = new Mock<ISubLedgerCoaParentResolver>();
+        var subLedgerCoaFactory = new Mock<ISubLedgerCoaFactory>();
+        var parentAccount = new ChartOfAccount { Id = Guid.NewGuid(), AccountNature = AccountNature.Debit };
 
         repository
             .Setup(r => r.GetByNames("New Bank", "New Bank"))
             .ReturnsAsync((Bank?)null);
-        chartOfAccountRepository
-            .Setup(r => r.Get(It.IsAny<Guid?>()))
-            .ReturnsAsync(new ChartOfAccount { Id = Guid.NewGuid(), AccountNature = AccountNature.Debit });
-        chartOfAccountRepository
-            .Setup(r => r.GenerateNewCodeForChild(It.IsAny<Guid?>()))
-            .ReturnsAsync("1101");
+        subLedgerCoaParentResolver
+            .Setup(r => r.ResolveAsync(SubLeadgerType.Bank, null, SubLedgerAccountRole.Default, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(parentAccount);
+        subLedgerCoaFactory
+            .Setup(f => f.CreateChildAccountAsync(
+                "New Bank",
+                "New Bank",
+                parentAccount,
+                SubLeadgerType.Bank,
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ChartOfAccount { Id = Guid.NewGuid(), Code = "1101" });
 
-        var handler = new BankCreateCommandHandler(repository.Object, chartOfAccountRepository.Object);
+        var handler = new BankCreateCommandHandler(
+            repository.Object,
+            subLedgerCoaParentResolver.Object,
+            subLedgerCoaFactory.Object);
         var command = new BankCreateCommand
         {
             Name = "New Bank",

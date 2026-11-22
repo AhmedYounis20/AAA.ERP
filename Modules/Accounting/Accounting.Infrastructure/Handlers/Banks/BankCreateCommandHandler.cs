@@ -1,22 +1,24 @@
 using Accounting.Application.Commands.Banks;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
-using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
-using Accounting.Infrastructure.Handlers.SubLedger;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.SubLeadgers;
+using Accounting.Infrastructure.Handlers.SubLedger;
 using ERP.BuildingBlocks.Persistence.Repositories;
 
 namespace Accounting.Infrastructure.Handlers.Banks;
 
 public sealed class BankCreateCommandHandler(
     IBankRepository repository,
-    IChartOfAccountRepository chartOfAccountRepository)
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
+    ISubLedgerCoaFactory subLedgerCoaFactory)
     : BaseSubLedgerCreateHandler<Bank, BankCreateCommand>(
         repository,
-        chartOfAccountRepository,
-        Guid.Parse(Sd.BankChartAccountId),
-        SubLeadgerType.Bank);
+        subLedgerCoaParentResolver,
+        subLedgerCoaFactory)
+{
+    protected override SubLeadgerType SubLedgerType => SubLeadgerType.Bank;
+}
 
 public sealed class BankUpdateCommandHandler(IBankRepository repository)
     : BaseSubLedgerUpdateHandler<Bank, BankUpdateCommand>(repository);

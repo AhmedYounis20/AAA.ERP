@@ -2,6 +2,7 @@ using ERP.Infrastructure.DBConfiguration.DbContext;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -18,6 +19,14 @@ public class ErpWebApplicationFactory : WebApplicationFactory<Program>
 
     internal static void ConfigureTestServices(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration((_, config) =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Accounting:SubLedger:ValidateConfigurationOnStartup"] = "false"
+            });
+        });
+
         builder.ConfigureServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<ApplicationDbContext>));

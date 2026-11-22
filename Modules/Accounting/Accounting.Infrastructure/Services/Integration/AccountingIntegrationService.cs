@@ -1,5 +1,6 @@
 using Accounting.Contracts.Integration;
 using Accounting.Application.Dtos.Entries;
+using Accounting.Application.Services;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Commands.CombinedEntries;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
@@ -17,11 +18,16 @@ public class AccountingIntegrationService : IAccountingIntegrationService
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMediator _mediator;
+    private readonly ISubLedgerCoaParentResolver _subLedgerCoaParentResolver;
 
-    public AccountingIntegrationService(IApplicationDbContext dbContext, IMediator mediator)
+    public AccountingIntegrationService(
+        IApplicationDbContext dbContext,
+        IMediator mediator,
+        ISubLedgerCoaParentResolver subLedgerCoaParentResolver)
     {
         _dbContext = dbContext;
         _mediator = mediator;
+        _subLedgerCoaParentResolver = subLedgerCoaParentResolver;
     }
 
     private async Task<ApiResponse<Guid>?> TryGetExistingPostedEntryAsync(
@@ -85,6 +91,36 @@ public class AccountingIntegrationService : IAccountingIntegrationService
         var branch = await _dbContext.Set<Branch>()
             .AsNoTracking()
             .FirstOrDefaultAsync(b => b.Id == branchId, cancellationToken);
+
+        if (branch is null)
+        {
+            return new ApiResponse<BranchAccountInfo>
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                Errors = [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
+            };
+        }
+
+        return new ApiResponse<BranchAccountInfo>
+        {
+            IsSuccess = true,
+            StatusCode = HttpStatusCode.OK,
+            Result = new BranchAccountInfo(branch.Id, branch.ChartOfAccountId)
+        };
+    }
+
+    public async Task<ApiResponse<BranchAccountInfo>> GetStockUnderTransferBranchAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var stockUnderTransferAccount = await _subLedgerCoaParentResolver.ResolveAsync(
+            SubLeadgerType.Branch,
+            role: SubLedgerAccountRole.StockUnderTransfer,
+            cancellationToken: cancellationToken);
+
+        var branch = await _dbContext.Set<Branch>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.ChartOfAccountId == stockUnderTransferAccount.Id, cancellationToken);
 
         if (branch is null)
         {

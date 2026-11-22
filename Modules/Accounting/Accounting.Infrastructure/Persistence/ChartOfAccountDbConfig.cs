@@ -23,8 +23,7 @@ public class ChartOfAccountDbConfig : BaseTreeSettingEntityDbConfig<ChartOfAccou
         _ = builder.Property(e => e.IsStopDealing).HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.IsActiveAccount).HasColumnOrder(columnNumber++);
         _ = builder.Property(e => e.IsCreatedFromSubLeadger).HasColumnOrder(columnNumber++);
-        _ = builder.Property(e => e.IsSubLeadgerBaseAccount).HasColumnOrder(columnNumber++);
-        _ = builder.Property(e => e.SubLeadgerType).HasConversion<string>().HasColumnOrder(columnNumber++);
+        _ = builder.Property(e => e.SubLeadgerType).HasConversion<string>().HasMaxLength(50).HasColumnOrder(columnNumber++);
 
         base.ApplyConfiguration(builder);
 

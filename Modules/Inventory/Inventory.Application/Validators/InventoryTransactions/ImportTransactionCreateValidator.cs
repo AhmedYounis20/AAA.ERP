@@ -22,7 +22,7 @@ public class ImportTransactionCreateValidator : AbstractValidator<ImportTransact
 
         RuleFor(x => x.Items)
             .NotEmpty()
-            .WithMessage(ValidationMessages.AtLeastOneItemIsRequired);
+            .WithMessage(ValidationMessages.AtLeastOneLineItemIsRequired);
 
         RuleForEach(x => x.Items).SetValidator(new InventoryTransactionItemCreateDtoValidator());
     }
@@ -34,7 +34,7 @@ public class InventoryTransactionItemCreateDtoValidator : AbstractValidator<Inve
     {
         RuleFor(x => x.VariantId)
             .NotEmpty()
-            .WithMessage(ValidationMessages.ItemIsRequired);
+            .WithMessage(ValidationMessages.VariantIdIsRequired);
 
         RuleFor(x => x.PackingUnitId)
             .NotEmpty()

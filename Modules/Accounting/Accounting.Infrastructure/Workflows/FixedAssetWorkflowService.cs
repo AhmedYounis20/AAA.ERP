@@ -3,7 +3,6 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
 using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Domain.Entities;
 
@@ -15,7 +14,9 @@ namespace Accounting.Infrastructure.Workflows;
 public class FixedAssetWorkflowService(
     IUnitOfWork unitOfWork,
     IFixedAssetRepository repository,
-    IChartOfAccountRepository chartOfAccountRepository) : IFixedAssetWorkflowService
+    IChartOfAccountRepository chartOfAccountRepository,
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
+    ISubLedgerCoaFactory subLedgerCoaFactory) : IFixedAssetWorkflowService
 {
     public async Task<ApiResponse<FixedAsset>> Create(FixedAssetCreateCommand command)
     {
@@ -30,12 +31,11 @@ public class FixedAssetWorkflowService(
             };
         }
 
+        await unitOfWork.BeginTransactionAsync();
         try
         {
             var isDomain = command.NodeType.Equals(NodeType.Domain);
-            var fixedAssetId = Guid.Parse(Sd.FixedAssetsIds[command.FixedAssetType ?? FixedAssetType.Lands]);
-            var chartOfAccountParent = await chartOfAccountRepository.Get(fixedAssetId);
-            var newCode = await chartOfAccountRepository.GenerateNewCodeForChild(fixedAssetId);
+            var assetType = command.FixedAssetType ?? FixedAssetType.Lands;
             var entity = command.Adapt<FixedAsset>();
 
             if (isDomain)
@@ -46,75 +46,42 @@ public class FixedAssetWorkflowService(
                     entity.DepreciationRate = 0;
                 }
 
-                var fixedAssetsDepreciationDetails =
-                    Sd.FixedAssetsDepreciationDetails[command.FixedAssetType ?? FixedAssetType.Lands];
-                var accumlatedDepriciation = command.FixedAssetType == FixedAssetType.Lands
-                    ? null
-                    : await chartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[0]));
-                var expensesDepriciation = command.FixedAssetType == FixedAssetType.Lands
-                    ? null
-                    : await chartOfAccountRepository.Get(Guid.Parse(fixedAssetsDepreciationDetails[1]));
+                var assetParent = await subLedgerCoaParentResolver.ResolveAsync(
+                    SubLeadgerType.FixedAsset,
+                    assetType,
+                    SubLedgerAccountRole.Asset);
 
-                entity.ChartOfAccount = new ChartOfAccount
-                {
-                    Name = command.Name,
-                    NameSecondLanguage = command.NameSecondLanguage,
-                    ParentId = fixedAssetId,
-                    Code = newCode,
-                    AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
-                    IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,
-                    IsActiveAccount = chartOfAccountParent?.IsActiveAccount ?? false,
-                    IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
-                    IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
-                    AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-                    IsCreatedFromSubLeadger = true,
-                    SubLeadgerType = SubLeadgerType.FixedAsset
-                };
+                entity.ChartOfAccount = await subLedgerCoaFactory.CreateChildAccountAsync(
+                    command.Name,
+                    command.NameSecondLanguage,
+                    assetParent,
+                    SubLeadgerType.FixedAsset);
 
-                if (accumlatedDepriciation != null)
+                if (assetType != FixedAssetType.Lands)
                 {
-                    var accumlatedDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(Sd.AccumulatedDepreciationId));
-                    var newAccumlatedCode =
-                        await chartOfAccountRepository.GenerateNewCodeForChild(accumlatedDepriciation.Id);
-                    entity.AccumlatedAccount = new ChartOfAccount
-                    {
-                        Name = $"{accumlatedDepreciationAccount.Name} {command.Name}",
-                        NameSecondLanguage =
-                            $"{accumlatedDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}",
-                        ParentId = accumlatedDepriciation.Id,
-                        Code = newAccumlatedCode,
-                        AccountNature = accumlatedDepriciation?.AccountNature ?? AccountNature.Debit,
-                        IsDepreciable = accumlatedDepriciation?.IsDepreciable ?? false,
-                        IsActiveAccount = accumlatedDepriciation?.IsActiveAccount ?? false,
-                        IsStopDealing = accumlatedDepriciation?.IsStopDealing ?? true,
-                        IsPostedAccount = accumlatedDepriciation?.IsPostedAccount ?? false,
-                        AccountGuidId = accumlatedDepriciation?.AccountGuidId ?? Guid.NewGuid(),
-                        IsCreatedFromSubLeadger = true
-                    };
-                }
+                    var accumulatedParent = await subLedgerCoaParentResolver.ResolveAsync(
+                        SubLeadgerType.FixedAsset,
+                        assetType,
+                        SubLedgerAccountRole.AccumulatedDepreciation);
+                    var expenseParent = await subLedgerCoaParentResolver.ResolveAsync(
+                        SubLeadgerType.FixedAsset,
+                        assetType,
+                        SubLedgerAccountRole.DepreciationExpense);
 
-                if (expensesDepriciation != null)
-                {
-                    var expensesDepreciationAccount =
-                        await chartOfAccountRepository.Get(Guid.Parse(Sd.ExpensesDepreciationId));
-                    var newExpenseCode =
-                        await chartOfAccountRepository.GenerateNewCodeForChild(expensesDepriciation.Id);
-                    entity.ExpensesAccount = new ChartOfAccount
-                    {
-                        Name = $"{expensesDepreciationAccount.Name} {command.Name}",
-                        NameSecondLanguage =
-                            $"{expensesDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}",
-                        ParentId = expensesDepriciation.Id,
-                        Code = newExpenseCode,
-                        AccountNature = expensesDepriciation?.AccountNature ?? AccountNature.Debit,
-                        IsDepreciable = expensesDepriciation?.IsDepreciable ?? false,
-                        IsActiveAccount = expensesDepriciation?.IsActiveAccount ?? false,
-                        IsStopDealing = expensesDepriciation?.IsStopDealing ?? true,
-                        IsPostedAccount = expensesDepriciation?.IsPostedAccount ?? false,
-                        AccountGuidId = expensesDepriciation?.AccountGuidId ?? Guid.NewGuid(),
-                        IsCreatedFromSubLeadger = true
-                    };
+                    var accumulatedNamePrefix = await GetDepreciationNamePrefixAsync(accumulatedParent);
+                    var expenseNamePrefix = await GetDepreciationNamePrefixAsync(expenseParent);
+
+                    entity.AccumlatedAccount = await subLedgerCoaFactory.CreatePrefixedChildAccountAsync(
+                        accumulatedNamePrefix,
+                        command.Name,
+                        command.NameSecondLanguage,
+                        accumulatedParent);
+
+                    entity.ExpensesAccount = await subLedgerCoaFactory.CreatePrefixedChildAccountAsync(
+                        expenseNamePrefix,
+                        command.Name,
+                        command.NameSecondLanguage,
+                        expenseParent);
                 }
             }
             else
@@ -124,6 +91,7 @@ public class FixedAssetWorkflowService(
             }
 
             await repository.Add(entity);
+            await unitOfWork.CommitAsync();
 
             return new ApiResponse<FixedAsset>
             {
@@ -134,6 +102,7 @@ public class FixedAssetWorkflowService(
         }
         catch (Exception ex)
         {
+            await unitOfWork.RollbackAsync();
             return new ApiResponse<FixedAsset>
             {
                 IsSuccess = false,
@@ -209,29 +178,33 @@ public class FixedAssetWorkflowService(
                 await chartOfAccountRepository.Update(account);
             }
 
-            if (entity.AccumlatedAccountId.HasValue)
+            if (entity.AccumlatedAccountId.HasValue && entity.FixedAssetType.HasValue)
             {
-                var accumlatedDepreciationAccount =
-                    await chartOfAccountRepository.Get(Guid.Parse(Sd.AccumulatedDepreciationId));
+                var accumulatedParent = await subLedgerCoaParentResolver.ResolveAsync(
+                    SubLeadgerType.FixedAsset,
+                    entity.FixedAssetType,
+                    SubLedgerAccountRole.AccumulatedDepreciation);
+                var accumulatedNamePrefix = await GetDepreciationNamePrefixAsync(accumulatedParent);
 
-                var acculatedAccount =
-                    await chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
-                acculatedAccount.Name = $"{accumlatedDepreciationAccount.Name} {command.Name}";
+                var acculatedAccount = await chartOfAccountRepository.Get(entity.AccumlatedAccountId.Value);
+                acculatedAccount.Name = $"{accumulatedNamePrefix.Name} {command.Name}";
                 acculatedAccount.NameSecondLanguage =
-                    $"{accumlatedDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
+                    $"{accumulatedNamePrefix.NameSecondLanguage} {command.NameSecondLanguage}";
                 await chartOfAccountRepository.Update(acculatedAccount);
             }
 
-            if (entity.ExpensesAccountId.HasValue)
+            if (entity.ExpensesAccountId.HasValue && entity.FixedAssetType.HasValue)
             {
-                var expensesDepreciationAccount =
-                    await chartOfAccountRepository.Get(Guid.Parse(Sd.ExpensesDepreciationId));
+                var expenseParent = await subLedgerCoaParentResolver.ResolveAsync(
+                    SubLeadgerType.FixedAsset,
+                    entity.FixedAssetType,
+                    SubLedgerAccountRole.DepreciationExpense);
+                var expenseNamePrefix = await GetDepreciationNamePrefixAsync(expenseParent);
 
-                var expenseAccount =
-                    await chartOfAccountRepository.Get(entity.ExpensesAccountId.Value);
-                expenseAccount.Name = $"{expensesDepreciationAccount.Name} {command.Name}";
+                var expenseAccount = await chartOfAccountRepository.Get(entity.ExpensesAccountId.Value);
+                expenseAccount.Name = $"{expenseNamePrefix.Name} {command.Name}";
                 expenseAccount.NameSecondLanguage =
-                    $"{expensesDepreciationAccount.NameSecondLanguage} {command.NameSecondLanguage}";
+                    $"{expenseNamePrefix.NameSecondLanguage} {command.NameSecondLanguage}";
                 await chartOfAccountRepository.Update(expenseAccount);
             }
 
@@ -309,6 +282,15 @@ public class FixedAssetWorkflowService(
                 Errors = [new MessageTemplate { MessageKey = ex.Message.Trim() }]
             };
         }
+    }
+
+    private async Task<ChartOfAccount> GetDepreciationNamePrefixAsync(ChartOfAccount depreciationBaseAccount)
+    {
+        if (!depreciationBaseAccount.ParentId.HasValue)
+            return depreciationBaseAccount;
+
+        var header = await chartOfAccountRepository.Get(depreciationBaseAccount.ParentId.Value);
+        return header ?? depreciationBaseAccount;
     }
 
     private async Task<(bool isValid, List<string> errors, FixedAsset? entity)> ValidateDelete(Guid id)

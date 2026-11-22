@@ -7,7 +7,9 @@ using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
 
 namespace Accounting.Infrastructure.Handlers.ChartOfAccounts;
 
-public sealed class ChartOfAccountDeleteCommandHandler(IChartOfAccountRepository repository)
+public sealed class ChartOfAccountDeleteCommandHandler(
+    IChartOfAccountRepository repository,
+    ISubLedgerBaseAccountRepository baseAccountRepository)
     : BaseTreeSettingDeleteHandler<ChartOfAccount, ChartOfAccountDeleteCommand>(repository)
 {
     protected override async Task<CrudEntityValidationResult<ChartOfAccount>> ValidateDeleteAsync(
@@ -23,7 +25,7 @@ public sealed class ChartOfAccountDeleteCommandHandler(IChartOfAccountRepository
         if (baseResult.Entity.IsCreatedFromSubLeadger)
             errors.Add(ErrorMessages.ChartOfAccountFromSubLeadger);
 
-        if (baseResult.Entity.IsSubLeadgerBaseAccount)
+        if (await baseAccountRepository.ExistsForAccountAsync(id, cancellationToken))
             errors.Add(ErrorMessages.ChartOfAccountIsSubLeadgerBase);
 
         if (await repository.IsInUse(id))

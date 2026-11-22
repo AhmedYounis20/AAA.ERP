@@ -53,4 +53,16 @@ public sealed class ChartOfAccountUpdateCommandHandler(
             ? CrudEntityValidationResult<ChartOfAccount>.Success(baseResult.Entity!)
             : CrudEntityValidationResult<ChartOfAccount>.Failure(errors, baseResult.Entity);
     }
+
+    protected override Task<ChartOfAccount> MapUpdateEntityAsync(
+        ChartOfAccountUpdateCommand command,
+        ChartOfAccount existingEntity,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        command.Adapt(existingEntity);
+        existingEntity.ModifiedAt = DateTime.Now;
+        return Task.FromResult(existingEntity);
+    }
 }
