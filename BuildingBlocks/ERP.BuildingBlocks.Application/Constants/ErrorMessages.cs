@@ -32,6 +32,11 @@ public static class ErrorMessages
     public const string ChartOfAccountCodeCannotChange = "ChartOfAccountCodeCannotBeChanged";
     public const string ChartOfAccountFromSubLeadger = "ChartOfAccountCreatedFomSubLeadger";
     public const string ChartOfAccountIsSubLeadgerBase = "ChartOfAccountBaseSubLeadgerAccount";
+    public const string SubLedgerBaseAccountNotConfigured = "SubLedgerBaseAccountNotConfigured";
+    public const string SubLedgerBaseAccountAmbiguous = "SubLedgerBaseAccountAmbiguous";
+    public const string SubLedgerBaseAccountInvalid = "SubLedgerBaseAccountInvalid";
+    public const string SubLedgerParentAccountNotFound = "SubLedgerParentAccountNotFound";
+    public const string SubLedgerParentAccountInvalid = "SubLedgerParentAccountInvalid";
     public const string ChartOfAccountIsInUse = "ChartOfAccountIsInUse";
     public const string ChartOfAccountNatureCannotChange = "ChartOfAccountNatureCannotChange";
     public const string ChartOfAccountAccountGuideCannotChange = "ChartOfAccountAccountGuideCannotChange";

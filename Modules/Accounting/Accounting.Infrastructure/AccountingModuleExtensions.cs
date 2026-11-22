@@ -8,11 +8,14 @@ using Accounting.Infrastructure.Persistence.Attachments;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
 using Accounting.Infrastructure.Services.Entries;
+using Accounting.Infrastructure.Services.SubLedger;
+using Accounting.Infrastructure.Validation;
 using Accounting.Infrastructure.Workflows;
 using ERP.BuildingBlocks.Persistence.Data;
 using Accounting.Application.Repositories.Account.SubLeadgers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Accounting.Infrastructure;
 
@@ -41,6 +44,12 @@ public static class AccountingModuleExtensions
         services.AddScoped<ICostCenterQueries, CostCenterQueries>();
         services.AddScoped<IChartOfAccountRepository, ChartOfAccountRepository>();
         services.AddScoped<IChartOfAccountQueries, ChartOfAccountQueries>();
+        services.AddScoped<ISubLedgerBaseAccountRepository, SubLedgerBaseAccountRepository>();
+        services.AddScoped<ISubLedgerCoaParentResolver, SubLedgerCoaParentResolver>();
+        services.AddScoped<ISubLedgerCoaFactory, SubLedgerCoaFactory>();
+        services.AddScoped<ISubLedgerCoaParentValidator, SubLedgerCoaParentValidator>();
+        services.AddScoped<ISubLedgerCoaConfigurationValidator, SubLedgerCoaConfigurationValidator>();
+        services.AddHostedService<SubLedgerCoaConfigurationStartupValidator>();
         services.AddScoped<IBankRepository, BankRepository>();
         services.AddScoped<IBankQueries, BankQueries>();
         services.AddScoped<ICashInBoxRepository, CashInBoxRepository>();
@@ -88,6 +97,7 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new CostCenterDbConfig());
         modelBuilder.ApplyConfiguration(new CostCenterChartOfAccountDbConfig());
         modelBuilder.ApplyConfiguration(new ChartOfAccountDbConfig());
+        modelBuilder.ApplyConfiguration(new SubLedgerBaseAccountDbConfig());
         modelBuilder.ApplyConfiguration(new BankDbConfig());
         modelBuilder.ApplyConfiguration(new CashInBoxDbConfig());
         modelBuilder.ApplyConfiguration(new BranchDbConfig());

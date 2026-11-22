@@ -3,7 +3,6 @@ using Accounting.Application.Repositories;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
 using Accounting.Infrastructure.Handlers.SubLedger;
 using ERP.BuildingBlocks.Persistence.Repositories;
 
@@ -11,12 +10,15 @@ namespace Accounting.Infrastructure.Handlers.Customers;
 
 public sealed class CustomerCreateCommandHandler(
     ICustomerRepository repository,
-    IChartOfAccountRepository chartOfAccountRepository)
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
+    ISubLedgerCoaFactory subLedgerCoaFactory)
     : BaseSubLedgerCreateHandler<Customer, CustomerCreateCommand>(
         repository,
-        chartOfAccountRepository,
-        Guid.Parse(Sd.CustomerChartOfAccountId),
-        SubLeadgerType.Customer);
+        subLedgerCoaParentResolver,
+        subLedgerCoaFactory)
+{
+    protected override SubLeadgerType SubLedgerType => SubLeadgerType.Customer;
+}
 
 public sealed class CustomerUpdateCommandHandler(ICustomerRepository repository)
     : BaseSubLedgerUpdateHandler<Customer, CustomerUpdateCommand>(repository);

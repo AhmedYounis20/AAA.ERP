@@ -96,12 +96,31 @@ public class InventoryTransferWorkflowService(
         }
 
         var sourceAccountId = sourceBranchResult.Result.ChartOfAccountId.Value;
+        BranchAccountInfo? stockUnderTransferBranch = null;
+        if (command.TransferType != InventoryTransferType.Direct)
+        {
+            var stockUnderTransferResult =
+                await accountingIntegration.GetStockUnderTransferBranchAsync(cancellationToken);
+            if (!stockUnderTransferResult.IsSuccess ||
+                stockUnderTransferResult.Result?.ChartOfAccountId is null)
+            {
+                return new ApiResponse<InventoryTransfer>
+                {
+                    IsSuccess = false,
+                    Errors = stockUnderTransferResult.Errors ??
+                             [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
+                };
+            }
+
+            stockUnderTransferBranch = stockUnderTransferResult.Result;
+        }
+
         var destAccountId = command.TransferType == InventoryTransferType.Direct
             ? destBranchResult.Result.ChartOfAccountId.Value
-            : Guid.Parse(Sd.StockUnderTransferBranch);
+            : stockUnderTransferBranch!.ChartOfAccountId!.Value;
         var destinationBranchId = command.TransferType == InventoryTransferType.Direct
             ? command.DestinationBranchId
-            : destAccountId;
+            : stockUnderTransferBranch!.BranchId;
 
         var moveResult = await MoveItems(command.SourceBranchId, destinationBranchId, transfer.Items, cancellationToken);
         if (!moveResult.IsSuccess)
@@ -175,9 +194,22 @@ public class InventoryTransferWorkflowService(
             };
         }
 
-        var sourceAccountId = Guid.Parse(Sd.StockUnderTransferBranch);
+        var stockUnderTransferResult =
+            await accountingIntegration.GetStockUnderTransferBranchAsync(cancellationToken);
+        if (!stockUnderTransferResult.IsSuccess ||
+            stockUnderTransferResult.Result?.ChartOfAccountId is null)
+        {
+            return new ApiResponse<InventoryTransfer>
+            {
+                IsSuccess = false,
+                Errors = stockUnderTransferResult.Errors ??
+                         [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
+            };
+        }
+
+        var sourceAccountId = stockUnderTransferResult.Result.ChartOfAccountId.Value;
         var destAccountId = destBranchResult.Result.ChartOfAccountId.Value;
-        var sourceBranchId = Guid.Parse(Sd.StockUnderTransferBranch);
+        var sourceBranchId = stockUnderTransferResult.Result.BranchId;
         var items = await dbContext.Set<InventoryTransferItem>()
             .Where(e => e.InventoryTransferId == transfer.Id)
             .ToListAsync(cancellationToken);
@@ -247,9 +279,22 @@ public class InventoryTransferWorkflowService(
             };
         }
 
-        var sourceAccountId = Guid.Parse(Sd.StockUnderTransferBranch);
+        var stockUnderTransferResult =
+            await accountingIntegration.GetStockUnderTransferBranchAsync(cancellationToken);
+        if (!stockUnderTransferResult.IsSuccess ||
+            stockUnderTransferResult.Result?.ChartOfAccountId is null)
+        {
+            return new ApiResponse<InventoryTransfer>
+            {
+                IsSuccess = false,
+                Errors = stockUnderTransferResult.Errors ??
+                         [new MessageTemplate { MessageKey = ErrorMessages.BranchOrBranchAccountNotFound }]
+            };
+        }
+
+        var sourceAccountId = stockUnderTransferResult.Result.ChartOfAccountId.Value;
         var destAccountId = sourceBranchResult.Result.ChartOfAccountId.Value;
-        var stockUnderTransferBranchId = Guid.Parse(Sd.StockUnderTransferBranch);
+        var stockUnderTransferBranchId = stockUnderTransferResult.Result.BranchId;
         var items = await dbContext.Set<InventoryTransferItem>()
             .Where(e => e.InventoryTransferId == transfer.Id)
             .ToListAsync(cancellationToken);

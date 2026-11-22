@@ -16,8 +16,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838927",
     "ModifiedAt": "2024-07-19T23:06:33.9185238",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "a412cada-48a6-4bb5-8506-08dc3dfcb068",
@@ -36,8 +35,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838925",
     "ModifiedAt": "2024-07-19T23:06:33.9185235",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "85dab58f-78c5-4ff8-8507-08dc3dfcb068",
@@ -56,8 +54,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838922",
     "ModifiedAt": "2024-07-19T23:06:33.9185232",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0c68fc21-05d1-4128-8508-08dc3dfcb068",
@@ -76,8 +73,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838919",
     "ModifiedAt": "2024-07-19T23:06:33.9185229",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "b0923474-f351-4935-8509-08dc3dfcb068",
@@ -96,8 +92,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838916",
     "ModifiedAt": "2024-07-19T23:06:33.9185225",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "8ac902a9-cf10-4f9b-850a-08dc3dfcb068",
@@ -116,8 +111,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838913",
     "ModifiedAt": "2024-07-19T23:06:33.9185222",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "ce85b80c-30a0-4c5a-850b-08dc3dfcb068",
@@ -136,8 +130,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983891",
     "ModifiedAt": "2024-07-19T23:06:33.9185219",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "d0e96a2b-390c-4c2d-850c-08dc3dfcb068",
@@ -156,8 +149,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838907",
     "ModifiedAt": "2024-07-19T23:06:33.9185215",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "a8819d15-bae1-44ab-850d-08dc3dfcb068",
@@ -177,7 +169,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185212",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "Customer"
   },
   {
     "AccountGuidId": "6066c2c6-4e74-4fc0-850e-08dc3dfcb068",
@@ -196,8 +188,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838901",
     "ModifiedAt": "2024-07-19T23:06:33.9185209",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "357e4286-1904-494e-850f-08dc3dfcb068",
@@ -216,8 +207,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838899",
     "ModifiedAt": "2024-07-19T23:06:33.9185205",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0e9722ff-df3d-4937-8510-08dc3dfcb068",
@@ -237,7 +227,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185202",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "Branch"
   },
   {
     "AccountGuidId": "e689b3a4-7cad-4373-8511-08dc3dfcb068",
@@ -256,8 +246,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838893",
     "ModifiedAt": "2024-07-19T23:06:33.9185199",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "b9105e37-acbb-4154-8512-08dc3dfcb068",
@@ -276,8 +265,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983889",
     "ModifiedAt": "2024-07-19T23:06:33.9185196",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "23cfb46e-f97e-43f5-8513-08dc3dfcb068",
@@ -296,8 +284,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838887",
     "ModifiedAt": "2024-07-19T23:06:33.9185192",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "af131f73-8ea9-4d76-8514-08dc3dfcb068",
@@ -316,8 +303,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838884",
     "ModifiedAt": "2024-07-19T23:06:33.9185189",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "bc7492d9-f338-4b46-8515-08dc3dfcb068",
@@ -337,7 +323,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185186",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "CashInBox"
   },
   {
     "AccountGuidId": "0aecd366-95fd-47b8-8516-08dc3dfcb068",
@@ -357,7 +343,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185182",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "Bank"
   },
   {
     "AccountGuidId": "3dbbad0d-b9b4-458a-8517-08dc3dfcb068",
@@ -376,8 +362,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838875",
     "ModifiedAt": "2024-07-19T23:06:33.9185179",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "20bf05a7-14fb-4580-8518-08dc3dfcb068",
@@ -396,8 +381,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838872",
     "ModifiedAt": "2024-07-19T23:06:33.9185175",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "323df7d7-5063-4d6f-8519-08dc3dfcb068",
@@ -416,8 +400,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838869",
     "ModifiedAt": "2024-07-19T23:06:33.9185172",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "d187d066-1324-4488-851a-08dc3dfcb068",
@@ -436,8 +419,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838866",
     "ModifiedAt": "2024-07-19T23:06:33.9185169",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "1f1ed682-bfdc-42a1-851b-08dc3dfcb068",
@@ -456,8 +438,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838863",
     "ModifiedAt": "2024-07-19T23:06:33.9185165",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "5d5fb07f-2792-4305-851c-08dc3dfcb068",
@@ -476,8 +457,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983886",
     "ModifiedAt": "2024-07-19T23:06:33.9185162",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "c876a456-ef78-47dc-851d-08dc3dfcb068",
@@ -496,8 +476,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838857",
     "ModifiedAt": "2024-07-19T23:06:33.9185158",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "b95baa23-ae1c-4c2b-851e-08dc3dfcb068",
@@ -516,8 +495,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838854",
     "ModifiedAt": "2024-07-19T23:06:33.9185155",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "4be82e3d-ac85-44d2-851f-08dc3dfcb068",
@@ -536,8 +514,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838851",
     "ModifiedAt": "2024-07-19T23:06:33.9185152",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "94cb51ea-3886-4fde-8520-08dc3dfcb068",
@@ -556,8 +533,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838848",
     "ModifiedAt": "2024-07-19T23:06:33.9185148",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0ed994ab-ada2-45d9-8521-08dc3dfcb068",
@@ -576,8 +552,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838844",
     "ModifiedAt": "2024-07-19T23:06:33.9185145",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "2448c162-2329-418f-8522-08dc3dfcb068",
@@ -597,7 +572,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185141",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "66d631a5-021d-4cb5-8523-08dc3dfcb068",
@@ -617,7 +592,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185138",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "8faa0f12-3b3e-4e26-8524-08dc3dfcb068",
@@ -637,7 +612,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185135",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "c8b5cf24-98ab-414d-8525-08dc3dfcb068",
@@ -657,7 +632,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185132",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "2b70f4c6-3851-4967-8526-08dc3dfcb068",
@@ -677,7 +652,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185128",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "cb9fd3bd-720e-45f0-8527-08dc3dfcb068",
@@ -697,7 +672,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185125",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "8f2a2956-a327-4ec0-8528-08dc3dfcb068",
@@ -717,7 +692,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185122",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "97a25e9d-dff3-4412-8529-08dc3dfcb068",
@@ -737,7 +712,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185118",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "5b02732c-bd1f-4c9f-852a-08dc3dfcb068",
@@ -756,8 +731,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838817",
     "ModifiedAt": "2024-07-19T23:06:33.9185115",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "86c0ab17-14f7-45cc-852b-08dc3dfcb068",
@@ -777,7 +751,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185111",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "11756e11-9861-4158-852c-08dc3dfcb068",
@@ -797,7 +771,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185108",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "6d116f0e-1d2a-4924-852d-08dc3dfcb068",
@@ -817,7 +791,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185104",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "a29e405f-8a8a-42ff-852e-08dc3dfcb068",
@@ -837,7 +811,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185101",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "aff2891b-f9e0-4824-852f-08dc3dfcb068",
@@ -857,7 +831,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185097",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "de0d3b5a-f655-429a-8530-08dc3dfcb068",
@@ -877,7 +851,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185094",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "70b76b30-8307-481b-8531-08dc3dfcb068",
@@ -897,7 +871,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185091",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "c2e6b32d-509a-4ad5-8532-08dc3dfcb068",
@@ -916,8 +890,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838793",
     "ModifiedAt": "2024-07-19T23:06:33.9185087",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "2629369f-c510-48c8-8533-08dc3dfcb068",
@@ -936,8 +909,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983879",
     "ModifiedAt": "2024-07-19T23:06:33.9185083",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "bd9d78cd-8972-4673-8534-08dc3dfcb068",
@@ -956,8 +928,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838787",
     "ModifiedAt": "2024-07-19T23:06:33.9185079",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "9ec12013-e48b-4ee9-8535-08dc3dfcb068",
@@ -976,8 +947,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838785",
     "ModifiedAt": "2024-07-19T23:06:33.9185076",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "c0341b22-299f-46b6-8536-08dc3dfcb068",
@@ -996,8 +966,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838782",
     "ModifiedAt": "2024-07-19T23:06:33.9185073",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "a4745578-f430-4ab6-8537-08dc3dfcb068",
@@ -1016,8 +985,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838779",
     "ModifiedAt": "2024-07-19T23:06:33.9185069",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "850fcaa7-75f1-4af7-8538-08dc3dfcb068",
@@ -1036,8 +1004,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838776",
     "ModifiedAt": "2024-07-19T23:06:33.9185065",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "c14c0470-ca39-4a5c-8539-08dc3dfcb068",
@@ -1056,8 +1023,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838773",
     "ModifiedAt": "2024-07-19T23:06:33.9185062",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "6f363dac-2d08-4d2e-853a-08dc3dfcb068",
@@ -1076,8 +1042,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983877",
     "ModifiedAt": "2024-07-19T23:06:33.9185058",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "c4c93287-120c-4480-853b-08dc3dfcb068",
@@ -1096,8 +1061,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838767",
     "ModifiedAt": "2024-07-19T23:06:33.9185054",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "a1130028-4dd5-49d8-853c-08dc3dfcb068",
@@ -1116,8 +1080,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838764",
     "ModifiedAt": "2024-07-19T23:06:33.9185051",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "f17c4a2d-76b2-4bb5-853d-08dc3dfcb068",
@@ -1136,8 +1099,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838761",
     "ModifiedAt": "2024-07-19T23:06:33.9185048",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "1ecf3cba-11d9-452d-853e-08dc3dfcb068",
@@ -1156,8 +1118,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838758",
     "ModifiedAt": "2024-07-19T23:06:33.9185041",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "bc8c9cf3-d9e1-49ff-853f-08dc3dfcb068",
@@ -1176,8 +1137,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838755",
     "ModifiedAt": "2024-07-19T23:06:33.9185038",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "d2f497ac-55c7-4167-8540-08dc3dfcb068",
@@ -1196,8 +1156,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838752",
     "ModifiedAt": "2024-07-19T23:06:33.9185034",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "77245203-27b8-49b3-8541-08dc3dfcb068",
@@ -1216,8 +1175,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838749",
     "ModifiedAt": "2024-07-19T23:06:33.9185031",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "5ea51c36-42ac-46b5-8542-08dc3dfcb068",
@@ -1236,8 +1194,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838746",
     "ModifiedAt": "2024-07-19T23:06:33.9185027",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "95342fd7-57c3-4b42-8543-08dc3dfcb068",
@@ -1256,8 +1213,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838743",
     "ModifiedAt": "2024-07-19T23:06:33.9185022",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "e00a6ca8-ca43-4e59-8544-08dc3dfcb068",
@@ -1276,8 +1232,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983874",
     "ModifiedAt": "2024-07-19T23:06:33.9185019",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0a920227-23c7-4c2a-8545-08dc3dfcb068",
@@ -1296,8 +1251,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838737",
     "ModifiedAt": "2024-07-19T23:06:33.9185016",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "daaa60d0-446b-4df4-8546-08dc3dfcb068",
@@ -1316,8 +1270,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838734",
     "ModifiedAt": "2024-07-19T23:06:33.9185012",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0bce0ca3-f439-4f1b-8547-08dc3dfcb068",
@@ -1336,8 +1289,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838731",
     "ModifiedAt": "2024-07-19T23:06:33.9185009",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "f987399c-2243-4c5d-8548-08dc3dfcb068",
@@ -1356,8 +1308,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838728",
     "ModifiedAt": "2024-07-19T23:06:33.9185006",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "d45672f5-5469-4349-8549-08dc3dfcb068",
@@ -1377,7 +1328,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9185002",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "42155321-78a3-4933-854a-08dc3dfcb068",
@@ -1397,7 +1348,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184999",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "f6e76628-2471-4a2b-854b-08dc3dfcb068",
@@ -1417,7 +1368,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184994",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "5440be91-6ce8-4812-854c-08dc3dfcb068",
@@ -1437,7 +1388,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184991",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "4cd75337-041f-4e76-854d-08dc3dfcb068",
@@ -1457,7 +1408,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184988",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "b16bff28-ee42-45cb-854e-08dc3dfcb068",
@@ -1477,7 +1428,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184985",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "52b23a54-38df-4d2f-854f-08dc3dfcb068",
@@ -1497,7 +1448,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184981",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "FixedAsset"
   },
   {
     "AccountGuidId": "e033b070-d6c0-4f08-8550-08dc3dfcb068",
@@ -1516,8 +1467,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838704",
     "ModifiedAt": "2024-07-19T23:06:33.9184978",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "1db543a1-b26d-4d0b-8551-08dc3dfcb068",
@@ -1536,8 +1486,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838701",
     "ModifiedAt": "2024-07-19T23:06:33.9184974",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "07351a32-1281-4698-8552-08dc3dfcb068",
@@ -1556,8 +1505,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838698",
     "ModifiedAt": "2024-07-19T23:06:33.9184971",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "a0e8193e-6332-4259-8553-08dc3dfcb068",
@@ -1576,8 +1524,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838695",
     "ModifiedAt": "2024-07-19T23:06:33.9184967",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "68cf0b75-21a6-4f8a-8554-08dc3dfcb068",
@@ -1597,7 +1544,7 @@
     "ModifiedAt": "2024-07-19T23:06:33.9184961",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "Supplier"
   },
   {
     "AccountGuidId": "7c05577c-fbe1-46bd-8555-08dc3dfcb068",
@@ -1616,8 +1563,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838689",
     "ModifiedAt": "2024-07-19T23:06:33.9184958",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "66c29130-a481-4a59-8556-08dc3dfcb068",
@@ -1636,8 +1582,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838686",
     "ModifiedAt": "2024-07-19T23:06:33.9184954",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "46641f5d-a33d-4548-8557-08dc3dfcb068",
@@ -1656,8 +1601,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838683",
     "ModifiedAt": "2024-07-19T23:06:33.918495",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "d5184677-0e18-4717-8558-08dc3dfcb068",
@@ -1676,8 +1620,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838647",
     "ModifiedAt": "2024-07-19T23:06:33.9184947",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "fdf4a4ba-c018-4bb2-8559-08dc3dfcb068",
@@ -1696,8 +1639,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838643",
     "ModifiedAt": "2024-07-19T23:06:33.9184943",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "47d4b53e-8330-49aa-855a-08dc3dfcb068",
@@ -1716,8 +1658,7 @@
     "CreatedAt": "2024-07-04T11:23:13.983864",
     "ModifiedAt": "2024-07-19T23:06:33.9184939",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "6776b6a3-019c-480b-855b-08dc3dfcb068",
@@ -1736,8 +1677,7 @@
     "CreatedAt": "2024-07-04T11:23:13.9838631",
     "ModifiedAt": "2024-07-19T23:06:33.9184927",
     "NodeType": 0,
-    "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": false
+    "IsCreatedFromSubLeadger": false
   },
   {
     "AccountGuidId": "0e9722ff-df3d-4937-8510-08dc3dfcb068",
@@ -1757,6 +1697,6 @@
     "ModifiedAt": "2024-07-20T00:00:00.0000000",
     "NodeType": 0,
     "IsCreatedFromSubLeadger": false,
-    "IsSubLeadgerBaseAccount": true
+    "SubLeadgerType": "Branch"
   }
 ]

@@ -18,7 +18,9 @@ public class BranchWorkflowService(
     IUnitOfWork unitOfWork,
     IBranchRepository repository,
     IChartOfAccountRepository chartOfAccountRepository,
-    IAttachmentRepository attachmentRepository) : IBranchWorkflowService
+    IAttachmentRepository attachmentRepository,
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
+    ISubLedgerCoaFactory subLedgerCoaFactory) : IBranchWorkflowService
 {
     public async Task<ApiResponse<Branch>> Create(BranchCreateCommand command)
     {
@@ -41,26 +43,14 @@ public class BranchWorkflowService(
 
             if (isDomain)
             {
-                var chartOfAccountParent =
-                    await chartOfAccountRepository.Get(Guid.Parse(Sd.BranchChartOfAccountId));
-                var newCode = await chartOfAccountRepository
-                    .GenerateNewCodeForChild(Guid.Parse(Sd.BranchChartOfAccountId));
                 entity = command.Adapt<Branch>();
-                entity.ChartOfAccount = new ChartOfAccount
-                {
-                    Name = command.Name,
-                    NameSecondLanguage = command.NameSecondLanguage,
-                    ParentId = Guid.Parse(Sd.BranchChartOfAccountId),
-                    Code = newCode,
-                    AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
-                    IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,
-                    IsActiveAccount = chartOfAccountParent?.IsActiveAccount ?? false,
-                    IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
-                    IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
-                    AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-                    IsCreatedFromSubLeadger = true,
-                    SubLeadgerType = SubLeadgerType.Branch
-                };
+                var chartOfAccountParent =
+                    await subLedgerCoaParentResolver.ResolveAsync(SubLeadgerType.Branch);
+                entity.ChartOfAccount = await subLedgerCoaFactory.CreateChildAccountAsync(
+                    command.Name,
+                    command.NameSecondLanguage,
+                    chartOfAccountParent,
+                    SubLeadgerType.Branch);
                 if (command.Logo is not null)
                 {
                     var attachment = new Attachment

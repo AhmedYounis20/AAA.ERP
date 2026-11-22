@@ -10,7 +10,6 @@ using Accounting.Application.Repositories.Account.SubLeadgers;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
 using ERP.Infrastructure.DBConfiguration.DbContext;
 using ERP.IntegrationTests.Infrastructure;
 using FluentAssertions;
@@ -276,7 +275,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
     {
         var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
         var repository = _scope.ServiceProvider.GetRequiredService<ITaxRepository>();
-        var parentTaxAccountId = Guid.Parse(Sd.CashInBoxChartOfAccountId);
+        var parentTaxAccountId = SubLedgerTestIds.TaxParentAccountId;
 
         var create = await sender.Send(new TaxCreateCommand
         {
@@ -383,54 +382,18 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
             NameSecondLanguage = "SubLedger Test Guide"
         });
 
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.BankChartAccountId),
-            Name = "Banks Parent",
-            NameSecondLanguage = "Banks Parent",
-            Code = "1100",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
+        AddSubLedgerBaseAccount(db, SubLedgerTestIds.BankParentId, "Banks Parent", "1100", AccountNature.Debit, SubLeadgerType.Bank);
+        AddSubLedgerBaseAccount(db, SubLedgerTestIds.BranchParentId, "Branches Parent", "1200", AccountNature.Debit, SubLeadgerType.Branch);
+        AddSubLedgerBaseAccount(db, SubLedgerTestIds.CustomerParentId, "Customers Parent", "1300", AccountNature.Debit, SubLeadgerType.Customer);
+        AddSubLedgerBaseAccount(db, SubLedgerTestIds.SupplierParentId, "Suppliers Parent", "1400", AccountNature.Credit, SubLeadgerType.Supplier);
+        AddSubLedgerBaseAccount(db, SubLedgerTestIds.CashInBoxParentId, "Cash Boxes Parent", "1500", AccountNature.Debit, SubLeadgerType.CashInBox);
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(Sd.BranchChartOfAccountId),
-            Name = "Branches Parent",
-            NameSecondLanguage = "Branches Parent",
-            Code = "1200",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
-
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.CustomerChartOfAccountId),
-            Name = "Customers Parent",
-            NameSecondLanguage = "Customers Parent",
-            Code = "1300",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
-
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.SupplierChartOfAccountId),
-            Name = "Suppliers Parent",
-            NameSecondLanguage = "Suppliers Parent",
-            Code = "1400",
+            Id = SubLedgerTestIds.TaxParentAccountId,
+            Name = "Tax Parent",
+            NameSecondLanguage = "Tax Parent",
+            Code = "1550",
             NodeType = NodeType.Domain,
             AccountNature = AccountNature.Credit,
             IsActiveAccount = true,
@@ -439,37 +402,19 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
             AccountGuidId = SubLedgerTestIds.AccountGuideId
         });
 
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.CashInBoxChartOfAccountId),
-            Name = "Cash Boxes Parent",
-            NameSecondLanguage = "Cash Boxes Parent",
-            Code = "1500",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
+        AddSubLedgerBaseAccount(
+            db,
+            SubLedgerTestIds.FixedAssetElectronicDevicesAssetId,
+            "Electronic Devices Parent",
+            "1504",
+            AccountNature.Debit,
+            SubLeadgerType.FixedAsset,
+            FixedAssetType.ElectronicDevices,
+            SubLedgerAccountRole.Asset);
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(Sd.FixedAssetsIds[FixedAssetType.ElectronicDevices]),
-            Name = "Electronic Devices Parent",
-            NameSecondLanguage = "Electronic Devices Parent",
-            Code = "1504",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
-
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.AccumulatedDepreciationId),
+            Id = SubLedgerTestIds.AccumulatedDepreciationHeaderId,
             Name = "Accumulated Depreciation",
             NameSecondLanguage = "Accumulated Depreciation",
             Code = "1600",
@@ -483,7 +428,7 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         db.Set<ChartOfAccount>().Add(new ChartOfAccount
         {
-            Id = Guid.Parse(Sd.ExpensesDepreciationId),
+            Id = SubLedgerTestIds.ExpensesDepreciationHeaderId,
             Name = "Depreciation Expense",
             NameSecondLanguage = "Depreciation Expense",
             Code = "5100",
@@ -495,33 +440,27 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
             AccountGuidId = SubLedgerTestIds.AccountGuideId
         });
 
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][0]),
-            Name = "Electronic Devices Accumulated Depreciation",
-            NameSecondLanguage = "Electronic Devices Accumulated Depreciation",
-            Code = "1504-AD",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Credit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
+        AddSubLedgerBaseAccount(
+            db,
+            SubLedgerTestIds.FixedAssetElectronicDevicesAccumId,
+            "Electronic Devices Accumulated Depreciation",
+            "1504-AD",
+            AccountNature.Credit,
+            SubLeadgerType.FixedAsset,
+            FixedAssetType.ElectronicDevices,
+            SubLedgerAccountRole.AccumulatedDepreciation,
+            SubLedgerTestIds.AccumulatedDepreciationHeaderId);
 
-        db.Set<ChartOfAccount>().Add(new ChartOfAccount
-        {
-            Id = Guid.Parse(Sd.FixedAssetsDepreciationDetails[FixedAssetType.ElectronicDevices][1]),
-            Name = "Electronic Devices Depreciation Expense",
-            NameSecondLanguage = "Electronic Devices Depreciation Expense",
-            Code = "5104",
-            NodeType = NodeType.Domain,
-            AccountNature = AccountNature.Debit,
-            IsActiveAccount = true,
-            IsPostedAccount = false,
-            IsStopDealing = false,
-            AccountGuidId = SubLedgerTestIds.AccountGuideId
-        });
+        AddSubLedgerBaseAccount(
+            db,
+            SubLedgerTestIds.FixedAssetElectronicDevicesExpenseId,
+            "Electronic Devices Depreciation Expense",
+            "5104",
+            AccountNature.Debit,
+            SubLeadgerType.FixedAsset,
+            FixedAssetType.ElectronicDevices,
+            SubLedgerAccountRole.DepreciationExpense,
+            SubLedgerTestIds.ExpensesDepreciationHeaderId);
 
         db.Set<Bank>().Add(new Bank
         {
@@ -533,11 +472,53 @@ public class SubLedgerIntegrationTests : IAsyncLifetime
 
         await db.SaveChangesAsync();
     }
+
+    private static void AddSubLedgerBaseAccount(
+        IntegrationTestDbContext db,
+        Guid id,
+        string name,
+        string code,
+        AccountNature nature,
+        SubLeadgerType subLedgerType,
+        FixedAssetType? fixedAssetType = null,
+        SubLedgerAccountRole role = SubLedgerAccountRole.Default,
+        Guid? parentId = null)
+    {
+        db.Set<ChartOfAccount>().Add(new ChartOfAccount
+        {
+            Id = id,
+            Name = name,
+            NameSecondLanguage = name,
+            Code = code,
+            ParentId = parentId,
+            NodeType = NodeType.Domain,
+            AccountNature = nature,
+            IsActiveAccount = true,
+            IsPostedAccount = false,
+            IsStopDealing = false,
+            SubLeadgerType = subLedgerType,
+            AccountGuidId = SubLedgerTestIds.AccountGuideId
+        });
+
+        db.Set<SubLedgerBaseAccount>().Add(
+            SubLedgerBaseAccount.Create(id, subLedgerType, role, fixedAssetType));
+    }
 }
 
 internal static class SubLedgerTestIds
 {
     public static readonly Guid AccountGuideId = Guid.Parse("42000000-0000-0000-0000-000000000000");
     public static readonly Guid ExistingBankId = Guid.Parse("42000000-0000-0000-0000-000000000001");
+    public static readonly Guid BankParentId = Guid.Parse("42000000-0000-0000-0000-000000000010");
+    public static readonly Guid BranchParentId = Guid.Parse("42000000-0000-0000-0000-000000000011");
+    public static readonly Guid CustomerParentId = Guid.Parse("42000000-0000-0000-0000-000000000012");
+    public static readonly Guid SupplierParentId = Guid.Parse("42000000-0000-0000-0000-000000000013");
+    public static readonly Guid CashInBoxParentId = Guid.Parse("42000000-0000-0000-0000-000000000014");
+    public static readonly Guid TaxParentAccountId = Guid.Parse("42000000-0000-0000-0000-000000000015");
+    public static readonly Guid FixedAssetElectronicDevicesAssetId = Guid.Parse("42000000-0000-0000-0000-000000000016");
+    public static readonly Guid AccumulatedDepreciationHeaderId = Guid.Parse("42000000-0000-0000-0000-000000000017");
+    public static readonly Guid ExpensesDepreciationHeaderId = Guid.Parse("42000000-0000-0000-0000-000000000018");
+    public static readonly Guid FixedAssetElectronicDevicesAccumId = Guid.Parse("42000000-0000-0000-0000-000000000019");
+    public static readonly Guid FixedAssetElectronicDevicesExpenseId = Guid.Parse("42000000-0000-0000-0000-00000000001A");
     public const string ExistingBankName = "Seeded Bank";
 }

@@ -1,8 +1,8 @@
 using Accounting.Application.Commands.FixedAssets;
 using Accounting.Application.Repositories;
 using Accounting.Application.Services;
+using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
-using Accounting.Domain.Utility;
 using ERP.BuildingBlocks.Domain.Entities;
 using ERP.BuildingBlocks.Persistence.Services.Queries;
 
@@ -11,7 +11,10 @@ namespace Accounting.Infrastructure.Services;
 /// <summary>
 /// Fixed-asset read queries.
 /// </summary>
-public class FixedAssetQueries(IFixedAssetRepository repository, IChartOfAccountRepository chartOfAccountRepository)
+public class FixedAssetQueries(
+    IFixedAssetRepository repository,
+    IChartOfAccountRepository chartOfAccountRepository,
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver)
     : BaseTreeSettingRepositoryQueries<FixedAsset>(repository),
       IFixedAssetQueries
 {
@@ -19,17 +22,28 @@ public class FixedAssetQueries(IFixedAssetRepository repository, IChartOfAccount
         Guid? parentId,
         FixedAssetType fixedAssetType)
     {
-        var chartOfAccountId = Guid.Parse(Sd.FixedAssetsIds[fixedAssetType]);
-        var assetCodes = Sd.FixedAssetsDepreciationDetails[fixedAssetType];
-        var code = await chartOfAccountRepository.GenerateNewCodeForChild(chartOfAccountId);
-        var accumelatedCode = fixedAssetType == FixedAssetType.Lands
-            ? ""
-            : await chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[0]));
-        var expenseCode = fixedAssetType == FixedAssetType.Lands
-            ? ""
-            : await chartOfAccountRepository.GenerateNewCodeForChild(Guid.Parse(assetCodes[1]));
-        var inputModel = Activator.CreateInstance<FixedAssetCreateCommand>();
+        var assetParent = await subLedgerCoaParentResolver.ResolveAsync(
+            SubLeadgerType.FixedAsset,
+            fixedAssetType,
+            SubLedgerAccountRole.Asset);
 
+        var code = await chartOfAccountRepository.GenerateNewCodeForChild(assetParent.Id);
+        var accumelatedCode = fixedAssetType == FixedAssetType.Lands
+            ? string.Empty
+            : await chartOfAccountRepository.GenerateNewCodeForChild(
+                (await subLedgerCoaParentResolver.ResolveAsync(
+                    SubLeadgerType.FixedAsset,
+                    fixedAssetType,
+                    SubLedgerAccountRole.AccumulatedDepreciation)).Id);
+        var expenseCode = fixedAssetType == FixedAssetType.Lands
+            ? string.Empty
+            : await chartOfAccountRepository.GenerateNewCodeForChild(
+                (await subLedgerCoaParentResolver.ResolveAsync(
+                    SubLeadgerType.FixedAsset,
+                    fixedAssetType,
+                    SubLedgerAccountRole.DepreciationExpense)).Id);
+
+        var inputModel = Activator.CreateInstance<FixedAssetCreateCommand>();
         inputModel.Code = code;
         inputModel.ExpensesCode = expenseCode;
         inputModel.AccumelatedCode = accumelatedCode;

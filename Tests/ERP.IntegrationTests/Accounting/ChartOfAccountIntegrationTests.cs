@@ -129,6 +129,75 @@ public class ChartOfAccountIntegrationTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Update_preserves_subledger_origin_when_command_omits_it()
+    {
+        var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
+        var db = _scope.ServiceProvider.GetRequiredService<IntegrationTestDbContext>();
+        var accountId = Guid.Parse("41000000-0000-0000-0000-000000000099");
+
+        db.Set<ChartOfAccount>().Add(new ChartOfAccount
+        {
+            Id = accountId,
+            Name = "Spawned Customer",
+            NameSecondLanguage = "Spawned Customer",
+            Code = "8400",
+            NodeType = NodeType.Domain,
+            AccountNature = AccountNature.Debit,
+            IsActiveAccount = true,
+            IsPostedAccount = false,
+            IsCreatedFromSubLeadger = true,
+            SubLeadgerType = SubLeadgerType.Customer,
+            AccountGuidId = ChartOfAccountTestIds.AccountGuideId
+        });
+        await db.SaveChangesAsync();
+        db.ChangeTracker.Clear();
+        var createdAt = (await db.Set<ChartOfAccount>().AsNoTracking().SingleAsync(e => e.Id == accountId)).CreatedAt;
+
+        var response = await sender.Send(new ChartOfAccountUpdateCommand
+        {
+            Id = accountId,
+            Name = "Spawned Customer",
+            NameSecondLanguage = "Spawned Customer",
+            Code = "8400",
+            NodeType = NodeType.Domain,
+            AccountGuidId = ChartOfAccountTestIds.AccountGuideId,
+            AccountNature = AccountNature.Debit,
+            IsActiveAccount = true,
+            IsPostedAccount = true,
+            IsStopDealing = false,
+            IsDepreciable = false
+        });
+
+        response.IsSuccess.Should().BeTrue(response.Errors?.FirstOrDefault()?.MessageKey);
+
+        var persisted = await db.Set<ChartOfAccount>().AsNoTracking().SingleAsync(e => e.Id == accountId);
+        persisted.IsPostedAccount.Should().BeTrue();
+        persisted.IsCreatedFromSubLeadger.Should().BeTrue();
+        persisted.SubLeadgerType.Should().Be(SubLeadgerType.Customer);
+        persisted.CreatedAt.Should().Be(createdAt);
+    }
+
+    [Fact]
+    public async Task Delete_subledger_base_account_fails()
+    {
+        var sender = _scope.ServiceProvider.GetRequiredService<ISender>();
+        var db = _scope.ServiceProvider.GetRequiredService<IntegrationTestDbContext>();
+
+        db.Set<SubLedgerBaseAccount>().Add(SubLedgerBaseAccount.Create(
+            ChartOfAccountTestIds.ExistingAccountId,
+            SubLeadgerType.Bank,
+            SubLedgerAccountRole.Default,
+            null));
+        await db.SaveChangesAsync();
+        db.ChangeTracker.Clear();
+
+        var response = await sender.Send(new ChartOfAccountDeleteCommand(ChartOfAccountTestIds.ExistingAccountId));
+
+        response.IsSuccess.Should().BeFalse();
+        response.Errors.Should().Contain(e => e.MessageKey == "ChartOfAccountBaseSubLeadgerAccount");
+    }
+
+    [Fact]
     public async Task Delete_account_guide_in_use_fails()
     {
         var sender = _scope.ServiceProvider.GetRequiredService<ISender>();

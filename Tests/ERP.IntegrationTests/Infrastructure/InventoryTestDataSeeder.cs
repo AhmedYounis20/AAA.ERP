@@ -1,4 +1,3 @@
-using ERP.Infrastructure.DBConfiguration.DbContext;
 using Accounting.Domain.Models.Entities.AccountGuides;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.Currencies;
@@ -59,7 +58,8 @@ public static class InventoryTestDataSeeder
             InventoryTestIds.StockUnderTransferCoaId,
             "Stock Under Transfer",
             "1300",
-            AccountNature.Debit);
+            AccountNature.Debit,
+            SubLeadgerType.Branch);
 
         var branch1 = CreateBranch(InventoryTestIds.Branch1Id, "Branch 1", InventoryTestIds.Branch1CoaId);
         var branch2 = CreateBranch(InventoryTestIds.Branch2Id, "Branch 2", InventoryTestIds.Branch2CoaId);
@@ -117,6 +117,12 @@ public static class InventoryTestDataSeeder
             product,
             variant,
             variantPackingUnit);
+
+        db.Add(SubLedgerBaseAccount.Create(
+            InventoryTestIds.StockUnderTransferCoaId,
+            SubLeadgerType.Branch,
+            SubLedgerAccountRole.StockUnderTransfer,
+            null));
 
         if (initialStockBalance > 0)
         {
@@ -182,7 +188,12 @@ public static class InventoryTestDataSeeder
     public static async Task<int> CountFinancialTransactionsAsync(IServiceProvider services)
         => await services.GetRequiredService<IntegrationTestDbContext>().Set<FinancialTransaction>().CountAsync();
 
-    private static ChartOfAccount CreateChartOfAccount(Guid id, string name, string code, AccountNature nature)
+    private static ChartOfAccount CreateChartOfAccount(
+        Guid id,
+        string name,
+        string code,
+        AccountNature nature,
+        SubLeadgerType? subLedgerType = null)
         => new()
         {
             Id = id,
@@ -192,6 +203,8 @@ public static class InventoryTestDataSeeder
             NodeType = NodeType.Domain,
             AccountNature = nature,
             IsActiveAccount = true,
+            IsStopDealing = false,
+            SubLeadgerType = subLedgerType,
             AccountGuidId = InventoryTestIds.AccountGuideId
         };
 

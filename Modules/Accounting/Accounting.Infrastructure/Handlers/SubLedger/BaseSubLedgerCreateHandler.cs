@@ -1,10 +1,9 @@
 using Accounting.Application.Commands.SubLeadgers.BaseSubLeadgersCommands;
-using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account.SubLeadgers;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using ERP.BuildingBlocks.Application.CQRS.Handlers.TreeSetting;
-using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using ERP.BuildingBlocks.Application.Responses;
 using ERP.BuildingBlocks.Domain.Entities;
 using Mapster;
@@ -16,20 +15,18 @@ namespace Accounting.Infrastructure.Handlers.SubLedger;
 /// </summary>
 public abstract class BaseSubLedgerCreateHandler<TEntity, TCreate>(
     IBaseSubLeadgerRepository<TEntity> repository,
-    IChartOfAccountRepository chartOfAccountRepository,
-    Guid chartAccountParentId,
-    SubLeadgerType? subLeadgerType)
+    ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
+    ISubLedgerCoaFactory subLedgerCoaFactory)
     : BaseTreeSettingCreateHandler<TEntity, TCreate>(repository)
     where TEntity : SubLeadgerBaseEntity<TEntity>
     where TCreate : BaseSubLeadgerCreateCommand<TEntity>
 {
-    protected IChartOfAccountRepository ChartOfAccountRepository => chartOfAccountRepository;
+    protected abstract SubLeadgerType SubLedgerType { get; }
 
-    protected Guid ChartAccountParentId => chartAccountParentId;
-
-    protected SubLeadgerType? SubLeadgerTypeValue => subLeadgerType;
-
-    protected virtual Guid ResolveChartOfAccountParentId(TCreate command) => chartAccountParentId;
+    protected virtual Task<ChartOfAccount> ResolveParentAccountAsync(
+        TCreate command,
+        CancellationToken cancellationToken)
+        => subLedgerCoaParentResolver.ResolveAsync(SubLedgerType, cancellationToken: cancellationToken);
 
     protected override async Task<TEntity> MapCreateEntityAsync(
         TCreate command,
@@ -45,25 +42,13 @@ public abstract class BaseSubLedgerCreateHandler<TEntity, TCreate>(
             return entity;
         }
 
-        var parentAccountId = ResolveChartOfAccountParentId(command);
-        var chartOfAccountParent = await ChartOfAccountRepository.Get(parentAccountId);
-        var newCode = await ChartOfAccountRepository.GenerateNewCodeForChild(parentAccountId);
-
-        entity.ChartOfAccount = new ChartOfAccount
-        {
-            Name = command.Name,
-            NameSecondLanguage = command.NameSecondLanguage,
-            ParentId = parentAccountId,
-            Code = newCode,
-            AccountNature = chartOfAccountParent?.AccountNature ?? AccountNature.Debit,
-            IsDepreciable = chartOfAccountParent?.IsDepreciable ?? false,
-            IsActiveAccount = chartOfAccountParent?.IsActiveAccount ?? false,
-            IsStopDealing = chartOfAccountParent?.IsStopDealing ?? true,
-            IsPostedAccount = chartOfAccountParent?.IsPostedAccount ?? false,
-            AccountGuidId = chartOfAccountParent?.AccountGuidId ?? Guid.NewGuid(),
-            IsCreatedFromSubLeadger = true,
-            SubLeadgerType = subLeadgerType
-        };
+        var parentAccount = await ResolveParentAccountAsync(command, cancellationToken);
+        entity.ChartOfAccount = await subLedgerCoaFactory.CreateChildAccountAsync(
+            command.Name,
+            command.NameSecondLanguage,
+            parentAccount,
+            SubLedgerType,
+            cancellationToken);
 
         return entity;
     }

@@ -9,6 +9,8 @@ using Identity.Infrastructure;
 using ERP.BuildingBlocks.Persistence.Data;
 using ERP.BuildingBlocks.Application.Extensions;
 using ERP.BuildingBlocks.Application.Logging.Middleware;
+using Accounting.Application.Services;
+using ERP.Host.Startup;
 using ERP.Infrastructure.Utilities;
 using FluentValidation;
 using Microsoft.AspNetCore.Localization;
@@ -121,6 +123,7 @@ public static class WebBuilderExtensions
         });
         builder.Services.AddInfrastructureServices();
         builder.Services.AddAccountingModule();
+        builder.Services.AddScoped<ISubLedgerCoaSeedImporter, SubLedgerCoaSeedImporter>();
         builder.Services.AddInventoryModule();
         builder.Services.AddPlatformModules();
         builder.Services.AddIdentityModule();

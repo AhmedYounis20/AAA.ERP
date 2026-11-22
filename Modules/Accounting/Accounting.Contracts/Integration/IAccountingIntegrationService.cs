@@ -15,6 +15,9 @@ public interface IAccountingIntegrationService
         Guid branchId,
         CancellationToken cancellationToken = default);
 
+    Task<ApiResponse<BranchAccountInfo>> GetStockUnderTransferBranchAsync(
+        CancellationToken cancellationToken = default);
+
     Task<ApiResponse<Guid>> ValidatePartyAccountAsync(
         Guid chartOfAccountId,
         CancellationToken cancellationToken = default);

@@ -75,11 +75,47 @@ Inventory (and future modules) call this interface — never Accounting domain t
 |--------|-----|
 | `GetOpenPeriodForDateAsync` | Resolve open financial period for posting date |
 | `GetBranchAccountAsync` | Branch GL account for inventory posting |
+| `GetStockUnderTransferBranchAsync` | In-transit inventory branch + COA (replaces hardcoded sentinel ID) |
 | `ValidatePartyAccountAsync` | Validate party COA before transaction |
 | `PostInventoryTransactionEntryAsync` | Receipt/issue GL entry (idempotent via `SourceDocumentId`) |
 | `PostInventoryTransferEntryAsync` | Transfer stage/complete/reject GL (see `EntrySourceDocumentTypes`) |
 
 Implementation: `Accounting.Infrastructure/Services/AccountingIntegrationService.cs`.
+
+### Sub-ledger COA parent resolution
+
+Sub-ledgers no longer use hardcoded COA GUIDs. Base parent accounts are configured on `ChartOfAccount` rows:
+
+| Field | Purpose |
+|-------|---------|
+| `IsSubLeadgerBaseAccount` | Marks a row as a sub-ledger header |
+| `SubLeadgerType` | Bank, Customer, Supplier, Branch, FixedAsset, … |
+| `SubLedgerAccountRole` | Default, Asset, AccumulatedDepreciation, DepreciationExpense, StockUnderTransfer |
+| `FixedAssetType?` | Required for fixed-asset mappings |
+
+Runtime services:
+
+| Service | Role |
+|---------|------|
+| `ISubLedgerCoaParentResolver` | Finds base parent by type/role (cached) |
+| `ISubLedgerCoaFactory` | Creates child COA under a resolved parent |
+| `ISubLedgerCoaParentValidator` | Validates user-supplied parent (Tax) |
+| `ISubLedgerCoaConfigurationValidator` | Verifies all required mappings exist |
+
+**Adding a new sub-ledger type**
+
+1. Add value to `SubLeadgerType` enum.
+2. Seed or migrate a COA row with `IsSubLeadgerBaseAccount = true` and the matching metadata.
+3. Add create handler extending `BaseSubLedgerCreateHandler` — override `SubLedgerType` only.
+4. Do **not** add GUID constants to application code.
+
+**Startup validation** (enabled by default):
+
+```json
+"Accounting:SubLedger:ValidateConfigurationOnStartup": true
+```
+
+Set to `false` in integration/smoke test hosts. See [ADR-007](../../docs/architecture/adr/007-subledger-coa-parent-resolution.md).
 
 **Source document types** (`Accounting.Contracts/Integration/EntrySourceDocumentTypes.cs`):
 
@@ -112,4 +148,6 @@ dotnet ef dbcontext info --project ERP.Host/ERP.Host.csproj --startup-project ER
 - [MODULAR_MONOLITH.md §10.6](../../docs/architecture/MODULAR_MONOLITH.md#106-phase-4--hardening) — Phase 4 / M4 exit criteria
 - [MODULE_TEMPLATE.md](../../docs/architecture/MODULE_TEMPLATE.md)
 - [MODULE_OWNERS.md](../../docs/architecture/MODULE_OWNERS.md)
+- [ADR-007 — Sub-ledger COA parent resolution](../../docs/architecture/adr/007-subledger-coa-parent-resolution.md)
+- [Sub-ledgers and the chart of accounts](../../docs/architecture/subledger-and-chart-of-accounts.md)
 - [ADR-006 — SQL schema separation (deferred)](../../docs/architecture/adr/006-sql-schema-separation.md)

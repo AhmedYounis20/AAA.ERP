@@ -574,6 +574,18 @@
   <data name="SomeChartOfAcountsNotExisted" xml:space="preserve">
     <value>بعض حسابات دليل الحسابات غير موجودة</value>
   </data>
+  <data name="SubLedgerBaseAccountAmbiguous" xml:space="preserve">
+    <value>تم العثور على أكثر من حساب أساسي لنفس نوع دفتر الأستاذ الفرعي</value>
+  </data>
+  <data name="SubLedgerBaseAccountNotConfigured" xml:space="preserve">
+    <value>لم يتم تكوين الحساب الأساسي لدفتر الأستاذ الفرعي</value>
+  </data>
+  <data name="SubLedgerParentAccountInvalid" xml:space="preserve">
+    <value>لا يمكن استخدام حساب دليل الحسابات المحدد كحساب أب لدفتر الأستاذ الفرعي</value>
+  </data>
+  <data name="SubLedgerParentAccountNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الحساب الأب لدفتر الأستاذ الفرعي</value>
+  </data>
   <data name="Total cost must be greater than or equal to zero" xml:space="preserve">
     <value>يجب أن تكون التكلفة الإجمالية أكبر من أو تساوي صفر</value>
   </data>

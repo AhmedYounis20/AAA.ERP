@@ -1,6 +1,7 @@
 using Accounting.Application.Commands.Taxes;
 using Accounting.Application.Repositories;
 using Accounting.Application.Repositories.Account.SubLeadgers;
+using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Infrastructure.Handlers.Taxes;
@@ -16,13 +17,29 @@ public class TaxCreateCommandHandlerTests
     public async Task Handle_ValidDomainCommand_PersistsTax()
     {
         var repository = new Mock<ITaxRepository>();
-        var chartOfAccountRepository = new Mock<IChartOfAccountRepository>();
+        var subLedgerCoaParentResolver = new Mock<ISubLedgerCoaParentResolver>();
+        var subLedgerCoaFactory = new Mock<ISubLedgerCoaFactory>();
+        var subLedgerCoaParentValidator = new Mock<ISubLedgerCoaParentValidator>();
         var parentId = Guid.NewGuid();
+        var parentAccount = new ChartOfAccount { Id = parentId };
 
-        chartOfAccountRepository.Setup(r => r.Get(parentId)).ReturnsAsync(new ChartOfAccount { Id = parentId });
-        chartOfAccountRepository.Setup(r => r.GenerateNewCodeForChild(parentId)).ReturnsAsync("9001");
+        subLedgerCoaParentValidator
+            .Setup(v => v.ValidateAndGetAsync(parentId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(parentAccount);
+        subLedgerCoaFactory
+            .Setup(f => f.CreateChildAccountAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                parentAccount,
+                SubLeadgerType.Tax,
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ChartOfAccount { Id = Guid.NewGuid(), Code = "9001" });
 
-        var handler = new TaxCreateCommandHandler(repository.Object, chartOfAccountRepository.Object);
+        var handler = new TaxCreateCommandHandler(
+            repository.Object,
+            subLedgerCoaParentResolver.Object,
+            subLedgerCoaFactory.Object,
+            subLedgerCoaParentValidator.Object);
         var command = new TaxCreateCommand
         {
             Name = "VAT",
