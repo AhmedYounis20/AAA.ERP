@@ -11,6 +11,9 @@
     <ProjectReference Include="..\Platform.Audit\Platform.Audit.Infrastructure\Platform.Audit.Infrastructure.csproj" />
     <ProjectReference Include="..\Platform.Caching\Platform.Caching.Infrastructure\Platform.Caching.Infrastructure.csproj" />
     <ProjectReference Include="..\Platform.Localization\Platform.Localization.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Application\ERP.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Domain\ERP.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ERP.BuildingBlocks.Persistence\ERP.BuildingBlocks.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

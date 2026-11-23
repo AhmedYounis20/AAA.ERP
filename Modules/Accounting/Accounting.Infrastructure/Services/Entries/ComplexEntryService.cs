@@ -43,8 +43,22 @@ public class ComplexEntryService(IApplicationDbContext dbContext, IEntryService 
                     ModifiedBy = e.ModifiedBy,
                     Notes = e.Notes,
                     ReceiverName = e.ReceiverName,
-                    Attachments = e.EntryAttachments.Select(e => e.Attachment).ToAttachmentDto().ToList(),
+                    Attachments = e.EntryAttachments.Select(link => new AttachmentDto
+                    {
+                        AttachmentId = link.AttachmentId,
+                        FileName = link.Attachment.FileName ?? string.Empty,
+                        ContentType = link.Attachment.FileContentType ?? string.Empty
+                    }).ToList(),
                 }).FirstOrDefaultAsync();
+
+            if (entryDto?.Attachments != null)
+            {
+                foreach (var attachment in entryDto.Attachments)
+                {
+                    if (attachment.AttachmentId is Guid attachmentId)
+                        attachment.ContentUrl = ERP.BuildingBlocks.Domain.Entities.Attachments.AttachmentUrls.Content(attachmentId);
+                }
+            }
 
             return new ApiResponse<ComplexEntryDto>
             {

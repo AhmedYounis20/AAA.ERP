@@ -124,7 +124,7 @@
     <value>Added</value>
   </data>
   <data name="CannotDeleteParent" xml:space="preserve">
-    <value>Parent Cannot be deleted please delete chilldren first</value>
+    <value>Parent cannot be deleted. Please delete children first.</value>
   </data>
   <data name="ChartOfAccountAccountGuideRequired" xml:space="preserve">
     <value>Account Guide Is Required</value>

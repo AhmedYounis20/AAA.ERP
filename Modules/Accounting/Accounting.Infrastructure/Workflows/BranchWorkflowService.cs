@@ -1,13 +1,11 @@
 using Accounting.Application.Commands.Branches;
 using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
 using Accounting.Domain.Models.Entities.SubLeadgers;
+using ERP.BuildingBlocks.Application.Attachments;
 using ERP.BuildingBlocks.Application.Constants;
-using ERP.BuildingBlocks.Application.Extensions;
 using ERP.BuildingBlocks.Domain.Entities;
-using ERP.BuildingBlocks.Domain.Entities.Attachments;
 
 namespace Accounting.Infrastructure.Workflows;
 
@@ -18,7 +16,7 @@ public class BranchWorkflowService(
     IUnitOfWork unitOfWork,
     IBranchRepository repository,
     IChartOfAccountRepository chartOfAccountRepository,
-    IAttachmentRepository attachmentRepository,
+    IAttachmentStore attachmentStore,
     ISubLedgerCoaParentResolver subLedgerCoaParentResolver,
     ISubLedgerCoaFactory subLedgerCoaFactory) : IBranchWorkflowService
 {
@@ -51,16 +49,12 @@ public class BranchWorkflowService(
                     command.NameSecondLanguage,
                     chartOfAccountParent,
                     SubLeadgerType.Branch);
-                if (command.Logo is not null)
+                if (command.Logo is { HasFileContent: true })
                 {
-                    var attachment = new Attachment
-                    {
-                        FileData = command.Logo.ToArray(),
-                        FileContentType = command.Logo.ContentType,
-                        FileName = command.Logo.FileName
-                    };
-                    attachment = await attachmentRepository.Add(attachment);
-                    entity.AttachmentId = attachment.Id;
+                    entity.AttachmentId = await attachmentStore.SaveAsync(
+                        command.Logo.FileName,
+                        command.Logo.ContentType,
+                        command.Logo.ToArray());
                 }
             }
             else
@@ -129,29 +123,29 @@ public class BranchWorkflowService(
                 await chartOfAccountRepository.Update(account);
             }
 
-            if ((command.Logo is null || command.Logo.Length <= 0) && entity.AttachmentId.HasValue)
+            if (command.Logo is null && entity.AttachmentId.HasValue)
             {
-                await attachmentRepository.Delete(entity.AttachmentId.Value);
+                var removedId = entity.AttachmentId.Value;
                 entity.AttachmentId = null;
+                await attachmentStore.DeleteAsync([removedId]);
             }
-            else if (!entity.AttachmentId.HasValue && command.Logo is not null && command.Logo.Length > 0)
+            else if (command.Logo is { HasFileContent: true })
             {
-                var attachment = new Attachment
+                if (entity.AttachmentId.HasValue)
                 {
-                    FileData = command.Logo.ToArray(),
-                    FileContentType = command.Logo.ContentType,
-                    FileName = command.Logo.FileName
-                };
-                attachment = await attachmentRepository.Add(attachment);
-                entity.AttachmentId = attachment.Id;
-            }
-            else if (entity.AttachmentId.HasValue && command.Logo is not null && command.Logo.Length > 0)
-            {
-                var attachment = await attachmentRepository.Get(entity.AttachmentId.Value);
-                attachment.FileData = command.Logo.ToArray();
-                attachment.FileName = command.Logo.FileName;
-                attachment.FileContentType = command.Logo.ContentType;
-                attachment = await attachmentRepository.Update(attachment);
+                    await attachmentStore.ReplaceAsync(
+                        entity.AttachmentId.Value,
+                        command.Logo.FileName,
+                        command.Logo.ContentType,
+                        command.Logo.ToArray());
+                }
+                else
+                {
+                    entity.AttachmentId = await attachmentStore.SaveAsync(
+                        command.Logo.FileName,
+                        command.Logo.ContentType,
+                        command.Logo.ToArray());
+                }
             }
 
             entity = await repository.Update(entity);
@@ -212,7 +206,7 @@ public class BranchWorkflowService(
                 if (entity.ChartOfAccountId.HasValue)
                     await chartOfAccountRepository.Delete(entity.ChartOfAccountId.Value);
                 if (entity.AttachmentId.HasValue)
-                    await attachmentRepository.Delete(entity.AttachmentId.Value);
+                    await attachmentStore.DeleteAsync([entity.AttachmentId.Value]);
             }
 
             await unitOfWork.CommitAsync();

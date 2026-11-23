@@ -22,11 +22,24 @@ public class LocalizationResponseMiddleware
 
         await _next(context);
 
-        context.Response.Body.Seek(0, SeekOrigin.Begin);
-        var responseText = await new StreamReader(context.Response.Body, Encoding.UTF8).ReadToEndAsync();
-        context.Response.Body.Seek(0, SeekOrigin.Begin);
+        responseBody.Seek(0, SeekOrigin.Begin);
+        context.Response.Body = originalBodyStream;
 
-        if (!string.IsNullOrWhiteSpace(responseText) && context.Response.ContentType != null && context.Response.ContentType.Contains("application/json", StringComparison.OrdinalIgnoreCase))
+        // Binary and other non-JSON responses must be copied as raw bytes.
+        // Decoding as UTF-8 changes length (e.g. images) and triggers Content-Length mismatch 500s.
+        var contentType = context.Response.ContentType;
+        var isJson = contentType != null
+            && contentType.Contains("application/json", StringComparison.OrdinalIgnoreCase);
+
+        if (!isJson)
+        {
+            await responseBody.CopyToAsync(originalBodyStream);
+            return;
+        }
+
+        var responseText = await new StreamReader(responseBody, Encoding.UTF8).ReadToEndAsync();
+
+        if (!string.IsNullOrWhiteSpace(responseText))
         {
             try
             {
@@ -50,7 +63,7 @@ public class LocalizationResponseMiddleware
         }
 
         var modifiedBytes = Encoding.UTF8.GetBytes(responseText);
-        context.Response.Body = originalBodyStream;
+        context.Response.ContentLength = modifiedBytes.Length;
         await context.Response.Body.WriteAsync(modifiedBytes, 0, modifiedBytes.Length);
     }
 
@@ -139,4 +152,3 @@ public class LocalizationResponseMiddleware
         return Array.Empty<object>();
     }
 }
-

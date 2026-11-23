@@ -207,13 +207,13 @@ namespace ERP.Persistence.Migrations
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("SubLedgerType", "Role", "FixedAssetType")
-                        .IsUnique()
-                        .HasFilter("[FixedAssetType] IS NOT NULL");
-
                     b.HasIndex("SubLedgerType", "Role")
                         .IsUnique()
                         .HasFilter("[FixedAssetType] IS NULL");
+
+                    b.HasIndex("SubLedgerType", "Role", "FixedAssetType")
+                        .IsUnique()
+                        .HasFilter("[FixedAssetType] IS NOT NULL");
 
                     b.ToTable("SubLedgerBaseAccounts", "accounting");
                 });
@@ -1482,7 +1482,6 @@ namespace ERP.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("FileData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("FileName")
@@ -1494,11 +1493,17 @@ namespace ERP.Persistence.Migrations
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("StorageKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StorageProvider")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedAt");
 
-                    b.ToTable("Attachments", "accounting");
+                    b.ToTable("Attachments", "platform");
                 });
 
             modelBuilder.Entity("Identity.Domain.ApplicationUser", b =>

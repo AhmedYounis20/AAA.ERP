@@ -12,8 +12,8 @@ public class BranchUpdateValidator : BaseSubLeadgerUpdateValidator<BranchUpdateC
     {
         _ = RuleFor(e => e.Address).MaximumLength(300).When(e => e.NodeType.Equals(NodeType.Domain));
         _ = RuleFor(e => e.Phone).MaximumLength(300).When(e => e.NodeType.Equals(NodeType.Domain));
-        _ = RuleFor(e => e.Logo.Length).LessThanOrEqualTo(10 * 1024 * 1024).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo != null);
-        _ = RuleFor(e => e.Logo.ContentType).Must(IsImage).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo != null);
+        _ = RuleFor(e => e.Logo!.Length).LessThanOrEqualTo(10 * 1024 * 1024).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo is { HasFileContent: true });
+        _ = RuleFor(e => e.Logo!.ContentType).Must(IsImage).When(e => e.NodeType.Equals(NodeType.Domain) && e.Logo is { HasFileContent: true });
     }
 
     private bool IsImage(string contentType)

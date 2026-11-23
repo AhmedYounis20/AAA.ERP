@@ -1,10 +1,8 @@
 using Accounting.Application.Repositories;
-using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
 using Accounting.Application.Services.Entries;
 using Accounting.Contracts.Integration;
 using Accounting.Infrastructure.Persistence;
-using Accounting.Infrastructure.Persistence.Attachments;
 using Accounting.Infrastructure.Repositories;
 using Accounting.Infrastructure.Services;
 using Accounting.Infrastructure.Services.Entries;
@@ -80,9 +78,6 @@ public static class AccountingModuleExtensions
         services.AddScoped<IAccountingIntegrationService, AccountingIntegrationService>();
         services.AddScoped<IInventoryCatalogValidationQueries, InventoryCatalogValidationQueries>();
         services.AddScoped<IInventoryAccountingDisplayQueries, InventoryAccountingDisplayQueries>();
-        services.AddScoped<IAttachmentCrossModulePort, AttachmentCrossModulePort>();
-        services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-
         return services;
     }
 
@@ -109,6 +104,5 @@ public static class AccountingModuleExtensions
         modelBuilder.ApplyConfiguration(new FinancialTransactionDbConfig());
         modelBuilder.ApplyConfiguration(new EntryCostCenterDbConfig());
         modelBuilder.ApplyConfiguration(new EntryAttachmentDbConfig());
-        modelBuilder.ApplyConfiguration(new AttachmentDbConfig());
     }
 }

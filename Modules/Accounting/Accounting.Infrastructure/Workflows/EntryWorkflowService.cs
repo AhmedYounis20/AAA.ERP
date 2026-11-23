@@ -1,13 +1,12 @@
 using Accounting.Application.Commands.Entries;
-using Accounting.Application.Repositories.Account;
 using Accounting.Application.Services;
 using Accounting.Contracts.Dtos;
 using Accounting.Domain.Models.Entities.Entries;
 using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Infrastructure.Services.Entries;
+using ERP.BuildingBlocks.Application.Attachments;
 using ERP.BuildingBlocks.Application.Constants;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
-using ERP.BuildingBlocks.Domain.Entities.Attachments;
 
 namespace Accounting.Infrastructure.Workflows;
 
@@ -19,7 +18,7 @@ public class EntryWorkflowService(
     IUnitOfWork unitOfWork,
     IBaseRepository<FinancialTransaction> financialTransactionRepository,
     IBaseRepository<EntryAttachment> entryAttachmentRepository,
-    IAttachmentRepository attachmentRepository) : IEntryWorkflowService
+    IAttachmentStore attachmentStore) : IEntryWorkflowService
 {
     public async Task<ApiResponse<Entry>> Create(EntryCreateCommand command)
     {
@@ -73,8 +72,8 @@ public class EntryWorkflowService(
             entry.EntryType = command.Type;
             entry.FinancialTransactions = command.FinancialTransactions;
 
-            if (command.Attachments != null && command.Attachments.Any())
-                entry.EntryAttachments = command.Attachments.ToAttachment().Select(CreateEntryAttachment).ToList();
+            if (command.Attachments != null && command.Attachments.Any(file => file.HasFileContent))
+                entry.EntryAttachments = await CreateEntryAttachmentsAsync(command.Attachments);
 
             entry = await repository.Add(entry);
             entry.FinancialTransactions = [];
@@ -206,55 +205,46 @@ public class EntryWorkflowService(
             unitOfWork.Set<Entry>(),
             dateTime);
 
-    private async Task UpdateEntryAttachments(EntryUpdateCommand command, Entry entry)
+    private async Task<List<EntryAttachment>> CreateEntryAttachmentsAsync(IEnumerable<AttachmentDto> attachments, Guid? entryId = null)
     {
-        IEnumerable<EntryAttachment> oldAttachments = await entryAttachmentRepository.GetQuery()
-            .Include(e => e.Attachment)
-            .Where(e => e.EntryId == entry.Id).ToListAsync();
-
-        IEnumerable<EntryAttachment> deletedEntryAttachments =
-            oldAttachments.Where(e => !command.Attachments.Any(file => file.AttachmentId == e.Attachment.Id));
-        IEnumerable<Attachment> deletedAttachments = deletedEntryAttachments.Select(e => e.Attachment);
-        IEnumerable<Attachment> newAttachments = command.Attachments
-            .Where(file => !oldAttachments.Any(e => file.AttachmentId == e.Attachment.Id))
-            .ToAttachment();
-        List<Attachment> updatedAttachments = oldAttachments
-            .Where(e => command.Attachments.Any(file => file.AttachmentId == e.Attachment.Id))
-            .Select(e => e.Attachment)
-            .ToList();
-
-        SyncUpdatedEntryAttachments(updatedAttachments, command.Attachments);
-        if (deletedAttachments.Any())
+        var links = new List<EntryAttachment>();
+        foreach (var file in attachments.Where(file => file.HasFileContent))
         {
-            await entryAttachmentRepository.Delete(deletedEntryAttachments);
-            await attachmentRepository.Delete(deletedAttachments);
+            var attachmentId = await attachmentStore.SaveAsync(file.FileName, file.ContentType, file.ToArray());
+            var link = new EntryAttachment { AttachmentId = attachmentId };
+            if (entryId.HasValue)
+                link.EntryId = entryId.Value;
+            links.Add(link);
         }
 
-        var newEntryAttachments = newAttachments.Select(e =>
-        {
-            var entryAttachment = CreateEntryAttachment(e);
-            entryAttachment.EntryId = entry.Id;
-            return entryAttachment;
-        });
-
-        if (newAttachments.Any())
-            await entryAttachmentRepository.Add(newEntryAttachments);
-
-        if (updatedAttachments.Any())
-            await attachmentRepository.Update(updatedAttachments);
+        return links;
     }
 
-    private static EntryAttachment CreateEntryAttachment(Attachment attachment)
-        => new() { Attachment = attachment };
-
-    private static void SyncUpdatedEntryAttachments(List<Attachment> oldAttachments,
-        List<AttachmentDto> newAttachments)
+    private async Task UpdateEntryAttachments(EntryUpdateCommand command, Entry entry)
     {
-        foreach (var oldAttachment in oldAttachments)
+        var incoming = command.Attachments ?? [];
+        var oldAttachments = await entryAttachmentRepository.GetQuery()
+            .Where(e => e.EntryId == entry.Id)
+            .ToListAsync();
+        var existingIds = oldAttachments.Select(e => e.AttachmentId).ToHashSet();
+
+        var deletedEntryAttachments = oldAttachments
+            .Where(e => !incoming.Any(file => file.AttachmentId == e.AttachmentId))
+            .ToList();
+        if (deletedEntryAttachments.Count > 0)
         {
-            var newAttachment = newAttachments.First(e => e.AttachmentId == oldAttachment.Id);
-            newAttachment.CopyTo(oldAttachment);
+            await entryAttachmentRepository.Delete(deletedEntryAttachments);
+            await attachmentStore.DeleteAsync(deletedEntryAttachments.Select(e => e.AttachmentId).ToList());
         }
+
+        foreach (var file in incoming.Where(file => file.AttachmentId is Guid id && existingIds.Contains(id) && file.HasFileContent))
+            await attachmentStore.ReplaceAsync(file.AttachmentId!.Value, file.FileName, file.ContentType, file.ToArray());
+
+        var newFiles = incoming.Where(file =>
+            file.HasFileContent &&
+            (file.AttachmentId is not Guid id || !existingIds.Contains(id)));
+        if (newFiles.Any())
+            await entryAttachmentRepository.Add(await CreateEntryAttachmentsAsync(newFiles, entry.Id));
     }
 
     private async Task UpdateFinancialTransactions(Entry entry, IEnumerable<FinancialTransaction> newFinancialTransactions)

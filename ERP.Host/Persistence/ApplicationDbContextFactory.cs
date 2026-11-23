@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Platform.Audit.Infrastructure;
+using Platform.Infrastructure;
 
 namespace ERP.Host.Persistence;
 
@@ -17,6 +18,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         ModuleModelConfigurationRegistry.Register(AccountingModuleExtensions.ApplyAccountingModuleConfigurations);
         ModuleModelConfigurationRegistry.Register(InventoryModuleExtensions.ApplyInventoryModuleConfigurations);
         ModuleModelConfigurationRegistry.Register(PlatformAuditModuleExtensions.ApplyPlatformAuditConfigurations);
+        ModuleModelConfigurationRegistry.Register(PlatformModuleExtensions.ApplyPlatformAttachmentConfigurations);
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
