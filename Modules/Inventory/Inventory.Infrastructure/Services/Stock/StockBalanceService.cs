@@ -31,7 +31,7 @@ public class StockBalanceService : IStockBalanceService
 
     public async Task<ApiResponse<StockBalanceReadDto>> GetDisplayById(Guid id)
     {
-        var balance = await _repository.Get(id);
+        var balance = await _repository.GetByIdWithDetails(id);
         if (balance is null)
         {
             return new ApiResponse<StockBalanceReadDto>
@@ -48,7 +48,7 @@ public class StockBalanceService : IStockBalanceService
 
     public async Task<ApiResponse<IEnumerable<StockBalanceReadDto>>> GetAllForDisplay()
     {
-        var balances = await _repository.Get();
+        var balances = await _repository.GetAllWithDetails();
         var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(balances, _displayQueries);
         return new ApiResponse<IEnumerable<StockBalanceReadDto>> { IsSuccess = true, StatusCode = HttpStatusCode.OK, Result = dtos };
     }

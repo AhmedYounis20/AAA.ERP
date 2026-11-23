@@ -20,6 +20,18 @@ public class InventoryTransferRepository : BaseRepository<InventoryTransfer>, II
 
     public async Task<IEnumerable<InventoryTransfer>> GetByStatus(InventoryTransferStatus status)
     {
-        return await _dbSet.Where(e => e.Status == status).ToListAsync();
+        return await _dbSet
+            .Include(e => e.Items)
+            .Where(e => e.Status == status)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<InventoryTransfer>> GetAllWithItems()
+    {
+        return await _dbSet
+            .Include(e => e.Items)
+            .AsNoTracking()
+            .OrderByDescending(e => e.CreatedAt)
+            .ToListAsync();
     }
 }

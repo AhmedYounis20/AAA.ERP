@@ -1,5 +1,6 @@
 using Accounting.Contracts.Integration;
 using Accounting.Domain.Models.Entities.ChartOfAccounts;
+using Accounting.Domain.Models.Entities.FinancialPeriods;
 using Accounting.Domain.Models.Entities.SubLeadgers;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,26 @@ public class InventoryAccountingDisplayQueries(IApplicationDbContext context) : 
                 c.Name,
                 c.NameSecondLanguage,
                 c.Code))
+            .ToListAsync(cancellationToken);
+
+        return rows.ToDictionary(r => r.Id);
+    }
+
+    public async Task<IReadOnlyDictionary<Guid, AccountingEntityDisplayInfo>> GetFinancialPeriodsByIdsAsync(
+        IReadOnlyCollection<Guid> financialPeriodIds,
+        CancellationToken cancellationToken = default)
+    {
+        if (financialPeriodIds.Count == 0)
+            return new Dictionary<Guid, AccountingEntityDisplayInfo>();
+
+        var rows = await context.Set<FinancialPeriod>()
+            .AsNoTracking()
+            .Where(p => financialPeriodIds.Contains(p.Id))
+            .Select(p => new AccountingEntityDisplayInfo(
+                p.Id,
+                p.YearNumber,
+                p.YearNumber,
+                p.YearNumber))
             .ToListAsync(cancellationToken);
 
         return rows.ToDictionary(r => r.Id);

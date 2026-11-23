@@ -42,21 +42,22 @@ public class InventoryTransferQueries(
         return new ApiResponse<IEnumerable<InventoryTransferReadDto>> { IsSuccess = true, Result = dtos };
     }
 
-    public async Task<ApiResponse<IEnumerable<InventoryTransfer>>> GetAll()
+    public async Task<ApiResponse<IEnumerable<InventoryTransferReadDto>>> GetAll()
     {
         try
         {
-            var entities = await repository.Get();
-            return new ApiResponse<IEnumerable<InventoryTransfer>>
+            var entities = await repository.GetAllWithItems();
+            var dtos = await InventoryReadDtoMapper.ToReadDtosAsync(entities, displayQueries);
+            return new ApiResponse<IEnumerable<InventoryTransferReadDto>>
             {
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
-                Result = entities
+                Result = dtos
             };
         }
         catch (Exception ex)
         {
-            return new ApiResponse<IEnumerable<InventoryTransfer>>
+            return new ApiResponse<IEnumerable<InventoryTransferReadDto>>
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,

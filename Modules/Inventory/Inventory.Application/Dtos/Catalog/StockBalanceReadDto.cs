@@ -11,7 +11,11 @@ public class StockBalanceReadDto
     public Guid BranchId { get; set; }
     public string? BranchName { get; set; }
     public Guid VariantId { get; set; }
+    public string? VariantName { get; set; }
+    public string? VariantCode { get; set; }
+    public string? ProductName { get; set; }
     public Guid PackingUnitId { get; set; }
+    public string? PackingUnitName { get; set; }
     public decimal CurrentBalance { get; set; }
     public decimal MinimumBalance { get; set; }
     public decimal MaximumBalance { get; set; }

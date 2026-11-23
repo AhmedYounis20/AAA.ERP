@@ -1,4 +1,5 @@
 using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Persistence.Attachments;
 using Inventory.Application.Repositories;
 using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.Products;
@@ -22,15 +23,17 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .AsSplitQuery()
             .Include(e => e.ProductCodes)
             .Include(e => e.ProductAttachments)
-                .ThenInclude(e => e.Attachment)
             .ToListAsync();
 
         if (products.Count == 0)
             return Enumerable.Empty<ProductDto>();
 
         var variantCounts = await GetNonDefaultVariantCountsAsync();
+        var attachments = await AttachmentMetadataLoader.LoadAsync(
+            _context,
+            products.SelectMany(product => product.ProductAttachments.Select(attachment => attachment.AttachmentId)));
 
-        return products.Select(product => MapProductListDto(product, variantCounts));
+        return products.Select(product => MapProductListDto(product, variantCounts, attachments));
     }
 
     public async Task<ProductDto?> GetDtoById(Guid id)
@@ -43,7 +46,6 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .Include(e => e.ProductPackingUnits)
                 .ThenInclude(e => e.ProductPackingUnitSellingPrices)
             .Include(e => e.ProductAttachments)
-                .ThenInclude(e => e.Attachment)
             .Include(e => e.ProductAttributeDefinitions)
             .Include(e => e.ProductSuppliers)
             .Include(e => e.ProductSalesTaxes)
@@ -64,6 +66,10 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
         var variants = product.Variants
             .Where(v => !v.IsDefault && v.VariantAttributeValues.Any())
             .ToList();
+
+        var attachments = await AttachmentMetadataLoader.LoadAsync(
+            _context,
+            product.ProductAttachments.Select(attachment => attachment.AttachmentId));
 
         var dto = new ProductDto
         {
@@ -97,13 +103,7 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
                     Description = pa.Description,
                     IsPrimary = pa.IsPrimary,
                     DisplayOrder = pa.DisplayOrder,
-                    Attachment = pa.Attachment != null ? new AttachmentDto()
-                    {
-                        AttachmentId = pa.AttachmentId,
-                        FileContent = Convert.ToBase64String(pa.Attachment.FileData),
-                        ContentType = pa.Attachment.FileContentType,
-                        FileName = pa.Attachment.FileName,
-                    } : null
+                    Attachment = attachments.TryGetValue(pa.AttachmentId, out var attachment) ? attachment : null
                 })
                 .ToList(),
             SuppliersIds = product.ProductSuppliers
@@ -250,7 +250,10 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             .ToDictionaryAsync(x => x.ProductId, x => x.Count);
     }
 
-    private static ProductDto MapProductListDto(Product product, IReadOnlyDictionary<Guid, int> variantCounts)
+    private static ProductDto MapProductListDto(
+        Product product,
+        IReadOnlyDictionary<Guid, int> variantCounts,
+        IReadOnlyDictionary<Guid, AttachmentDto> attachments)
     {
         variantCounts.TryGetValue(product.Id, out var variantsCount);
 
@@ -271,12 +274,9 @@ public class ProductRepository : BaseTreeSettingRepository<Product>, IProductRep
             HasVariants = variantsCount > 0,
             VariantsCount = variantsCount,
             ProductCodes = product.ProductCodes,
-            ProductPicture = primaryPicture?.Attachment != null ? new AttachmentDto
-            {
-                FileContent = Convert.ToBase64String(primaryPicture.Attachment.FileData),
-                ContentType = primaryPicture.Attachment.FileContentType,
-                FileName = primaryPicture.Attachment.FileName,
-            } : null,
+            ProductPicture = primaryPicture != null && attachments.TryGetValue(primaryPicture.AttachmentId, out var picture)
+                ? picture
+                : null,
         };
     }
 }

@@ -11,7 +11,7 @@ namespace Inventory.Application.Services.Transactions;
 /// </summary>
 public interface IInventoryTransferQueries
 {
-    Task<ApiResponse<IEnumerable<InventoryTransfer>>> GetAll();
+    Task<ApiResponse<IEnumerable<InventoryTransferReadDto>>> GetAll();
 
     Task<ApiResponse<PaginatedResult<InventoryTransfer>>> GetPaginated(
         InventoryTransferFilterDto filter,

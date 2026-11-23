@@ -19,6 +19,7 @@ public class InventoryTransactionReadDto
     public Guid BranchId { get; set; }
     public string? BranchName { get; set; }
     public Guid FinancialPeriodId { get; set; }
+    public string? FinancialPeriodNumber { get; set; }
     public string? Notes { get; set; }
     public List<InventoryTransactionItem> Items { get; set; } = [];
 }

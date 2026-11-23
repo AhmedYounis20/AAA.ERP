@@ -1,4 +1,5 @@
 using Accounting.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Attachments;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using Inventory.Infrastructure.Validation;
@@ -41,7 +42,7 @@ public class VariantWorkflowService
     private readonly IBaseRepository<VariantPackingUnit> _variantPackingUnitRepository;
     private readonly IBaseRepository<VariantPackingUnitSellingPrice> _variantPackingUnitSellingPriceRepository;
     private readonly IBaseRepository<VariantAttachment> _variantAttachmentRepository;
-    private readonly IAttachmentCrossModulePort _attachmentPort;
+    private readonly IAttachmentStore _attachmentStore;
 
     public VariantWorkflowService(
         IVariantRepository repository,
@@ -62,7 +63,7 @@ public class VariantWorkflowService
         IBaseRepository<VariantPackingUnit> variantPackingUnitRepository,
         IBaseRepository<VariantPackingUnitSellingPrice> variantPackingUnitSellingPriceRepository,
         IBaseRepository<VariantAttachment> variantAttachmentRepository,
-        IAttachmentCrossModulePort attachmentPort,
+        IAttachmentStore attachmentStore,
         IUnitOfWork unitOfWork)
     {
         _repository = repository;
@@ -83,7 +84,7 @@ public class VariantWorkflowService
         _variantPackingUnitRepository = variantPackingUnitRepository;
         _variantPackingUnitSellingPriceRepository = variantPackingUnitSellingPriceRepository;
         _variantAttachmentRepository = variantAttachmentRepository;
-        _attachmentPort = attachmentPort;
+        _attachmentStore = attachmentStore;
         _unitOfWork = unitOfWork;
     }
 
@@ -619,7 +620,7 @@ public class VariantWorkflowService
 
         try
         {
-            var variants = BuildVariantsForBulkCreate(commands);
+            var variants = await BuildVariantsForBulkCreate(commands);
 
             // Single batched insert for all variants with their navigation properties
             await _repository.Add(variants);
@@ -1306,67 +1307,106 @@ public class VariantWorkflowService
 
     private async Task CreateVariantAttachmentsOptimized(List<VariantAttachmentDto> variantAttachmentDtos, Guid variantId)
     {
-        if (!variantAttachmentDtos?.Any() == true) return;
+        if (variantAttachmentDtos is not { Count: > 0 })
+            return;
 
-        var attachmentsToAdd = new List<Attachment>();
         var variantAttachmentsToAdd = new List<VariantAttachment>();
         var now = DateTime.Now;
 
-        // Batch process base64 conversions and prepare entities
-        foreach (var variantAttachmentDto in variantAttachmentDtos.Where(dto => dto.Attachment != null))
+        foreach (var variantAttachmentDto in variantAttachmentDtos)
         {
-            var attachmentDto = variantAttachmentDto.Attachment!;
+            var attachmentDto = variantAttachmentDto.Attachment;
+            if (attachmentDto is not { HasFileContent: true })
+                continue;
 
-            var variantAttachment = new VariantAttachment
+            var attachmentId = await _attachmentStore.SaveAsync(
+                attachmentDto.FileName,
+                attachmentDto.ContentType,
+                attachmentDto.ToArray());
+
+            variantAttachmentsToAdd.Add(new VariantAttachment
             {
                 VariantId = variantId,
-                Attachment = new Attachment
-                {
-                    FileName = attachmentDto.FileName,
-                    FileContentType = attachmentDto.ContentType,
-                    FileData = Convert.FromBase64String(attachmentDto.FileContent),
-                    CreatedAt = now,
-                    ModifiedAt = now
-                },
+                AttachmentId = attachmentId,
                 AttachmentType = variantAttachmentDto.AttachmentType,
                 Description = variantAttachmentDto.Description,
                 IsPrimary = variantAttachmentDto.IsPrimary,
                 DisplayOrder = variantAttachmentDto.DisplayOrder,
                 CreatedAt = now,
                 ModifiedAt = now
-            };
-
-            variantAttachmentsToAdd.Add(variantAttachment);
+            });
         }
 
-        if (variantAttachmentsToAdd.Any())
-        {
+        if (variantAttachmentsToAdd.Count > 0)
             await _variantAttachmentRepository.BulkInsertAsync(variantAttachmentsToAdd);
-        }
     }
 
     private async Task UpdateVariantAttachmentsMethod(List<VariantAttachmentDto> variantAttachmentDtos, Guid variantId)
     {
-        // Get attachment IDs first
-        var attachmentIds = await _variantAttachmentRepository.GetQuery()
+        var existing = await _variantAttachmentRepository.GetQuery()
             .Where(e => e.VariantId == variantId)
-            .Select(e => e.AttachmentId)
             .ToListAsync();
+        var existingIds = existing.Select(e => e.AttachmentId).ToHashSet();
+        var retainedIds = new HashSet<Guid>();
+        var now = DateTime.Now;
+        var incoming = variantAttachmentDtos ?? [];
 
-        // Delete VariantAttachment relationships first
-        await _variantAttachmentRepository.ExecuteDeleteAsync(va => va.VariantId == variantId);
-
-        // Delete attachments using traditional load-and-delete (most compatible approach)
-        if (attachmentIds.Any())
+        foreach (var variantAttachmentDto in incoming)
         {
-            foreach (var attachmentId in attachmentIds)
+            var attachmentDto = variantAttachmentDto.Attachment;
+            if (attachmentDto is null)
+                continue;
+
+            var matchesExisting = attachmentDto.AttachmentId is Guid attachmentId && existingIds.Contains(attachmentId);
+            if (matchesExisting)
             {
-                await _attachmentPort.DeleteIfExistsAsync(attachmentId);
+                var link = existing.First(e => e.AttachmentId == attachmentDto.AttachmentId);
+                retainedIds.Add(link.AttachmentId);
+                link.AttachmentType = variantAttachmentDto.AttachmentType;
+                link.Description = variantAttachmentDto.Description;
+                link.IsPrimary = variantAttachmentDto.IsPrimary;
+                link.DisplayOrder = variantAttachmentDto.DisplayOrder;
+                link.ModifiedAt = now;
+                await _variantAttachmentRepository.Update(link);
+
+                if (attachmentDto.HasFileContent)
+                {
+                    await _attachmentStore.ReplaceAsync(
+                        link.AttachmentId,
+                        attachmentDto.FileName,
+                        attachmentDto.ContentType,
+                        attachmentDto.ToArray());
+                }
+
+                continue;
             }
+
+            if (!attachmentDto.HasFileContent)
+                continue;
+
+            var newAttachmentId = await _attachmentStore.SaveAsync(
+                attachmentDto.FileName,
+                attachmentDto.ContentType,
+                attachmentDto.ToArray());
+            await _variantAttachmentRepository.Add(new VariantAttachment
+            {
+                VariantId = variantId,
+                AttachmentId = newAttachmentId,
+                AttachmentType = variantAttachmentDto.AttachmentType,
+                Description = variantAttachmentDto.Description,
+                IsPrimary = variantAttachmentDto.IsPrimary,
+                DisplayOrder = variantAttachmentDto.DisplayOrder,
+                CreatedAt = now,
+                ModifiedAt = now
+            });
         }
 
-        // Add new attachments
-        await CreateVariantAttachmentsOptimized(variantAttachmentDtos, variantId);
+        var removed = existing.Where(e => !retainedIds.Contains(e.AttachmentId)).ToList();
+        if (removed.Count == 0)
+            return;
+
+        await _variantAttachmentRepository.Delete(removed);
+        await _attachmentStore.DeleteAsync(removed.Select(e => e.AttachmentId).ToList());
     }
 
 
@@ -2147,7 +2187,7 @@ public class VariantWorkflowService
     /// Build Variant aggregates (with navigation collections) in memory for bulk creation.
     /// Children are attached via navigation properties so EF can cascade-insert them.
     /// </summary>
-    private List<Variant> BuildVariantsForBulkCreate(List<VariantCreateCommand> commands)
+    private async Task<List<Variant>> BuildVariantsForBulkCreate(List<VariantCreateCommand> commands)
     {
         var now = DateTime.Now;
         var variants = new List<Variant>();
@@ -2266,29 +2306,32 @@ public class VariantWorkflowService
                 }).ToList();
             }
 
-            // Attachments (if any are provided from other flows)
             if (command.VariantAttachments?.Any() == true)
             {
-                variant.VariantAttachments = command.VariantAttachments
-                    .Where(dto => dto.Attachment != null)
-                    .Select(dto => new VariantAttachment
+                var links = new List<VariantAttachment>();
+                foreach (var dto in command.VariantAttachments)
+                {
+                    if (dto.Attachment is not { HasFileContent: true })
+                        continue;
+
+                    var attachmentId = await _attachmentStore.SaveAsync(
+                        dto.Attachment.FileName,
+                        dto.Attachment.ContentType,
+                        dto.Attachment.ToArray());
+                    links.Add(new VariantAttachment
                     {
-                        Attachment = new Attachment
-                        {
-                            FileName = dto.Attachment!.FileName,
-                            FileContentType = dto.Attachment.ContentType,
-                            FileData = Convert.FromBase64String(dto.Attachment.FileContent),
-                            CreatedAt = now,
-                            ModifiedAt = now
-                        },
+                        AttachmentId = attachmentId,
                         AttachmentType = dto.AttachmentType,
                         Description = dto.Description,
                         IsPrimary = dto.IsPrimary,
                         DisplayOrder = dto.DisplayOrder,
                         CreatedAt = now,
                         ModifiedAt = now
-                    })
-                    .ToList();
+                    });
+                }
+
+                if (links.Count > 0)
+                    variant.VariantAttachments = links;
             }
 
             variants.Add(variant);

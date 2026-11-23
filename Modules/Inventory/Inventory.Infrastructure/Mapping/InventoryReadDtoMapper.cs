@@ -28,8 +28,10 @@ public static class InventoryReadDtoMapper
 
         var branchIds = materialized.Select(t => t.BranchId).Distinct().ToList();
         var partyIds = materialized.Select(t => t.TransactionPartyId).Distinct().ToList();
+        var periodIds = materialized.Select(t => t.FinancialPeriodId).Distinct().ToList();
         var branches = await displayQueries.GetBranchesByIdsAsync(branchIds, cancellationToken);
         var parties = await displayQueries.GetPartyAccountsByIdsAsync(partyIds, cancellationToken);
+        var periods = await displayQueries.GetFinancialPeriodsByIdsAsync(periodIds, cancellationToken);
 
         return materialized.Select(t => new InventoryTransactionReadDto
         {
@@ -47,6 +49,7 @@ public static class InventoryReadDtoMapper
             BranchId = t.BranchId,
             BranchName = branches.GetValueOrDefault(t.BranchId)?.Name,
             FinancialPeriodId = t.FinancialPeriodId,
+            FinancialPeriodNumber = periods.GetValueOrDefault(t.FinancialPeriodId)?.Name,
             Notes = t.Notes,
             Items = t.Items
         }).ToList();
@@ -127,7 +130,13 @@ public static class InventoryReadDtoMapper
             BranchId = b.BranchId,
             BranchName = branches.GetValueOrDefault(b.BranchId)?.Name,
             VariantId = b.VariantId,
+            VariantName = !string.IsNullOrWhiteSpace(b.Variant?.Description)
+                ? b.Variant!.Description
+                : b.Variant?.Code?.Code ?? b.Variant?.Product?.Name,
+            VariantCode = b.Variant?.Code?.Code,
+            ProductName = b.Variant?.Product?.Name,
             PackingUnitId = b.PackingUnitId,
+            PackingUnitName = b.PackingUnit?.Name,
             CurrentBalance = b.CurrentBalance,
             MinimumBalance = b.MinimumBalance,
             MaximumBalance = b.MaximumBalance,

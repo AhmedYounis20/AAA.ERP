@@ -8,6 +8,8 @@ namespace Inventory.Application.Repositories;
 /// </summary>
 public interface IInventoryTransferRepository : IBaseRepository<InventoryTransfer>
 {
+    Task<IEnumerable<InventoryTransfer>> GetAllWithItems();
+
     /// <summary>Gets with details.</summary>
     Task<InventoryTransfer?> GetWithDetails(Guid id);
     Task<IEnumerable<InventoryTransfer>> GetByStatus(InventoryTransferStatus status);

@@ -17,4 +17,8 @@ public interface IInventoryAccountingDisplayQueries
     Task<IReadOnlyDictionary<Guid, AccountingEntityDisplayInfo>> GetPartyAccountsByIdsAsync(
         IReadOnlyCollection<Guid> chartOfAccountIds,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyDictionary<Guid, AccountingEntityDisplayInfo>> GetFinancialPeriodsByIdsAsync(
+        IReadOnlyCollection<Guid> financialPeriodIds,
+        CancellationToken cancellationToken = default);
 }

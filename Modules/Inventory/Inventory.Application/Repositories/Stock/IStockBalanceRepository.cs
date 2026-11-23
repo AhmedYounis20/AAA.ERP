@@ -8,6 +8,10 @@ namespace Inventory.Application.Repositories;
 /// </summary>
 public interface IStockBalanceRepository : IBaseRepository<StockBalance>
 {
+    /// <summary>Gets all balances with variant/product/packing includes for display.</summary>
+    Task<IEnumerable<StockBalance>> GetAllWithDetails();
+    /// <summary>Gets one balance with display includes.</summary>
+    Task<StockBalance?> GetByIdWithDetails(Guid id);
     /// <summary>Gets by variant and branch.</summary>
     Task<StockBalance?> GetByVariantAndBranch(Guid variantId, Guid branchId);
     /// <summary>Gets by variant packing unit and branch.</summary>

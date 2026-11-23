@@ -10,10 +10,38 @@ public class StockBalanceRepository : BaseRepository<StockBalance>, IStockBalanc
     {
     }
 
+    public async Task<IEnumerable<StockBalance>> GetAllWithDetails()
+    {
+        return await _dbSet
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
+            .Include(e => e.PackingUnit)
+            .AsNoTracking()
+            .OrderBy(e => e.Variant.Product != null ? e.Variant.Product.Name : string.Empty)
+            .ToListAsync();
+    }
+
+    public async Task<StockBalance?> GetByIdWithDetails(Guid id)
+    {
+        return await _dbSet
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
+            .Include(e => e.PackingUnit)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+    }
+
     public async Task<StockBalance?> GetByVariantAndBranch(Guid variantId, Guid branchId)
     {
         return await _dbSet
             .Include(e => e.Variant)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
             .Include(e => e.PackingUnit)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.VariantId == variantId && e.BranchId == branchId);
@@ -23,6 +51,9 @@ public class StockBalanceRepository : BaseRepository<StockBalance>, IStockBalanc
     {
         return await _dbSet
             .Include(e => e.Variant)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
             .Include(e => e.PackingUnit)
             .FirstOrDefaultAsync(e => e.VariantId == variantId && e.PackingUnitId == packingUnitId && e.BranchId == branchId);
     }
@@ -36,7 +67,9 @@ public class StockBalanceRepository : BaseRepository<StockBalance>, IStockBalanc
     {
         return await _dbSet
             .Include(e => e.Variant)
-                .ThenInclude(v => v.Product)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
             .Include(e => e.PackingUnit)
             .AsNoTracking()
             .Where(e => e.BranchId == branchId)
@@ -48,6 +81,9 @@ public class StockBalanceRepository : BaseRepository<StockBalance>, IStockBalanc
     {
         return await _dbSet
             .Include(e => e.Variant)
+                .ThenInclude(v => v!.Product)
+            .Include(e => e.Variant)
+                .ThenInclude(v => v!.VariantCodes)
             .Include(e => e.PackingUnit)
             .AsNoTracking()
             .Where(e => e.VariantId == variantId)

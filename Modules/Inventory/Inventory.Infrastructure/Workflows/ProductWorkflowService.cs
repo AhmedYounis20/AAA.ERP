@@ -1,4 +1,4 @@
-using Accounting.Contracts.Integration;
+using ERP.BuildingBlocks.Application.Attachments;
 using ERP.BuildingBlocks.Application.Repositories.BaseRepositories;
 using Inventory.Application.Repositories;
 using Inventory.Infrastructure.Validation;
@@ -26,7 +26,7 @@ public class ProductWorkflowService : IProductWorkflowService
     private readonly IBaseRepository<InventoryThreshold> _inventoryThresholdRepository;
     private readonly IBaseRepository<ExpiryLevel> _expiryLevelRepository;
     private readonly IBaseRepository<ProductAttachment> _productAttachmentRepository;
-    private readonly IAttachmentCrossModulePort _attachmentPort;
+    private readonly IAttachmentStore _attachmentStore;
     private readonly IProductAttributeDefinitionRepository _productAttributeDefinitionRepository;
     private readonly IBaseRepository<ProductSellingPriceDiscount> _productSellingPriceDiscountRepository;
     private readonly IBaseRepository<ProductPackingUnit> _productPackingUnitRepository;
@@ -55,7 +55,7 @@ public class ProductWorkflowService : IProductWorkflowService
         IBaseRepository<InventoryThreshold> inventoryThresholdRepository,
         IBaseRepository<ExpiryLevel> expiryLevelRepository,
         IBaseRepository<ProductAttachment> productAttachmentRepository,
-        IAttachmentCrossModulePort attachmentPort,
+        IAttachmentStore attachmentStore,
         IProductAttributeDefinitionRepository productAttributeDefinitionRepository,
         IBaseRepository<ProductSellingPriceDiscount> productSellingPriceDiscountRepository,
         IBaseRepository<ProductPackingUnit> productPackingUnitRepository,
@@ -83,7 +83,7 @@ public class ProductWorkflowService : IProductWorkflowService
         _inventoryThresholdRepository = inventoryThresholdRepository;
         _expiryLevelRepository = expiryLevelRepository;
         _productAttachmentRepository = productAttachmentRepository;
-        _attachmentPort = attachmentPort;
+        _attachmentStore = attachmentStore;
         _productAttributeDefinitionRepository = productAttributeDefinitionRepository;
         _productSellingPriceDiscountRepository = productSellingPriceDiscountRepository;
         _productPackingUnitRepository = productPackingUnitRepository;
@@ -172,7 +172,7 @@ public class ProductWorkflowService : IProductWorkflowService
             if (command.ProductAttachments != null && command.ProductAttachments.Any())
             {
                 var filteredAttachments = command.ProductAttachments.Where(e => command.NodeType == NodeType.Domain || (e.AttachmentType == AttachmentType.Picture && e.IsPrimary));
-                product.ProductAttachments = CreateProductAttachment(filteredAttachments);
+                product.ProductAttachments = await CreateProductAttachmentsAsync(filteredAttachments);
             }
 
             // Prepare variants for Domain products (no database hits - prepared in memory)
@@ -389,47 +389,32 @@ public class ProductWorkflowService : IProductWorkflowService
         return new List<ProductAttributeDefinition>();
     }
 
-    private List<ProductAttachment> CreateProductAttachment(IEnumerable<ProductAttachmentDto> productAttachmentDtos)
+    private async Task<List<ProductAttachment>> CreateProductAttachmentsAsync(IEnumerable<ProductAttachmentDto> productAttachmentDtos)
     {
-        var attachmentData = new List<(Attachment attachment, ProductAttachmentDto dto)>();
         var productAttachments = new List<ProductAttachment>();
+        var now = DateTime.Now;
 
-        // Prepare attachment entities and store their corresponding DTOs
         foreach (var productAttachmentDto in productAttachmentDtos)
         {
             var attachmentDto = productAttachmentDto.Attachment;
+            if (attachmentDto is not { HasFileContent: true })
+                continue;
 
-            if (attachmentDto != null)
+            var attachmentId = await _attachmentStore.SaveAsync(
+                attachmentDto.FileName,
+                attachmentDto.ContentType,
+                attachmentDto.ToArray());
+
+            productAttachments.Add(new ProductAttachment
             {
-                // Create Attachment entity
-                var attachment = new Attachment
-                {
-                    FileName = attachmentDto.FileName,
-                    FileContentType = attachmentDto.ContentType,
-                    FileData = Convert.FromBase64String(attachmentDto.FileContent),
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now
-                };
-
-                attachmentData.Add((attachment, productAttachmentDto));
-            }
-        }
-
-        // Now create ProductAttachment entities with the attachment IDs
-        foreach (var (attachment, productAttachmentDto) in attachmentData)
-        {
-            var productAttachment = new ProductAttachment
-            {
-                Attachment = attachment,
+                AttachmentId = attachmentId,
                 AttachmentType = productAttachmentDto.AttachmentType,
                 Description = productAttachmentDto.Description,
                 IsPrimary = productAttachmentDto.IsPrimary,
                 DisplayOrder = productAttachmentDto.DisplayOrder,
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now
-            };
-
-            productAttachments.Add(productAttachment);
+                CreatedAt = now,
+                ModifiedAt = now
+            });
         }
 
         return productAttachments;
@@ -570,7 +555,7 @@ public class ProductWorkflowService : IProductWorkflowService
 
             // Now safely delete orphaned Attachments (no constraint conflicts)
 
-            await _attachmentPort.DeleteByIdsAsync(attachmentsIds);
+            await _attachmentStore.DeleteAsync(attachmentsIds);
 
             await _unitOfWork.CommitAsync();
 
@@ -1171,56 +1156,69 @@ public class ProductWorkflowService : IProductWorkflowService
 
     private async Task UpdateProductAttachments(IEnumerable<ProductAttachmentDto> productAttachmentDtos, Guid productId)
     {
-        await DeleteOldProductAttachments(productId);
+        var existing = await _productAttachmentRepository.GetQuery()
+            .Where(e => e.ProductId == productId)
+            .ToListAsync();
+        var existingIds = existing.Select(e => e.AttachmentId).ToHashSet();
+        var retainedIds = new HashSet<Guid>();
+        var now = DateTime.Now;
 
-        await AddNewProductAttachments(productAttachmentDtos, productId);
-    }
-
-    private async Task AddNewProductAttachments(IEnumerable<ProductAttachmentDto> productAttachmentDtos, Guid productId)
-    {
-        var productAttachments = new List<ProductAttachment>();
         foreach (var productAttachmentDto in productAttachmentDtos)
         {
-
             var attachmentDto = productAttachmentDto.Attachment;
+            if (attachmentDto is null)
+                continue;
 
-            if (attachmentDto != null)
+            var matchesExisting = attachmentDto.AttachmentId is Guid attachmentId && existingIds.Contains(attachmentId);
+            if (matchesExisting)
             {
-                var productAttachment = new ProductAttachment
-                {
-                    ProductId = productId,
-                    Attachment = new Attachment
-                    {
-                        FileName = attachmentDto.FileName,
-                        FileContentType = attachmentDto.ContentType,
-                        FileData = Convert.FromBase64String(attachmentDto.FileContent),
-                        CreatedAt = DateTime.Now,
-                        ModifiedAt = DateTime.Now
-                    },
-                    AttachmentType = productAttachmentDto.AttachmentType,
-                    Description = productAttachmentDto.Description,
-                    IsPrimary = productAttachmentDto.IsPrimary,
-                    DisplayOrder = productAttachmentDto.DisplayOrder,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now
-                };
+                var link = existing.First(e => e.AttachmentId == attachmentDto.AttachmentId);
+                retainedIds.Add(link.AttachmentId);
+                link.AttachmentType = productAttachmentDto.AttachmentType;
+                link.Description = productAttachmentDto.Description;
+                link.IsPrimary = productAttachmentDto.IsPrimary;
+                link.DisplayOrder = productAttachmentDto.DisplayOrder;
+                link.ModifiedAt = now;
+                await _productAttachmentRepository.Update(link);
 
-                productAttachments.Add(productAttachment);
+                if (attachmentDto.HasFileContent)
+                {
+                    await _attachmentStore.ReplaceAsync(
+                        link.AttachmentId,
+                        attachmentDto.FileName,
+                        attachmentDto.ContentType,
+                        attachmentDto.ToArray());
+                }
+
+                continue;
             }
+
+            if (!attachmentDto.HasFileContent)
+                continue;
+
+            var newAttachmentId = await _attachmentStore.SaveAsync(
+                attachmentDto.FileName,
+                attachmentDto.ContentType,
+                attachmentDto.ToArray());
+            await _productAttachmentRepository.Add(new ProductAttachment
+            {
+                ProductId = productId,
+                AttachmentId = newAttachmentId,
+                AttachmentType = productAttachmentDto.AttachmentType,
+                Description = productAttachmentDto.Description,
+                IsPrimary = productAttachmentDto.IsPrimary,
+                DisplayOrder = productAttachmentDto.DisplayOrder,
+                CreatedAt = now,
+                ModifiedAt = now
+            });
         }
 
-        if (productAttachments.Any())
-            await _productAttachmentRepository.Add(productAttachments);
-    }
+        var removed = existing.Where(e => !retainedIds.Contains(e.AttachmentId)).ToList();
+        if (removed.Count == 0)
+            return;
 
-    private async Task DeleteOldProductAttachments(Guid productId)
-    {
-        var productAttachments = await _productAttachmentRepository.GetQuery().Where(e => e.ProductId == productId).ToListAsync();
-        var attachmentIds = productAttachments.Select(e => e.AttachmentId);
-        if (productAttachments.Any())
-            await _productAttachmentRepository.Delete(productAttachments);
-        if (attachmentIds?.Any() == true)
-            await _attachmentPort.DeleteByIdsAsync(attachmentIds.ToList());
+        await _productAttachmentRepository.Delete(removed);
+        await _attachmentStore.DeleteAsync(removed.Select(e => e.AttachmentId).ToList());
     }
 
     private async Task<ApiResponse<bool>> UpdateProductVariants(Product product, ProductUpdateCommand command)

@@ -1,4 +1,5 @@
 using ERP.BuildingBlocks.Application.DTOs;
+using ERP.BuildingBlocks.Persistence.Attachments;
 using Inventory.Application.Repositories;
 using Inventory.Application.Dtos;
 using Inventory.Domain.Models.Entities.Variants;
@@ -41,10 +42,8 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .AsSplitQuery()
             .Include(v => v.Product)
                 .ThenInclude(p => p!.ProductAttachments)
-                    .ThenInclude(pa => pa.Attachment)
             .Include(v => v.VariantCodes)
             .Include(v => v.VariantAttachments)
-                .ThenInclude(e => e.Attachment)
             .Include(v => v.VariantAttributeValues)
                 .ThenInclude(vav => vav.AttributeDefinition)
             .Include(v => v.VariantAttributeValues)
@@ -61,8 +60,12 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
         query = query.Where(v => !v.IsArchived);
 
         var paginatedVariants = await query.ToPaginatedResultAsync(pageNumber, pageSize, cancellationToken);
+        var attachmentIds = paginatedVariants.Items.SelectMany(variant =>
+            variant.VariantAttachments.Select(attachment => attachment.AttachmentId)
+                .Concat(variant.Product?.ProductAttachments.Select(attachment => attachment.AttachmentId) ?? []));
+        var attachments = await AttachmentMetadataLoader.LoadAsync(_context, attachmentIds, cancellationToken);
 
-        return paginatedVariants.Map(MapVariantListDto);
+        return paginatedVariants.Map(variant => MapVariantListDto(variant, attachments));
     }
 
     public async Task<VariantDto?> GetDtoById(Guid id)
@@ -74,9 +77,10 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .Include(v => v.Product)
             .Include(v => v.VariantCodes)
             .Include(v => v.VariantPackingUnitPrices)
+                .ThenInclude(e => e.PackingUnit)
+            .Include(v => v.VariantPackingUnitPrices)
                 .ThenInclude(e => e.VariantPackingUnitSellingPrices)
             .Include(v => v.VariantAttachments)
-                .ThenInclude(e => e.Attachment)
             .Include(v => v.VariantAttributeValues)
                 .ThenInclude(vav => vav.AttributeDefinition)
             .Include(v => v.VariantAttributeValues)
@@ -96,6 +100,9 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             return null;
 
         var product = variant.Product;
+        var attachments = await AttachmentMetadataLoader.LoadAsync(
+            _context,
+            variant.VariantAttachments.Select(attachment => attachment.AttachmentId));
 
         return new VariantDto
         {
@@ -153,6 +160,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             PackingUnits = variant.VariantPackingUnitPrices.Select(e => new VariantPackingUnitDto()
             {
                 PackingUnitId = e.PackingUnitId,
+                Name = e.PackingUnit?.Name,
                 LastCostPrice = e.LastCostPrice,
                 AverageCostPrice = e.AverageCostPrice,
                 IsDefaultPackingUnit = e.IsDefaultPackingUnit,
@@ -178,13 +186,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
                     DisplayOrder = va.DisplayOrder,
                     CreatedAt = va.CreatedAt,
                     ModifiedAt = va.ModifiedAt,
-                    Attachment = va.Attachment == null ? null : new AttachmentDto()
-                    {
-                        ContentType = va.Attachment.FileContentType,
-                        AttachmentId = va.AttachmentId,
-                        FileContent = Convert.ToBase64String(va.Attachment.FileData),
-                        FileName = va.Attachment.FileName
-                    }
+                    Attachment = attachments.TryGetValue(va.AttachmentId, out var attachment) ? attachment : null
                 })
                 .ToList(),
             VariantAttributeValues = variant.VariantAttributeValues
@@ -349,7 +351,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             .ToListAsync();
     }
 
-    private static VariantDto MapVariantListDto(Variant variant)
+    private static VariantDto MapVariantListDto(Variant variant, IReadOnlyDictionary<Guid, AttachmentDto> attachments)
     {
         var product = variant.Product;
 
@@ -359,8 +361,11 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
         var productPicture = product?.ProductAttachments
             .FirstOrDefault(pa => pa.IsPrimary);
 
-        var vPic = variantPicture?.Attachment;
-        var pPic = productPicture?.Attachment;
+        AttachmentDto? picture = null;
+        if (variantPicture != null)
+            attachments.TryGetValue(variantPicture.AttachmentId, out picture);
+        if (picture is null && productPicture != null)
+            attachments.TryGetValue(productPicture.AttachmentId, out picture);
 
         return new VariantDto
         {
@@ -373,17 +378,7 @@ public class VariantRepository : BaseRepository<Variant>, IVariantRepository
             CreatedAt = variant.CreatedAt,
             ModifiedAt = variant.ModifiedAt,
             VariantCodes = variant.VariantCodes,
-            VariantPicture = vPic != null ? new AttachmentDto
-            {
-                FileContent = Convert.ToBase64String(vPic.FileData),
-                ContentType = vPic.FileContentType,
-                FileName = vPic.FileName ?? string.Empty,
-            } : pPic != null ? new AttachmentDto
-            {
-                FileContent = Convert.ToBase64String(pPic.FileData),
-                ContentType = pPic.FileContentType,
-                FileName = pPic.FileName ?? string.Empty,
-            } : null,
+            VariantPicture = picture,
             VariantAttributeValues = variant.VariantAttributeValues
                 .Select(MapVariantAttributeValueDto)
                 .ToList()
